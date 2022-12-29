@@ -41,6 +41,16 @@ bool is_identity(const MdStaticArray<_T> &__other) {
     return true;
 }
 
+/**
+ * @brief Multiply two matrices
+ * @tparam _T1 type of first matrix
+ * @tparam _T2 type of second matrix
+ * @tparam _T2 type of third matrix (upto user)
+ * @param __first first matrix
+ * @param __other second matrix
+ * @param threads (optional) number of threads to operate on
+ * @returns new matrix of type _T3
+ */
 template <typename _T1, typename _T2, typename _T3>
 MdStaticArray<_T3> multiply(const MdStaticArray<_T1> &__first,
                             const MdStaticArray<_T2> &__other,
@@ -78,17 +88,34 @@ MdStaticArray<_T3> multiply(const MdStaticArray<_T1> &__first,
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks
+    size_t block_size = 128;
 
     auto __multiply_internal = [&res_ptr, &first_ptr, &other_ptr, &__first,
-                                &__other](const size_t start,
-                                          const size_t end) {
-        for (size_t i = start; i < end; ++i) {
-            for (size_t k = 0, l = 0; k < __first.shape[1]; ++k) {
-                for (size_t j = 0; j < __other.shape[1]; ++j) {
-                    res_ptr[i][j] += first_ptr[i][k] * __other.__array[l++];
+                                &__other, block_size](const size_t start,
+                                                      const size_t end) {
+        for (size_t k_block = start; k_block < __first.shape[1];
+             k_block += block_size) {
+            const size_t k_bound =
+                std::min(k_block + block_size, __first.shape[1]);
+            for (size_t i_block = start; i_block < end; i_block += block_size) {
+                const size_t i_bound = std::min(i_block + block_size, end);
+                for (size_t i = i_block; i < i_bound; ++i) {
+                    for (size_t k = k_block; k < k_bound; ++k) {
+                        for (size_t j = 0; j < __other.shape[1]; ++j) {
+                            res_ptr[i][j] += first_ptr[i][k] * other_ptr[k][j];
+                        }
+                    }
                 }
             }
         }
+        // for (size_t i = start; i < end; ++i) {
+        //     for (size_t k = 0, l = 0; k < __first.shape[1]; ++k) {
+        //         for (size_t j = 0; j < __other.shape[1]; ++j) {
+        //             res_ptr[i][j] += first_ptr[i][k] *
+        //             __other.__array[l++];
+        //         }
+        //     }
+        // }
     };
 
     size_t blocks = __first.shape[0] / threads;

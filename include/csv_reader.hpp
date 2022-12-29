@@ -108,6 +108,11 @@ std::pair<std::string, bool> read_string_without_quotes_mt(
     return {value, c == '\n' || c == EOF};
 }
 
+#define MAKE_CASE(R, SR)     \
+    case R:                  \
+        value.push_back(SR); \
+        break;
+
 /**
  * @brief Read string that are contained within quotes
  * @param iptr pointer to the file
@@ -134,10 +139,6 @@ std::pair<std::string, bool> read_string_with_quotes(FileReader &fr,
                 break;
 
             case '\\':
-#define MAKE_CASE(R, SR)     \
-    case R:                  \
-        value.push_back(SR); \
-        break;
                 switch (c = fr.read_next_char()) {
                     MAKE_CASE('r', '\r')
                     MAKE_CASE('t', '\t')
@@ -191,10 +192,6 @@ std::pair<std::string, bool> read_string_with_quotes_mt(FileReader &fr,
                 break;
 
             case '\\':
-#define MAKE_CASE(R, SR)     \
-    case R:                  \
-        value.push_back(SR); \
-        break;
                 switch (c = fr.read_next_char()) {
                     MAKE_CASE('r', '\r')
                     MAKE_CASE('t', '\t')
