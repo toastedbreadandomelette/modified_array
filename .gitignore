@@ -1,0 +1,20 @@
+# C++ related files
+*CMakeFiles
+*CMakeCache.txt
+*.cmake
+Makefile
+*sample.cpp
+*sample.py
+*test.cpp
+*test.py
+*sam.py
+*sam.cpp
+
+.idea
+*build
+*.jpg
+*.out
+*.exe
+*.csv
+
+.obsidian/*
