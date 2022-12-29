@@ -7,7 +7,7 @@
 #include "include/md_static/md_static_mat_utility.hpp"
 
 int main(int argc, const char **argv) {
-    size_t dm_size = 4096;
+    size_t dm_size = 2048;
     MdStaticArray<double> f(std::vector<size_t>({dm_size, dm_size}), 1);
     MdStaticArray<double> g(std::vector<size_t>({dm_size, dm_size}), 1);
 

@@ -88,7 +88,7 @@ MdStaticArray<_T3> multiply(const MdStaticArray<_T1> &__first,
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks
-    size_t block_size = 128;
+    size_t block_size = 64;
 
     auto __multiply_internal = [&res_ptr, &first_ptr, &other_ptr, &__first,
                                 &__other, block_size](const size_t start,
@@ -101,8 +101,9 @@ MdStaticArray<_T3> multiply(const MdStaticArray<_T1> &__first,
                 const size_t i_bound = std::min(i_block + block_size, end);
                 for (size_t i = i_block; i < i_bound; ++i) {
                     for (size_t k = k_block; k < k_bound; ++k) {
+                        const auto c = first_ptr[i][k];
                         for (size_t j = 0; j < __other.shape[1]; ++j) {
-                            res_ptr[i][j] += first_ptr[i][k] * other_ptr[k][j];
+                            res_ptr[i][j] += c * other_ptr[k][j];
                         }
                     }
                 }
