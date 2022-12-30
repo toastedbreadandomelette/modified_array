@@ -109,14 +109,6 @@ MdStaticArray<_T3> multiply(const MdStaticArray<_T1> &__first,
                 }
             }
         }
-        // for (size_t i = start; i < end; ++i) {
-        //     for (size_t k = 0, l = 0; k < __first.shape[1]; ++k) {
-        //         for (size_t j = 0; j < __other.shape[1]; ++j) {
-        //             res_ptr[i][j] += first_ptr[i][k] *
-        //             __other.__array[l++];
-        //         }
-        //     }
-        // }
     };
 
     size_t blocks = __first.shape[0] / threads;

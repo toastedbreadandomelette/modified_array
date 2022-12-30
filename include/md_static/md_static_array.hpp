@@ -47,6 +47,8 @@
 static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 8;
 
+typedef struct MdUtility MdUtility;
+
 template <typename _T>
 class MdStaticArray {
     void init_shape(const size_t *_shape, const size_t _shp_size) {
@@ -114,6 +116,8 @@ class MdStaticArray {
 
     template <typename _T1>
     friend class MdStaticArray;
+
+    friend struct MdUtility;
 
     static void set_thread_count(const uint8_t value);
 
@@ -968,7 +972,7 @@ class MdStaticArray {
     }
 
     // To do: create a reference for multi-dimensional arrays.
-    inline reference operator[](const size_t index) {
+    inline reference operator[](const size_t index) const {
         if (index >= shape[0]) {
             throw std::runtime_error(
                 "Index out of bounds while accessing index " +

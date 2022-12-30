@@ -10,14 +10,14 @@ class MdStaticArray<_T>::reference {
     void *operator new(size_t size);
 
  public:
-    MdStaticArray<_T> *__array_reference;
+    const MdStaticArray<_T> *__array_reference;
     size_t size;
     size_t offset;
     uint16_t shp_offset;
 
     reference() {}
 
-    reference(MdStaticArray<_T> &__other, const size_t offst) {
+    reference(const MdStaticArray<_T> &__other, const size_t offst) {
         __array_reference = &__other;
         offset = offst;
         size = __other.get_size() / __other.shape[0];
@@ -80,8 +80,11 @@ class MdStaticArray<_T>::reference {
             op << ot.__array_reference->__array[ot.offset];
         } else if (ot.shp_offset + 1 == ot.__array_reference->shp_size) {
             op << '[';
-            for (size_t index = 0; index < ot.size; ++index) {
-                op << ot.__array_reference->__array[ot.offset + index];
+            for (size_t index = 0, stride = ot.offset;
+                 index < ot.__array_reference->shape[ot.shp_offset];
+                 ++index, stride +=
+                          ot.__array_reference->skip_vec[ot.shp_offset]) {
+                op << ot.__array_reference->__array[stride];
                 if (index != ot.size - 1) {
                     op << ", ";
                 }
