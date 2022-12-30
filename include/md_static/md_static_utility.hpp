@@ -61,30 +61,31 @@ struct MdUtility {
             index = 0;
             uint16_t threads = 16;
             size_t skip_count = __other.get_size() / n;
-            auto __perform_dot_parallel = [&result, &__first, &__other, m, n, p,
-                                           threads, other_base_matrix_size,
-                                           skip_count](
-                                              const size_t thread_number) {
-                size_t index = thread_number * skip_count;
-                for (size_t first_row = thread_number * n;
-                     first_row < __first.get_size();
-                     first_row += (threads * n)) {
-                    for (size_t other_block = 0;
-                         other_block < __other.get_size();
-                         other_block += other_base_matrix_size) {
-                        for (size_t other_col = 0; other_col < p; ++other_col) {
+            auto __perform_dot_parallel =
+                [&result, &__first, &__other, m, n, p, threads,
+                 other_base_matrix_size,
+                 skip_count](const size_t thread_number) {
+                    size_t index = thread_number * skip_count;
+                    for (size_t first_row = thread_number * n;
+                         first_row < __first.get_size();
+                         first_row += (threads * n)) {
+                        for (size_t other_block = 0;
+                             other_block < __other.get_size();
+                             other_block += other_base_matrix_size) {
                             for (size_t j = 0; j < n; ++j) {
-                                result.__array[index] +=
-                                    __first.__array[first_row + j] *
-                                    __other.__array[other_block + j * p +
-                                                    other_col];
+                                for (size_t other_col = 0; other_col < p;
+                                     ++other_col) {
+                                    result.__array[index + other_col] +=
+                                        __first.__array[first_row + j] *
+                                        __other.__array[other_block + j * p +
+                                                        other_col];
+                                };
                             }
-                            ++index;
+                            index += n;
                         }
+                        index += ((threads - 1) * skip_count);
                     }
-                    index += ((threads - 1) * skip_count);
-                }
-            };
+                };
             std::vector<std::thread> thread_pool;
             for (int i = 0; i < threads; ++i) {
                 thread_pool.emplace_back(

@@ -8,14 +8,25 @@
 #include "include/md_static/md_static_utility.hpp"
 
 int main(int argc, const char **argv) {
-    size_t dm_size = 50;
-    MdStaticArray<double> f(std::vector<size_t>({dm_size, dm_size, dm_size}),
-                            1);
-    MdStaticArray<double> g(std::vector<size_t>({dm_size, dm_size, dm_size}),
-                            1);
+    size_t dm_size = 32;
+    MdStaticArray<int> f(
+        std::vector<size_t>({dm_size, dm_size, dm_size, dm_size}), 1);
+    MdStaticArray<int> g(std::vector<size_t>({dm_size, dm_size, dm_size}), 1);
 
+    // for (int i = 0; i < f.get_shape()[0]; ++i) {
+    //     for (int j = 0; j < f.get_shape()[1]; ++j) {
+    //         for (int k = 0; k < f.get_shape()[2]; ++k) {
+    //             f[i][j][k] = j + k;
+    //         }
+    //     }
+    // }
+    // for (int i = 0; i < g.get_shape()[0]; ++i) {
+    //     for (int j = 0; j < g.get_shape()[1]; ++j) {
+    //         g[i][j] = i + j;
+    //     }
+    // }
     auto start = std::chrono::system_clock::now();
-    auto c = MdUtility::dot<double, double, double>(f, g);
+    auto c = MdUtility::dot<int, int, int>(f, g);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
 
@@ -23,10 +34,7 @@ int main(int argc, const char **argv) {
 
     // for (int i = 0; i < c.get_shape()[0]; ++i) {
     //     for (int j = 0; j < c.get_shape()[1]; ++j) {
-    //         for (int k = 0; k < c.get_shape()[2]; ++k) {
-    //             std::cout << c[i][j][k] << std::endl;
-    //         }
-    //         std::cout << std::endl;
+    //         std::cout << c[i][j] << std::endl;
     //     }
     // }
 
