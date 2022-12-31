@@ -20,7 +20,7 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
         if (__first.shape[__first.shp_size - 1] !=
             __other.shape[__other.shp_size - 2]) {
             throw std::runtime_error(
-                "Axis count do not match for dot multiplication.");
+                "Axis size do not match for dot multiplication.");
         }
         const size_t overall_size =
             __first.get_shape_size() - 2 + __other.get_shape_size();
@@ -90,6 +90,116 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
         }
 
         return result;
+    } else {
+        if (__other.get_shape_size() == 1 && __first.get_shape_size() == 1) {
+            if (__other.shape[0] != __first.shape[0]) {
+                throw std::runtime_error(
+                    "Axis size do not match for dot multiplication.");
+            }
+            MdStaticArray<_T3> result(1);
+            for (size_t index = 0; index < __other.get_size(); ++index) {
+                result.__array[index] +=
+                    (__first.__array[index] * __other.__array[index]);
+            }
+            return result;
+        } else if (__other.get_shape_size() == 1) {
+            if (__other.shape[0] !=
+                __first.shape[__first.get_shape_size() - 1]) {
+                throw std::runtime_error(
+                    "Axis size do not match for dot multiplication.");
+            }
+
+            std::vector<size_t> overall_shape(__first.get_shape_size() - 1);
+            for (size_t index = 0; index < __first.get_shape_size() - 1;
+                 ++index) {
+                overall_shape[index] = __first.shape[index];
+            }
+            MdStaticArray<_T3> result(overall_shape, 0);
+
+            auto __perform_dot_parallel = [&__first, &__other, &result](
+                                              const size_t start,
+                                              const size_t end) {
+                size_t res_index = start;
+                size_t shp = __first.get_shape_size() - 1;
+                for (size_t index = start * __first.shape[shp];
+                     index < end * __first.shape[shp];
+                     index += __first.shape[shp]) {
+                    for (size_t row = 0; row < __other.shape[0]; ++row) {
+                        result.__array[res_index] +=
+                            (__first.__array[index + row] *
+                             __other.__array[row]);
+                    }
+                    ++res_index;
+                }
+            };
+
+            const size_t block = result.get_size() / thread_count - 1;
+            std::vector<std::thread> thread_pool;
+            for (int i = 0; i < thread_count - 1; ++i) {
+                thread_pool.emplace_back(std::thread(
+                    __perform_dot_parallel, block * i, block * (i + 1)));
+            }
+            thread_pool.emplace_back(std::thread(__perform_dot_parallel,
+                                                 block * (thread_count - 1),
+                                                 result.get_size()));
+
+            for (auto &thread : thread_pool) {
+                thread.join();
+            }
+            return result;
+        } else {
+            // To do: improve
+            if (__other.shape[__other.get_shape_size() - 2] !=
+                __first.shape[0]) {
+                throw std::runtime_error(
+                    "Axis size do not match for dot multiplication.");
+            }
+
+            std::vector<size_t> overall_shape(__other.get_shape_size() - 1);
+            size_t shp_index = 0;
+            for (size_t index = 0; index < __other.get_shape_size(); ++index) {
+                if (index != __other.get_shape_size() - 2) {
+                    overall_shape[shp_index++] = __other.shape[index];
+                }
+            }
+            MdStaticArray<_T3> result(overall_shape, 0);
+
+            auto __perform_dot_parallel = [&__first, &__other, &result,
+                                           &thread_count](
+                                              const size_t thread_number) {
+                size_t shp = __other.get_shape_size() - 2;
+                size_t res_index = thread_number * __other.shape[shp + 1];
+                size_t rows = __first.get_size();
+                // std::cout << "size: " << shp << std::endl;
+                size_t other_mat_size =
+                    __other.shape[shp] * __other.shape[shp + 1];
+                // Traversing through each layer of matrix of __other
+                for (size_t other_mat_index = 0;
+                     other_mat_index < __other.get_size();
+                     other_mat_index += (thread_count * other_mat_size)) {
+                    // For each layer, calculate dot-product
+                    // Each element will be
+                    for (size_t element = 0; element < other_mat_size;
+                         ++element) {
+                        result.__array[res_index + (element % rows)] +=
+                            __first.__array[element / __other.shape[shp + 1]] *
+                            __other.__array[other_mat_index + element];
+                    }
+                    res_index += (thread_count * __other.shape[shp + 1]);
+                }
+            };
+
+            std::vector<std::thread> thread_pool;
+            for (size_t i = 0; i < thread_count; ++i) {
+                thread_pool.emplace_back(
+                    std::thread(__perform_dot_parallel, i));
+            }
+
+            for (auto &thread : thread_pool) {
+                thread.join();
+            }
+            return result;
+        }
     }
 }
 
