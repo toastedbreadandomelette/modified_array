@@ -7,10 +7,10 @@
 #include "include/md_static/md_static_utility.hpp"
 
 int main(int argc, const char **argv) {
-    size_t dm_size = 1024;
-    MdStaticArray<size_t> f(std::vector<size_t>({dm_size, dm_size, dm_size}),
-                            1);
-    MdStaticArray<size_t> g(std::vector<size_t>({dm_size}), 1);
+    size_t dm_size = 300;
+    MdStaticArray<size_t> f(
+        std::vector<size_t>({dm_size + 2, dm_size + 1, dm_size}), 1);
+    MdStaticArray<size_t> g(std::vector<size_t>({dm_size, dm_size + 1}), 1);
 
     for (int i = 0; i < f.get_shape()[0]; ++i) {
         for (int j = 0; j < f.get_shape()[1]; ++j) {
@@ -22,22 +22,23 @@ int main(int argc, const char **argv) {
         // std::cout << std::endl;
     }
     for (int i = 0; i < g.get_shape()[0]; ++i) {
-        //     for (int j = 0; j < g.get_shape()[1]; ++j) {
-        g[i] = i;
-        //     }
+        for (int j = 0; j < g.get_shape()[1]; ++j) {
+            g[i][j] = i + j;
+        }
     }
 
     auto start = std::chrono::system_clock::now();
-    auto c = MdUtility::dot<size_t, size_t, size_t>(g, f, 1);
+    auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<double> time = end - start;
 
     // for (int i = 0; i < c.get_shape()[0]; ++i) {
-    //     // for (int j = 0; j < c.get_shape()[1]; ++j) {
-    //     std::cout << c[i] << std::endl;
-    //     // }
+    //     for (int j = 0; j < c.get_shape()[1]; ++j) {
+    //         std::cout << c[i][j] << std::endl;
+    //     }
+    //     std::cout << std::endl;
     // }
 
     // for (size_t i = 0; i < c.get_shape_size(); ++i) {

@@ -32,7 +32,7 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
         }
 
         for (int i = 0; i < __other.get_shape_size(); ++i) {
-            if (i != __first.get_shape_size() - 2) {
+            if (i != __other.get_shape_size() - 2) {
                 overall_shape[index++] = __other.shape[i];
             }
         }
@@ -47,36 +47,47 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
         const size_t n = __first.shape[__first.shp_size - 1];
         const size_t p = __other.shape[__other.shp_size - 1];
 
-        assert(m == __first.shape[__first.shp_size - 2] &&
-               n == __first.shape[__first.shp_size - 1]);
-
-        assert(n == __other.shape[__other.shp_size - 2] &&
-               p == __other.shape[__other.shp_size - 1]);
-
         const size_t other_base_matrix_size = n * p;
 
         index = 0;
         uint16_t threads = thread_count;
         size_t skip_count = __other.get_size() / n;
 
+        // for (auto &x : overall_shape) {
+        //     std::cout << x << " ";
+        // }
+        // std::cout << std::endl;
+
         auto __perform_dot_parallel = [&result, &__first, &__other, m, n, p,
                                        threads, other_base_matrix_size,
                                        skip_count](const size_t thread_number) {
+            // We iterate over each row of __first ndarray. Each $i^{th}$ thread
+            // will handle alternate $i^{th}$ row.
             size_t index = thread_number * skip_count;
             for (size_t first_row = thread_number * n;
                  first_row < __first.get_size(); first_row += (threads * n)) {
+                // Considering a 2D - layer of n-dimensional array $__other$, we
+                // iterate over every 2D-layer.
                 for (size_t other_block = 0; other_block < __other.get_size();
                      other_block += other_base_matrix_size) {
+                    // Iterator over second row of __first and column of __other
+                    // array (note that $j$ and $other_col$ loop are swapped for
+                    // performance reasons, to fulfil offset, we add $other_col$
+                    // to $index$ in result array)
                     for (size_t j = 0; j < n; ++j) {
+                        // Iterator over last axis of __other.
                         for (size_t other_col = 0; other_col < p; ++other_col) {
                             result.__array[index + other_col] +=
                                 __first.__array[first_row + j] *
                                 __other
                                     .__array[other_block + j * p + other_col];
-                        };
+                        }
                     }
-                    index += n;
+                    // Index is skipped by p, because the row is processed for
+                    // every column
+                    index += p;
                 }
+                // Since we use threads, we let other threads fill remaining
                 index += ((threads - 1) * skip_count);
             }
         };
@@ -148,7 +159,6 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
             }
             return result;
         } else {
-            // To do: improve
             if (__other.shape[__other.get_shape_size() - 2] !=
                 __first.shape[0]) {
                 throw std::runtime_error(
@@ -170,7 +180,6 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
                 size_t shp = __other.get_shape_size() - 2;
                 size_t res_index = thread_number * __other.shape[shp + 1];
                 size_t rows = __first.get_size();
-                // std::cout << "size: " << shp << std::endl;
                 size_t other_mat_size =
                     __other.shape[shp] * __other.shape[shp + 1];
                 // Traversing through each layer of matrix of __other
