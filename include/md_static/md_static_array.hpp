@@ -45,7 +45,7 @@
 // while accessing index" index)
 
 static size_t s_threshold_size = 10000000;
-static uint8_t s_thread_count = 8;
+static uint8_t s_thread_count = 16;
 
 typedef struct MdUtility MdUtility;
 
@@ -118,6 +118,8 @@ class MdStaticArray {
     friend class MdStaticArray;
 
     friend struct MdUtility;
+
+    friend struct MdArrayUtility;
 
     static void set_thread_count(const uint8_t value);
 

@@ -1,25 +1,17 @@
-#pragma once
-#ifndef _MD_STATIC_UTILITY_HPP_
-#define _MD_STATIC_UTILITY_HPP_
-#include <cmath>
-#include <functional>
 
-#include "md_static_array.hpp"
+#include "md_static_array_utility.hpp"
 
-/**
- * @brief Execute a one-to-one mapping function of an array,
- * @tparam _T array type
- * @tparam _func variable function that maps the values
- * @param __values values to map
- * @param
- */
-template <typename _T, typename _func>
-MdStaticArray<_T> mapping_fn(MdStaticArray<_T> &__values,
-                             const _func &function_exec) {
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::mapping_fn(
+    const MdStaticArray<_T> &__values,
+    const std::function<_T(const _T &)> &function_exec) {
     const size_t size = __values.get_size();
+
     MdStaticArray<_T> result(size);
+
     const uint8_t thread_count = ::s_thread_count;
     const size_t threshold_size = ::s_threshold_size;
+
     if (thread_count == 1 || size <= threshold_size) {
         for (size_t index = 0; index < size; ++index) {
             result.__array[index] = function_exec(__values[index]);
@@ -50,8 +42,8 @@ MdStaticArray<_T> mapping_fn(MdStaticArray<_T> &__values,
 }
 
 template <typename _T, typename _func>
-_T accumulate_fn(MdStaticArray<_T> &__values, const _func &function_exec,
-                 const _T init) {
+_T MdArrayUtility::accumulate_fn(MdStaticArray<_T> &__values,
+                                 const _func &function_exec, const _T init) {
     const size_t size = __values.get_size();
     _T result = init;
     const uint8_t thread_count = ::s_thread_count;
@@ -95,10 +87,10 @@ _T accumulate_fn(MdStaticArray<_T> &__values, const _func &function_exec,
 }
 
 template <typename _T, typename _func, typename _merge_func>
-_T accumulate_and_merge_fn(MdStaticArray<_T> &__values,
-                           const _func &function_exec,
-                           const _merge_func &merge_func, const _T init,
-                           const _T merge_init) {
+_T MdArrayUtility::accumulate_and_merge_fn(MdStaticArray<_T> &__values,
+                                           const _func &function_exec,
+                                           const _merge_func &merge_func,
+                                           const _T init, const _T merge_init) {
     const size_t size = __values.get_size();
     _T result = merge_init;
     const uint8_t thread_count = ::s_thread_count;
@@ -141,34 +133,18 @@ _T accumulate_and_merge_fn(MdStaticArray<_T> &__values,
     return result;
 }
 
-/**
- * @brief sqrt of all values in list __values
- * @param __values list of values
- * @returns List of values
- */
 template <typename _T>
-MdStaticArray<_T> f_sqrt(MdStaticArray<_T> &__values) {
-    return mapping_fn(__values, sqrt);
+MdStaticArray<_T> MdArrayUtility::f_sqrt(MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values, sqrt);
 }
 
-/**
- * @brief absolute values of all values in list __values
- * @param __values list of values
- * @returns List of values
- */
 template <typename _T>
-MdStaticArray<_T> f_abs(MdStaticArray<_T> &__values) {
-    return mapping_fn(__values, fabs);
+MdStaticArray<_T> MdArrayUtility::f_abs(MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values, fabs);
 }
 
-/**
- * @brief Sum of all the values in the list __values
- * @param __values List of all values
- * @param init value to be initialized with
- * @return single number
- */
 template <typename _T>
-_T f_sum(MdStaticArray<_T> &__values, _T init = 0) {
+_T MdArrayUtility::f_sum(MdStaticArray<_T> &__values, _T init) {
     return accumulate_fn(
         __values,
         [](const _T prev_value, const _T current_value) {
@@ -177,14 +153,8 @@ _T f_sum(MdStaticArray<_T> &__values, _T init = 0) {
         init);
 }
 
-/**
- * @brief Mean of all the values in the list __values
- * @param __values List of all values
- * @param init value to be initialized with
- * @return single number
- */
 template <typename _T>
-long double f_mean(MdStaticArray<_T> &__values, _T init = 0) {
+long double MdArrayUtility::f_mean(MdStaticArray<_T> &__values, _T init) {
     return accumulate_fn(
                __values,
                [](const _T prev_value, const _T current_value) {
@@ -194,14 +164,8 @@ long double f_mean(MdStaticArray<_T> &__values, _T init = 0) {
            (__values.get_size() * 1.0);
 }
 
-/**
- * @brief Root Mean Square of all the values in the list __values
- * @param __values List of all values
- * @param init value to be initialized with
- * @return single number
- */
 template <typename _T>
-long double f_rms(MdStaticArray<_T> &__values, _T init = 0) {
+long double MdArrayUtility::f_rms(MdStaticArray<_T> &__values, _T init) {
     long double mean_sq =
         accumulate_and_merge_fn(
             __values,
@@ -216,14 +180,8 @@ long double f_rms(MdStaticArray<_T> &__values, _T init = 0) {
     return sqrt(mean_sq);
 }
 
-/**
- * @brief Standard Deviation of all the values in the list __values
- * @param __values List of all values
- * @param init value to be initialized with
- * @return single number
- */
 template <typename _T>
-long double f_std_dev(MdStaticArray<_T> &__values) {
+long double MdArrayUtility::f_std_dev(MdStaticArray<_T> &__values) {
     long double fmean = f_mean(__values);
     long double mean_sq_err =
         accumulate_and_merge_fn(
@@ -240,45 +198,35 @@ long double f_std_dev(MdStaticArray<_T> &__values) {
     return sqrt(mean_sq_err);
 }
 
-/**
- * @brief compute log of values to the base 10
- */
 template <typename _T>
-MdStaticArray<_T> f_log_10(MdStaticArray<_T> &__values) {
-    return mapping_fn(__values,
-                      [](const _T &__value) { return log10(__value); });
+MdStaticArray<_T> MdArrayUtility::f_log_10(MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return log10(__value); });
 }
 
-/**
- * @brief compute log of values to the base 2
- */
 template <typename _T>
-MdStaticArray<_T> f_log_2(MdStaticArray<_T> &__values) {
-    return mapping_fn(__values,
-                      [](const _T &__value) { return log2(__value); });
+MdStaticArray<_T> MdArrayUtility::f_log_2(MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return log2(__value); });
 }
 
-/**
- * @brief compute natural logarithm of valuess
- */
 template <typename _T>
-MdStaticArray<_T> f_ln(MdStaticArray<_T> &__values) {
-    return mapping_fn(__values, [](const _T &__value) { return log(__value); });
+MdStaticArray<_T> MdArrayUtility::f_ln(MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return log(__value); });
 }
 
-/**
- * @brief compute mod power of integers
- */
 template <typename _T,
           class = typename std::enable_if<std::is_integral<_T>::value>::type>
-MdStaticArray<_T> f_mod_pow(MdStaticArray<_T> &__values, size_t power,
-                            size_t _mod) {
-    return mapping_fn(__values, [power, _mod](const _T __value) -> _T {
-        if (power == 0)
-            return 1;
-        if (power == 1)
+MdStaticArray<_T> MdArrayUtility::f_mod_pow(const MdStaticArray<_T> &__values,
+                                            const size_t power,
+                                            const size_t _mod) {
+    return mapping_fn<_T>(__values, [power, _mod](const _T &__value) -> _T {
+        if (power == 0ULL)
+            return static_cast<_T>(1);
+        if (power == 1ULL)
             return __value;
-        uint64_t result = 1, value = __value, pow = power;
+        uint64_t result = 1ULL, value = __value, pow = power;
         while (pow > 0) {
             if (pow & 1) {
                 result *= value;
@@ -292,18 +240,16 @@ MdStaticArray<_T> f_mod_pow(MdStaticArray<_T> &__values, size_t power,
     });
 }
 
-/**
- * @brief compute mod power of integers
- */
 template <typename _T,
-          typename std::enable_if<std::is_integral<_T>::value>::value>
-MdStaticArray<_T> f_mod_pow(uint64_t n, MdStaticArray<_T> &__values,
-                            size_t _mod) {
-    return mapping_fn(__values, [n, _mod](const _T __value) {
+          class = typename std::enable_if<std::is_integral<_T>::value>::type>
+MdStaticArray<_T> MdArrayUtility::f_mod_pow(const uint64_t n,
+                                            const MdStaticArray<_T> &__values,
+                                            const size_t _mod) {
+    return mapping_fn<_T>(__values, [n, _mod](const _T &__value) -> _T {
         if (__value == 0)
-            return 1;
+            return static_cast<_T>(1);
         if (__value == 1)
-            return n;
+            return static_cast<_T>(n);
         uint64_t result = 1, pow = __value, value = n;
         while (pow > 0) {
             if (pow & 1) {
@@ -318,13 +264,96 @@ MdStaticArray<_T> f_mod_pow(uint64_t n, MdStaticArray<_T> &__values,
     });
 }
 
-/**
- * @brief compute power of values
- */
 template <typename _T>
-MdStaticArray<_T> f_pow(MdStaticArray<_T> &__values, double power) {
-    return mapping_fn(
+MdStaticArray<_T> MdArrayUtility::f_pow(const MdStaticArray<_T> &__values,
+                                        double power) {
+    return mapping_fn<_T>(
         __values, [power](const _T __value) { return pow(__value, power); });
 }
 
-#endif
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_sin(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return sin(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_cos(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return cos(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_tan(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return tan(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_cot(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return cot(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_sec(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return sec(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_csc(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return cosec(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_arcsin(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return asin(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_arccos(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return acos(__value); });
+}
+
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::f_arctan(const MdStaticArray<_T> &__values) {
+    return mapping_fn<_T>(__values,
+                          [](const _T &__value) { return atan(__value); });
+}
+
+/**
+ * @brief Generate evenly spaced values
+ */
+template <typename _T,
+          class = typename std::enable_if<std::is_arithmetic<_T>::value>::type>
+MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
+                                        const _T spacing) {
+    if (end == -1) {
+        MdStaticArray<_T> result(static_cast<_T>(start));
+        for (size_t index = 0; index < start; ++index) {
+            result.__array[index] = index;
+        }
+        return result;
+    } else if (spacing == 1) {
+        const auto value = end - start;
+        MdStaticArray<_T> result(static_cast<size_t>(
+            ceil(std::max(value, static_cast<decltype(value)>(0)))));
+        for (size_t index = 0, val = start; val < end; ++index, val += 1) {
+            result.__array[index] = val;
+        }
+        return result;
+    } else {
+        const auto value = (end - start) / spacing;
+        MdStaticArray<_T> result(static_cast<size_t>(
+            ceil(std::max(value, static_cast<decltype(value)>(0)))));
+        _T val = start;
+        for (size_t index = 0; val < end; ++index, val += spacing) {
+            result.__array[index] = val;
+        }
+        return result;
+    }
+}

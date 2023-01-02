@@ -53,11 +53,6 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
         uint16_t threads = thread_count;
         size_t skip_count = __other.get_size() / n;
 
-        // for (auto &x : overall_shape) {
-        //     std::cout << x << " ";
-        // }
-        // std::cout << std::endl;
-
         auto __perform_dot_parallel = [&result, &__first, &__other, m, n, p,
                                        threads, other_base_matrix_size,
                                        skip_count](const size_t thread_number) {
@@ -88,6 +83,7 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
                     index += p;
                 }
                 // Since we use threads, we let other threads fill remaining
+                // (threads - 1) rows and skip to next ones
                 index += ((threads - 1) * skip_count);
             }
         };

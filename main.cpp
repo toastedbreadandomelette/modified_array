@@ -4,31 +4,33 @@
 
 #include "include/data_table.hpp"
 #include "include/md_static/md_static_array.hpp"
+#include "include/md_static/md_static_array_utility.hpp"
 #include "include/md_static/md_static_utility.hpp"
 
 int main(int argc, const char **argv) {
-    size_t dm_size = 300;
-    MdStaticArray<size_t> f(
-        std::vector<size_t>({dm_size + 2, dm_size + 1, dm_size}), 1);
-    MdStaticArray<size_t> g(std::vector<size_t>({dm_size, dm_size + 1}), 1);
+    size_t dm_size = 100000000;
+    MdStaticArray<double> f(std::vector<size_t>({dm_size}), 1);
+    // MdStaticArray<size_t> g(std::vector<size_t>({dm_size, dm_size + 1}), 1);
 
     for (int i = 0; i < f.get_shape()[0]; ++i) {
-        for (int j = 0; j < f.get_shape()[1]; ++j) {
-            for (int k = 0; k < f.get_shape()[2]; ++k) {
-                f[i][j][k] = i + j + k;
-            }
-            // std::cout << f[i][j] << std::endl;
-        }
+        // for (int j = 0; j < f.get_shape()[1]; ++j) {
+        // for (int k = 0; k < f.get_shape()[2]; ++k) {
+        f[i] = i + 1;
+        // }
+        // std::cout << f[i][j] << std::endl;
+        // }
         // std::cout << std::endl;
     }
-    for (int i = 0; i < g.get_shape()[0]; ++i) {
-        for (int j = 0; j < g.get_shape()[1]; ++j) {
-            g[i][j] = i + j;
-        }
-    }
+    // for (int i = 0; i < g.get_shape()[0]; ++i) {
+    //     for (int j = 0; j < g.get_shape()[1]; ++j) {
+    //         g[i][j] = i + j;
+    //     }
+    // }
 
     auto start = std::chrono::system_clock::now();
-    auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
+    // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
+    // auto c = MdArrayUtility::f_arctan(f);
+    auto c = MdArrayUtility::range<double>(0, 1, 0.0000049);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
 
@@ -41,8 +43,8 @@ int main(int argc, const char **argv) {
     //     std::cout << std::endl;
     // }
 
-    // for (size_t i = 0; i < c.get_shape_size(); ++i) {
-    //     std::cout << c.get_shape()[i] << " ";
+    // for (size_t i = 0; i < c.get_size(); ++i) {
+    //     std::cout << c[i] << " ";
     // }
     std::cout << "\n";
 
