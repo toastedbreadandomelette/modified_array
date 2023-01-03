@@ -245,7 +245,7 @@ struct MdArrayUtility {
     template <typename _T, class = typename std::enable_if<
                                std::is_arithmetic<_T>::value>::type>
     static MdStaticArray<_T> range(const _T start, const _T end = -1,
-                                   const _T spacing = 1);
+                                   const _T spacing = 0);
 };
 
 #endif

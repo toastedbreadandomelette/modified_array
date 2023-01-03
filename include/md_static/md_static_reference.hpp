@@ -144,6 +144,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator-(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] -
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) -
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);
@@ -161,6 +166,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator*(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] *
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) *
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);
@@ -195,6 +205,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator%(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] /
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) %
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);
@@ -212,6 +227,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator&(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] &
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) &
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);
@@ -229,6 +249,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator|(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] |
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) |
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);
@@ -246,6 +271,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator^(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] ^
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) ^
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);
@@ -263,6 +293,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator<<(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset]
+                       << __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset)
                << MdStaticArray(*__other.__array_reference, __other.offset,
                                 __other.shp_offset);
@@ -280,6 +315,11 @@ class MdStaticArray<_T>::reference {
     }
 
     inline auto operator>>(const reference &__other) {
+        if (size == 1 && __other.size == 1) {
+            return MdStaticArray(
+                1, __array_reference->__array[offset] >>
+                       __other.__array_reference->__array[__other.offset]);
+        }
         return MdStaticArray(*__array_reference, offset, shp_offset) >>
                MdStaticArray(*__other.__array_reference, __other.offset,
                              __other.shp_offset);

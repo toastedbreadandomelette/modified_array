@@ -5,30 +5,59 @@ template <typename _T,
           class = typename std::enable_if<std::is_arithmetic<_T>::value>::type>
 MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
                                         const _T spacing) {
-    if (end == -1) {
-        MdStaticArray<_T> result(static_cast<size_t>(start));
-        for (size_t index = 0; index < start; ++index) {
-            result.__array[index] = index;
-        }
-        return result;
-    } else if (spacing == 1) {
-        const auto value = end - start;
-        const size_t size = static_cast<size_t>(
-            ceil(std::max(value, static_cast<decltype(value)>(0))));
-        MdStaticArray<_T> result(size);
-        for (size_t index = 0, val = start; index < size; ++index, val += 1) {
-            result.__array[index] = val;
-        }
-        return result;
-    } else {
-        const auto value = (end - start) / spacing;
-        size_t size = static_cast<size_t>(
-            ceil(std::max(value, static_cast<decltype(value)>(0))));
-        MdStaticArray<_T> result(size);
-        _T val = start;
-        for (size_t index = 0; index < size; ++index, val += spacing) {
-            result.__array[index] = val;
-        }
-        return result;
+    size_t size = 0;
+    size_t start_value = 0;
+    _T increment = 1;
+    if (end < start && spacing > 0) {
+        throw std::runtime_error(
+            "Spacing given should be negative for ranges: [end (" +
+            std::to_string(end) + ") < start (" + std::to_string(start) + ")]");
     }
+    if (end == -1 && spacing > 0) {
+        size = start;
+        increment = 1;
+    } else if (spacing == 1 && end > start) {
+        const auto value = end - start;
+        size = static_cast<size_t>(
+            ceil(std::max(value, static_cast<decltype(value)>(0))));
+        start_value = start;
+        increment = 1;
+    } else {
+        const double value = ::abs((end - start) / (spacing * 1.0));
+        start_value = start;
+        size = static_cast<size_t>(
+            ceil(std::max(value, static_cast<decltype(value)>(0))));
+        increment = spacing;
+    }
+
+    MdStaticArray<_T> result(size);
+
+    const size_t block = size / s_thread_count;
+    const _T b_increment = increment * block;
+    const auto __allocate_internal = [&result, increment](const size_t start,
+                                                          const _T init,
+                                                          const size_t end) {
+        _T start_value = init;
+        for (size_t index = start; index < end;
+             ++index, start_value += increment) {
+            result.__array[index] = start_value;
+        }
+    };
+
+    std::vector<std::thread> thread_pool;
+    _T b_start = start_value;
+    for (size_t thread_i = 0; thread_i < s_thread_count - 1;
+         ++thread_i, b_start += b_increment) {
+        thread_pool.emplace_back(__allocate_internal, block * thread_i, b_start,
+                                 block * (thread_i + 1));
+    }
+
+    thread_pool.emplace_back(__allocate_internal, block * (s_thread_count - 1),
+                             b_start, size);
+
+    for (auto &thread : thread_pool) {
+        thread.join();
+    }
+
+    return result;
 }

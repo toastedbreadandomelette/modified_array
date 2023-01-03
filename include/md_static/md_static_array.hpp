@@ -218,7 +218,7 @@ class MdStaticArray {
                 "Value casted should be a single element, found with size: " +
                 std::to_string(__size));
         }
-        return *__array;
+        return __array[0];
     }
 
     /**
