@@ -1,6 +1,6 @@
 # C++ related files
 *CMakeFiles
-*CMakeCache.txt
+CMakeCache.txt
 *.cmake
 Makefile
 *sample.cpp
@@ -10,6 +10,7 @@ Makefile
 *sam.py
 *sam.cpp
 *.txt
+Testing/
 
 .idea
 *build

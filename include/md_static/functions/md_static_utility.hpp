@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-#include "md_static_array.hpp"
+#include "../md_static_array.hpp"
 
 /**
  * @brief Utility for array operations
@@ -48,9 +48,9 @@ struct MdUtility {
      * __other
      */
     template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> multiply(const MdStaticArray<_T1>& __first,
-                                       const MdStaticArray<_T2>& __other,
-                                       const size_t threads = 16);
+    static MdStaticArray<_T3> mat_multiply(const MdStaticArray<_T1>& __first,
+                                           const MdStaticArray<_T2>& __other,
+                                           const size_t threads = 16);
 
     /**
      * @brief Transpose of matrix: creates a new transposed array

@@ -1,10 +1,9 @@
 #pragma once
 #ifndef _MD_STATIC_ARRAY_UTILITY_HPP_
 #define _MD_STATIC_ARRAY_UTILITY_HPP_
-#include <cmath>
 #include <functional>
 
-#include "md_static_array.hpp"
+#include "../md_static_array.hpp"
 
 struct MdArrayUtility {
     /**
@@ -16,12 +15,12 @@ struct MdArrayUtility {
      * @returns Array of elements
      */
     template <typename _T>
-    static MdStaticArray<_T> mapping_fn(
+    static MdStaticArray<_T> map(
         const MdStaticArray<_T> &__values,
         const std::function<_T(const _T &)> &function_exec);
 
     /**
-     * @brief Execute accumulate function.
+     * @brief Reduce array of values to a single value function.
      * @tparam _T type of array
      * @param __values values to perform
      * @param function_exec function to execute (arguments are previous value
@@ -29,9 +28,10 @@ struct MdArrayUtility {
      * @param init, value to initialize before accumulate.
      * @returns single value
      */
-    template <typename _T, typename _func>
-    static _T accumulate_fn(MdStaticArray<_T> &__values,
-                            const _func &function_exec, const _T init);
+    template <typename _T>
+    static _T reduce(const MdStaticArray<_T> &__values,
+                     const std::function<_T(const _T, const _T)> &function_exec,
+                     const _T init);
 
     /**
      * @brief Execute accumulate function, and merge these values based on
@@ -54,7 +54,7 @@ struct MdArrayUtility {
      * @returns List of values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_sqrt(MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> sqrt(const MdStaticArray<_T> &__values);
 
     /**
      * @brief absolute values of all values in list __values
@@ -62,7 +62,7 @@ struct MdArrayUtility {
      * @returns List of values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_abs(MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> abs(const MdStaticArray<_T> &__values);
 
     /**
      * @brief Sum of all the values in the list __values
@@ -71,7 +71,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static _T f_sum(MdStaticArray<_T> &__values, _T init = 0);
+    static _T sum(const MdStaticArray<_T> &__values, const _T init = 0);
 
     /**
      * @brief Mean of all the values in the list __values
@@ -80,7 +80,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double f_mean(MdStaticArray<_T> &__values, _T init = 0);
+    static long double mean(const MdStaticArray<_T> &__values,
+                            const _T init = 0);
 
     /**
      * @brief Root Mean Square of all the values in the list __values
@@ -89,7 +90,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double f_rms(MdStaticArray<_T> &__values, _T init = 0);
+    static long double rms(const MdStaticArray<_T> &__values,
+                           const _T init = 0);
 
     /**
      * @brief Standard Deviation of all the values in the list __values
@@ -98,33 +100,33 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double f_std_dev(MdStaticArray<_T> &__values);
+    static long double std_dev(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute log of values to the base 10
      */
     template <typename _T>
-    static MdStaticArray<_T> f_log_10(MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> log10(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute log of values to the base 2
      */
     template <typename _T>
-    static MdStaticArray<_T> f_log_2(MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> log2(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute natural logarithm of valuess
      */
     template <typename _T>
-    static MdStaticArray<_T> f_ln(MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> log(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute mod power of integers
      */
     template <typename _T, class = typename std::enable_if<
                                std::is_integral<_T>::value>::type>
-    static MdStaticArray<_T> f_mod_pow(const MdStaticArray<_T> &__values,
-                                       const size_t power, const size_t _mod);
+    static MdStaticArray<_T> mod_pow(const MdStaticArray<_T> &__values,
+                                     const size_t power, const size_t _mod);
 
     /**
      * @brief compute mod power of integer raise to array of values
@@ -136,9 +138,9 @@ struct MdArrayUtility {
      */
     template <typename _T, class = typename std::enable_if<
                                std::is_integral<_T>::value>::type>
-    static MdStaticArray<_T> f_mod_pow(const uint64_t n,
-                                       const MdStaticArray<_T> &__values,
-                                       const size_t _mod);
+    static MdStaticArray<_T> mod_pow(const uint64_t n,
+                                     const MdStaticArray<_T> &__values,
+                                     const size_t _mod);
 
     /**
      * @brief compute power of values
@@ -148,8 +150,8 @@ struct MdArrayUtility {
      * @returns new arrays with value raise to power
      */
     template <typename _T>
-    static MdStaticArray<_T> f_pow(const MdStaticArray<_T> &__values,
-                                   double power);
+    static MdStaticArray<_T> pow(const MdStaticArray<_T> &__values,
+                                 double power);
 
     /**
      * @brief compute sine of values, given in radian
@@ -158,7 +160,7 @@ struct MdArrayUtility {
      * @returns array of computed sine values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_sin(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> sin(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute sine of values, given in radian
@@ -167,7 +169,7 @@ struct MdArrayUtility {
      * @returns array of computed sine values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_cos(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> cos(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute cosine of values, given in radian
@@ -176,7 +178,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_tan(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> tan(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute cotangent of values, given in radian
@@ -185,7 +187,7 @@ struct MdArrayUtility {
      * @returns array of computed cotangent values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_cot(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> cot(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute secant of values, given in radian
@@ -194,7 +196,7 @@ struct MdArrayUtility {
      * @returns array of computed secant values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_sec(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> sec(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute cosecant of values, given in radian
@@ -203,7 +205,7 @@ struct MdArrayUtility {
      * @returns array of computed cosecant values
      */
     template <typename _T>
-    static MdStaticArray<_T> f_csc(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> cosec(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute inverse sin of values, given in radian
@@ -212,7 +214,7 @@ struct MdArrayUtility {
      * @returns array of computed inverse sin
      */
     template <typename _T>
-    static MdStaticArray<_T> f_arcsin(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> arcsin(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute inverse cos of values, given in radian
@@ -221,7 +223,7 @@ struct MdArrayUtility {
      * @returns array of computed inverse cos
      */
     template <typename _T>
-    static MdStaticArray<_T> f_arccos(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> arccos(const MdStaticArray<_T> &__values);
 
     /**
      * @brief compute tan inverse of values, given in radian
@@ -230,7 +232,7 @@ struct MdArrayUtility {
      * @returns array of computed inverse tan
      */
     template <typename _T>
-    static MdStaticArray<_T> f_arctan(const MdStaticArray<_T> &__values);
+    static MdStaticArray<_T> arctan(const MdStaticArray<_T> &__values);
 
     /**
      * @brief Generate evenly spaced values
@@ -245,7 +247,5 @@ struct MdArrayUtility {
     static MdStaticArray<_T> range(const _T start, const _T end = -1,
                                    const _T spacing = 1);
 };
-
-#include "md_static_array_utility.tcc"
 
 #endif

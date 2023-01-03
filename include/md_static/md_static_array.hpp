@@ -14,30 +14,38 @@
     if constexpr (sizeof(_T1) > sizeof(_T)) {                        \
         if constexpr ((std::is_floating_point<_T>::value ||          \
                        std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == 4) {                            \
-            return func(__other, (float)0);                          \
+                      sizeof(_T1) == sizeof(float)) {                \
+            return func(__other, static_cast<float>(0));             \
         } else if constexpr ((std::is_floating_point<_T>::value ||   \
                               std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == 8) {                     \
-            return func(__other, (double)0);                         \
+                             sizeof(_T1) == sizeof(double)) {        \
+            return func(__other, static_cast<double>(0));            \
+        } else if constexpr ((std::is_floating_point<_T>::value ||   \
+                              std::is_floating_point<_T1>::value) && \
+                             sizeof(_T1) == sizeof(long double)) {   \
+            return func(__other, static_cast<long double>(0));       \
         } else {                                                     \
             return func(__other, (_T1)0);                            \
         }                                                            \
     } else {                                                         \
         if constexpr ((std::is_floating_point<_T>::value ||          \
                        std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == 4) {                            \
-            return func(__other, (double)0);                         \
+                      sizeof(_T1) == sizeof(float)) {                \
+            return func(__other, static_cast<double>(0));            \
         } else if constexpr ((std::is_floating_point<_T>::value ||   \
                               std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == 8) {                     \
-            return func(__other, (double)0);                         \
+                             sizeof(_T1) == sizeof(double)) {        \
+            return func(__other, static_cast<double>(0));            \
+        } else if constexpr ((std::is_floating_point<_T>::value ||   \
+                              std::is_floating_point<_T1>::value) && \
+                             sizeof(_T1) == sizeof(long double)) {   \
+            return func(__other, static_cast<long double>(0));       \
         } else if constexpr ((std::is_floating_point<_T>::value ||   \
                               std::is_floating_point<_T1>::value) && \
                              sizeof(_T1) < 4) {                      \
-            return func(__other, (float)0);                          \
+            return func(__other, static_cast<float>(0));             \
         } else {                                                     \
-            return func(__other, (_T)0);                             \
+            return func(__other, static_cast<_T>(0));                \
         }                                                            \
     }
 
@@ -204,7 +212,14 @@ class MdStaticArray {
     /**
      * @brief Casting operator
      */
-    operator _T() const { return *__array; }
+    inline operator _T() const {
+        if (__size > 1) {
+            throw std::runtime_error(
+                "Value casted should be a single element, found with size: " +
+                std::to_string(__size));
+        }
+        return *__array;
+    }
 
     /**
      * @brief Casting operator
@@ -993,30 +1008,38 @@ class MdStaticArray {
     if constexpr (sizeof(_T1) > sizeof(_T2)) {                       \
         if constexpr ((std::is_floating_point<_T2>::value ||         \
                        std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == 4) {                            \
-            return first.func(__other, (float)0);                    \
+                      sizeof(_T1) == sizeof(float)) {                \
+            return first.func(__other, static_cast<float>(0));       \
         } else if constexpr ((std::is_floating_point<_T2>::value ||  \
                               std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == 8) {                     \
-            return first.func(__other, (double)0);                   \
+                             sizeof(_T1) == sizeof(double)) {        \
+            return first.func(__other, static_cast<double>(0));      \
+        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
+                              std::is_floating_point<_T1>::value) && \
+                             sizeof(_T1) == sizeof(long double)) {   \
+            return first.func(__other, static_cast<long double>(0)); \
         } else {                                                     \
             return first.func(__other, (_T1)0);                      \
         }                                                            \
     } else {                                                         \
         if constexpr ((std::is_floating_point<_T2>::value ||         \
                        std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == 4) {                            \
-            return first.func(__other, (double)0);                   \
+                      sizeof(_T1) == sizeof(float)) {                \
+            return first.func(__other, static_cast<double>(0));      \
         } else if constexpr ((std::is_floating_point<_T2>::value ||  \
                               std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == 8) {                     \
-            return first.func(__other, (double)0);                   \
+                             sizeof(_T1) == sizeof(double)) {        \
+            return first.func(__other, static_cast<double>(0));      \
         } else if constexpr ((std::is_floating_point<_T2>::value ||  \
                               std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) < 4) {                      \
-            return first.func(__other, (float)0);                    \
+                             sizeof(_T1) == sizeof(long double)) {   \
+            return first.func(__other, static_cast<long double>(0)); \
+        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
+                              std::is_floating_point<_T1>::value) && \
+                             sizeof(_T1) < sizeof(float)) {          \
+            return first.func(__other, static_cast<float>(0));       \
         } else {                                                     \
-            return first.func(__other, (_T2)0);                      \
+            return first.func(__other, static_cast<_T2>(0));         \
         }                                                            \
     }
 
@@ -1110,7 +1133,7 @@ inline auto operator>>(const _T1 &__other, const MdStaticArray<_T2> &first) {
     OP_INTERNAL_MACRO_EXT(__rshft_bit_iointernal)
 }
 
-#include "md_st_reference.hpp"
+#include "md_static_reference.hpp"
 
 template <typename _T>
 MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {

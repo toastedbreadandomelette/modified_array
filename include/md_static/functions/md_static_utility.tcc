@@ -2,7 +2,7 @@
 #ifndef _MD_STATIC_MAT_UTILITY_HPP_
 #define _MD_STATIC_MAT_UTILITY_HPP_
 
-#include "md_static_array.hpp"
+#include "../md_static_array.hpp"
 #include "md_static_utility.hpp"
 
 template <typename _T1, typename _T2, typename _T3>
@@ -14,8 +14,8 @@ MdStaticArray<_T3> MdUtility::dot(const MdStaticArray<_T1> &__first,
     // axis of __other
     if (__other.get_shape_size() >= 2 && __first.get_shape_size() >= 2) {
         if (__other.get_shape_size() == 2 && __first.get_shape_size() == 2) {
-            return MdUtility::multiply<_T1, _T2, _T3>(__first, __other,
-                                                      thread_count);
+            return MdUtility::mat_multiply<_T1, _T2, _T3>(__first, __other,
+                                                          thread_count);
         }
         if (__first.shape[__first.shp_size - 1] !=
             __other.shape[__other.shp_size - 2]) {
@@ -241,9 +241,9 @@ bool MdUtility::is_identity(const MdStaticArray<_T> &__other) {
 }
 
 template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdUtility::multiply(const MdStaticArray<_T1> &__first,
-                                       const MdStaticArray<_T2> &__other,
-                                       const size_t threads) {
+MdStaticArray<_T3> MdUtility::mat_multiply(const MdStaticArray<_T1> &__first,
+                                           const MdStaticArray<_T2> &__other,
+                                           const size_t threads) {
     if (__first.shp_size != 2 || __other.shp_size != 2) {
         throw std::runtime_error("Matrix dimension do not match.");
     }
