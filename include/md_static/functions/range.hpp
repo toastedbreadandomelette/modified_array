@@ -13,7 +13,7 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
             "Spacing given should be negative for ranges: [end (" +
             std::to_string(end) + ") < start (" + std::to_string(start) + ")]");
     }
-    if (end == -1 && spacing > 0) {
+    if (end == -1 && spacing >= 0) {
         size = start;
         increment = 1;
     } else if (spacing == 1 && end > start) {
@@ -32,28 +32,28 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
 
     MdStaticArray<_T> result(size);
 
-    const size_t block = size / s_thread_count;
-    const _T b_increment = increment * block;
-    const auto __allocate_internal = [&result, increment](const size_t start,
-                                                          const _T init,
-                                                          const size_t end) {
-        _T start_value = init;
-        for (size_t index = start; index < end;
-             ++index, start_value += increment) {
-            result.__array[index] = start_value;
+    const auto __allocate_internal = [&result](const size_t start,
+                                               const _T init, const size_t end,
+                                               const _T increment) {
+        _T value = init;
+        for (size_t index = start; index < end; ++index, value += increment) {
+            result.__array[index] = value;
         }
     };
+
+    const size_t block = size / s_thread_count;
+    const _T b_increment = increment * block;
 
     std::vector<std::thread> thread_pool;
     _T b_start = start_value;
     for (size_t thread_i = 0; thread_i < s_thread_count - 1;
          ++thread_i, b_start += b_increment) {
         thread_pool.emplace_back(__allocate_internal, block * thread_i, b_start,
-                                 block * (thread_i + 1));
+                                 block * (thread_i + 1), increment);
     }
 
     thread_pool.emplace_back(__allocate_internal, block * (s_thread_count - 1),
-                             b_start, size);
+                             b_start, size, increment);
 
     for (auto &thread : thread_pool) {
         thread.join();

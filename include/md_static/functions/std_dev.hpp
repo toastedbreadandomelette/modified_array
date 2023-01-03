@@ -16,7 +16,7 @@ long double MdArrayUtility::std_dev(const MdStaticArray<_T> &__values) {
             [](const _T prev_value, const _T current_value) {
                 return prev_value + current_value;
             },
-            (_T)0.0, (_T)0.0) /
+            (_T)0.0) /
         (__values.get_size() * 1.0);
-    return sqrt<_T>(mean_sq_err);
+    return ::sqrt(mean_sq_err);
 }

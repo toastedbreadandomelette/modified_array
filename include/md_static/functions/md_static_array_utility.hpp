@@ -21,6 +21,7 @@ struct MdArrayUtility {
 
     /**
      * @brief Reduce array of values to a single value function.
+     * @todo: Merge along mentioned axis
      * @tparam _T type of array
      * @param __values values to perform
      * @param function_exec function to execute (arguments are previous value
@@ -28,13 +29,14 @@ struct MdArrayUtility {
      * @param init, value to initialize before accumulate.
      * @returns single value
      */
-    template <typename _T>
+    template <typename _T, typename _func>
     static _T reduce(const MdStaticArray<_T> &__values,
-                     const std::function<_T(const _T, const _T)> &function_exec,
-                     const _T init);
+                     const _func &function_exec, const _T init);
 
     /**
      * @brief Execute accumulate function, and merge these values based on
+     * merge function
+     * @todo: Merge along mentioned axis
      * @tparam _T type of array
      * @param __values values to perform
      * @param function_exec function to execute (arguments are previous value
@@ -43,10 +45,10 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename _T, typename _func, typename _merge_func>
-    static _T accumulate_and_merge_fn(MdStaticArray<_T> &__values,
+    static _T accumulate_and_merge_fn(const MdStaticArray<_T> &__values,
                                       const _func &function_exec,
                                       const _merge_func &merge_func,
-                                      const _T init, const _T merge_init);
+                                      const _T init);
 
     /**
      * @brief sqrt of all values in list __values

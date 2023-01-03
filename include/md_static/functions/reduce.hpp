@@ -1,28 +1,26 @@
 #pragma once
 #include "md_static_array_utility.hpp"
 
-template <typename _T>
-_T MdArrayUtility::reduce(
-    const MdStaticArray<_T> &__values,
-    const std::function<_T(const _T, const _T)> &function_exec, const _T init) {
+template <typename _T, typename _func>
+_T MdArrayUtility::reduce(const MdStaticArray<_T> &__values,
+                          const _func &function_exec, const _T init) {
     const size_t size = __values.get_size();
     _T result = init;
     const uint8_t thread_count = ::s_thread_count;
     const size_t threshold_size = ::s_threshold_size;
     if (thread_count == 1 || size <= threshold_size) {
         for (size_t index = 0; index < size; ++index) {
-            result = function_exec(result, __values[index]);
+            result = function_exec(result, __values.__array[index]);
         }
     } else {
         std::vector<std::thread> st;
-        st.reserve(thread_count);
-        std::vector<_T> __res_total(thread_count, init);
+        std::vector<_T> __res_total(thread_count, 0);
         auto _add_int = [&__res_total, &__values, &function_exec](
                             const uint8_t thread_number, const size_t start,
                             const size_t end) {
             for (size_t index = start; index < end; ++index) {
-                __res_total[thread_number] =
-                    function_exec(__res_total[thread_number], __values[index]);
+                __res_total[thread_number] = function_exec(
+                    __res_total[thread_number], __values.__array[index]);
             }
         };
 
