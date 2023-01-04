@@ -9,11 +9,11 @@
 #include "include/md_static/md_static_array.hpp"
 
 int main(int argc, const char **argv) {
-    auto c = MdArrayUtility::range<double>(800000000);
     auto start = std::chrono::system_clock::now();
     // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
     // auto c = MdArrayUtility::f_arctan(f);
-    auto sum = MdArrayUtility::std_dev(c);
+    MdStaticArray<double> c = MdArrayUtility::range<double>(1000000000);
+    auto sum = MdArrayUtility::rms<double>(c);
     // auto sum = MdArrayUtility::sum(c);
 
     // auto c = f + g;
