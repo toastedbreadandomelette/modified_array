@@ -14,7 +14,7 @@ long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,
             [](const _T prev_value, const _T current_value) {
                 return prev_value + current_value;
             },
-            (_T)init) /
+            static_cast<_T>(init)) /
         (__values.get_size() * 1.0);
     return ::sqrt(mean_sq);
 }

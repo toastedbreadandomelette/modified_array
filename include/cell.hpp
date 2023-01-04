@@ -8,7 +8,6 @@
 #include <iostream>
 #include <variant>
 
-#include "md_dyn/md_dyn_array.hpp"
 #include "md_static/md_static_array.hpp"
 
 typedef struct None {

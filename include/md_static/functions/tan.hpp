@@ -6,5 +6,5 @@
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::tan(const MdStaticArray<_T> &__values) {
-    return map<_T>(__values, [](const _T &__value) { return tan(__value); });
+    return map<_T>(__values, [](const _T &__value) { return ::tan(__value); });
 }

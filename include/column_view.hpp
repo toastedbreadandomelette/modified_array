@@ -5,7 +5,6 @@
 #include <string>
 
 #include "cell.hpp"
-#include "md_dyn/md_dyn_array.hpp"
 #include "md_static/md_static_array.hpp"
 #include "tables.hpp"
 
@@ -67,21 +66,6 @@ struct ColView {
      * @brief Maps the values and returns the new array.
      */
     template <typename _T>
-    MdDynArray<_T> map(const std::function<_T(const Cell &, const size_t,
-                                              const ColView &)> &func);
-
-    /**
-     * @brief Maps the values and returns the new array.
-     * Uses multi-threading
-     */
-    template <typename _T>
-    MdDynArray<_T> map_mt(const std::function<_T(const Cell &, const size_t,
-                                                 const ColView &)> &func);
-
-    /**
-     * @brief Maps the values and returns the new array.
-     */
-    template <typename _T>
     MdStaticArray<_T> st_map(const std::function<_T(const Cell &, const size_t,
                                                     const ColView &)> &func);
 
@@ -99,18 +83,6 @@ struct ColView {
      */
     template <typename _T>
     friend _T get_values(const Cell &);
-
-    /**
-     * @brief Maps the values and returns the new array.
-     */
-    template <typename _T>
-    MdDynArray<_T> map();
-
-    /**
-     * @brief Maps the values and returns the new array.
-     */
-    template <typename _T>
-    MdDynArray<_T> map_mt();
 
     /**
      * @brief Maps the values and returns the new array.
@@ -191,96 +163,6 @@ Cell ColView::aggregate_mt(
     }
 
     return final;
-}
-
-template <typename _T>
-MdDynArray<_T> ColView::map(const std::function<_T(const Cell &, const size_t,
-                                                   const ColView &)> &func) {
-    const size_t __size = this->get_size();
-    MdDynArray<_T> value(__size);
-    const ColView &__ptr = *this;
-    for (size_t ptr = 0; ptr < __size; ++ptr) {
-        value[ptr] = func(this->operator[](ptr), ptr, __ptr);
-    }
-
-    return value;
-}
-
-template <typename _T>
-MdDynArray<_T> ColView::map_mt(
-    const std::function<_T(const Cell &, const size_t, const ColView &)>
-        &func) {
-    const size_t __size = this->get_size();
-    MdDynArray<_T> value(__size);
-    std::vector<std::thread> thread_pool;
-
-    auto mp_internal = [&func, this, &value](const size_t start,
-                                             const size_t end) {
-        const ColView &__ptr = *this;
-        for (size_t ptr = start; ptr < end; ++ptr) {
-            value[ptr] = func(this->operator[](ptr), ptr, __ptr);
-        }
-    };
-
-    const size_t block = __size / ColView::total_threads;
-    const uint8_t t_but_one = ColView::total_threads - 1;
-
-    for (int i = 0; i < t_but_one; ++i) {
-        thread_pool.emplace_back(
-            std::thread(mp_internal, block * i, block * (i + 1)));
-    }
-
-    thread_pool.emplace_back(
-        std::thread(mp_internal, block * t_but_one, __size));
-
-    for (auto &thrd : thread_pool) {
-        thrd.join();
-    }
-
-    return value;
-}
-
-template <typename _T>
-MdDynArray<_T> ColView::map() {
-    const size_t __size = this->get_size();
-    MdDynArray<_T> value(__size);
-    const ColView &__ptr = *this;
-    for (size_t ptr = 0; ptr < __size; ++ptr) {
-        value[ptr] = get_values<_T>(this->operator[](ptr));
-    }
-
-    return value;
-}
-
-template <typename _T>
-MdDynArray<_T> ColView::map_mt() {
-    const size_t __size = this->get_size();
-    MdDynArray<_T> value(__size);
-    std::vector<std::thread> thread_pool;
-
-    auto mp_internal = [this, &value](const size_t start, const size_t end) {
-        const ColView &__ptr = *this;
-        for (size_t ptr = start; ptr < end; ++ptr) {
-            value[ptr] = get_values<_T>(this->operator[](ptr));
-        }
-    };
-
-    const size_t block = __size / ColView::total_threads;
-    const uint8_t t_but_one = ColView::total_threads - 1;
-
-    for (int i = 0; i < t_but_one; ++i) {
-        thread_pool.emplace_back(
-            std::thread(mp_internal, block * i, block * (i + 1)));
-    }
-
-    thread_pool.emplace_back(
-        std::thread(mp_internal, block * t_but_one, __size));
-
-    for (auto &thrd : thread_pool) {
-        thrd.join();
-    }
-
-    return value;
 }
 
 template <typename _T>
