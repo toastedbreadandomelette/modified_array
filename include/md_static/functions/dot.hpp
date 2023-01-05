@@ -1,3 +1,4 @@
+#pragma once
 #include "mat_multiply.hpp"
 #include "md_static_array_utility.hpp"
 
@@ -99,13 +100,17 @@ MdStaticArray<_T3> MdArrayUtility::dot(const MdStaticArray<_T1> &__first,
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
+            // A single valued answer.
             MdStaticArray<_T3> result(1);
             for (size_t index = 0; index < __other.get_size(); ++index) {
                 result.__array[index] +=
                     (__first.__array[index] * __other.__array[index]);
             }
+
             return result;
+
         } else if (__other.get_shape_size() == 1) {
+            // Note: first does have $n$ dimensions
             if (__other.shape[0] !=
                 __first.shape[__first.get_shape_size() - 1]) {
                 throw std::runtime_error(
@@ -124,9 +129,11 @@ MdStaticArray<_T3> MdArrayUtility::dot(const MdStaticArray<_T1> &__first,
                                               const size_t end) {
                 size_t res_index = start;
                 size_t shp = __first.get_shape_size() - 1;
+                // For each last axis of __first array
                 for (size_t index = start * __first.shape[shp];
                      index < end * __first.shape[shp];
                      index += __first.shape[shp]) {
+                    // Iterate over the last axis of array __other
                     for (size_t row = 0; row < __other.shape[0]; ++row) {
                         result.__array[res_index] +=
                             (__first.__array[index + row] *

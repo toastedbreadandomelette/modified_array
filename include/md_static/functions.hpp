@@ -6,6 +6,7 @@
 #include "functions/cos.hpp"
 #include "functions/cosec.hpp"
 #include "functions/cot.hpp"
+#include "functions/cumulative_sum.hpp"
 #include "functions/dot.hpp"
 #include "functions/identity.hpp"
 #include "functions/log.hpp"

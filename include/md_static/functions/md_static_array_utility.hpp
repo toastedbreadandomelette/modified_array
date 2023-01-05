@@ -317,6 +317,16 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static bool is_identity(const MdStaticArray<_T> &__other);
+
+    /**
+     * @brief Cumulative sum of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T> &__array);
 };
 
 #endif

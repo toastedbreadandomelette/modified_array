@@ -49,9 +49,6 @@
         }                                                            \
     }
 
-// #define THROW_INDEX_ERR(index) throw std::runtime_error("Index out of bounds
-// while accessing index" index)
-
 static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 16;
 
@@ -95,6 +92,10 @@ class MdStaticArray {
         shp_size = 1;
     }
 
+    /**
+     * @brief create a temporary reference for MdStaticArray::reference.
+     * This will not accessible to user.
+     */
     MdStaticArray(const MdStaticArray<_T> &__other, const size_t offset,
                   const uint16_t shp_offset) {
         __array = &__other.__array[offset];
@@ -111,21 +112,15 @@ class MdStaticArray {
 
     class reference;
     bool dont_free = false;
-
- public:
     _T *__array;
     size_t *shape;
     size_t *skip_vec;
     size_t __size;
     uint16_t shp_size;
 
+ public:
     template <typename _T1>
     friend class MdStaticArray<_T1>::reference;
-
-    template <typename _T1>
-    friend class MdStaticArray;
-
-    friend struct MdUtility;
 
     friend struct MdArrayUtility;
 
