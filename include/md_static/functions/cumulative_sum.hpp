@@ -1,5 +1,5 @@
 #pragma once
-#include "md_static_array_utility.hpp"
+#include "./md_static_array_utility.hpp"
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::cumulative_sum(

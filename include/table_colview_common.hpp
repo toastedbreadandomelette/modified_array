@@ -2,8 +2,8 @@
 #ifndef _TABLE_COLVIEW_COMMON_HPP_
 #define _TABLE_COLVIEW_COMMON_HPP_
 
-#include "column_view.hpp"
-#include "tables.hpp"
+#include "./column_view.hpp"
+#include "./tables.hpp"
 
 ColView Table::operator[](const std::string &val) {
     uint16_t index =

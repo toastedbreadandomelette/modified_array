@@ -2,7 +2,7 @@
 #ifndef _MD_ST_REFERENCE_HPP_
 #define _MD_ST_REFERENCE_HPP_
 
-#include "md_static_array.hpp"
+#include "./md_static_array.hpp"
 
 template <typename _T>
 class MdStaticArray<_T>::reference {

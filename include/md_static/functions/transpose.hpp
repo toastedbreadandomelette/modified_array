@@ -1,5 +1,5 @@
 #pragma once
-#include "md_static_array_utility.hpp"
+#include "./md_static_array_utility.hpp"
 
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdArrayUtility::transpose(

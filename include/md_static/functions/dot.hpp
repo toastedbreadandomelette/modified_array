@@ -1,6 +1,6 @@
 #pragma once
-#include "mat_multiply.hpp"
-#include "md_static_array_utility.hpp"
+#include "./mat_multiply.hpp"
+#include "./md_static_array_utility.hpp"
 
 template <typename _T1, typename _T2, typename _T3>
 MdStaticArray<_T3> MdArrayUtility::dot(const MdStaticArray<_T1> &__first,

@@ -4,7 +4,7 @@
 #include <ostream>
 #include <vector>
 
-#include "cell.hpp"
+#include "./cell.hpp"
 
 // template <typename _T1, typename _T2>
 // struct SplitTwo {

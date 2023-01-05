@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 
-#include "md_static_array_utility.hpp"
+#include "./md_static_array_utility.hpp"
 
 template <typename _T>
 long double MdArrayUtility::std_dev(const MdStaticArray<_T> &__values) {

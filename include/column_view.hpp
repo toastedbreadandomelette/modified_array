@@ -4,9 +4,9 @@
 
 #include <string>
 
-#include "cell.hpp"
-#include "md_static/md_static_array.hpp"
-#include "tables.hpp"
+#include "./cell.hpp"
+#include "./md_static/md_static_array.hpp"
+#include "./tables.hpp"
 
 struct Table;
 

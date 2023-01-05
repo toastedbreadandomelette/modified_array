@@ -66,8 +66,8 @@ class MdStaticArray {
             skip_vec = nullptr;
         }
         shp_size = _shp_size;
-        shape = (size_t *)malloc(shp_size * sizeof(size_t));
-        skip_vec = (size_t *)malloc(shp_size * sizeof(size_t));
+        shape = static_cast<size_t *>(malloc(shp_size * sizeof(size_t)));
+        skip_vec = static_cast<size_t *>(malloc(shp_size * sizeof(size_t)));
         shape[shp_size - 1] = _shape[shp_size - 1];
         skip_vec[shp_size - 1] = 1;
         for (int16_t i = shp_size - 2; i >= 0; --i) {
@@ -85,8 +85,8 @@ class MdStaticArray {
             free(skip_vec);
             skip_vec = nullptr;
         }
-        shape = (size_t *)malloc(sizeof(size_t));
-        skip_vec = (size_t *)malloc(sizeof(size_t));
+        shape = static_cast<size_t *>(malloc(sizeof(size_t)));
+        skip_vec = static_cast<size_t *>(malloc(sizeof(size_t)));
         shape[0] = size;
         skip_vec[0] = 1;
         shp_size = 1;
@@ -131,16 +131,19 @@ class MdStaticArray {
     void init_array(const size_t size) {
         if constexpr (std::is_fundamental<_T>::value) {
 #ifdef _WIN32
-            __array = (_T *)_aligned_malloc(size * sizeof(_T), sizeof(_T));
+            __array = static_cast<_T *>(
+                _aligned_malloc(size * sizeof(_T), sizeof(_T)));
 #else
-            __array = (_T *)aligned_alloc(sizeof(_T), size * sizeof(_T));
+            __array =
+                static_cast<_T *>(aligned_alloc(sizeof(_T), size * sizeof(_T)));
 #endif
         } else {
             __array = new _T[size];
         }
     }
 
-    MdStaticArray(const size_t size) : shape(nullptr), skip_vec(nullptr) {
+    explicit MdStaticArray(const size_t size)
+        : shape(nullptr), skip_vec(nullptr) {
         __size = size;
         init_array(size);
         init_shape(size);
@@ -172,7 +175,7 @@ class MdStaticArray {
 
     MdStaticArray() : shape(nullptr), skip_vec(nullptr) { __array = nullptr; }
 
-    MdStaticArray(const std::vector<_T> &__other)
+    explicit MdStaticArray(const std::vector<_T> &__other)
         : shape(nullptr), skip_vec(nullptr) {
         __size = __other.size();
         init_array(__other.size());
@@ -997,7 +1000,7 @@ class MdStaticArray {
     inline size_t get_size() const { return __size; }
 };
 
-#include "md_static_array.tcc"
+#include "./md_static_array_op.hpp"
 
 #define OP_INTERNAL_MACRO_EXT(func)                                  \
     if constexpr (sizeof(_T1) > sizeof(_T2)) {                       \
@@ -1128,7 +1131,7 @@ inline auto operator>>(const _T1 &__other, const MdStaticArray<_T2> &first) {
     OP_INTERNAL_MACRO_EXT(__rshft_bit_iointernal)
 }
 
-#include "md_static_reference.hpp"
+#include "./md_static_reference.hpp"
 
 template <typename _T>
 MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {

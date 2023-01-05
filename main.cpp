@@ -3,10 +3,10 @@
 #include <iomanip>
 #include <iostream>
 
-#include "include/data_table.hpp"
-#include "include/md_static/functions.hpp"
-#include "include/md_static/functions/md_static_array_utility.hpp"
-#include "include/md_static/md_static_array.hpp"
+#include "./include/data_table.hpp"
+#include "./include/md_static/functions.hpp"
+#include "./include/md_static/functions/md_static_array_utility.hpp"
+#include "./include/md_static/md_static_array.hpp"
 
 int main(int argc, const char **argv) {
     // auto c = MdArrayUtility::f_arctan(f);

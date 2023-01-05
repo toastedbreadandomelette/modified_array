@@ -1,6 +1,6 @@
 #pragma once
-#include "md_static_array_utility.hpp"
-#include "reduce.hpp"
+#include "./md_static_array_utility.hpp"
+#include "./reduce.hpp"
 
 template <typename _T>
 long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,

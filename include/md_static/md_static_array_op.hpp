@@ -1,4 +1,9 @@
-#include "md_static_array.hpp"
+#pragma once
+#ifndef _MD_STATIC_ARRAY_OP_HPP_
+#define _MD_STATIC_ARRAY_OP_HPP_
+#include <vector>
+
+#include "./md_static_array.hpp"
 
 template <typename _T>
 template <typename _T1, typename _T2>
@@ -2114,3 +2119,5 @@ MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_iointernal(
     }
     return result;
 }
+
+#endif

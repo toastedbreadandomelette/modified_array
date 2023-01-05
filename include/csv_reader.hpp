@@ -9,9 +9,9 @@
 #include <utility>
 #include <vector>
 
-#include "cell.hpp"
-#include "file_reader.hpp"
-#include "tables.hpp"
+#include "./cell.hpp"
+#include "./file_reader.hpp"
+#include "./tables.hpp"
 
 // Attributes to classify type of a number
 enum NumberAttr { NEGATIVE = 0x01, REAL = 0x02 };

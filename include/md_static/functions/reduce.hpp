@@ -1,5 +1,5 @@
 #pragma once
-#include "md_static_array_utility.hpp"
+#include "./md_static_array_utility.hpp"
 
 template <typename _T, typename _func>
 _T MdArrayUtility::reduce(const MdStaticArray<_T> &__values,
