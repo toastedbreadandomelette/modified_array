@@ -4,10 +4,13 @@
 
 #include "./md_linear_algebra.hpp"
 
+/**
+ * @note this is not as fast as MKL libraries but still
+ */
 template <typename _T1, typename _T2, typename _T3>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-    const _T3 as, const size_t threads) {
+    const size_t threads) {
     if (__first.shp_size != 2 || __other.shp_size != 2) {
         throw std::runtime_error("Matrix dimension do not match.");
     }
@@ -20,8 +23,6 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     }
 
     MdStaticArray<_T3> result({__first.shape[0], __other.shape[1]}, 0);
-    // To do: reduce extra memory usage here.
-    size_t sz = result.get_size();
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks

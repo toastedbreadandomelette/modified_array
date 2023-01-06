@@ -16,7 +16,7 @@ int main(int argc, const char **argv) {
     MdStaticArray<double> c({sz, sz}, 1), d({sz, sz}, 1);
     auto start = std::chrono::system_clock::now();
     // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
-    auto sum = MdLinearAlgebra::mat_multiply(c, d, static_cast<double>(0));
+    auto sum = MdLinearAlgebra::mat_multiply<double, double, double>(c, d);
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
