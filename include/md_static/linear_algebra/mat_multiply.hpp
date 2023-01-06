@@ -1,8 +1,11 @@
 #pragma once
-#include "./md_static_array_utility.hpp"
+#ifndef _MAT_MULTIPLY_HPP_
+#define _MAT_MULTIPLY_HPP_
+
+#include "./md_linear_algebra.hpp"
 
 template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdArrayUtility::mat_multiply(
+MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
     const size_t threads) {
     if (__first.shp_size != 2 || __other.shp_size != 2) {
@@ -78,3 +81,5 @@ MdStaticArray<_T3> MdArrayUtility::mat_multiply(
 
     return result;
 }
+
+#endif

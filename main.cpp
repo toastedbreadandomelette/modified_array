@@ -1,5 +1,6 @@
 #include <chrono>
 #include <cmath>
+#include <complex>
 #include <iomanip>
 #include <iostream>
 
@@ -15,7 +16,6 @@ int main(int argc, const char **argv) {
     // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
     auto sum = MdArrayUtility::cumulative_sum<double>(c);
     // auto sum = MdArrayUtility::sum(c);
-
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
 

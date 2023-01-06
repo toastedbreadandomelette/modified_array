@@ -19,14 +19,14 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
     } else if (spacing == 1 && end > start) {
         const auto value = end - start;
         size = static_cast<size_t>(
-            ceil(std::max(value, static_cast<decltype(value)>(0))));
+            ::ceil(std::max(value, static_cast<decltype(value)>(0))));
         start_value = start;
         increment = 1;
     } else {
         const double value = ::abs((end - start) / (spacing * 1.0));
         start_value = start;
         size = static_cast<size_t>(
-            ceil(std::max(value, static_cast<decltype(value)>(0))));
+            ::ceil(std::max(value, static_cast<decltype(value)>(0))));
         increment = spacing;
     }
 

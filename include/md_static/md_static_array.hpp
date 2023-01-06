@@ -52,8 +52,6 @@
 static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 16;
 
-typedef struct MdUtility MdUtility;
-
 template <typename _T>
 class MdStaticArray {
     void init_shape(const size_t *_shape, const size_t _shp_size) {
@@ -123,6 +121,7 @@ class MdStaticArray {
     friend class MdStaticArray<_T1>::reference;
 
     friend struct MdArrayUtility;
+    friend struct MdLinearAlgebra;
 
     static void set_thread_count(const uint8_t value);
 
@@ -195,6 +194,26 @@ class MdStaticArray {
         for (size_t index = 0; index < __size; ++index) {
             __array[index] = __other.__array[index];
         }
+    }
+
+    MdStaticArray(const MdStaticArray<_T> &&__other) {
+        __array = std::move(__other.__array);
+        __size = __other.__size;
+        shp_size = __other.shp_size;
+        shape = std::move(__other.shape);
+        skip_vec = std::move(__other.skip_vec);
+        dont_free = __other.dont_free;
+    }
+
+    MdStaticArray &operator=(const MdStaticArray<_T> &&__other) {
+        __array = std::move(__other.__array);
+        __size = __other.__size;
+        shp_size = __other.shp_size;
+        shape = std::move(__other.shape);
+        skip_vec = std::move(__other.skip_vec);
+        dont_free = __other.dont_free;
+
+        return *this;
     }
 
     /**

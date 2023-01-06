@@ -1,18 +1,20 @@
 #pragma once
+#ifndef _DOT_HPP_
+#define _DOT_HPP_
 #include "./mat_multiply.hpp"
-#include "./md_static_array_utility.hpp"
+#include "./md_linear_algebra.hpp"
 
 template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdArrayUtility::dot(const MdStaticArray<_T1> &__first,
-                                       const MdStaticArray<_T2> &__other,
-                                       const size_t thread_count) {
+MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
+                                        const MdStaticArray<_T2> &__other,
+                                        const size_t thread_count) {
     // Basically, compute dot product of vector:::
     // Last axis of vector __first should be multiplied with second last
     // axis of __other
     if (__other.get_shape_size() >= 2 && __first.get_shape_size() >= 2) {
         if (__other.get_shape_size() == 2 && __first.get_shape_size() == 2) {
-            return MdArrayUtility::mat_multiply<_T1, _T2, _T3>(__first, __other,
-                                                               thread_count);
+            return MdLinearAlgebra::mat_multiply<_T1, _T2, _T3>(
+                __first, __other, thread_count);
         }
         if (__first.shape[__first.shp_size - 1] !=
             __other.shape[__other.shp_size - 2]) {
@@ -210,3 +212,5 @@ MdStaticArray<_T3> MdArrayUtility::dot(const MdStaticArray<_T1> &__first,
         }
     }
 }
+
+#endif

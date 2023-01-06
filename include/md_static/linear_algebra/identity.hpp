@@ -1,8 +1,10 @@
 #pragma once
-#include "./md_static_array_utility.hpp"
+#ifndef _IDENTITY_HPP_
+#define _IDENTITY_HPP_
+#include "./md_linear_algebra.hpp"
 
 template <typename _T>
-MdStaticArray<_T> MdArrayUtility::identity(const size_t n) {
+MdStaticArray<_T> MdLinearAlgebra::identity(const size_t n) {
     MdStaticArray<_T> result({n, n}, 0);
     for (size_t index = 0; index < result.get_size(); index += (n + 1)) {
         result.__array[index] = 1;
@@ -12,7 +14,7 @@ MdStaticArray<_T> MdArrayUtility::identity(const size_t n) {
 }
 
 template <typename _T>
-bool MdArrayUtility::is_identity(const MdStaticArray<_T> &__other) {
+bool MdLinearAlgebra::is_identity(const MdStaticArray<_T> &__other) {
     if (__other.shp_size != 2 || __other.shape[0] != __other.shape[1]) {
         return false;
     }
@@ -32,3 +34,5 @@ bool MdArrayUtility::is_identity(const MdStaticArray<_T> &__other) {
 
     return true;
 }
+
+#endif
