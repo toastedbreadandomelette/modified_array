@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _CUMULATIVE_SUM_HPP_
+#define _CUMULATIVE_SUM_HPP_
 #include "./md_static_array_utility.hpp"
 
 template <typename _T>
@@ -47,3 +49,5 @@ MdStaticArray<_T> MdArrayUtility::cumulative_sum(
 //     }
 //     return result;
 // }
+
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _TRANSPOSE_HPP_
+#define _TRANSPOSE_HPP_
 #include "./md_static_array_utility.hpp"
 
 template <typename _T1, typename _T2>
@@ -19,3 +21,5 @@ MdStaticArray<_T2> MdArrayUtility::transpose(
 
     return result;
 }
+
+#endif

@@ -7,7 +7,7 @@
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::ceil(const MdStaticArray<_T> &__ndarray) {
-    return map<_T>(__ndarray,
+    return MdArrayUtility::map<_T>(__ndarray,
                    [](const _T value) -> _T { return ::ceil(value); });
 }
 

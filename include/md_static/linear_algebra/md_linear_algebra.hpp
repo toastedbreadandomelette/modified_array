@@ -43,6 +43,7 @@ struct MdLinearAlgebra {
     template <typename _T1, typename _T2, typename _T3>
     static MdStaticArray<_T3> mat_multiply(const MdStaticArray<_T1> &__first,
                                            const MdStaticArray<_T2> &__other,
+                                           const _T3 as = 0,
                                            const size_t threads = 16);
 
     /**

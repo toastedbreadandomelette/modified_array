@@ -8,7 +8,7 @@
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::rad_2_deg(
     const MdStaticArray<_T> &__ndarray) {
-    return map<_T>(__ndarray,
+    return MdArrayUtility::map<_T>(__ndarray,
                    [](const _T value) -> _T { return value * 180.0 / M_PI; });
 }
 

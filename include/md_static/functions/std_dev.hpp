@@ -1,6 +1,9 @@
 #pragma once
+#ifndef _STD_DEV_HPP_
+#define _STD_DEV_HPP_
 #include <cmath>
 
+#include "./accumulate_and_merge.hpp"
 #include "./md_static_array_utility.hpp"
 
 template <typename _T>
@@ -20,3 +23,5 @@ long double MdArrayUtility::std_dev(const MdStaticArray<_T> &__values) {
         (__values.get_size() * 1.0);
     return ::sqrt(mean_sq_err);
 }
+
+#endif

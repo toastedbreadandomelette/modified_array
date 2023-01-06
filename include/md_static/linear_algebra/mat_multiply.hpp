@@ -7,7 +7,7 @@
 template <typename _T1, typename _T2, typename _T3>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-    const size_t threads) {
+    const _T3 as, const size_t threads) {
     if (__first.shp_size != 2 || __other.shp_size != 2) {
         throw std::runtime_error("Matrix dimension do not match.");
     }
@@ -22,42 +22,29 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     MdStaticArray<_T3> result({__first.shape[0], __other.shape[1]}, 0);
     // To do: reduce extra memory usage here.
     size_t sz = result.get_size();
-    _T3 **res_ptr = new _T3 *[__first.shape[0]];
-    _T1 **first_ptr = new _T1 *[__first.shape[0]];
-    _T2 **other_ptr = new _T2 *[__other.shape[0]];
-    for (size_t index = 0, rindex = 0; index < result.get_size();
-         index += __other.shape[1], ++rindex) {
-        res_ptr[rindex] = &result.__array[index];
-    }
-
-    for (size_t index = 0, rindex = 0; index < __first.get_size();
-         index += __first.shape[1], ++rindex) {
-        first_ptr[rindex] = &__first.__array[index];
-    }
-
-    for (size_t index = 0, rindex = 0; index < __other.get_size();
-         index += __other.shape[1], ++rindex) {
-        other_ptr[rindex] = &__other.__array[index];
-    }
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks
-    size_t block_size = 64;
+    const size_t block_size = 32;
 
-    auto __multiply_internal = [&res_ptr, &first_ptr, &other_ptr, &__first,
-                                &__other, block_size](const size_t start,
-                                                      const size_t end) {
-        for (size_t k_block = start; k_block < __first.shape[1];
-             k_block += block_size) {
-            const size_t k_bound =
-                std::min(k_block + block_size, __first.shape[1]);
+    auto __multiply_internal = [&__first, &__other, block_size, &result](
+                                   const size_t start, const size_t end) {
+        size_t k_bound = 0, i_bound = 0, j_bound = 0;
+        const size_t fshape1 = __first.get_shape()[1],
+                     oshape1 = __other.get_shape()[1];
+
+        for (size_t k_block = 0; k_block < fshape1; k_block += block_size) {
+            k_bound = std::min(k_block + block_size, fshape1);
+
             for (size_t i_block = start; i_block < end; i_block += block_size) {
-                const size_t i_bound = std::min(i_block + block_size, end);
+                i_bound = std::min(i_block + block_size, end);
+
                 for (size_t i = i_block; i < i_bound; ++i) {
                     for (size_t k = k_block; k < k_bound; ++k) {
-                        const auto c = first_ptr[i][k];
-                        for (size_t j = 0; j < __other.shape[1]; ++j) {
-                            res_ptr[i][j] += c * other_ptr[k][j];
+                        const auto c = __first.__array[i * fshape1 + k];
+                        for (size_t j = 0; j < oshape1; ++j) {
+                            result.__array[i * fshape1 + j] +=
+                                c * __other.__array[k * oshape1 + j];
                         }
                     }
                 }

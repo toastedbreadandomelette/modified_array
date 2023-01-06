@@ -7,7 +7,7 @@
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::floor(const MdStaticArray<_T> &__array) {
-    return map<_T>(__array,
+    return MdArrayUtility::map<_T>(__array,
                    [](const _T value) -> _T { return ::floor(value); });
 }
 

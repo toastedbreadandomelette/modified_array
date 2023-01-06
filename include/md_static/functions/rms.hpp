@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _RMS_HPP_
+#define _RMS_HPP_
 #include "./md_static_array_utility.hpp"
 #include "./reduce.hpp"
 
@@ -18,3 +20,5 @@ long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,
         (__values.get_size() * 1.0);
     return ::sqrt(mean_sq);
 }
+
+#endif

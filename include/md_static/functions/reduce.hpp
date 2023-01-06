@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _REDUCE_HPP_
+#define _REDUCE_HPP_
 #include "./md_static_array_utility.hpp"
 
 template <typename _T, typename _func>
@@ -44,3 +46,5 @@ _T MdArrayUtility::reduce(const MdStaticArray<_T> &__values,
     }
     return result;
 }
+
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _ACCUMULATE_AND_MERGE_HPP_
+#define _ACCUMULATE_AND_MERGE_HPP_
 #include "./md_static_array_utility.hpp"
 
 template <typename _T, typename _func, typename _merge_func>
@@ -46,3 +48,5 @@ _T MdArrayUtility::accumulate_and_merge_fn(const MdStaticArray<_T> &__values,
     }
     return result;
 }
+
+#endif

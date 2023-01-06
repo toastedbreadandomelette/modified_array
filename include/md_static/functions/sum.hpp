@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _SUM_HPP_
+#define _SUM_HPP_
 #include "./md_static_array_utility.hpp"
 #include "./reduce.hpp"
 
@@ -11,3 +13,5 @@ _T MdArrayUtility::sum(const MdStaticArray<_T> &__values, const _T init) {
         },
         init);
 }
+
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _MAP_HPP_
+#define _MAP_HPP_
 #include "./md_static_array_utility.hpp"
 
 template <typename _T>
@@ -40,3 +42,5 @@ MdStaticArray<_T> MdArrayUtility::map(
     }
     return result;
 }
+
+#endif

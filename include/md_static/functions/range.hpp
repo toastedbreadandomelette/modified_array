@@ -1,3 +1,7 @@
+#pragma once
+#ifndef _RANGE_HPP_
+#define _RANGE_HPP_
+
 #include "./md_static_array_utility.hpp"
 
 // To do: improve and update since it does not work for all cases
@@ -61,3 +65,5 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
 
     return result;
 }
+
+#endif

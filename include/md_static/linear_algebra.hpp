@@ -5,5 +5,6 @@
 #include "./linear_algebra/dot.hpp"
 #include "./linear_algebra/identity.hpp"
 #include "./linear_algebra/mat_multiply.hpp"
+#include "./linear_algebra/md_linear_algebra.hpp"
 
 #endif
