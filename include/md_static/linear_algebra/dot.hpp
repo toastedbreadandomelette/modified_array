@@ -26,11 +26,11 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
 
         std::vector<size_t> overall_shape(overall_size);
         size_t index = 0;
-        for (int i = 0; i < __first.get_shape_size() - 1; ++i) {
+        for (size_t i = 0; i < __first.get_shape_size() - 1; ++i) {
             overall_shape[index++] = __first.shape[i];
         }
 
-        for (int i = 0; i < __other.get_shape_size(); ++i) {
+        for (size_t i = 0; i < __other.get_shape_size(); ++i) {
             if (i != __other.get_shape_size() - 2) {
                 overall_shape[index++] = __other.shape[i];
             }
@@ -39,8 +39,6 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
         MdStaticArray<_T3> result(overall_shape, 0);
         const size_t res_base_matrix_size = (result.shape[result.shp_size - 1] *
                                              result.shape[result.shp_size - 2]);
-
-        const size_t res_loop_times = result.get_size() / res_base_matrix_size;
 
         const size_t m = __first.shape[__first.shp_size - 2];
         const size_t n = __first.shape[__first.shp_size - 1];

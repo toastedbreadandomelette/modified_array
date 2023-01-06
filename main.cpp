@@ -16,7 +16,7 @@ int main(int argc, const char **argv) {
     MdStaticArray<double> c({sz, sz}, 1), d({sz, sz}, 1);
     auto start = std::chrono::system_clock::now();
     // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
-    auto sum = MdLinearAlgebra::mat_multiply<double, double, double>(c, d);
+    auto dd = MdLinearAlgebra::mat_multiply<double, double, double>(c, d);
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
@@ -24,8 +24,13 @@ int main(int argc, const char **argv) {
     std::cout << '\n';
     std::chrono::duration<double> time = end - start;
 
-    std::cout << sum.get_size() << " time: " << sum[2047] << " " << time.count()
-              << "s" << std::endl;
+    for (int i = 0; i < dd.get_shape_size(); ++i) {
+        std::cout << dd.get_shape()[i] << ' ';
+    }
+    std::cout << '\n';
+
+    std::cout << dd.get_size() << " time: "
+              << " " << time.count() << "s" << std::endl;
 
     return 0;
 }

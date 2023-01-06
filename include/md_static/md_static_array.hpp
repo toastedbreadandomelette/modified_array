@@ -199,21 +199,34 @@ class MdStaticArray {
         }
     }
 
-    MdStaticArray(const MdStaticArray<_T> &&__other) {
-        __array = std::move(__other.__array);
+    MdStaticArray(MdStaticArray<_T> &&__other) {
+        __array = __other.__array;
+        __other.__array = nullptr;
+
         __size = __other.__size;
         shp_size = __other.shp_size;
-        shape = std::move(__other.shape);
-        skip_vec = std::move(__other.skip_vec);
+        shape = __other.shape;
+        __other.shape = nullptr;
+
+        skip_vec = __other.skip_vec;
+        __other.skip_vec = nullptr;
+
         dont_free = __other.dont_free;
     }
 
-    MdStaticArray &operator=(const MdStaticArray<_T> &&__other) {
-        __array = std::move(__other.__array);
+    MdStaticArray &operator=(MdStaticArray<_T> &&__other) {
+        ~MdStaticArray();
+        __array = __other.__array;
+        __other.__array = nullptr;
+
         __size = __other.__size;
         shp_size = __other.shp_size;
-        shape = std::move(__other.shape);
-        skip_vec = std::move(__other.skip_vec);
+        shape = __other.shape;
+        __other.shape = nullptr;
+
+        skip_vec = __other.skip_vec;
+        __other.skip_vec = nullptr;
+
         dont_free = __other.dont_free;
 
         return *this;
@@ -294,18 +307,24 @@ class MdStaticArray {
      */
     ~MdStaticArray() {
         if (!dont_free) {
-            if constexpr (std::is_fundamental<_T>::value) {
+            if (__array != nullptr) {
+                if constexpr (std::is_fundamental<_T>::value) {
 #ifdef _WIN32
-                _aligned_free(__array);
+                    _aligned_free(__array);
 #else
-                free(__array);
+                    free(__array);
 #endif
-            } else {
-                delete[] __array;
+                } else {
+                    delete[] __array;
+                }
             }
 
-            free(shape);
-            free(skip_vec);
+            if (shape != nullptr) {
+                free(shape);
+            }
+            if (skip_vec != nullptr) {
+                free(skip_vec);
+            }
         }
     }
 
