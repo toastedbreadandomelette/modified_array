@@ -4,8 +4,7 @@
 #include "./map.hpp"
 #include "./md_static_array_utility.hpp"
 
-template <typename _T,
-          class = typename std::enable_if<std::is_integral<_T>::value>::type>
+template <typename _T, class _T1>
 MdStaticArray<_T> MdArrayUtility::mod_pow(const MdStaticArray<_T> &__values,
                                           const size_t power,
                                           const size_t _mod) {
@@ -31,8 +30,7 @@ MdStaticArray<_T> MdArrayUtility::mod_pow(const MdStaticArray<_T> &__values,
         });
 }
 
-template <typename _T,
-          class = typename std::enable_if<std::is_integral<_T>::value>::type>
+template <typename _T, typename _T1>
 MdStaticArray<_T> MdArrayUtility::mod_pow(const uint64_t n,
                                           const MdStaticArray<_T> &__values,
                                           const size_t _mod) {

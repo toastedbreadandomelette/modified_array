@@ -3,13 +3,14 @@
 #define _RAD_2_DEG_HPP_
 #include <cmath>
 
+#define M_PI 3.14159265358979323846
 #include "./md_static_array_utility.hpp"
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::rad_2_deg(
     const MdStaticArray<_T> &__ndarray) {
-    return MdArrayUtility::map<_T>(__ndarray,
-                   [](const _T value) -> _T { return value * 180.0 / M_PI; });
+    return MdArrayUtility::map<_T>(
+        __ndarray, [](const _T value) -> _T { return value * 180.0 / M_PI; });
 }
 
 #endif

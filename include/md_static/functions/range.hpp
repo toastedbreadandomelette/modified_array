@@ -5,8 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 // To do: improve and update since it does not work for all cases
-template <typename _T,
-          class = typename std::enable_if<std::is_arithmetic<_T>::value>::type>
+template <typename _T, class _T1>
 MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
                                         const _T spacing) {
     size_t size = 0;

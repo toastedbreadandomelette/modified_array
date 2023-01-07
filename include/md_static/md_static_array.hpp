@@ -134,10 +134,10 @@ class MdStaticArray {
         if constexpr (std::is_fundamental<_T>::value) {
 #ifdef _WIN32
             __array = static_cast<_T *>(
-                _aligned_malloc(size * sizeof(_T), sizeof(_T)));
+                _aligned_malloc(size * sizeof(_T), 64 * sizeof(_T)));
 #else
-            __array =
-                static_cast<_T *>(aligned_alloc(sizeof(_T), size * sizeof(_T)));
+            __array = static_cast<_T *>(
+                aligned_alloc(64 * sizeof(_T), size * sizeof(_T)));
 #endif
         } else {
             __array = new _T[size];

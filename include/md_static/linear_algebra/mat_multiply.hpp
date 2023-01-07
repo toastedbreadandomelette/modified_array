@@ -31,7 +31,8 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     auto __multiply_internal = [&__first, &__other, block_size, &result](
                                    const size_t start, const size_t end) {
         size_t k_bound = 0, i_bound = 0, j_bound = 0;
-        const size_t fshape1 = __first.get_shape()[1],
+        const size_t fshape0 = __first.get_shape()[0],
+                     fshape1 = __first.get_shape()[1],
                      oshape1 = __other.get_shape()[1];
 
         for (size_t k_block = 0; k_block < fshape1; k_block += block_size) {
@@ -43,8 +44,9 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
                 for (size_t i = i_block; i < i_bound; ++i) {
                     for (size_t k = k_block; k < k_bound; ++k) {
                         const auto c = __first.__array[i * fshape1 + k];
-                        for (size_t j = 0; j < oshape1; ++j) {
-                            result.__array[i * fshape1 + j] +=
+
+                        for (size_t j = 0; j < fshape1; ++j) {
+                            result.__array[i * oshape1 + j] +=
                                 c * __other.__array[k * oshape1 + j];
                         }
                     }
@@ -61,7 +63,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     }
 
     thread_pool.emplace_back(std::thread(
-        __multiply_internal, blocks * (threads - 1), __first.shape[0]));
+        __multiply_internal, blocks * (threads - 1), __other.shape[1]));
 
     for (auto &thread : thread_pool) {
         thread.join();
