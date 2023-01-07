@@ -12,4 +12,11 @@ MdStaticArray<_T> MdArrayUtility::cos(const MdStaticArray<_T> &__values) {
         __values, [](const _T &__value) { return ::cos(__value); });
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::cos(
+    const typename MdStaticArray<_T>::reference &__values) {
+    return MdArrayUtility::cos<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 #endif

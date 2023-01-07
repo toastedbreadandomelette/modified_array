@@ -19,6 +19,13 @@ MdStaticArray<_T> MdArrayUtility::cumulative_sum(
     return result;
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::cumulative_sum(
+    const typename MdStaticArray<_T>::reference& __values) {
+    return MdArrayUtility::cumulative_sum<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 // template <typename _T>
 // MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T>& __ndarray,
 //                                  const size_t axis = -1) {

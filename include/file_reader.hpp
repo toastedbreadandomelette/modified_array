@@ -51,7 +51,7 @@ struct FileReader {
      * @param __offset current offset
      * @returns the character at offset `__offset`
      */
-    char read_char_offset(size_t &__offset) {
+    inline char read_char_offset(size_t &__offset) const {
         return (__offset >= size ? EOF : buffer[__offset++]);
     }
 

@@ -43,4 +43,13 @@ MdStaticArray<_T> MdArrayUtility::map(
     return result;
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::map(
+    const typename MdStaticArray<_T>::reference &__values,
+    const std::function<_T(const _T &)> &function_exec) {
+    return map<_T>(MdStaticArray(*__values.__array_reference, __values.offset,
+                                 __values.shp_offset),
+                   function_exec);
+}
+
 #endif

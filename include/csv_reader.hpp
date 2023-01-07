@@ -412,6 +412,12 @@ void read_csv_multi_thread(FileReader &fr, const size_t start,
     Cell *row = new Cell[col_size], cell;
 
     while (!eof) {
+        // Read alternate n lines when n threads are present.
+        // For e.g., 1st thread will read 1st line,
+        // 2nd thread will read 2nd line, and so on.
+        // ...
+        // nth thread will read nth line.
+        // 1st thread will read (n+1)th line
         if (rot > 0) {
             c = fr.read_char_offset(st);
             while (c != '\n' && c != EOF) {
@@ -498,11 +504,10 @@ void read_csv_multi_thread(FileReader &fr, const size_t start,
  * Note: This function is tailored for Windows systems, so the functions differs
  * for linux/macOS systems
  * @param filepath file to read
- * @param thrd_count thread initialized for reading a file (currently this is
- * performing better with 2 threads)
+ * @param thrd_count thread initialized for reading a file
  * @returns Table
  */
-Table read_csv(const char *filepath, const uint8_t thrd_count = 8) {
+Table read_csv(const char *filepath, const uint8_t thrd_count = 16) {
     FileReader fr;
     // Loads Memory mapped file
     fr.load_file(filepath);

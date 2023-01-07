@@ -35,4 +35,11 @@ bool MdLinearAlgebra::is_identity(const MdStaticArray<_T> &__other) {
     return true;
 }
 
+template <typename _T>
+bool MdLinearAlgebra::is_identity(
+    const typename MdStaticArray<_T>::reference &__other) {
+    return MdLinearAlgebra::is_identity(MdStaticArray<_T>(
+        *__other.array_reference, __other.offset, __other.shp_offset));
+}
+
 #endif

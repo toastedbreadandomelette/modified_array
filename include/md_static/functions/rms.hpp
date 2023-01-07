@@ -21,4 +21,12 @@ long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,
     return ::sqrt(mean_sq);
 }
 
+template <typename _T>
+long double MdArrayUtility::rms(
+    const typename MdStaticArray<_T>::reference &__values, const _T init) {
+    return rms(MdStaticArray<_T>(*__values.__array_reference, __values.offset,
+                                 __values.shp_offset),
+               init);
+}
+
 #endif

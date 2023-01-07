@@ -12,4 +12,11 @@ MdStaticArray<_T> MdArrayUtility::log2(const MdStaticArray<_T> &__values) {
         __values, [](const _T &__value) { return ::log2(__value); });
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::log2(
+    const typename MdStaticArray<_T>::reference &__values) {
+    return MdArrayUtility::log2<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 #endif

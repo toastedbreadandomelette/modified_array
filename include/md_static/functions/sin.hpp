@@ -12,4 +12,11 @@ MdStaticArray<_T> MdArrayUtility::sin(const MdStaticArray<_T> &__values) {
         __values, [](const _T &__value) { return ::sin(__value); });
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::sin(
+    const typename MdStaticArray<_T>::reference &__values) {
+    return MdArrayUtility::sin<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 #endif

@@ -13,4 +13,11 @@ MdStaticArray<_T> MdArrayUtility::rad_2_deg(
         __ndarray, [](const _T value) -> _T { return value * 180.0 / M_PI; });
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::rad_2_deg(
+    const typename MdStaticArray<_T>::reference &__values) {
+    return MdArrayUtility::rad_2_deg<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 #endif

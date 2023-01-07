@@ -11,4 +11,11 @@ MdStaticArray<_T> MdArrayUtility::arccos(const MdStaticArray<_T> &__values) {
         __values, [](const _T &__value) { return acos(__value); });
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::arccos(
+    const typename MdStaticArray<_T>::reference &__values) {
+    return MdArrayUtility::arccos<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 #endif

@@ -14,4 +14,12 @@ _T MdArrayUtility::sum(const MdStaticArray<_T> &__values, const _T init) {
         init);
 }
 
+template <typename _T>
+_T MdArrayUtility::sum(const typename MdStaticArray<_T>::reference &__values,
+                       const _T init) {
+    return sum<_T>(MdStaticArray<_T>(*__values.__array_reference,
+                                     __values.offset, __values.shp_offset),
+                   init);
+}
+
 #endif

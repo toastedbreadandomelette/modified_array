@@ -12,4 +12,11 @@ MdStaticArray<_T> MdArrayUtility::sqrt(const MdStaticArray<_T> &__values) {
         __values, [](const _T &value) { return ::sqrt(value); });
 }
 
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::sqrt(
+    const typename MdStaticArray<_T>::reference &__values) {
+    return MdArrayUtility::sqrt<_T>(MdStaticArray<_T>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
 #endif
