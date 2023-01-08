@@ -167,6 +167,170 @@ struct MdLinearAlgebra {
         const size_t threads = 16);
 
     /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> inner(const MdStaticArray<_T1> &__first,
+                                    const MdStaticArray<_T2> &__other,
+                                    const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> inner(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> inner(
+        const MdStaticArray<_T1> &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> inner(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> outer(const MdStaticArray<_T1> &__first,
+                                    const MdStaticArray<_T2> &__other,
+                                    const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> outer(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> outer(
+        const MdStaticArray<_T1> &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> outer(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t threads = 16);
+
+    /**
      * @brief Create a identity matrix
      * @param _T type for matrix
      * @param n size of matrix

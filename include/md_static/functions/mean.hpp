@@ -13,7 +13,7 @@ template <typename _T>
 long double MdArrayUtility::mean(
     const typename MdStaticArray<_T>::reference &__values, const _T init) {
     return mean<_T>(MdStaticArray<_T>(*__values.__array_reference,
-                                      __values.offset, __value.shp_offset),
+                                      __values.offset, __values.shp_offset),
                     init);
 }
 

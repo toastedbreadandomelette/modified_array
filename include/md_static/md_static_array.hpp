@@ -140,18 +140,17 @@ class MdStaticArray {
         } else {
             __array = new _T[size];
         }
+        __size = size;
     }
 
     explicit MdStaticArray(const size_t size)
         : shape(nullptr), skip_vec(nullptr) {
-        __size = size;
         init_array(size);
         init_shape(size);
     }
 
     MdStaticArray(const size_t size, const _T &value)
         : shape(nullptr), skip_vec(nullptr) {
-        __size = size;
         init_array(size);
         init_shape(size);
         for (size_t index = 0; index < size; ++index) {
@@ -165,7 +164,6 @@ class MdStaticArray {
         for (auto &dim : _shape) {
             overall_size *= dim;
         }
-        __size = overall_size;
         init_array(overall_size);
         init_shape(_shape.data(), _shape.size());
         for (size_t index = 0; index < __size; ++index) {
@@ -177,7 +175,6 @@ class MdStaticArray {
 
     explicit MdStaticArray(const std::vector<_T> &__other)
         : shape(nullptr), skip_vec(nullptr) {
-        __size = __other.size();
         init_array(__other.size());
         init_shape(__size);
         size_t index = 0;
@@ -188,8 +185,7 @@ class MdStaticArray {
 
     MdStaticArray(const MdStaticArray &__other)
         : shape(nullptr), skip_vec(nullptr) {
-        __size = __other.get_size();
-        init_array(__size);
+        init_array(__other.get_size());
         const auto shp = __other.get_shape();
         init_shape(shp, __other.shp_size);
         for (size_t index = 0; index < __size; ++index) {

@@ -64,7 +64,7 @@ MdStaticArray<_T> MdArrayUtility::mod_pow(
         n,
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,
                           __values.shp_offset),
-        mod);
+        _mod);
 }
 
 template <typename _T, typename _T1>
@@ -74,7 +74,7 @@ MdStaticArray<_T> MdArrayUtility::mod_pow(
     return mod_pow<_T, _T1>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,
                           __values.shp_offset),
-        power, mod);
+        power, _mod);
 }
 
 #endif

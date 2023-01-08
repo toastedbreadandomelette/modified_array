@@ -56,7 +56,7 @@ _T MdArrayUtility::accumulate_and_merge_fn(
     return MdArrayUtility::accumulate_and_merge_fn<_T, _func, _merge_func>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,
                           __values.shp_offset),
-        _func, _merge_func, init);
+        function_exec, merge_func, init);
 }
 
 #endif
