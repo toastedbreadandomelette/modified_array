@@ -167,6 +167,106 @@ struct MdLinearAlgebra {
         const size_t threads = 16);
 
     /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param __mod modulo to operate
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <
+        typename _T1, typename _T2, typename _T3,
+        class = typename std::enable_if<std::is_integral<_T1>::value &&
+                                        std::is_integral<_T2>::value &&
+                                        std::is_integral<_T3>::value>::type>
+    static MdStaticArray<_T3> mat_mod_multiply(
+        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const size_t __mod, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <
+        typename _T1, typename _T2, typename _T3,
+        class = typename std::enable_if<std::is_integral<_T1>::value &&
+                                        std::is_integral<_T2>::value &&
+                                        std::is_integral<_T3>::value>::type>
+    static MdStaticArray<_T3> mat_mod_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other, const size_t __mod,
+        const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <
+        typename _T1, typename _T2, typename _T3,
+        class = typename std::enable_if<std::is_integral<_T1>::value &&
+                                        std::is_integral<_T2>::value &&
+                                        std::is_integral<_T3>::value>::type>
+    static MdStaticArray<_T3> mat_mod_multiply(
+        const MdStaticArray<_T1> &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t __mod, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam _T1 type of first matrix
+     * @tparam _T2 type of second matrix
+     * @tparam _T3 type of third matrix (upto user)
+     * @param __first first matrix
+     * @param __other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type _T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <
+        typename _T1, typename _T2, typename _T3,
+        class = typename std::enable_if<std::is_integral<_T1>::value &&
+                                        std::is_integral<_T2>::value &&
+                                        std::is_integral<_T3>::value>::type>
+    static MdStaticArray<_T3> mat_mod_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t __mod, const size_t threads = 16);
+
+    /**
      * @brief inner product of two nd arrays
      * @tparam _T1 type of first ndarray
      * @tparam _T2 type of second ndarray
@@ -341,7 +441,7 @@ struct MdLinearAlgebra {
 
     /**
      * @brief Verify if matrix is boolean
-     * @param _T matrix type
+     * @tparam _T matrix type
      * @param __other test matrix
      * @return true if matrix is identity, else false
      */
@@ -350,13 +450,125 @@ struct MdLinearAlgebra {
 
     /**
      * @brief Verify if matrix is boolean
-     * @param _T matrix type
+     * @tparam _T matrix type
      * @param __other test matrix reference
      * @return true if matrix is identity, else false
      */
     template <typename _T>
     static bool is_identity(
         const typename MdStaticArray<_T>::reference &__other);
+
+    /**
+     * @brief Perform kron operations between 2 n-d array
+     * @tparam _T1 nd array of type _T1
+     * @tparam _T2 nd array of type _T2
+     * @tparam _T3 nd array output of type _T3
+     * @param __first first nd array
+     * @param __other other md array
+     * @param total_threads total threads to perform the operation.
+     * @returns resultant array of size max(n,m) dimension
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> kron(const MdStaticArray<_T1> &__first,
+                                   const MdStaticArray<_T2> &__other,
+                                   const size_t total_threads = 16);
+
+    /**
+     * @brief Perform kron operations between 2 n-d array
+     * @tparam _T1 nd array of type _T1
+     * @tparam _T2 nd array of type _T2
+     * @tparam _T3 nd array output of type _T3
+     * @param __first first nd array
+     * @param __other other md array
+     * @param total_threads total threads to perform the operation.
+     * @returns resultant array of size max(n,m) dimension
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> kron(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t total_threads = 16);
+
+    /**
+     * @brief Perform kron operations between 2 n-d array
+     * @tparam _T1 nd array of type _T1
+     * @tparam _T2 nd array of type _T2
+     * @tparam _T3 nd array output of type _T3
+     * @param __first first nd array
+     * @param __other other md array
+     * @param total_threads total threads to perform the operation.
+     * @returns resultant array of size max(n,m) dimension
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> kron(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other, const size_t total_threads = 16);
+
+    /**
+     * @brief Perform kron operations between 2 n-d array
+     * @tparam _T1 nd array of type _T1
+     * @tparam _T2 nd array of type _T2
+     * @tparam _T3 nd array output of type _T3
+     * @param __first first nd array
+     * @param __other other md array
+     * @param total_threads total threads to perform the operation.
+     * @returns resultant array of size max(n,m) dimension
+     */
+    template <typename _T1, typename _T2, typename _T3>
+    static MdStaticArray<_T3> kron(
+        const MdStaticArray<_T1> &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const size_t total_threads = 16);
+
+    /**
+     * @brief Multiply matrix to the power a positive integer.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @param power the power
+     * @returns new matrix
+     */
+    template <typename _T, class = typename std::enable_if<
+                               std::is_floating_point<_T>::value>::type>
+    static MdStaticArray<_T> matrix_power(const MdStaticArray<_T> &,
+                                          const size_t power);
+
+    /**
+     * @brief Multiply matrix to the power a positive integer.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @param power the power
+     * @returns new matrix
+     */
+    template <typename _T, class = typename std::enable_if<
+                               std::is_floating_point<_T>::value>::type>
+    static MdStaticArray<_T> matrix_power(
+        const typename MdStaticArray<_T>::reference &, const size_t power);
+
+    /**
+     * @brief Multiply matrix to the power a positive integer.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @param power the power
+     * @returns new matrix
+     */
+    template <typename _T, class = typename std::enable_if<
+                               std::is_integral<_T>::value>::type>
+    static MdStaticArray<_T> matrix_mod_power(const MdStaticArray<_T> &,
+                                              const size_t power,
+                                              const size_t __mod);
+
+    /**
+     * @brief Multiply matrix to the power a positive integer.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @param power the power
+     * @returns new matrix
+     */
+    template <typename _T, class = typename std::enable_if<
+                               std::is_integral<_T>::value>::type>
+    static MdStaticArray<_T> matrix_mod_power(
+        const typename MdStaticArray<_T>::reference &, const size_t power,
+        const size_t __mod);
 };
 
 #endif

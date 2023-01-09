@@ -1,16 +1,13 @@
 #pragma once
-#ifndef _MAT_MULTIPLY_HPP_
-#define _MAT_MULTIPLY_HPP_
+#ifndef _MAT_MOD_MULTIPLY_HPP_
+#define _MAT_MOD_MULTIPLY_HPP_
 
 #include "./md_linear_algebra.hpp"
 
-/**
- * @note this is not as fast as MKL libraries but still
- */
-template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
+template <typename _T1, typename _T2, typename _T3, class _T>
+MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-    const size_t threads) {
+    const size_t __mod, const size_t threads) {
     if (__first.shp_size != 2 || __other.shp_size != 2) {
         throw std::runtime_error("Matrix dimension do not match.");
     }
@@ -29,8 +26,9 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const size_t block_size = 32;
 
     if (__first.get_size() > s_threshold_size) {
-        auto __multiply_internal = [&__first, &__other, block_size, &result](
-                                       const size_t start, const size_t end) {
+        auto __multiply_internal = [&__first, &__other, block_size, &result,
+                                    __mod](const size_t start,
+                                           const size_t end) {
             size_t k_bound = 0, i_bound = 0, j_bound = 0;
             const size_t fshape0 = __first.get_shape()[0],
                          fshape1 = __first.get_shape()[1],
@@ -45,11 +43,15 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
 
                     for (size_t i = i_block; i < i_bound; ++i) {
                         for (size_t k = k_block; k < k_bound; ++k) {
-                            const auto c = __first.__array[i * fshape1 + k];
+                            const auto c =
+                                __first.__array[i * fshape1 + k] % __mod;
 
                             for (size_t j = 0; j < fshape1; ++j) {
-                                result.__array[i * oshape1 + j] +=
-                                    c * __other.__array[k * oshape1 + j];
+                                result.__array[i * oshape1 + j] =
+                                    (result.__array[i * oshape1 + j] +
+                                     c * (__other.__array[k * oshape1 + j] %
+                                          __mod)) %
+                                    __mod;
                             }
                         }
                     }
@@ -84,11 +86,13 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
 
                 for (size_t i = i_block; i < i_bound; ++i) {
                     for (size_t k = k_block; k < k_bound; ++k) {
-                        const auto c = __first.__array[i * fshape1 + k];
+                        const auto c =
+                            (__first.__array[i * fshape1 + k] % __mod);
 
                         for (size_t j = 0; j < fshape1; ++j) {
                             result.__array[i * oshape1 + j] +=
-                                c * __other.__array[k * oshape1 + j];
+                                c * (__other.__array[k * oshape1 + j] % __mod);
+                            result.__array[i * oshape1 + j] %= __mod;
                         }
                     }
                 }
@@ -99,20 +103,21 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     return result;
 }
 
-template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
+template <typename _T1, typename _T2, typename _T3, class _T>
+MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const typename MdStaticArray<_T1>::reference &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
+    const MdStaticArray<_T2> &__other, const size_t __mod,
+    const size_t threads) {
     return MdLinearAlgebra::mat_multiply<_T1, _T2, _T3>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
                            __first.shp_offset),
         __other, threads);
 }
 
-template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
+template <typename _T1, typename _T2, typename _T3, class _T>
+MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const MdStaticArray<_T1> &__first,
-    const typename MdStaticArray<_T2>::reference &__other,
+    const typename MdStaticArray<_T2>::reference &__other, const size_t __mod,
     const size_t threads) {
     return MdLinearAlgebra::mat_multiply<_T1, _T2, _T3>(
         __first,
@@ -121,10 +126,10 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
         threads);
 }
 
-template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
+template <typename _T1, typename _T2, typename _T3, class _T>
+MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const typename MdStaticArray<_T1>::reference &__first,
-    const typename MdStaticArray<_T2>::reference &__other,
+    const typename MdStaticArray<_T2>::reference &__other, const size_t __mod,
     const size_t threads) {
     return MdLinearAlgebra::mat_multiply<_T1, _T2, _T3>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,

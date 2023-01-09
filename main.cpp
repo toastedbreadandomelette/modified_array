@@ -12,15 +12,14 @@
 
 int main(int argc, const char **argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 16384;
-    MdStaticArray<double> c({sz}, 1), d({sz}, 1);
+    size_t sz = 1024;
+    MdStaticArray<size_t> c({sz, sz}, 1), d({sz, sz}, 1);
+    MdStaticArray<double>::set_threshold_size(1000000);
     // auto c = MdArrayUtility::range<double>(0, 1, 0.000000005);
     auto start = std::chrono::system_clock::now();
     // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
     // auto csum = MdArrayUtility::cumulative_sum<double>(c);
-    for (auto i = 0; i < 100000; ++i) {
-        auto dd = MdLinearAlgebra::dot<double, double, double>(c, d);
-    }
+    auto ans = MdLinearAlgebra::matrix_mod_power<size_t>(c, 12345, 1000000007);
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
@@ -30,6 +29,9 @@ int main(int argc, const char **argv) {
 
     // std::cout << dd.get_size() << " " << dd[0] << " " << '\n';
 
+    // for (size_t i = 0; i < 2; ++i) {
+    //     std::cout << ans[i] << '\n';
+    // }
     // for (size_t i = 0; i < dd.get_shape()[0]; ++i) {
     //     // for (size_t j = 0; j < dd.get_shape()[1]; ++j) {
     //     std::cout << dd[i] << '\n';

@@ -209,7 +209,6 @@ class MdStaticArray {
     }
 
     MdStaticArray &operator=(MdStaticArray<_T> &&__other) {
-        ~MdStaticArray();
         __array = __other.__array;
         __other.__array = nullptr;
 
