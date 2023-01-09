@@ -18,7 +18,9 @@ int main(int argc, const char **argv) {
     auto start = std::chrono::system_clock::now();
     // auto c = MdUtility::dot<size_t, size_t, size_t>(f, g, 16);
     // auto csum = MdArrayUtility::cumulative_sum<double>(c);
-    auto dd = MdLinearAlgebra::outer<double, double, double>(c, d);
+    for (auto i = 0; i < 100000; ++i) {
+        auto dd = MdLinearAlgebra::dot<double, double, double>(c, d);
+    }
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
@@ -26,7 +28,7 @@ int main(int argc, const char **argv) {
     std::cout << '\n';
     std::chrono::duration<double> time = end - start;
 
-    std::cout << dd.get_size() << " " << '\n';
+    // std::cout << dd.get_size() << " " << dd[0] << " " << '\n';
 
     // for (size_t i = 0; i < dd.get_shape()[0]; ++i) {
     //     // for (size_t j = 0; j < dd.get_shape()[1]; ++j) {

@@ -6,21 +6,6 @@
 
 #include "./cell.hpp"
 
-// template <typename _T1, typename _T2>
-// struct SplitTwo {
-//     _T1 first;
-//     _T2 second;
-
-//     SplitTwo(const SplitTwo&__value) {
-//         std::cout << "vvvv\n";
-//     }
-
-//     SplitTwo &operator=(const SplitTwo &__value) {
-//         first = _T1(__value.first);
-//         second = _T2(__value.second);
-//     }
-// };
-
 /**
  * @brief Table struct for easier data handling
  */

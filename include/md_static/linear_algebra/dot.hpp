@@ -100,15 +100,10 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
+
             // A single valued answer.
-            MdStaticArray<_T3> result(1);
-            for (size_t index = 0; index < __other.get_size(); ++index) {
-                result.__array[index] +=
-                    (__first.__array[index] * __other.__array[index]);
-            }
-
-            return result;
-
+            return MdLinearAlgebra::inner<_T1, _T2, _T3>(__first, __other,
+                                                         thread_count);
         } else if (__other.get_shape_size() == 1) {
             // Note: first does have $n$ dimensions
             if (__other.shape[0] !=

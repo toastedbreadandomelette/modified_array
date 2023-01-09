@@ -167,16 +167,16 @@ struct MdLinearAlgebra {
         const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @brief inner product of two nd arrays
+     * @tparam _T1 type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new ndarray of type _T3
      * @throws Runtime error when
-     *  1. matrix dimensions do not match
+     *  1. ndarray dimensions do not match
      *  2. size of second axis of __first is not equal to size of first axis
      * of
      * __other
@@ -187,16 +187,16 @@ struct MdLinearAlgebra {
                                     const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @brief inner product of two nd arrays
+     * @tparam _T1 type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new ndarray of type _T3
      * @throws Runtime error when
-     *  1. matrix dimensions do not match
+     *  1. ndarray dimensions do not match
      *  2. size of second axis of __first is not equal to size of first axis
      * of
      * __other
@@ -207,16 +207,16 @@ struct MdLinearAlgebra {
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @brief inner product of two nd arrays
+     * @tparam _T1 type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new ndarray of type _T3
      * @throws Runtime error when
-     *  1. matrix dimensions do not match
+     *  1. ndarray dimensions do not match
      *  2. size of second axis of __first is not equal to size of first axis
      * of
      * __other
@@ -228,16 +228,16 @@ struct MdLinearAlgebra {
         const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @brief inner product of two nd arrays
+     * @tparam _T1 type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new ndarray of type _T3
      * @throws Runtime error when
-     *  1. matrix dimensions do not match
+     *  1. ndarray dimensions do not match
      *  2. size of second axis of __first is not equal to size of first axis
      * of
      * __other
@@ -249,7 +249,7 @@ struct MdLinearAlgebra {
         const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
+     * @brief Generate cross product of two 1d array
      * @tparam _T1 type of first matrix
      * @tparam _T2 type of second matrix
      * @tparam _T3 type of third matrix (upto user)
@@ -269,7 +269,7 @@ struct MdLinearAlgebra {
                                     const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
+     * @brief Generate cross product of two 1d array
      * @tparam _T1 type of first matrix
      * @tparam _T2 type of second matrix
      * @tparam _T3 type of third matrix (upto user)
@@ -289,7 +289,7 @@ struct MdLinearAlgebra {
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
+     * @brief Generate cross product of two 1d array
      * @tparam _T1 type of first matrix
      * @tparam _T2 type of second matrix
      * @tparam _T3 type of third matrix (upto user)
@@ -310,7 +310,7 @@ struct MdLinearAlgebra {
         const size_t threads = 16);
 
     /**
-     * @brief Multiply two matrices
+     * @brief Generate cross product of two 1d array
      * @tparam _T1 type of first matrix
      * @tparam _T2 type of second matrix
      * @tparam _T3 type of third matrix (upto user)

@@ -33,39 +33,48 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
 
     // do this separately.
     if (resultant_shape.size() == 0) {
-        std::vector<_T3> value(threads, 0);
+        if (s_threshold_size < __first.get_size()) {
+            std::vector<_T3> value(threads, 0);
 
-        auto __perform_inner_internal = [&__first, &__other, &value](
-                                            const size_t thread_number,
-                                            const size_t start,
-                                            const size_t end) {
-            for (size_t i = start; i < end; ++i) {
-                value[thread_number] += __first.__array[i] * __other.__array[i];
+            auto __perform_inner_internal = [&__first, &__other, &value](
+                                                const size_t thread_number,
+                                                const size_t start,
+                                                const size_t end) {
+                for (size_t i = start; i < end; ++i) {
+                    value[thread_number] +=
+                        __first.__array[i] * __other.__array[i];
+                }
+            };
+            const size_t blocks = __first.get_size() / threads;
+            std::vector<std::thread> thread_pool;
+            for (size_t index = 0; index < threads - 1; ++index) {
+                thread_pool.emplace_back(std::thread(__perform_inner_internal,
+                                                     index, blocks * index,
+                                                     blocks * (index + 1)));
             }
-        };
-        const size_t blocks = __first.get_size() / threads;
-        std::vector<std::thread> thread_pool;
-        for (size_t index = 0; index < threads - 1; ++index) {
-            thread_pool.emplace_back(std::thread(__perform_inner_internal,
-                                                 index, blocks * index,
-                                                 blocks * (index + 1)));
+
+            thread_pool.emplace_back(
+                std::thread(__perform_inner_internal, threads - 1,
+                            blocks * (threads - 1), __first.get_size()));
+
+            for (auto &thread : thread_pool) {
+                thread.join();
+            }
+
+            _T3 result = 0;
+            for (auto &res_part : value) {
+                result += res_part;
+            }
+
+            return MdStaticArray<_T3>(1, result);
+        } else {
+            _T3 value = 0;
+            for (size_t i = 0; i < __other.get_size(); ++i) {
+                value += __first.__array[i] * __other.__array[i];
+            }
+
+            return MdStaticArray<_T3>(1, value);
         }
-
-        thread_pool.emplace_back(
-            std::thread(__perform_inner_internal, threads - 1,
-                        blocks * (threads - 1), __first.get_size()));
-
-        for (auto &thread : thread_pool) {
-            thread.join();
-        }
-
-        _T3 result = 0;
-        for (auto &res_part : value) {
-            result += res_part;
-        }
-
-        return MdStaticArray<_T3>(1, result);
-
     } else {
         MdStaticArray<_T3> result(resultant_shape, 0);
 
