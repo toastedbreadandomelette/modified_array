@@ -123,8 +123,8 @@ class MdStaticArray {
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
 
-    friend std::ostream &operator<<(std::ostream &op,
-                                    const MdStaticArray<_T>::reference &ot);
+    friend std::ostream &operator<<(
+        std::ostream &op, const typename MdStaticArray<_T>::reference &ot);
 
     static void set_thread_count(const uint8_t value);
 

@@ -9,6 +9,9 @@ class MdStaticArray<_T>::reference {
     template <typename _T1>
     friend class MdStaticArray;
 
+    friend struct MdArrayUtility;
+    friend struct MdLinearAlgebra;
+
     void *operator new(size_t size);
 
  public:
@@ -32,6 +35,42 @@ class MdStaticArray<_T>::reference {
         shp_offset = __other.shp_offset + 1;
         size =
             __other.size / (__other.__array_reference->shape[shp_offset - 1]);
+    }
+
+    reference(const reference &__other) {
+        __array_reference = __other.__array_reference;
+        offset = __other.offset;
+        shp_offset = __other.shp_offset;
+        size = __other.size;
+    }
+
+    reference &operator=(const reference &__other) {
+        __array_reference = __other.__array_reference;
+        offset = __other.offset;
+        shp_offset = __other.shp_offset;
+        size = __other.size;
+
+        return *this;
+    }
+
+    reference(const reference &&__other) {
+        __array_reference = __other.__array_reference;
+        __other.__array_reference = nullptr;
+
+        offset = __other.offset;
+        shp_offset = __other.shp_offset;
+        size = __other.size;
+    }
+
+    reference &operator=(const reference &&__other) {
+        __array_reference = __other.__array_reference;
+        __other.__array_reference = nullptr;
+
+        offset = __other.offset;
+        shp_offset = __other.shp_offset;
+        size = __other.size;
+
+        return *this;
     }
 
     template <typename _T1>

@@ -624,6 +624,54 @@ struct MdArrayUtility {
     template <typename _T>
     static MdStaticArray<_T> ceil(
         const typename MdStaticArray<_T>::reference &__array);
+
+    /**
+     * @brief Check if every value satisfies the condition
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static bool every(const MdStaticArray<_T> &__ndarray,
+                      const std::function<bool(const _T &)> &,
+                      const size_t threads = 16);
+
+    /**
+     * @brief Check if every value satisfies the condition
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static bool every(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference,
+        const std::function<bool(const _T &)> &, const size_t threads = 16);
+
+    /**
+     * @brief Check if at least one value satisfies the condition
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static bool some(const MdStaticArray<_T> &__ndarray,
+                     const std::function<bool(const _T &)> &,
+                     const size_t threads = 16);
+
+    /**
+     * @brief Check if at least one value satisfies the condition
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static bool some(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference,
+        const std::function<bool(const _T &)> &, const size_t threads = 16);
 };
 
 #endif
