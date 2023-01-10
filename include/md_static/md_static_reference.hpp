@@ -150,14 +150,16 @@ class MdStaticArray<_T>::reference {
      */
     operator _T() const { return __array_reference->__array[offset]; }
 
-    operator MdStaticArray<_T>() const { return MdStaticArray<_T>(*this); }
+    operator MdStaticArray<_T>() const {
+        return MdStaticArray<_T>(*__array_reference);
+    }
 
     /**
      * @brief Return array value
      */
     template <typename _T1>
     operator MdStaticArray<_T1>() const {
-        return MdStaticArray<_T1>(*this);
+        return MdStaticArray<_T1>(*__array_reference);
     }
 
     template <typename _T1>

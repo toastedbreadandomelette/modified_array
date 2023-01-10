@@ -55,55 +55,54 @@ MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
-// MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
-//     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-//     const typename MdStaticArray<arg>::reference &...arguments) {
-//     MdStaticArray<_Tfinal> result =
-//         MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(__first, __other);
-//     return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
-//                                                                 arguments...);
-// }
+template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
+    const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+    const typename MdStaticArray<arg>::reference &...arguments) {
+    MdStaticArray<_Tfinal> result =
+        MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(__first, __other);
+    return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
+                                                                arguments...);
+}
 
-// template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
-// MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
-//     const typename MdStaticArray<_T1>::reference &__first,
-//     const typename MdStaticArray<_T2>::reference &__other,
-//     const typename MdStaticArray<arg>::reference &...arguments) {
-//     MdStaticArray<_Tfinal> result = MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(
-//         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
-//                            __first.shp_offset),
-//         MdStaticArray<_T2>(*__other.__array_reference, __other.offset,
-//                            __other.shp_offset));
-//     return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
-//                                                                 arguments...);
-// }
+template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
+    const typename MdStaticArray<_T1>::reference &__first,
+    const typename MdStaticArray<_T2>::reference &__other,
+    const typename MdStaticArray<arg>::reference &...arguments) {
+    MdStaticArray<_Tfinal> result = MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(
+        MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
+                           __first.shp_offset),
+        MdStaticArray<_T2>(*__other.__array_reference, __other.offset,
+                           __other.shp_offset));
+    return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
+                                                                arguments...);
+}
 
-// template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
-// MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
-//     const typename MdStaticArray<_T1>::reference &__first,
-//     const MdStaticArray<_T2> &__other,
-//     const typename MdStaticArray<arg>::reference &...arguments) {
-//     MdStaticArray<_Tfinal> result = MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(
-//         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
-//                            __first.shp_offset),
-//         __other);
-//     return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
-//                                                                 arguments...);
-// }
+template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
+    const typename MdStaticArray<_T1>::reference &__first,
+    const MdStaticArray<_T2> &__other,
+    const typename MdStaticArray<arg>::reference &...arguments) {
+    MdStaticArray<_Tfinal> result = MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(
+        MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
+                           __first.shp_offset),
+        __other);
+    return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
+                                                                arguments...);
+}
 
-// template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
-// MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
-//     const MdStaticArray<_T1> &__first,
-//     const typename MdStaticArray<_T2>::reference &__other,
-//     const typename MdStaticArray<arg>::reference &...arguments) {
-//     MdStaticArray<_Tfinal> result = MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(
-//         __first, MdStaticArray<_T2>(*__other.__array_reference,
-//         __other.offset,
-//                                     __other.shp_offset));
-//     return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
-//                                                                 arguments...);
-// }
+template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(
+    const MdStaticArray<_T1> &__first,
+    const typename MdStaticArray<_T2>::reference &__other,
+    const typename MdStaticArray<arg>::reference &...arguments) {
+    MdStaticArray<_Tfinal> result = MdLinearAlgebra::dot<_T1, _T2, _Tfinal>(
+        __first, MdStaticArray<_T2>(*__other.__array_reference, __other.offset,
+                                    __other.shp_offset));
+    return MdLinearAlgebra::multi_dot<_Tfinal, _Tfinal, arg...>(result,
+                                                                arguments...);
+}
 
 template <typename _Tfinal, typename _T1, typename _T2>
 MdStaticArray<_Tfinal> MdLinearAlgebra::multi_dot(

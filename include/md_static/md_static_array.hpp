@@ -95,7 +95,8 @@ class MdStaticArray {
      * This will not accessible to user.
      */
     MdStaticArray(const MdStaticArray<_T> &__other, const size_t offset,
-                  const uint16_t shp_offset) {
+                  const uint16_t shp_offset)
+        : shape(nullptr), skip_vec(nullptr) {
         __array = &__other.__array[offset];
         shape = &__other.shape[shp_offset];
         skip_vec = &__other.skip_vec[shp_offset];
@@ -108,7 +109,6 @@ class MdStaticArray {
         dont_free = true;
     }
 
-    class reference;
     bool dont_free = false;
     _T *__array;
     size_t *shape;
@@ -117,6 +117,7 @@ class MdStaticArray {
     uint16_t shp_size;
 
  public:
+    class reference;
     template <typename _T1>
     friend class MdStaticArray<_T1>::reference;
 
@@ -1181,7 +1182,8 @@ MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {
 }
 
 template <typename _T>
-MdStaticArray<_T>::MdStaticArray(const reference &__other) {
+MdStaticArray<_T>::MdStaticArray(const reference &__other)
+    : shape(nullptr), skip_vec(nullptr) {
     __size = __other.size;
     init_array(__size);
     init_shape(&__other.__array_reference->shape[__other.shp_offset],
