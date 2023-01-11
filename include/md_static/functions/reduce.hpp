@@ -1,6 +1,8 @@
 #pragma once
 #ifndef _REDUCE_HPP_
 #define _REDUCE_HPP_
+#include <vector>
+
 #include "./md_static_array_utility.hpp"
 
 template <typename _T, typename _func>

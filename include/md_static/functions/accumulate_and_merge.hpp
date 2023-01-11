@@ -1,6 +1,8 @@
 #pragma once
 #ifndef _ACCUMULATE_AND_MERGE_HPP_
 #define _ACCUMULATE_AND_MERGE_HPP_
+#include <vector>
+
 #include "./md_static_array_utility.hpp"
 
 template <typename _T, typename _func, typename _merge_func>
