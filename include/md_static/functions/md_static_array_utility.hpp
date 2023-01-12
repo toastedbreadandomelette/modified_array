@@ -672,6 +672,72 @@ struct MdArrayUtility {
     static bool some(
         const typename MdStaticArray<_T>::reference &__ndarray__reference,
         const std::function<bool(const _T &)> &, const size_t threads = 16);
+
+    /**
+     * @brief Compute 2 raised to value from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> exp2(
+        const MdStaticArray<_T> &__ndarray__reference);
+
+    /**
+     * @brief Compute 2 raised to value from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> exp2(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+
+    /**
+     * @brief Compute reciprocal from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> reciprocal(
+        const MdStaticArray<_T> &__ndarray__reference);
+
+    /**
+     * @brief Compute reciprocal from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> reciprocal(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+
+    /**
+     * @brief Compute sinh from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> sinh(
+        const MdStaticArray<_T> &__ndarray__reference);
+
+    /**
+     * @brief Compute sinh from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> sinh(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference);
 };
 
 #endif

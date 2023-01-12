@@ -85,7 +85,6 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
                 for (size_t i = i_block; i < i_bound; ++i) {
                     for (size_t k = k_block; k < k_bound; ++k) {
                         const auto c = __first.__array[i * fshape1 + k];
-
                         for (size_t j = 0; j < fshape1; ++j) {
                             result.__array[i * oshape1 + j] +=
                                 c * __other.__array[k * oshape1 + j];

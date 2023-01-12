@@ -12,10 +12,29 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 32;
-    MdStaticArray<size_t> c({sz, sz}, 1);
-    MdStaticArray<size_t> d({sz, sz, sz}, 0.22231232132);
+    size_t sz = 4096;
+    MdStaticArray<double> c({sz, sz}, 1);
+    MdStaticArray<double> d({sz, sz}, 0.22231232132);
     MdStaticArray<double>::set_threshold_size(1000000);
+    // for (size_t i = 0; i < c.get_shape()[0]; ++i) {
+    //     for (size_t j = 0; j < c.get_shape()[1]; ++j) {
+    //         for (size_t k = 0; k < c.get_shape()[2]; ++k) {
+    //             for (size_t l = 0; l < c.get_shape()[3]; ++l) {
+    //                 c[i][j][k][l] = i + j + k + l;
+    //             }
+    //         }
+    //     }
+    // }
+
+    // for (size_t i = 0; i < d.get_shape()[0]; ++i) {
+    //     for (size_t j = 0; j < d.get_shape()[1]; ++j) {
+    //         for (size_t k = 0; k < d.get_shape()[2]; ++k) {
+    //             for (size_t l = 0; l < d.get_shape()[3]; ++l) {
+    //                 d[i][j][k][l] = 30 - (i + j + k + l);
+    //             }
+    //         }
+    //     }
+    // }
     // c[16383][16383] = 2;
     // auto c = MdArrayUtility::range<double>(0, 1, 0.000000005);
     auto start = std::chrono::system_clock::now();
@@ -24,10 +43,10 @@ int main(int argc, const char** argv) {
     // auto ans = MdLinearAlgebra::multi_dot<double>(c, c, d, d);
 
     // To do, fix the code seg fault below
-
-    auto an = MdLinearAlgebra::multi_dot<double, size_t, size_t, size_t, size_t,
-                                         size_t, size_t, size_t, size_t>(
-        c, c, c, c, d[0], d[1], d[2], d[3]);
+    // for (size_t i = 0; i < 511; ++i) {
+    //     auto an = MdLinearAlgebra::dot<double, double, double>(c, d, 1);
+    // }
+    auto an = MdLinearAlgebra::mat_multiply<double, double, double>(c, d);
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();
@@ -37,8 +56,11 @@ int main(int argc, const char** argv) {
 
     // std::cout << dd.get_size() << " " << dd[0] << " " << '\n';
 
-    // for (size_t i = 0; i < 2; ++i) {
-    //     std::cout << ans[i] << '\n';
+    // for (size_t i = 0; i < an.get_shape()[0]; ++i) {
+    //     for (size_t j = 0; j < an.get_shape()[1]; ++j) {
+    //         std::cout << an[i][j] << '\n';
+    //     }
+    //     std::cout << '\n';
     // }
     // for (size_t i = 0; i < dd.get_shape()[0]; ++i) {
     //     // for (size_t j = 0; j < dd.get_shape()[1]; ++j) {

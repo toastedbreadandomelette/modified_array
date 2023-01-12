@@ -67,10 +67,11 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
                     // performance reasons, to fulfil offset, we add $other_col$
                     // to $index$ in result array)
                     for (size_t j = 0; j < n; ++j) {
+                        const auto c = __first.__array[first_row + j];
                         // Iterator over last axis of __other.
                         for (size_t other_col = 0; other_col < p; ++other_col) {
                             result.__array[index + other_col] +=
-                                __first.__array[first_row + j] *
+                                c *
                                 __other
                                     .__array[other_block + j * p + other_col];
                         }
