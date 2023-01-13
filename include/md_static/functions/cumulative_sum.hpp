@@ -48,17 +48,39 @@ MdStaticArray<_T> MdArrayUtility::cumulative_sum(
 
     MdStaticArray<_T> result(resultant_shape, 0);
 
-    for (size_t index = 0; index < __ndarray.get_size();
-         index += looping_value) {
-        for (size_t init_index = index; init_index < index + skip_value;
-             ++init_index) {
-            result.__array[init_index] = __ndarray.__array[init_index];
+    auto __perform_cu_sum_internal =
+        [&__ndarray, &result, skip_value, looping_value](
+            const size_t thread_number, const size_t total_threads) {
+            for (size_t index = thread_number * looping_value;
+                 index < __ndarray.get_size();
+                 index += (total_threads * looping_value)) {
+                for (size_t init_index = index; init_index < index + skip_value;
+                     ++init_index) {
+                    result.__array[init_index] = __ndarray.__array[init_index];
+                }
+
+                for (size_t cu_index = index + skip_value;
+                     cu_index < index + looping_value; ++cu_index) {
+                    result.__array[cu_index] =
+                        result.__array[cu_index - skip_value] +
+                        __ndarray.__array[cu_index];
+                }
+            }
+        };
+
+    if (s_threshold_size > result.get_size()) {
+        __perform_cu_sum_internal(0, 1);
+    } else {
+        const size_t total_threads = 16;
+        std::vector<std::thread> thread_pool;
+
+        for (size_t index = 0; index < total_threads; ++index) {
+            thread_pool.emplace_back(
+                std::thread(__perform_cu_sum_internal, index, total_threads));
         }
 
-        for (size_t cu_index = index + skip_value;
-             cu_index < index + looping_value; ++cu_index) {
-            result.__array[cu_index] = result.__array[cu_index - skip_value] +
-                                       __ndarray.__array[cu_index];
+        for (auto& thread : thread_pool) {
+            thread.join();
         }
     }
 
