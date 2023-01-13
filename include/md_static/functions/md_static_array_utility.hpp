@@ -524,15 +524,15 @@ struct MdArrayUtility {
      * @brief Cumulative sum of an array.
      * @tparam _T matrix type,
      * @param __array input array
+     * @param axis Axis to perform cumulative sum on
+     * @param thread_count
      * @returns new array where each element is sum of all previous values in
      * __array
      */
-    // template <typename _T>
-    // static MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T>
-    // &__array);
     template <typename _T>
     static MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T> &__ndarray,
-                                            const size_t axis = -1);
+                                            const size_t axis = -1,
+                                            const size_t thread_count = 16);
 
     /**
      * @brief Cumulative sum of an array.
@@ -543,7 +543,86 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> cumulative_sum(
-        const typename MdStaticArray<_T>::reference &__array);
+        const typename MdStaticArray<_T>::reference &__array,
+        const size_t axis = -1, const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative product of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @param axis Axis to perform cumulative sum on
+     * @param thread_count
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> cumulative_product(
+        const MdStaticArray<_T> &__ndarray, const size_t axis = -1,
+        const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative product of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> cumulative_product(
+        const typename MdStaticArray<_T>::reference &__array,
+        const size_t axis = -1, const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative product of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @param axis Axis to perform cumulative sum on
+     * @param thread_count
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> nan_cumulative_sum(
+        const MdStaticArray<_T> &__ndarray, const size_t axis = -1,
+        const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative product of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> nan_cumulative_sum(
+        const typename MdStaticArray<_T>::reference &__array,
+        const size_t axis = -1, const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative product of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @param axis Axis to perform cumulative sum on
+     * @param thread_count
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> nan_cumulative_product(
+        const MdStaticArray<_T> &__ndarray, const size_t axis = -1,
+        const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative product of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> nan_cumulative_product(
+        const typename MdStaticArray<_T>::reference &__array,
+        const size_t axis = -1, const size_t thread_count = 16);
 
     /**
      * @brief Convert radian to degrees of an array.

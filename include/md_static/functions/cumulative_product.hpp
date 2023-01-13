@@ -1,20 +1,20 @@
 #pragma once
-#ifndef _CUMULATIVE_SUM_HPP_
-#define _CUMULATIVE_SUM_HPP_
+#ifndef _CUMULATIVE_PRODUCT_HPP_
+#define _CUMULATIVE_PRODUCT_HPP_
 #include "./md_static_array_utility.hpp"
 
 template <typename _T>
-MdStaticArray<_T> MdArrayUtility::cumulative_sum(
+MdStaticArray<_T> MdArrayUtility::cumulative_product(
     const typename MdStaticArray<_T>::reference& __values, const size_t axis,
     const size_t thread_count) {
-    return MdArrayUtility::cumulative_sum<_T>(
+    return MdArrayUtility::cumulative_product<_T>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,
                           __values.shp_offset),
         axis, thread_count);
 }
 
 template <typename _T>
-MdStaticArray<_T> MdArrayUtility::cumulative_sum(
+MdStaticArray<_T> MdArrayUtility::cumulative_product(
     const MdStaticArray<_T>& __ndarray, const size_t axis,
     const size_t thread_count) {
     if (axis == -1) {
@@ -26,7 +26,7 @@ MdStaticArray<_T> MdArrayUtility::cumulative_sum(
         // instead, use it when user provides axis.
         for (size_t index = 0; index < __ndarray.get_size(); ++index) {
             result.__array[index] =
-                result.__array[index - 1] + __ndarray.__array[index];
+                result.__array[index - 1] * __ndarray.__array[index];
         }
         return result;
     }
@@ -66,7 +66,7 @@ MdStaticArray<_T> MdArrayUtility::cumulative_sum(
                 for (size_t cu_index = index + skip_value;
                      cu_index < index + looping_value; ++cu_index) {
                     result.__array[cu_index] =
-                        result.__array[cu_index - skip_value] +
+                        result.__array[cu_index - skip_value] *
                         __ndarray.__array[cu_index];
                 }
             }
