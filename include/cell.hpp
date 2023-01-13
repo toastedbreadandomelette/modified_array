@@ -76,6 +76,81 @@ Cell operator+(const Cell &first, const Cell &second) {
     }
 }
 
+Cell operator-(const Cell &first) {
+    switch (first.index()) {
+        case 0:
+            return Cell(-std::get<int64_t>(first));
+        case 1:
+            return Cell(static_cast<size_t>(-std::get<uint64_t>(first)));
+        case 2:
+            return Cell(-std::get<double>(first));
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator +
+ */
+Cell operator-(const Cell &first, const Cell &second) {
+    switch (first.index()) {
+        case 0:
+            return -second + std::get<int64_t>(first);
+        case 1:
+            return -second + std::get<uint64_t>(first);
+        case 2:
+            return -second + std::get<double>(first);
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator +
+ */
+Cell operator*(const Cell &first, const Cell &second) {
+    switch (first.index()) {
+        case 0:
+            return second * std::get<int64_t>(first);
+        case 1:
+            return second * std::get<uint64_t>(first);
+        case 2:
+            return second * std::get<double>(first);
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator +
+ */
+Cell operator/(const Cell &first, const Cell &second) {
+    switch (first.index()) {
+        case 0:
+            return std::get<int64_t>(first) / second;
+        case 1:
+            return std::get<uint64_t>(first) / second;
+        case 2:
+            return std::get<double>(first) / second;
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator +
+ */
+Cell operator%(const Cell &first, const Cell &second) {
+    switch (first.index()) {
+        case 0:
+            return std::get<int64_t>(first) % second;
+        case 1:
+            return std::get<uint64_t>(first) % second;
+        default:
+            return Cell(None{});
+    }
+}
+
 /**
  * @brief operator +
  */
@@ -277,6 +352,110 @@ Cell operator/(const Cell &first, const double second) {
             return Cell(std::get<uint64_t>(first) / second);
         case 2:
             return Cell(std::get<double>(first) / second);
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator/(const int64_t second, const Cell &first) {
+    switch (first.index()) {
+        case 0:
+            return Cell(second / std::get<int64_t>(first));
+        case 1:
+            return Cell(second / std::get<uint64_t>(first));
+        case 2:
+            return Cell(second / std::get<double>(first));
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator/(const uint64_t second, const Cell &first) {
+    switch (first.index()) {
+        case 0:
+            return Cell(second / std::get<int64_t>(first));
+        case 1:
+            return Cell(second / std::get<uint64_t>(first));
+        case 2:
+            return Cell(second / std::get<double>(first));
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator/(const double second, const Cell &first) {
+    switch (first.index()) {
+        case 0:
+            return Cell(second / std::get<int64_t>(first));
+        case 1:
+            return Cell(second / std::get<uint64_t>(first));
+        case 2:
+            return Cell(second / std::get<double>(first));
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator%(const Cell &first, const int64_t second) {
+    switch (first.index()) {
+        case 0:
+            return Cell(std::get<int64_t>(first) % second);
+        case 1:
+            return Cell(std::get<uint64_t>(first) % second);
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator%(const Cell &first, const uint64_t second) {
+    switch (first.index()) {
+        case 0:
+            return Cell(std::get<int64_t>(first) / second);
+        case 1:
+            return Cell(std::get<uint64_t>(first) / second);
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator%(const int64_t second, const Cell &first) {
+    switch (first.index()) {
+        case 0:
+            return Cell(second % std::get<int64_t>(first));
+        case 1:
+            return Cell(second % std::get<uint64_t>(first));
+        default:
+            return Cell(None{});
+    }
+}
+
+/**
+ * @brief operator /
+ */
+Cell operator%(const uint64_t second, const Cell &first) {
+    switch (first.index()) {
+        case 0:
+            return Cell(second % std::get<int64_t>(first));
+        case 1:
+            return Cell(second % std::get<uint64_t>(first));
         default:
             return Cell(None{});
     }
