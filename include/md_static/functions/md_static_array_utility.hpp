@@ -822,6 +822,50 @@ struct MdArrayUtility {
     template <typename _T>
     static MdStaticArray<double> sinh(
         const typename MdStaticArray<_T>::reference &__ndarray__reference);
+
+    /**
+     * @brief Compute sinh from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> cosh(
+        const MdStaticArray<_T> &__ndarray__reference);
+
+    /**
+     * @brief Compute sinh from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> cosh(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+
+    /**
+     * @brief Compute sinh from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> tanh(
+        const MdStaticArray<_T> &__ndarray__reference);
+
+    /**
+     * @brief Compute sinh from array of values
+     * @tparam _T array type
+     * @param __ndarray n-dimensional array
+     * @param _func function that test for every element
+     * @returns boolean value
+     */
+    template <typename _T>
+    static MdStaticArray<double> tanh(
+        const typename MdStaticArray<_T>::reference &__ndarray__reference);
 };
 
 #endif

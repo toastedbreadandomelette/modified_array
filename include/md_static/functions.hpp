@@ -10,6 +10,7 @@
 #include "./functions/ceil.hpp"
 #include "./functions/cos.hpp"
 #include "./functions/cosec.hpp"
+#include "./functions/cosh.hpp"
 #include "./functions/cot.hpp"
 #include "./functions/cumulative_product.hpp"
 #include "./functions/cumulative_sum.hpp"
@@ -39,6 +40,7 @@
 #include "./functions/std_dev.hpp"
 #include "./functions/sum.hpp"
 #include "./functions/tan.hpp"
+#include "./functions/tanh.hpp"
 #include "./functions/transpose.hpp"
 
 #endif

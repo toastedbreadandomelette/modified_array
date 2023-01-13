@@ -318,6 +318,239 @@ struct MdLinearAlgebra {
         const typename MdStaticArray<_T2>::reference &);
 
     /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const MdStaticArray<arg> &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const MdStaticArray<arg> &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const MdStaticArray<_T1> &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const MdStaticArray<arg> &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other,
+        const MdStaticArray<arg> &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const typename MdStaticArray<arg>::reference &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const typename MdStaticArray<arg>::reference &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const MdStaticArray<_T1> &__first,
+        const typename MdStaticArray<_T2>::reference &__other,
+        const typename MdStaticArray<arg>::reference &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other,
+        const typename MdStaticArray<arg>::reference &...arguments);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const typename MdStaticArray<_T2>::reference &__other);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArray<_T2> &__other);
+
+    /**
+     * @brief Dot product of two N-dimensional array
+     * @todo perform operations for 1D arrays as well
+     * @tparam _T1 type of __first array
+     * @tparam _T2 type of __other array
+     * @tparam _T3 type of result array
+     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * total dimensions of array a)
+     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * total dimensions of array b)
+     * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
+     * b(n-2), bn)
+     * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
+     */
+    template <typename _Tfinal, typename _T1, typename _T2>
+    static MdStaticArray<_Tfinal> matrix_chain_multiply(
+        const MdStaticArray<_T1> &,
+        const typename MdStaticArray<_T2>::reference &);
+
+    /**
      * @brief Multiply two matrices
      * @tparam _T1 type of first matrix
      * @tparam _T2 type of second matrix
