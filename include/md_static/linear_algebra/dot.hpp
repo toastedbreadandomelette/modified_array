@@ -4,7 +4,7 @@
 #include "./mat_multiply.hpp"
 #include "./md_linear_algebra.hpp"
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
                                         const MdStaticArray<_T2> &__other,
                                         const size_t thread_count) {
@@ -207,7 +207,7 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
     }
 }
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::dot(
     const MdStaticArray<_T1> &__first,
     const typename MdStaticArray<_T2>::reference &__other,
@@ -219,7 +219,7 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(
         threads);
 }
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::dot(
     const typename MdStaticArray<_T1>::reference &__first,
     const MdStaticArray<_T2> &__other, const size_t threads) {
@@ -229,7 +229,7 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(
         __other, threads);
 }
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::dot(
     const typename MdStaticArray<_T1>::reference &__first,
     const typename MdStaticArray<_T2>::reference &__other,

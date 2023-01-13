@@ -7,7 +7,7 @@
 /**
  * @note this is not as fast as MKL libraries but still
  */
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
     const size_t threads) {
@@ -98,7 +98,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     return result;
 }
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const typename MdStaticArray<_T1>::reference &__first,
     const MdStaticArray<_T2> &__other, const size_t threads) {
@@ -108,7 +108,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
         __other, threads);
 }
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const MdStaticArray<_T1> &__first,
     const typename MdStaticArray<_T2>::reference &__other,
@@ -120,7 +120,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
         threads);
 }
 
-template <typename _T1, typename _T2, typename _T3>
+template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     const typename MdStaticArray<_T1>::reference &__first,
     const typename MdStaticArray<_T2>::reference &__other,

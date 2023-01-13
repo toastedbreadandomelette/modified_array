@@ -46,7 +46,7 @@ int main(int argc, const char** argv) {
     // for (size_t i = 0; i < 511; ++i) {
     //     auto an = MdLinearAlgebra::dot<double, double, double>(c, d, 1);
     // }
-    auto an = MdArrayUtility::cumulative_sum<double>(c, 4);
+    auto an = MdArrayUtility::cumulative_sum<double>(c, 3);
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();

@@ -40,8 +40,6 @@ MdStaticArray<_T> MdArrayUtility::cumulative_sum(
             ? __ndarray.skip_vec[__ndarray.get_shape_size() - 2 - axis]
             : __ndarray.get_size();
 
-    std::cout << looping_value << '\n';
-
     std::vector<size_t> resultant_shape;
 
     for (size_t index = 0; index < __ndarray.get_shape_size(); ++index) {

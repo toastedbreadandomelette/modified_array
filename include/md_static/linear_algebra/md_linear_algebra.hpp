@@ -20,7 +20,7 @@ struct MdLinearAlgebra {
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> dot(const MdStaticArray<_T1> &__first,
                                   const MdStaticArray<_T2> &__other,
                                   const size_t threads = 16);
@@ -39,7 +39,7 @@ struct MdLinearAlgebra {
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> dot(
         const MdStaticArray<_T1> &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -59,7 +59,7 @@ struct MdLinearAlgebra {
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> dot(
         const typename MdStaticArray<_T1>::reference &__first,
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
@@ -78,7 +78,7 @@ struct MdLinearAlgebra {
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> dot(
         const typename MdStaticArray<_T1>::reference &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -332,7 +332,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(const MdStaticArray<_T1> &__first,
                                            const MdStaticArray<_T2> &__other,
                                            const size_t threads = 16);
@@ -352,7 +352,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(
         const typename MdStaticArray<_T1>::reference &__first,
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
@@ -372,7 +372,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(
         const MdStaticArray<_T1> &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -393,7 +393,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(
         const typename MdStaticArray<_T1>::reference &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -416,7 +416,7 @@ struct MdLinearAlgebra {
      * __other
      */
     template <
-        typename _T1, typename _T2, typename _T3,
+        typename _T3, typename _T1, typename _T2,
         class = typename std::enable_if<std::is_integral<_T1>::value &&
                                         std::is_integral<_T2>::value &&
                                         std::is_integral<_T3>::value>::type>
@@ -440,7 +440,7 @@ struct MdLinearAlgebra {
      * __other
      */
     template <
-        typename _T1, typename _T2, typename _T3,
+        typename _T3, typename _T1, typename _T2,
         class = typename std::enable_if<std::is_integral<_T1>::value &&
                                         std::is_integral<_T2>::value &&
                                         std::is_integral<_T3>::value>::type>
@@ -465,7 +465,7 @@ struct MdLinearAlgebra {
      * __other
      */
     template <
-        typename _T1, typename _T2, typename _T3,
+        typename _T3, typename _T1, typename _T2,
         class = typename std::enable_if<std::is_integral<_T1>::value &&
                                         std::is_integral<_T2>::value &&
                                         std::is_integral<_T3>::value>::type>
@@ -490,7 +490,7 @@ struct MdLinearAlgebra {
      * __other
      */
     template <
-        typename _T1, typename _T2, typename _T3,
+        typename _T3, typename _T1, typename _T2,
         class = typename std::enable_if<std::is_integral<_T1>::value &&
                                         std::is_integral<_T2>::value &&
                                         std::is_integral<_T3>::value>::type>
@@ -514,7 +514,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> inner(const MdStaticArray<_T1> &__first,
                                     const MdStaticArray<_T2> &__other,
                                     const size_t threads = 16);
@@ -534,7 +534,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> inner(
         const typename MdStaticArray<_T1>::reference &__first,
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
@@ -554,7 +554,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> inner(
         const MdStaticArray<_T1> &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -575,7 +575,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> inner(
         const typename MdStaticArray<_T1>::reference &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -596,7 +596,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> outer(const MdStaticArray<_T1> &__first,
                                     const MdStaticArray<_T2> &__other,
                                     const size_t threads = 16);
@@ -616,7 +616,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> outer(
         const typename MdStaticArray<_T1>::reference &__first,
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
@@ -636,7 +636,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> outer(
         const MdStaticArray<_T1> &__first,
         const typename MdStaticArray<_T2>::reference &__other,
@@ -657,7 +657,7 @@ struct MdLinearAlgebra {
      * of
      * __other
      */
-    template <typename _T1, typename _T2, typename _T3>
+    template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> outer(
         const typename MdStaticArray<_T1>::reference &__first,
         const typename MdStaticArray<_T2>::reference &__other,

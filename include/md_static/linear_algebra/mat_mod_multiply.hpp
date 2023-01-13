@@ -4,7 +4,7 @@
 
 #include "./md_linear_algebra.hpp"
 
-template <typename _T1, typename _T2, typename _T3, class _T>
+template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
     const size_t __mod, const size_t threads) {
@@ -103,7 +103,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     return result;
 }
 
-template <typename _T1, typename _T2, typename _T3, class _T>
+template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const typename MdStaticArray<_T1>::reference &__first,
     const MdStaticArray<_T2> &__other, const size_t __mod,
@@ -114,7 +114,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
         __other, threads);
 }
 
-template <typename _T1, typename _T2, typename _T3, class _T>
+template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const MdStaticArray<_T1> &__first,
     const typename MdStaticArray<_T2>::reference &__other, const size_t __mod,
@@ -126,7 +126,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
         threads);
 }
 
-template <typename _T1, typename _T2, typename _T3, class _T>
+template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const typename MdStaticArray<_T1>::reference &__first,
     const typename MdStaticArray<_T2>::reference &__other, const size_t __mod,
