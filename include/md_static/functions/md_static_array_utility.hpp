@@ -527,8 +527,12 @@ struct MdArrayUtility {
      * @returns new array where each element is sum of all previous values in
      * __array
      */
+    // template <typename _T>
+    // static MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T>
+    // &__array);
     template <typename _T>
-    static MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T> &__array);
+    static MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T> &__ndarray,
+                                            const size_t axis = -1);
 
     /**
      * @brief Cumulative sum of an array.
@@ -545,7 +549,8 @@ struct MdArrayUtility {
      * @brief Convert radian to degrees of an array.
      * @tparam _T matrix type,
      * @param __array input array
-     * @returns new array where each element is sum of all previous values in
+     * @returns new array where each element is sum of all previous values
+     * in
      * __array
      */
     template <typename _T>

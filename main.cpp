@@ -12,8 +12,8 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 4096;
-    MdStaticArray<double> c({sz, sz}, 1);
+    size_t sz = 400;
+    MdStaticArray<double> c({sz, sz, sz, 2}, 23);
     MdStaticArray<double> d({sz, sz}, 0.22231232132);
     MdStaticArray<double>::set_threshold_size(1000000);
     // for (size_t i = 0; i < c.get_shape()[0]; ++i) {
@@ -46,7 +46,7 @@ int main(int argc, const char** argv) {
     // for (size_t i = 0; i < 511; ++i) {
     //     auto an = MdLinearAlgebra::dot<double, double, double>(c, d, 1);
     // }
-    auto an = MdLinearAlgebra::mat_multiply<double, double, double>(c, d);
+    auto an = MdArrayUtility::cumulative_sum<double>(c, 4);
     // auto sum = MdArrayUtility::sum(c);
     // auto c = f + g;
     auto end = std::chrono::system_clock::now();

@@ -5,56 +5,66 @@
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::cumulative_sum(
-    const MdStaticArray<_T>& __other) {
-    MdStaticArray<_T> result(__other.get_size());
-
-    result.__array[0] = __other.__array[0];
-
-    // Multithreading will be inefficient for cumulative sum of array,
-    // instead, use it when user provides axis.
-    for (size_t index = 0; index < __other.get_size(); ++index) {
-        result.__array[index] =
-            result.__array[index - 1] + __other.__array[index];
-    }
-    return result;
-}
-
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::cumulative_sum(
     const typename MdStaticArray<_T>::reference& __values) {
     return MdArrayUtility::cumulative_sum<_T>(MdStaticArray<_T>(
         *__values.__array_reference, __values.offset, __values.shp_offset));
 }
 
-// template <typename _T>
-// MdStaticArray<_T> cumulative_sum(const MdStaticArray<_T>& __ndarray,
-//                                  const size_t axis = -1) {
-//     if (axis == -1) {
-//         return MdArrayUtility::cumulative_sum(__ndarray);
-//     }
-//     MdStaticArray<_T> result(__ndarray.get_size());
-//     result.init_shape(__ndarray.get_shape(), __ndarray.get_shape_size());
+template <typename _T>
+MdStaticArray<_T> MdArrayUtility::cumulative_sum(
+    const MdStaticArray<_T>& __ndarray, const size_t axis) {
+    if (axis == -1) {
+        MdStaticArray<_T> result(__ndarray.get_size());
 
-//     const uint8_t total_threads =
-//     std::min(static_cast<size_t>(s_thread_count),
-//                                            __ndarray.get_shape()[axis]);
+        result.__array[0] = __ndarray.__array[0];
 
-//     auto __perform_cumulative_sum_internal =
-//         [&result, &__ndarray](const size_t start, const size_t end,
-//                               const size_t stride) -> void {
-//         result.__array[start] = __ndarray.__array[index];
-//         for (size_t index = start + stride; index < end; index += stride) {
-//             result.__array[index] =
-//                 result.__array[index - stride] + __ndarray.__array[index];
-//         }
-//     };
+        // Multithreading will be inefficient for cumulative sum of array,
+        // instead, use it when user provides axis.
+        for (size_t index = 0; index < __ndarray.get_size(); ++index) {
+            result.__array[index] =
+                result.__array[index - 1] + __ndarray.__array[index];
+        }
+        return result;
+    }
 
-//     std::vector<std::thread> thread_pool;
-//     for (size_t index = 0; index < total_threads; ++index) {
-//         thread_pool.emplace_back(
-//             std::thread(__perform_cumulative_sum_internal, ))
-//     }
-//     return result;
-// }
+    if (0 > axis || axis >= __ndarray.get_shape_size()) {
+        throw std::runtime_error("Unknown axis " + std::to_string(axis) +
+                                 " requested for cumulative sum.");
+    }
+
+    const size_t skip_value =
+        __ndarray.skip_vec[__ndarray.get_shape_size() - 1 - axis];
+
+    const size_t looping_value =
+        (__ndarray.get_shape_size() - 2 - axis <= __ndarray.get_shape_size())
+            ? __ndarray.skip_vec[__ndarray.get_shape_size() - 2 - axis]
+            : __ndarray.get_size();
+
+    std::cout << looping_value << '\n';
+
+    std::vector<size_t> resultant_shape;
+
+    for (size_t index = 0; index < __ndarray.get_shape_size(); ++index) {
+        resultant_shape.emplace_back(__ndarray.get_shape()[index]);
+    }
+
+    MdStaticArray<_T> result(resultant_shape, 0);
+
+    for (size_t index = 0; index < __ndarray.get_size();
+         index += looping_value) {
+        for (size_t init_index = index; init_index < index + skip_value;
+             ++init_index) {
+            result.__array[init_index] = __ndarray.__array[init_index];
+        }
+
+        for (size_t cu_index = index + skip_value;
+             cu_index < index + looping_value; ++cu_index) {
+            result.__array[cu_index] = result.__array[cu_index - skip_value] +
+                                       __ndarray.__array[cu_index];
+        }
+    }
+
+    return result;
+}
 
 #endif
