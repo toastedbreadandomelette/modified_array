@@ -155,9 +155,15 @@ class MdStaticArray {
         init_array(size);
         init_shape(size);
 
+        if (size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < size; ++index) {
-            __array[index] = value;
+            for (size_t index = 0; index < size; ++index) {
+                __array[index] = value;
+            }
+        } else {
+            for (size_t index = 0; index < size; ++index) {
+                __array[index] = value;
+            }
         }
     }
 
@@ -170,9 +176,15 @@ class MdStaticArray {
         init_array(overall_size);
         init_shape(_shape.data(), _shape.size());
 
+        if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
-            __array[index] = value;
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = value;
+            }
+        } else {
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = value;
+            }
         }
     }
 
@@ -180,12 +192,19 @@ class MdStaticArray {
 
     explicit MdStaticArray(const std::vector<_T> &__other)
         : shape(nullptr), skip_vec(nullptr) {
-        init_array(__other.size());
+        __size = __other.size();
+        init_array(__size);
         init_shape(__size);
 
+        if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
-            __array[index] = __other[index];
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = value;
+            }
+        } else {
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = value;
+            }
         }
     }
 
@@ -195,9 +214,15 @@ class MdStaticArray {
         const auto shp = __other.get_shape();
         init_shape(shp, __other.shp_size);
 
+        if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
-            __array[index] = __other.__array[index];
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = value;
+            }
+        } else {
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = value;
+            }
         }
     }
 
@@ -1189,10 +1214,17 @@ MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {
     init_shape(&__other.__array_reference->shape[__other.shp_offset],
                __other.__array_reference->shp_size - __other.shp_offset);
 
+    if (__size > s_threshold_size) {
 #pragma omp parallel for
-    for (size_t index = 0; index < __other.size; ++index) {
-        __array[index] =
-            __other.__array_reference->__array[__other.offset + index];
+        for (size_t index = 0; index < __size; ++index) {
+            __array[index] =
+                __other.__array_reference->__array[__other.offset + index];
+        }
+    } else {
+        for (size_t index = 0; index < __size; ++index) {
+            __array[index] =
+                __other.__array_reference->__array[__other.offset + index];
+        }
     }
 
     return *this;
@@ -1206,10 +1238,17 @@ MdStaticArray<_T>::MdStaticArray(const reference &__other)
     init_shape(&__other.__array_reference->shape[__other.shp_offset],
                __other.__array_reference->shp_size - __other.shp_offset);
 
+    if (__size > s_threshold_size) {
 #pragma omp parallel for
-    for (size_t index = 0; index < __size; ++index) {
-        __array[index] =
-            __other.__array_reference->__array[__other.offset + index];
+        for (size_t index = 0; index < __size; ++index) {
+            __array[index] =
+                __other.__array_reference->__array[__other.offset + index];
+        }
+    } else {
+        for (size_t index = 0; index < __size; ++index) {
+            __array[index] =
+                __other.__array_reference->__array[__other.offset + index];
+        }
     }
 }
 
