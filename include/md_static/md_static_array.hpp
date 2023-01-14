@@ -199,11 +199,11 @@ class MdStaticArray {
         if (__size > s_threshold_size) {
 #pragma omp parallel for
             for (size_t index = 0; index < __size; ++index) {
-                __array[index] = value;
+                __array[index] = __other[index];
             }
         } else {
             for (size_t index = 0; index < __size; ++index) {
-                __array[index] = value;
+                __array[index] = __other[index];
             }
         }
     }
@@ -217,11 +217,11 @@ class MdStaticArray {
         if (__size > s_threshold_size) {
 #pragma omp parallel for
             for (size_t index = 0; index < __size; ++index) {
-                __array[index] = value;
+                __array[index] = __other.__array[index];
             }
         } else {
             for (size_t index = 0; index < __size; ++index) {
-                __array[index] = value;
+                __array[index] = __other.__array[index];
             }
         }
     }
