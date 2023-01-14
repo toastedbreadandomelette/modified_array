@@ -15,12 +15,9 @@ int main(int argc, const char** argv) {
     size_t sz = 1048576 << 7;
     MdStaticArray<double>::set_threshold_size(1000000);
     MdStaticArray<double> d(sz, 12.22);
-    auto start = std::chrono::system_clock::now();
-    // #pragma omp parallel for
-    // for (size_t index = 0; index < c.get_size(); ++index) {
-    //     c[index] = 1.2;
-    // }
     MdStaticArray<double> c(sz, 1.2);
+    auto start = std::chrono::system_clock::now();
+    auto a = c * d;
     auto end = std::chrono::system_clock::now();
 
     std::cout << '\n';

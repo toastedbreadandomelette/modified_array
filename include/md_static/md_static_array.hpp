@@ -306,9 +306,15 @@ class MdStaticArray {
         init_array(__size);
         init_shape(__size);
 
+        if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
-            __array[index] = __other[index];
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = __other[index];
+            }
+        } else {
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = __other[index];
+            }
         }
         return *this;
     }
@@ -323,10 +329,15 @@ class MdStaticArray {
         init_array(__size);
         const auto shp = __other.get_shape();
         init_shape(shp, __other.shp_size);
-
+        if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __other.get_size(); ++index) {
-            __array[index] = __other.__array[index];
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = __other.__array[index];
+            }
+        } else {
+            for (size_t index = 0; index < __size; ++index) {
+                __array[index] = __other.__array[index];
+            }
         }
         return *this;
     }
@@ -351,13 +362,16 @@ class MdStaticArray {
                 } else {
                     delete[] __array;
                 }
+                __array = nullptr;
             }
 
             if (shape != nullptr) {
                 free(shape);
+                shape = nullptr;
             }
             if (skip_vec != nullptr) {
                 free(skip_vec);
+                skip_vec = nullptr;
             }
         }
     }
