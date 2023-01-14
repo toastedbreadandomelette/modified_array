@@ -1,8 +1,7 @@
 tasks:
-  - before:
-      "sudo apt install cmake"
-  - init:
-      "chmod +x build.sh"
+  - init: |
+      sudo apt install cmake
+      chmod +x build.sh
   - command:
       "./build.sh" 
 
