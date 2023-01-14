@@ -1,0 +1,13 @@
+tasks:
+  - before: sudo apt install cmake
+  - init: |
+      eval $(command gp env -e)
+      echo "Hello ${MY_VAR}"
+      chmod +x build.sh
+
+github:
+  prebuilds:
+    master: true
+    branches: false
+    addComments: true
+    addCheck: true
