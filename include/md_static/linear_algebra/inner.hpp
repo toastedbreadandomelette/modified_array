@@ -69,6 +69,7 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
             return MdStaticArray<_T3>(1, result);
         } else {
             _T3 value = 0;
+#pragma omp parallel for
             for (size_t i = 0; i < __other.get_size(); ++i) {
                 value += __first.__array[i] * __other.__array[i];
             }
@@ -119,7 +120,7 @@ template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::inner(
     const typename MdStaticArray<_T1>::reference &__first,
     const MdStaticArray<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::inner<_T1, _T2, _T3>(
+    return MdLinearAlgebra::inner<_T3, _T1, _T2>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
                            __first.shp_offset),
         __other, threads);
@@ -130,7 +131,7 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(
     const typename MdStaticArray<_T1>::reference &__first,
     const typename MdStaticArray<_T2>::reference &__other,
     const size_t threads) {
-    return MdLinearAlgebra::inner<_T1, _T2, _T3>(
+    return MdLinearAlgebra::inner<_T3, _T1, _T2>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
                            __first.shp_offset),
         MdStaticArray<_T1>(*__other.__array_reference, __other.offset,
@@ -143,7 +144,7 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(
     const MdStaticArray<_T1> &__first,
     const typename MdStaticArray<_T2>::reference &__other,
     const size_t threads) {
-    return MdLinearAlgebra::inner<_T1, _T2, _T3>(
+    return MdLinearAlgebra::inner<_T3, _T1, _T2>(
         __first,
         MdStaticArray<_T1>(*__other.__array_reference, __other.offset,
                            __other.shp_offset),

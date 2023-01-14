@@ -77,8 +77,15 @@ class MdStaticArray<_T>::reference {
     reference &operator=(const MdStaticArray<_T1> &value) {
         static_assert(value.get_size() == size);
         // assert shape sizes are equal too
-        for (size_t i = 0; i < size; ++i) {
-            __array_reference->__array[offset + i] = value.__array[i];
+        if (s_threshold_size < size) {
+            for (size_t i = 0; i < size; ++i) {
+                __array_reference->__array[offset + i] = value.__array[i];
+            }
+        } else {
+#pragma omp parallel for
+            for (size_t i = 0; i < size; ++i) {
+                __array_reference->__array[offset + i] = value.__array[i];
+            }
         }
 
         return *this;
@@ -90,8 +97,15 @@ class MdStaticArray<_T>::reference {
             __array_reference->__array[offset] = __other;
             return *this;
         }
-        for (size_t i = 0; i < size; ++i) {
-            __array_reference->__array[offset + i] = __other;
+        if (s_threshold_size < size) {
+            for (size_t i = 0; i < size; ++i) {
+                __array_reference->__array[offset + i] = __other;
+            }
+        } else {
+#pragma omp parallel for
+            for (size_t i = 0; i < size; ++i) {
+                __array_reference->__array[offset + i] = __other;
+            }
         }
         return *this;
     }

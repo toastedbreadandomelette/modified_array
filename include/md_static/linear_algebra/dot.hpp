@@ -103,7 +103,7 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
             }
 
             // A single valued answer.
-            return MdLinearAlgebra::inner<_T1, _T2, _T3>(__first, __other,
+            return MdLinearAlgebra::inner<_T3, _T1, _T2>(__first, __other,
                                                          thread_count);
         } else if (__other.get_shape_size() == 1) {
             // Note: first does have $n$ dimensions

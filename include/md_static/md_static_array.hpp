@@ -154,6 +154,8 @@ class MdStaticArray {
         : shape(nullptr), skip_vec(nullptr) {
         init_array(size);
         init_shape(size);
+
+#pragma omp parallel for
         for (size_t index = 0; index < size; ++index) {
             __array[index] = value;
         }
@@ -167,6 +169,8 @@ class MdStaticArray {
         }
         init_array(overall_size);
         init_shape(_shape.data(), _shape.size());
+
+#pragma omp parallel for
         for (size_t index = 0; index < __size; ++index) {
             __array[index] = value;
         }
@@ -178,9 +182,10 @@ class MdStaticArray {
         : shape(nullptr), skip_vec(nullptr) {
         init_array(__other.size());
         init_shape(__size);
-        size_t index = 0;
-        for (auto &elem : __other) {
-            __array[index++] = elem;
+
+#pragma omp parallel for
+        for (size_t index = 0; index < __size; ++index) {
+            __array[index] = __other[index];
         }
     }
 
@@ -189,6 +194,8 @@ class MdStaticArray {
         init_array(__other.get_size());
         const auto shp = __other.get_shape();
         init_shape(shp, __other.shp_size);
+
+#pragma omp parallel for
         for (size_t index = 0; index < __size; ++index) {
             __array[index] = __other.__array[index];
         }
@@ -256,6 +263,7 @@ class MdStaticArray {
         MdStaticArray<_T1> __result(__size);
         __result.init_shape(shape, shp_size);
 
+#pragma omp parallel for
         for (size_t index = 0; index < __size; ++index) {
             __result.__array[index] = __array[index];
         }
@@ -267,12 +275,15 @@ class MdStaticArray {
      * @brief Assignment operator (direct vector assignment)
      */
     MdStaticArray &operator=(const std::vector<_T> __other) {
+        skip_vec = nullptr;
+        shape = nullptr;
         __size = __other.size();
         init_array(__size);
         init_shape(__size);
-        size_t index = 0;
-        for (auto &elem : __other) {
-            __array[index++] = elem;
+
+#pragma omp parallel for
+        for (size_t index = 0; index < __size; ++index) {
+            __array[index] = __other[index];
         }
         return *this;
     }
@@ -281,10 +292,14 @@ class MdStaticArray {
      * @brief Assignment operator
      */
     MdStaticArray &operator=(const MdStaticArray &__other) {
+        skip_vec = nullptr;
+        shape = nullptr;
         __size = __other.get_size();
         init_array(__size);
         const auto shp = __other.get_shape();
         init_shape(shp, __other.shp_size);
+
+#pragma omp parallel for
         for (size_t index = 0; index < __other.get_size(); ++index) {
             __array[index] = __other.__array[index];
         }
@@ -1173,6 +1188,8 @@ MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {
     init_array(__other.size);
     init_shape(&__other.__array_reference->shape[__other.shp_offset],
                __other.__array_reference->shp_size - __other.shp_offset);
+
+#pragma omp parallel for
     for (size_t index = 0; index < __other.size; ++index) {
         __array[index] =
             __other.__array_reference->__array[__other.offset + index];
@@ -1188,6 +1205,8 @@ MdStaticArray<_T>::MdStaticArray(const reference &__other)
     init_array(__size);
     init_shape(&__other.__array_reference->shape[__other.shp_offset],
                __other.__array_reference->shp_size - __other.shp_offset);
+
+#pragma omp parallel for
     for (size_t index = 0; index < __size; ++index) {
         __array[index] =
             __other.__array_reference->__array[__other.offset + index];

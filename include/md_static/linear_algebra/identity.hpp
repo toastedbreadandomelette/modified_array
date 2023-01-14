@@ -6,6 +6,7 @@
 template <typename _T>
 MdStaticArray<_T> MdLinearAlgebra::identity(const size_t n) {
     MdStaticArray<_T> result({n, n}, 0);
+#pragma omp parallel for
     for (size_t index = 0; index < result.get_size(); index += (n + 1)) {
         result.__array[index] = 1;
     }

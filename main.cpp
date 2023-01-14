@@ -12,12 +12,11 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 400;
-    MdStaticArray<double> c({sz, sz, sz, 3}, 23);
-    MdStaticArray<double> d({sz, sz}, 0.22231232132);
+    size_t sz = 2048;
     MdStaticArray<double>::set_threshold_size(1000000);
     auto start = std::chrono::system_clock::now();
-    auto an = MdArrayUtility::cumulative_product<double>(c, 1);
+    MdStaticArray<double> c = MdArrayUtility::range<double>(0, 1.5, 0.00000002);
+    auto an = MdArrayUtility::sin<double>(c);
     auto end = std::chrono::system_clock::now();
 
     std::cout << '\n';

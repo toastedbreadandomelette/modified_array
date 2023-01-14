@@ -15,8 +15,9 @@ MdStaticArray<_T> MdArrayUtility::map(
     const size_t threshold_size = ::s_threshold_size;
 
     if (thread_count == 1 || size <= threshold_size) {
+#pragma omp parallel for
         for (size_t index = 0; index < size; ++index) {
-            result.__array[index] = function_exec(__values[index]);
+            result.__array[index] = function_exec(__values.__array[index]);
         }
     } else {
         std::vector<std::thread> st;

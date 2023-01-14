@@ -28,7 +28,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
     /// Split i or j into blocks
     const size_t block_size = 32;
 
-    if (__first.get_size() > s_threshold_size) {
+    if (__first.get_size() > s_threshold_size || threads > 1) {
         auto __multiply_internal = [&__first, &__other, block_size, &result](
                                        const size_t start, const size_t end) {
             size_t k_bound = 0, i_bound = 0, j_bound = 0;
@@ -44,6 +44,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
                     i_bound = std::min(i_block + block_size, end);
 
                     for (size_t i = i_block; i < i_bound; ++i) {
+                        const auto d = result.__array[i * oshape1];
                         for (size_t k = k_block; k < k_bound; ++k) {
                             const auto c = __first.__array[i * fshape1 + k];
 
