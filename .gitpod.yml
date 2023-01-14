@@ -9,3 +9,8 @@ github:
     branches: false
     addComments: true
     addCheck: true
+
+vscode:
+  extensions:
+    - notskm.clang-tidy
+    - twxs.cmake
