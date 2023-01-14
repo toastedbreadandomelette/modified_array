@@ -1,6 +1,6 @@
 tasks:
   - before: 
-  - init:
+  - init: |
       sudo apt install cmake
 
 github:
