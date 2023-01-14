@@ -1,6 +1,6 @@
 tasks:
   - init: |
-      sudo apt install cmake
+      sudo apt install cmake --assume-yes
       chmod +x build.sh
   - command:
       "./build.sh" 
