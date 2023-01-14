@@ -1,8 +1,7 @@
 tasks:
-  - before: sudo apt install cmake
+  - before: 
   - init: |
-      eval $(command gp env -e)
-      echo "Hello ${MY_VAR}"
+      sudo apt install cmake
       chmod +x build.sh
 
 github:
