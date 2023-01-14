@@ -1,7 +1,10 @@
 tasks:
-  - before: 
-  - init: |
+  - before:
       "sudo apt install cmake"
+  - init:
+      "chmod +x build.sh"
+  - command:
+      "./build.sh" 
 
 github:
   prebuilds:
