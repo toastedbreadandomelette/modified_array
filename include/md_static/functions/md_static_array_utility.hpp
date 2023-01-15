@@ -547,6 +547,32 @@ struct MdArrayUtility {
         const size_t axis = -1, const size_t thread_count = 16);
 
     /**
+     * @brief Cumulative sum of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @param axis Axis to perform cumulative sum on
+     * @param thread_count
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> diff(const MdStaticArray<_T> &__ndarray,
+                                  const size_t axis = -1,
+                                  const size_t thread_count = 16);
+
+    /**
+     * @brief Cumulative sum of an array.
+     * @tparam _T matrix type,
+     * @param __array input array
+     * @returns new array where each element is sum of all previous values in
+     * __array
+     */
+    template <typename _T>
+    static MdStaticArray<_T> diff(
+        const typename MdStaticArray<_T>::reference &__ndarray,
+        const size_t axis = -1, const size_t thread_count = 16);
+
+    /**
      * @brief Cumulative product of an array.
      * @tparam _T matrix type,
      * @param __array input array
@@ -765,8 +791,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename _T>
-    static MdStaticArray<double> exp2(
-        const MdStaticArray<_T> &__ndarray__reference);
+    static MdStaticArray<double> exp2(const MdStaticArray<_T> &__ndarray);
 
     /**
      * @brief Compute 2 raised to value from array of values
@@ -777,7 +802,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> exp2(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+        const typename MdStaticArray<_T>::reference &__ndarray);
 
     /**
      * @brief Compute reciprocal from array of values
@@ -809,8 +834,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename _T>
-    static MdStaticArray<double> sinh(
-        const MdStaticArray<_T> &__ndarray__reference);
+    static MdStaticArray<double> sinh(const MdStaticArray<_T> &__ndarray);
 
     /**
      * @brief Compute sinh from array of values
@@ -821,7 +845,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> sinh(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+        const typename MdStaticArray<_T>::reference &__ndarray);
 
     /**
      * @brief Compute sinh from array of values
@@ -853,8 +877,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename _T>
-    static MdStaticArray<double> tanh(
-        const MdStaticArray<_T> &__ndarray__reference);
+    static MdStaticArray<double> tanh(const MdStaticArray<_T> &__ndarray);
 
     /**
      * @brief Compute sinh from array of values

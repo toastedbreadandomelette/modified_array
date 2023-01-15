@@ -15,6 +15,7 @@
 #include "./functions/cumulative_product.hpp"
 #include "./functions/cumulative_sum.hpp"
 #include "./functions/deg_2_rad.hpp"
+#include "./functions/diff.hpp"
 #include "./functions/every.hpp"
 #include "./functions/exp2.hpp"
 #include "./functions/floor.hpp"
