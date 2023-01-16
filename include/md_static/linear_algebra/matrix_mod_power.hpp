@@ -9,6 +9,12 @@
 template <typename _T, class _T1>
 MdStaticArray<_T> MdLinearAlgebra::matrix_mod_power(
     const MdStaticArray<_T> &__matrix, const size_t pow, const size_t __mod) {
+    if (__matrix.get_shape_size() != 2) {
+        throw std::runtime_error(
+            "Given input should be of dimension 2. Found dimension " +
+            std::to_string(__matrix.get_shape_size()) + ".");
+    }
+
     if (__matrix.get_shape()[0] != __matrix.get_shape()[1]) {
         throw std::runtime_error(
             "Given input matrix should be square. Found dimension (" +

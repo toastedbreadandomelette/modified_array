@@ -123,6 +123,7 @@ class MdStaticArray {
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
+    friend struct MdArrayManipulate;
 
     friend std::ostream &operator<<(
         std::ostream &op, const typename MdStaticArray<_T>::reference &ot);

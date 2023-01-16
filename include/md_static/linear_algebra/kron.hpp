@@ -21,6 +21,23 @@ MdStaticArray<_T3> MdLinearAlgebra::kron(const MdStaticArray<_T1>& __first,
 
     size_t index = 0;
 
+    // First; perform single threaded one
+    const size_t* fsz_ptr = static_cast<size_t*>(
+        malloc(sizeof(size_t*) * __first.get_shape_size()));
+
+    for (size_t index = 0; index < __first.get_shape_size(); ++index) {
+        fsz_ptr[index] = 0;
+    }
+
+    const size_t* osz_ptr = static_cast<size_t*>(
+        malloc(sizeof(size_t*) * __other.get_shape_size()));
+
+    for (size_t index = 0; index < __other.get_shape_size(); ++index) {
+        osz_ptr[index] = 0;
+    }
+
+    auto __perform_kron_internal = [&result, &__first, &__other]() {};
+
     return result;
 }
 
