@@ -15,9 +15,11 @@ MdStaticArray<_T> MdArrayUtility::diff(const MdStaticArray<_T> &__ndarray,
             result.__array[index] =
                 __ndarray.__array[index + 1] - __ndarray.__array[index];
         }
+
+        return result;
     }
 
-    if (0 > axis || axis >= __ndarray.get_shape_size()) {
+    if (axis >= __ndarray.get_shape_size()) {
         throw std::runtime_error("Unknown axis " + std::to_string(axis) +
                                  " requested for diff.");
     }
