@@ -31,18 +31,16 @@ MdStaticArray<_T> MdArrayUtility::cumulative_product(
         return result;
     }
 
-    if (0 > axis || axis >= __ndarray.get_shape_size()) {
+    if (axis >= __ndarray.get_shape_size()) {
         throw std::runtime_error("Unknown axis " + std::to_string(axis) +
                                  " requested for cumulative sum.");
     }
 
-    const size_t skip_value =
-        __ndarray.skip_vec[__ndarray.get_shape_size() - 1 - axis];
+    const size_t skip_value = __ndarray.skip_vec[axis];
 
-    const size_t looping_value =
-        (__ndarray.get_shape_size() - 2 - axis <= __ndarray.get_shape_size())
-            ? __ndarray.skip_vec[__ndarray.get_shape_size() - 2 - axis]
-            : __ndarray.get_size();
+    const size_t looping_value = (axis - 1 <= __ndarray.get_shape_size())
+                                     ? __ndarray.skip_vec[axis - 1]
+                                     : __ndarray.get_size();
 
     std::vector<size_t> resultant_shape;
 

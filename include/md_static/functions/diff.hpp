@@ -27,20 +27,17 @@ MdStaticArray<_T> MdArrayUtility::diff(const MdStaticArray<_T> &__ndarray,
     std::vector<size_t> overall_shape;
 
     for (size_t index = 0; index < __ndarray.get_shape_size(); ++index) {
-        overall_shape.emplace_back(
-            __ndarray.get_shape()[index] -
-            (__ndarray.get_shape_size() - 1 - index == axis));
+        overall_shape.emplace_back(__ndarray.get_shape()[index] -
+                                   (index == axis));
     }
 
     MdStaticArray<_T> result(overall_shape, 0);
 
-    const size_t diff_index =
-        __ndarray.skip_vec[__ndarray.get_shape_size() - 1 - axis];
+    const size_t diff_index = __ndarray.skip_vec[axis];
 
     const size_t loop_times =
-        (__ndarray.get_shape_size() - 2 - axis <= __ndarray.get_shape_size()
-             ? __ndarray.skip_vec[__ndarray.get_shape_size() - 2 - axis]
-             : __ndarray.get_size());
+        (axis - 1 <= __ndarray.get_shape_size() ? __ndarray.skip_vec[axis - 1]
+                                                : __ndarray.get_size());
 
     auto __perform_diff_parallel = [&__ndarray, &result, diff_index,
                                     loop_times](const size_t thread_number,
