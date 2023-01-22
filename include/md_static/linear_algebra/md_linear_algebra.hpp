@@ -1062,7 +1062,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tres, typename _T>
     static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
-                      MdStaticArray<_Tres>>
+                      MdStaticArray<_Tres>, int>
     lu_decompose(const MdStaticArray<_T> &);
 
     /**
@@ -1073,7 +1073,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tres, typename _T>
     static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
-                      MdStaticArray<_Tres>>
+                      MdStaticArray<_Tres>, int>
     lu_decompose(const typename MdStaticArray<_T>::reference &);
 };
 

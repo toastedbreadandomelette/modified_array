@@ -6,7 +6,8 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename _Tres, typename _T>
-std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>>
+std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>,
+           int>
 MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
     if (__2darray.get_shape_size() != 2) {
         throw std::runtime_error(
@@ -23,6 +24,7 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
     MdStaticArray<_Tres> U({n, n}, 0);
     MdStaticArray<_Tres> P({n, n}, 0);
     MdStaticArray<_Tres> input(__2darray);
+    int sign = 1;
     MdStaticArray<size_t> permutation = MdArrayUtility::range<size_t>(n);
 
     for (size_t j = 0; j < n; ++j) {
@@ -42,6 +44,7 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
             // }
         }
         if (j != max_index) {
+            sign = -sign;
             std::swap(permutation.__array[j], permutation.__array[max_index]);
         }
 
@@ -85,11 +88,12 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
         P.__array[index * n + permutation.__array[index]] = index;
     }
 
-    return {L, U, P};
+    return {L, U, P, sign};
 }
 
 template <typename _Tres, typename _T>
-std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>>
+std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>,
+           int>
 MdLinearAlgebra::lu_decompose(
     const typename MdStaticArray<_T>::reference &__2darray_reference) {
     return MdLinearAlgebra::lu_decompose<_Tres>(MdStaticArray<_T>(
