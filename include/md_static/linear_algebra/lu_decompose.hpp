@@ -40,10 +40,10 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
                 max_index = i;
             }
 
-            // if (max_value <= std::numeric_limits<_Tres>::epsilon()) {
-            //     throw std::runtime_error(
-            //         "Error: Given matrix for LU is singular");
-            // }
+            if (max_value <= std::numeric_limits<_Tres>::epsilon()) {
+                throw std::runtime_error(
+                    "Error: Given matrix for LU is singular.");
+            }
         }
         if (j != max_index) {
             sign = -sign;
