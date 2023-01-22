@@ -47,7 +47,7 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
 
         size_t jmax = permutation.__array[j];
 
-        if (n - j - 1 < 64) {
+        if (n - j - 1 >= 16) {
 #pragma omp parallel for
             for (size_t i = j + 1; i < n; ++i) {
                 size_t imax = permutation.__array[i];
