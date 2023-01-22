@@ -36,10 +36,10 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
                 max_index = i;
             }
 
-            if (max_value <= std::numeric_limits<_Tres>::epsilon()) {
-                throw std::runtime_error(
-                    "Error: Given matrix for LU is singular");
-            }
+            // if (max_value <= std::numeric_limits<_Tres>::epsilon()) {
+            //     throw std::runtime_error(
+            //         "Error: Given matrix for LU is singular");
+            // }
         }
         if (j != max_index) {
             std::swap(permutation.__array[j], permutation.__array[max_index]);
@@ -47,16 +47,28 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
 
         size_t jmax = permutation.__array[j];
 
-        for (size_t i = j + 1; i < n; ++i) {
-            size_t imax = permutation.__array[i];
-            input.__array[imax * n + j] /= input.__array[jmax * n + j];
-            for (size_t k = j + 1; k < n; ++k) {
-                input.__array[imax * n + k] -=
-                    input.__array[imax * n + j] * input.__array[jmax * n + k];
+        if (n - j - 1 < 64) {
+#pragma omp parallel for
+            for (size_t i = j + 1; i < n; ++i) {
+                size_t imax = permutation.__array[i];
+                input.__array[imax * n + j] /= input.__array[jmax * n + j];
+                for (size_t k = j + 1; k < n; ++k) {
+                    input.__array[imax * n + k] -= input.__array[imax * n + j] *
+                                                   input.__array[jmax * n + k];
+                }
+            }
+        } else {
+            for (size_t i = j + 1; i < n; ++i) {
+                size_t imax = permutation.__array[i];
+                input.__array[imax * n + j] /= input.__array[jmax * n + j];
+                for (size_t k = j + 1; k < n; ++k) {
+                    input.__array[imax * n + k] -= input.__array[imax * n + j] *
+                                                   input.__array[jmax * n + k];
+                }
             }
         }
     }
-
+#pragma omp parallel for
     for (size_t j = 0; j < n; ++j) {
         L.__array[j * n + j] = 1;
         for (size_t i = j + 1; i < n; ++i) {
