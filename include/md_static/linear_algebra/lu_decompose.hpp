@@ -19,6 +19,8 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
         throw std::runtime_error("Given matrix should be square.");
     }
 
+    // Credits to algorithm: Rosetta code:
+    // https://rosettacode.org/wiki/LU_decomposition#C++
     size_t n = __2darray.get_shape()[0];
     MdStaticArray<_Tres> L({n, n}, 0);
     MdStaticArray<_Tres> U({n, n}, 0);
