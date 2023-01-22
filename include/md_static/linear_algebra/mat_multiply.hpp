@@ -5,7 +5,7 @@
 #include "./md_linear_algebra.hpp"
 
 /**
- * @note this is not as fast as MKL libraries but still
+ * @note this is not as fast as MKL libraries but still better
  */
 template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(

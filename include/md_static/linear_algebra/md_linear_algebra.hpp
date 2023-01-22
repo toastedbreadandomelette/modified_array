@@ -1035,6 +1035,46 @@ struct MdLinearAlgebra {
     static MdStaticArray<_T> matrix_mod_power(
         const typename MdStaticArray<_T>::reference &, const size_t power,
         const size_t __mod);
+
+    /**
+     * @brief Evaluate determinant of a matrix.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @returns new matrix
+     */
+    template <typename _T>
+    static long double det(const MdStaticArray<_T> &);
+
+    /**
+     * @brief Evaluate determinant of a matrix.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @returns new matrix
+     */
+    template <typename _T>
+    static long double det(const typename MdStaticArray<_T>::reference &);
+
+    /**
+     * @brief Evaluate LU factorization of a matrix.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @returns new matrix
+     */
+    template <typename _Tres, typename _T>
+    static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
+                      MdStaticArray<_Tres>>
+    lu_decompose(const MdStaticArray<_T> &);
+
+    /**
+     * @brief Evaluate LU factorization of a matrix.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @returns new matrix
+     */
+    template <typename _Tres, typename _T>
+    static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
+                      MdStaticArray<_Tres>>
+    lu_decompose(const typename MdStaticArray<_T>::reference &);
 };
 
 #endif

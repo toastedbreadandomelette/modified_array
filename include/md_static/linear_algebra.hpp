@@ -5,6 +5,7 @@
 #include "./linear_algebra/dot.hpp"
 #include "./linear_algebra/identity.hpp"
 #include "./linear_algebra/inner.hpp"
+#include "./linear_algebra/lu_decompose.hpp"
 #include "./linear_algebra/mat_mod_multiply.hpp"
 #include "./linear_algebra/mat_multiply.hpp"
 #include "./linear_algebra/matrix_chain_multiply.hpp"
