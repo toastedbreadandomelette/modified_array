@@ -2,6 +2,7 @@
 #ifndef _LINEAR_ALGEBRA_HPP_
 #define _LINEAR_ALGEBRA_HPP_
 
+#include "./linear_algebra/c_det.hpp"
 #include "./linear_algebra/det.hpp"
 #include "./linear_algebra/dot.hpp"
 #include "./linear_algebra/identity.hpp"

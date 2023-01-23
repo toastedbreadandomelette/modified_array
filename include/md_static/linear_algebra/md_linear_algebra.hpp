@@ -1075,6 +1075,24 @@ struct MdLinearAlgebra {
     static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
                       MdStaticArray<_Tres>, int>
     lu_decompose(const typename MdStaticArray<_T>::reference &);
+
+    /**
+     * @brief Evaluate determinant of a matrix.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @returns new matrix
+     */
+    template <typename _T>
+    static clongdouble c_det(const MdStaticArray<_T> &);
+
+    /**
+     * @brief Evaluate determinant of a matrix.
+     * @tparam _T type of array
+     * @param __first first matrix
+     * @returns new matrix
+     */
+    template <typename _T>
+    static clongdouble c_det(const typename MdStaticArray<_T>::reference &);
 };
 
 #endif
