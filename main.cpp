@@ -13,29 +13,10 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 1024;
-    MdStaticArray<double>::set_threshold_size(1000000);
-    MdStaticArray<cdouble> c({2, sz, sz}, 12 + 24.3_i),
-        d({2, sz, sz}, 12 + 2.34_i);
-    // c[0][0] = 11;
-    // c[0][1] = 9;
-    // c[0][2] = 24;
-    // c[0][3] = 2 + 0.2112e-7_i;
-
-    // c[1][0] = 1;
-    // c[1][1] = 5 + 66.2112e-7_i;
-    // c[1][2] = 2;
-    // c[1][3] = 6;
-
-    // c[2][0] = 3;
-    // c[2][1] = 17;
-    // c[2][2] = 18;
-    // c[2][3] = 1;
-
-    // c[3][0] = 2;
-    // c[3][1] = 5;
-    // c[3][2] = 7;
-    // c[3][3] = 1;
+    size_t sz = 128;
+    MdStaticArray<double>::set_threshold_size(10000);
+    MdStaticArray<cdouble> c({sz, sz, sz}, 12 + 24.3_i),
+        d({sz, sz, sz}, 12 + 2.34_i);
 
     std::cout << c.get_shape()[1] << '\n';
     auto start = std::chrono::system_clock::now();

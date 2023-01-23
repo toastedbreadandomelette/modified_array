@@ -28,11 +28,9 @@ struct MdComplex {
 
     inline operator _T() const { return real; }
 
-    // const
-
     template <typename _T1>
     inline operator MdComplex() const {
-        return {real, img};
+        return MdComplex<_T>(real, img);
     }
 
     template <typename _T1>

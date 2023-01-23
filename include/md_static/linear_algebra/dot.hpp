@@ -64,6 +64,7 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
                 // iterate over every 2D-layer.
                 for (size_t other_block = 0; other_block < __other.get_size();
                      other_block += other_base_matrix_size) {
+                    const auto f = __other.__array[other_block];
                     // Iterator over second row of __first and column of __other
                     // array (note that $j$ and $other_col$ loop are swapped for
                     // performance reasons, to fulfil offset, we add $other_col$

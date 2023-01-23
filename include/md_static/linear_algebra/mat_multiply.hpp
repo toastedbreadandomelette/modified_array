@@ -26,7 +26,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_multiply(
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks
-    const size_t block_size = 32;
+    const size_t block_size = 64;
 
     if (__first.get_size() > s_threshold_size || threads > 1) {
         auto __multiply_internal = [&__first, &__other, block_size, &result](
