@@ -69,6 +69,11 @@ struct MdComplex {
     }
 
     template <typename _T1>
+    inline auto operator-() const {
+        return {-real, -img};
+    }
+
+    template <typename _T1>
     inline auto operator-(const _T1& __other) const {
         return {real - __other, img};
     }
@@ -88,13 +93,13 @@ struct MdComplex {
 
     template <typename _T1>
     inline auto operator*(const MdComplex<_T1>& __other) const {
-        return {real * __other.real - img * __other.img,
-                real * __other.img + img * __other.real};
+        return MdComplex<_T>(real * __other.real - img * __other.img,
+                             real * __other.img + img * __other.real);
     }
 
     template <typename _T1>
     inline auto operator*(const _T1& __other) const {
-        return {real * __other, img * __other};
+        return MdComplex<_T>(real * __other, img * __other);
     }
 
     template <typename _T1>
@@ -115,15 +120,16 @@ struct MdComplex {
 
     template <typename _T1>
     inline auto operator/(const MdComplex<_T1>& __other) const {
-        return {(real * __other.real + img * __other.img) /
-                    (__other.real * __other.real + __other.img * __other.img),
-                (real * __other.img - img * __other.real) /
-                    (__other.real * __other.real + __other.img * __other.img)};
+        return MdComplex<_T>(
+            (real * __other.real + img * __other.img) /
+                (__other.real * __other.real + __other.img * __other.img),
+            (real * __other.img - img * __other.real) /
+                (__other.real * __other.real + __other.img * __other.img));
     }
 
     template <typename _T1>
     inline auto operator/(const _T1& __other) const {
-        return {real / __other, img / __other};
+        return MdComplex<_T>(real / __other, img / __other);
     }
 
     template <typename _T1>
@@ -143,9 +149,15 @@ struct MdComplex {
     }
 
     template <typename _T1>
-    static MdComplex<_T1> from_polar(const std::pair<double, double>& polar) {
+    static inline MdComplex<_T1> from_polar(
+        const std::pair<double, double>& polar) {
         return {polar.first * std::cos(polar.second),
                 polar.first * std::sin(polar.second)};
+    }
+
+    template <typename _T1>
+    static inline MdComplex<_T1> conj(const MdComplex<_T1>& __other) {
+        return MdComplex<_T1>(__other.real, -__other.img);
     }
 
     inline double sq_abs() const { return real * real + img * img; }
@@ -174,7 +186,14 @@ namespace std {
 template <typename _T>
 inline MdComplex<_T> sqrt(const MdComplex<_T>& __other) {
     const auto polar = __other.to_polar();
-    MdComplex<_T>::from_polar(std::sqrt(polar.first), polar.second / 2);
+    return MdComplex<_T>::from_polar(std::sqrt(polar.first), polar.second / 2);
+}
+
+template <typename _T>
+inline MdComplex<_T> pow(const MdComplex<_T>& __other, double value) {
+    const auto polar = __other.to_polar();
+    return MdComplex<_T>::from_polar(std::pow(polar.first, value),
+                                     polar.second * value);
 }
 
 template <typename _T>
@@ -183,27 +202,31 @@ inline MdComplex<_T> abs(const MdComplex<_T>& __other) {
 }
 }  // namespace std
 
-template <typename _T, typename _T1>
+template <typename _T, typename _T1,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator+(const _T1& __other, const MdComplex<_T>& __first) {
-    return MdComplex<_T1>(__other + __first.real, __first.img);
+    return MdComplex<_T>(__other + __first.real, __first.img);
 }
 
-template <typename _T, typename _T1>
+template <typename _T, typename _T1,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline MdComplex<_T1> operator-(const _T1& __other,
                                 const MdComplex<_T>& __first) {
-    return MdComplex<_T1>(__other - __first.real, -__first.img);
+    return MdComplex<_T>(__other - __first.real, -__first.img);
 }
 
-template <typename _T, typename _T1>
+template <typename _T, typename _T1,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator*(const _T1& __other, const MdComplex<_T>& __first) {
-    return MdComplex<_T1>(__first.real * __other, __first.img * __other);
+    return MdComplex<_T>(__first.real * __other, __first.img * __other);
 }
 
-template <typename _T, typename _T1>
+template <typename _T, typename _T1,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator/(const _T1& __other, const MdComplex<_T>& __first) {
     const auto sq_abs = __first.real * __first.real + __first.img * __first.img;
-    return MdComplex<_T1>(__other * __first.real) / sq_abs,
-            -(__other * __first.img) / sq_abs);
+    return MdComplex<_T>((__other * __first.real) / sq_abs,
+                         -((__other * __first.img) / sq_abs));
 }
 
 inline MdComplex<long double> operator"" _i(long double img) {
@@ -230,9 +253,5 @@ inline constexpr MdComplex<char> operator"" _i(char img) {
 using cdouble = MdComplex<double>;
 using clongdouble = MdComplex<long double>;
 using cfloat = MdComplex<float>;
-// using cint = MdComplex<int>;
-// using cint64 = MdComplex<int64_t>;
-// using cint16 = MdComplex<int16_t>;
-// using cint8 = MdComplex<int8_t>;
 
 #endif
