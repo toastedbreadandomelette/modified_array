@@ -97,7 +97,7 @@ template <typename _Tres, typename _T>
 std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>,
            int>
 MdLinearAlgebra::lu_decompose(
-    const typename MdStaticArray<_T>::reference &__2darray_reference) {
+    const MdStaticArrayReference<_T> &__2darray_reference) {
     return MdLinearAlgebra::lu_decompose<_Tres>(MdStaticArray<_T>(
         *__2darray_reference.__array_reference, __2darray_reference.offset,
         __2darray_reference.shp_offset));

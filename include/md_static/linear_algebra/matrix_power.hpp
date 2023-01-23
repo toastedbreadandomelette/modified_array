@@ -39,7 +39,7 @@ MdStaticArray<_T> MdLinearAlgebra::matrix_power(
 
 template <typename _T, class _T1>
 MdStaticArray<_T> MdLinearAlgebra::matrix_power(
-    const typename MdStaticArray<_T>::reference &__matrix, size_t power) {
+    const MdStaticArrayReference<_T> &__matrix, size_t power) {
     return MdLinearAlgebra::matrix_power<_T>(
         MdStaticArray<_T>(*__matrix.__array_reference, __matrix.offset,
                           __matrix.shp_offset),

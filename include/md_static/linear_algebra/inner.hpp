@@ -118,7 +118,7 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
 
 template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::inner(
-    const typename MdStaticArray<_T1>::reference &__first,
+    const MdStaticArrayReference<_T1> &__first,
     const MdStaticArray<_T2> &__other, const size_t threads) {
     return MdLinearAlgebra::inner<_T3, _T1, _T2>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
@@ -128,9 +128,8 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(
 
 template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::inner(
-    const typename MdStaticArray<_T1>::reference &__first,
-    const typename MdStaticArray<_T2>::reference &__other,
-    const size_t threads) {
+    const MdStaticArrayReference<_T1> &__first,
+    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
     return MdLinearAlgebra::inner<_T3, _T1, _T2>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
                            __first.shp_offset),
@@ -142,8 +141,7 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(
 template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::inner(
     const MdStaticArray<_T1> &__first,
-    const typename MdStaticArray<_T2>::reference &__other,
-    const size_t threads) {
+    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
     return MdLinearAlgebra::inner<_T3, _T1, _T2>(
         __first,
         MdStaticArray<_T1>(*__other.__array_reference, __other.offset,

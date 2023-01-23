@@ -40,10 +40,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(
-        const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+    static MdStaticArray<_T3> dot(const MdStaticArray<_T1> &__first,
+                                  const MdStaticArrayReference<_T2> &__other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -60,9 +59,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+    static MdStaticArray<_T3> dot(const MdStaticArrayReference<_T1> &__first,
+                                  const MdStaticArray<_T2> &__other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -79,10 +78,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+    static MdStaticArray<_T3> dot(const MdStaticArrayReference<_T1> &__first,
+                                  const MdStaticArrayReference<_T2> &__other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -119,8 +117,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other,
         const MdStaticArray<arg> &...arguments);
 
     /**
@@ -140,7 +138,7 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
+        const MdStaticArrayReference<_T2> &__other,
         const MdStaticArray<arg> &...arguments);
 
     /**
@@ -159,7 +157,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other,
         const MdStaticArray<arg> &...arguments);
 
@@ -180,7 +178,7 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
         const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -198,9 +196,9 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -219,8 +217,8 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -238,9 +236,9 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -276,8 +274,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2>
     static MdStaticArray<_Tfinal> multi_dot(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -295,7 +293,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2>
     static MdStaticArray<_Tfinal> multi_dot(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other);
 
     /**
@@ -314,8 +312,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArray<_T1> &,
-        const typename MdStaticArray<_T2>::reference &);
+        const MdStaticArray<_T1> &, const MdStaticArrayReference<_T2> &);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -352,8 +349,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other,
         const MdStaticArray<arg> &...arguments);
 
     /**
@@ -373,7 +370,7 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
+        const MdStaticArrayReference<_T2> &__other,
         const MdStaticArray<arg> &...arguments);
 
     /**
@@ -392,7 +389,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other,
         const MdStaticArray<arg> &...arguments);
 
@@ -413,7 +410,7 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
         const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -431,9 +428,9 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -452,8 +449,8 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -471,9 +468,9 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other,
-        const typename MdStaticArray<arg>::reference &...arguments);
+        const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -509,8 +506,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -528,7 +525,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other);
 
     /**
@@ -547,8 +544,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename _T1, typename _T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &,
-        const typename MdStaticArray<_T2>::reference &);
+        const MdStaticArray<_T1> &, const MdStaticArrayReference<_T2> &);
 
     /**
      * @brief Multiply two matrices
@@ -587,7 +583,7 @@ struct MdLinearAlgebra {
      */
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
 
     /**
@@ -608,8 +604,7 @@ struct MdLinearAlgebra {
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+        const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -628,9 +623,8 @@ struct MdLinearAlgebra {
      */
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> mat_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -678,7 +672,7 @@ struct MdLinearAlgebra {
                                         std::is_integral<_T2>::value &&
                                         std::is_integral<_T3>::value>::type>
     static MdStaticArray<_T3> mat_mod_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other, const size_t __mod,
         const size_t threads = 16);
 
@@ -704,8 +698,8 @@ struct MdLinearAlgebra {
                                         std::is_integral<_T3>::value>::type>
     static MdStaticArray<_T3> mat_mod_multiply(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t __mod, const size_t threads = 16);
+        const MdStaticArrayReference<_T2> &__other, const size_t __mod,
+        const size_t threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -728,9 +722,9 @@ struct MdLinearAlgebra {
                                         std::is_integral<_T2>::value &&
                                         std::is_integral<_T3>::value>::type>
     static MdStaticArray<_T3> mat_mod_multiply(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t __mod, const size_t threads = 16);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other, const size_t __mod,
+        const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -768,9 +762,9 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+    static MdStaticArray<_T3> inner(const MdStaticArrayReference<_T1> &__first,
+                                    const MdStaticArray<_T2> &__other,
+                                    const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -788,10 +782,9 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(
-        const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+    static MdStaticArray<_T3> inner(const MdStaticArray<_T1> &__first,
+                                    const MdStaticArrayReference<_T2> &__other,
+                                    const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -809,10 +802,9 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+    static MdStaticArray<_T3> inner(const MdStaticArrayReference<_T1> &__first,
+                                    const MdStaticArrayReference<_T2> &__other,
+                                    const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -850,9 +842,9 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+    static MdStaticArray<_T3> outer(const MdStaticArrayReference<_T1> &__first,
+                                    const MdStaticArray<_T2> &__other,
+                                    const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -870,10 +862,9 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(
-        const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+    static MdStaticArray<_T3> outer(const MdStaticArray<_T1> &__first,
+                                    const MdStaticArrayReference<_T2> &__other,
+                                    const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -891,10 +882,9 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t threads = 16);
+    static MdStaticArray<_T3> outer(const MdStaticArrayReference<_T1> &__first,
+                                    const MdStaticArrayReference<_T2> &__other,
+                                    const size_t threads = 16);
 
     /**
      * @brief Create a identity matrix
@@ -921,8 +911,7 @@ struct MdLinearAlgebra {
      * @return true if matrix is identity, else false
      */
     template <typename _T>
-    static bool is_identity(
-        const typename MdStaticArray<_T>::reference &__other);
+    static bool is_identity(const MdStaticArrayReference<_T> &__other);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -950,10 +939,9 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t total_threads = 16);
+    static MdStaticArray<_T3> kron(const MdStaticArrayReference<_T1> &__first,
+                                   const MdStaticArrayReference<_T2> &__other,
+                                   const size_t total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -966,9 +954,9 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const MdStaticArray<_T2> &__other, const size_t total_threads = 16);
+    static MdStaticArray<_T3> kron(const MdStaticArrayReference<_T1> &__first,
+                                   const MdStaticArray<_T2> &__other,
+                                   const size_t total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -981,10 +969,9 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(
-        const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t total_threads = 16);
+    static MdStaticArray<_T3> kron(const MdStaticArray<_T1> &__first,
+                                   const MdStaticArrayReference<_T2> &__other,
+                                   const size_t total_threads = 16);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -1007,8 +994,8 @@ struct MdLinearAlgebra {
      */
     template <typename _T, class = typename std::enable_if<
                                std::is_floating_point<_T>::value>::type>
-    static MdStaticArray<_T> matrix_power(
-        const typename MdStaticArray<_T>::reference &, const size_t power);
+    static MdStaticArray<_T> matrix_power(const MdStaticArrayReference<_T> &,
+                                          const size_t power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -1033,7 +1020,7 @@ struct MdLinearAlgebra {
     template <typename _T, class = typename std::enable_if<
                                std::is_integral<_T>::value>::type>
     static MdStaticArray<_T> matrix_mod_power(
-        const typename MdStaticArray<_T>::reference &, const size_t power,
+        const MdStaticArrayReference<_T> &, const size_t power,
         const size_t __mod);
 
     /**
@@ -1052,7 +1039,7 @@ struct MdLinearAlgebra {
      * @returns new matrix
      */
     template <typename _T>
-    static long double det(const typename MdStaticArray<_T>::reference &);
+    static long double det(const MdStaticArrayReference<_T> &);
 
     /**
      * @brief Evaluate LU factorization of a matrix.
@@ -1074,7 +1061,7 @@ struct MdLinearAlgebra {
     template <typename _Tres, typename _T>
     static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
                       MdStaticArray<_Tres>, int>
-    lu_decompose(const typename MdStaticArray<_T>::reference &);
+    lu_decompose(const MdStaticArrayReference<_T> &);
 
     /**
      * @brief Evaluate determinant of a matrix.
@@ -1092,7 +1079,7 @@ struct MdLinearAlgebra {
      * @returns new matrix
      */
     template <typename _T>
-    static clongdouble c_det(const typename MdStaticArray<_T>::reference &);
+    static clongdouble c_det(const MdStaticArrayReference<_T> &);
 };
 
 #endif

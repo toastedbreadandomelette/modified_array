@@ -53,8 +53,8 @@ _T MdArrayUtility::accumulate_and_merge_fn(const MdStaticArray<_T> &__values,
 
 template <typename _T, typename _func, typename _merge_func>
 _T MdArrayUtility::accumulate_and_merge_fn(
-    const typename MdStaticArray<_T>::reference &__values,
-    const _func &function_exec, const _merge_func &merge_func, const _T init) {
+    const MdStaticArrayReference<_T> &__values, const _func &function_exec,
+    const _merge_func &merge_func, const _T init) {
     return MdArrayUtility::accumulate_and_merge_fn<_T, _func, _merge_func>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,
                           __values.shp_offset),

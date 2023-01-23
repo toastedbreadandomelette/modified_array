@@ -58,7 +58,7 @@ MdStaticArray<_T> MdArrayUtility::mod_pow(const uint64_t n,
 
 template <typename _T, typename _T1>
 MdStaticArray<_T> MdArrayUtility::mod_pow(
-    const uint64_t n, const typename MdStaticArray<_T>::reference &__values,
+    const uint64_t n, const MdStaticArrayReference<_T> &__values,
     const size_t _mod) {
     return mod_pow<_T, _T1>(
         n,
@@ -69,7 +69,7 @@ MdStaticArray<_T> MdArrayUtility::mod_pow(
 
 template <typename _T, typename _T1>
 MdStaticArray<_T> MdArrayUtility::mod_pow(
-    const typename MdStaticArray<_T>::reference &__values, const size_t power,
+    const MdStaticArrayReference<_T> &__values, const size_t power,
     const size_t _mod) {
     return mod_pow<_T, _T1>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,

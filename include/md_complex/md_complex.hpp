@@ -28,6 +28,8 @@ struct MdComplex {
 
     inline operator _T() const { return real; }
 
+    // const
+
     template <typename _T1>
     inline operator MdComplex() const {
         return {real, img};
@@ -42,12 +44,12 @@ struct MdComplex {
 
     template <typename _T1>
     inline auto operator+(const MdComplex<_T1>& __other) const {
-        return {real + __other.real, img + __other.img};
+        return MdComplex(real + __other.real, img + __other.img);
     }
 
-    template <typename _T1>
+    template <typename _T1, class>
     inline auto operator+(const _T1& __other) const {
-        return {real + __other, img};
+        return MdComplex(real + __other, img);
     }
 
     template <typename _T1>
@@ -65,17 +67,17 @@ struct MdComplex {
 
     template <typename _T1>
     inline auto operator-(const MdComplex<_T1>& __other) const {
-        return {real - __other.real, img - __other.img};
+        return MdComplex(real - __other.real, img - __other.img);
     }
 
     template <typename _T1>
     inline auto operator-() const {
-        return {-real, -img};
+        return MdComplex(-real, -img);
     }
 
     template <typename _T1>
     inline auto operator-(const _T1& __other) const {
-        return {real - __other, img};
+        return MdComplex(real - __other, img);
     }
 
     template <typename _T1>
@@ -120,11 +122,11 @@ struct MdComplex {
 
     template <typename _T1>
     inline auto operator/(const MdComplex<_T1>& __other) const {
+        const auto sq_abs =
+            (__other.real * __other.real + __other.img * __other.img);
         return MdComplex<_T>(
-            (real * __other.real + img * __other.img) /
-                (__other.real * __other.real + __other.img * __other.img),
-            (real * __other.img - img * __other.real) /
-                (__other.real * __other.real + __other.img * __other.img));
+            (real * __other.real + img * __other.img) / sq_abs,
+            (real * __other.img - img * __other.real) / sq_abs);
     }
 
     template <typename _T1>
@@ -231,20 +233,6 @@ inline auto operator/(const _T1& __other, const MdComplex<_T>& __first) {
 
 inline MdComplex<long double> operator"" _i(long double img) {
     MdComplex<long double> c;
-    c.real = 0;
-    c.img = img;
-    return c;
-}
-
-inline constexpr MdComplex<size_t> operator"" _i(size_t img) {
-    MdComplex<size_t> c;
-    c.real = 0;
-    c.img = img;
-    return c;
-}
-
-inline constexpr MdComplex<char> operator"" _i(char img) {
-    MdComplex<char> c;
     c.real = 0;
     c.img = img;
     return c;

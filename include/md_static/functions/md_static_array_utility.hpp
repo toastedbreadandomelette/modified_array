@@ -29,7 +29,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> map(
-        const typename MdStaticArray<_T>::reference &__values,
+        const MdStaticArrayReference<_T> &__values,
         const std::function<_T(const _T &)> &function_exec);
 
     /**
@@ -57,7 +57,7 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename _T, typename _func>
-    static _T reduce(const typename MdStaticArray<_T>::reference &__values,
+    static _T reduce(const MdStaticArrayReference<_T> &__values,
                      const _func &function_exec, const _T init);
 
     /**
@@ -90,9 +90,8 @@ struct MdArrayUtility {
      */
     template <typename _T, typename _func, typename _merge_func>
     static _T accumulate_and_merge_fn(
-        const typename MdStaticArray<_T>::reference &__values,
-        const _func &function_exec, const _merge_func &merge_func,
-        const _T init);
+        const MdStaticArrayReference<_T> &__values, const _func &function_exec,
+        const _merge_func &merge_func, const _T init);
 
     /**
      * @brief sqrt of all values in list __values
@@ -108,8 +107,7 @@ struct MdArrayUtility {
      * @returns List of values
      */
     template <typename _T>
-    static MdStaticArray<_T> sqrt(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> sqrt(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief absolute values of all values in list __values
@@ -125,8 +123,7 @@ struct MdArrayUtility {
      * @returns List of values
      */
     template <typename _T>
-    static MdStaticArray<_T> abs(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> abs(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief Sum of all the values in the list __values
@@ -144,7 +141,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static _T sum(const typename MdStaticArray<_T>::reference &__values,
+    static _T sum(const MdStaticArrayReference<_T> &__values,
                   const _T init = 0);
 
     /**
@@ -164,9 +161,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double mean(
-        const typename MdStaticArray<_T>::reference &__values,
-        const _T init = 0);
+    static long double mean(const MdStaticArrayReference<_T> &__values,
+                            const _T init = 0);
 
     /**
      * @brief Root Mean Square of all the values in the list __values
@@ -185,9 +181,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double rms(
-        const typename MdStaticArray<_T>::reference &__values,
-        const _T init = 0);
+    static long double rms(const MdStaticArrayReference<_T> &__values,
+                           const _T init = 0);
 
     /**
      * @brief Standard Deviation of all the values in the list __values
@@ -205,8 +200,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double std_dev(
-        const typename MdStaticArray<_T>::reference &__values);
+    static long double std_dev(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute log of values to the base 10
@@ -218,8 +212,7 @@ struct MdArrayUtility {
      * @brief compute log of values to the base 10
      */
     template <typename _T>
-    static MdStaticArray<_T> log10(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> log10(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute log of values to the base 2
@@ -231,8 +224,7 @@ struct MdArrayUtility {
      * @brief compute log of values to the base 2
      */
     template <typename _T>
-    static MdStaticArray<_T> log2(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> log2(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute natural logarithm of valuess
@@ -244,8 +236,7 @@ struct MdArrayUtility {
      * @brief compute natural logarithm of valuess
      */
     template <typename _T>
-    static MdStaticArray<_T> log(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> log(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute mod power of integers
@@ -260,9 +251,8 @@ struct MdArrayUtility {
      */
     template <typename _T, class = typename std::enable_if<
                                std::is_integral<_T>::value>::type>
-    static MdStaticArray<_T> mod_pow(
-        const typename MdStaticArray<_T>::reference &__values,
-        const size_t power, const size_t _mod);
+    static MdStaticArray<_T> mod_pow(const MdStaticArrayReference<_T> &__values,
+                                     const size_t power, const size_t _mod);
 
     /**
      * @brief compute mod power of integer raise to array of values
@@ -288,9 +278,9 @@ struct MdArrayUtility {
      */
     template <typename _T, class = typename std::enable_if<
                                std::is_integral<_T>::value>::type>
-    static MdStaticArray<_T> mod_pow(
-        const uint64_t n, const typename MdStaticArray<_T>::reference &__values,
-        const size_t _mod);
+    static MdStaticArray<_T> mod_pow(const uint64_t n,
+                                     const MdStaticArrayReference<_T> &__values,
+                                     const size_t _mod);
 
     /**
      * @brief compute power of values
@@ -311,8 +301,8 @@ struct MdArrayUtility {
      * @returns new arrays with value raise to power
      */
     template <typename _T>
-    static MdStaticArray<_T> pow(
-        const typename MdStaticArray<_T>::reference &__values, double power);
+    static MdStaticArray<_T> pow(const MdStaticArrayReference<_T> &__values,
+                                 double power);
 
     /**
      * @brief compute sine of values, given in radian
@@ -330,8 +320,7 @@ struct MdArrayUtility {
      * @returns array of computed sine values
      */
     template <typename _T>
-    static MdStaticArray<_T> sin(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> sin(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute sine of values, given in radian
@@ -349,8 +338,7 @@ struct MdArrayUtility {
      * @returns array of computed sine values
      */
     template <typename _T>
-    static MdStaticArray<_T> cos(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> cos(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute cosine of values, given in radian
@@ -368,8 +356,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> tan(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> tan(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute cotangent of values, given in radian
@@ -387,8 +374,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> cot(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> cot(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute secant of values, given in radian
@@ -406,8 +392,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> sec(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> sec(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute cosecant of values, given in radian
@@ -425,8 +410,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> cosec(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> cosec(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute inverse sin of values, given in radian
@@ -444,8 +428,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> arcsin(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> arcsin(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute inverse cos of values, given in radian
@@ -463,8 +446,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> arccos(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> arccos(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief compute tan inverse of values, given in radian
@@ -482,8 +464,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename _T>
-    static MdStaticArray<_T> arctan(
-        const typename MdStaticArray<_T>::reference &__values);
+    static MdStaticArray<_T> arctan(const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief Generate evenly spaced values
@@ -518,7 +499,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> transpose(
-        const typename MdStaticArray<_T>::reference &__values);
+        const MdStaticArrayReference<_T> &__values);
 
     /**
      * @brief Cumulative sum of an array.
@@ -543,8 +524,8 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> cumulative_sum(
-        const typename MdStaticArray<_T>::reference &__array,
-        const size_t axis = -1, const size_t thread_count = 16);
+        const MdStaticArrayReference<_T> &__array, const size_t axis = -1,
+        const size_t thread_count = 16);
 
     /**
      * @brief Cumulative sum of an array.
@@ -568,9 +549,9 @@ struct MdArrayUtility {
      * __array
      */
     template <typename _T>
-    static MdStaticArray<_T> diff(
-        const typename MdStaticArray<_T>::reference &__ndarray,
-        const size_t axis = -1, const size_t thread_count = 16);
+    static MdStaticArray<_T> diff(const MdStaticArrayReference<_T> &__ndarray,
+                                  const size_t axis = -1,
+                                  const size_t thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -595,8 +576,8 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> cumulative_product(
-        const typename MdStaticArray<_T>::reference &__array,
-        const size_t axis = -1, const size_t thread_count = 16);
+        const MdStaticArrayReference<_T> &__array, const size_t axis = -1,
+        const size_t thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -621,8 +602,8 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> nan_cumulative_sum(
-        const typename MdStaticArray<_T>::reference &__array,
-        const size_t axis = -1, const size_t thread_count = 16);
+        const MdStaticArrayReference<_T> &__array, const size_t axis = -1,
+        const size_t thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -647,8 +628,8 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> nan_cumulative_product(
-        const typename MdStaticArray<_T>::reference &__array,
-        const size_t axis = -1, const size_t thread_count = 16);
+        const MdStaticArrayReference<_T> &__array, const size_t axis = -1,
+        const size_t thread_count = 16);
 
     /**
      * @brief Convert radian to degrees of an array.
@@ -670,7 +651,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> rad_2_deg(
-        const typename MdStaticArray<_T>::reference &__array);
+        const MdStaticArrayReference<_T> &__array);
 
     /**
      * @brief Convert radian to degree of an array.
@@ -691,7 +672,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<_T> deg_2_rad(
-        const typename MdStaticArray<_T>::reference &__array);
+        const MdStaticArrayReference<_T> &__array);
 
     /**
      * @brief Calculate floor of an array.
@@ -711,8 +692,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename _T>
-    static MdStaticArray<_T> floor(
-        const typename MdStaticArray<_T>::reference &__array);
+    static MdStaticArray<_T> floor(const MdStaticArrayReference<_T> &__array);
 
     /**
      * @brief Calculate ceil of an array.
@@ -732,8 +712,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename _T>
-    static MdStaticArray<_T> ceil(
-        const typename MdStaticArray<_T>::reference &__array);
+    static MdStaticArray<_T> ceil(const MdStaticArrayReference<_T> &__array);
 
     /**
      * @brief Check if every value satisfies the condition
@@ -755,9 +734,9 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename _T>
-    static bool every(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference,
-        const std::function<bool(const _T &)> &, const size_t threads = 16);
+    static bool every(const MdStaticArrayReference<_T> &__ndarray__reference,
+                      const std::function<bool(const _T &)> &,
+                      const size_t threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
@@ -779,9 +758,9 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename _T>
-    static bool some(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference,
-        const std::function<bool(const _T &)> &, const size_t threads = 16);
+    static bool some(const MdStaticArrayReference<_T> &__ndarray__reference,
+                     const std::function<bool(const _T &)> &,
+                     const size_t threads = 16);
 
     /**
      * @brief Compute 2 raised to value from array of values
@@ -802,7 +781,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> exp2(
-        const typename MdStaticArray<_T>::reference &__ndarray);
+        const MdStaticArrayReference<_T> &__ndarray);
 
     /**
      * @brief Compute reciprocal from array of values
@@ -824,7 +803,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> reciprocal(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+        const MdStaticArrayReference<_T> &__ndarray__reference);
 
     /**
      * @brief Compute sinh from array of values
@@ -845,7 +824,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> sinh(
-        const typename MdStaticArray<_T>::reference &__ndarray);
+        const MdStaticArrayReference<_T> &__ndarray);
 
     /**
      * @brief Compute sinh from array of values
@@ -867,7 +846,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> cosh(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+        const MdStaticArrayReference<_T> &__ndarray__reference);
 
     /**
      * @brief Compute sinh from array of values
@@ -888,7 +867,7 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> tanh(
-        const typename MdStaticArray<_T>::reference &__ndarray__reference);
+        const MdStaticArrayReference<_T> &__ndarray__reference);
 };
 
 #endif

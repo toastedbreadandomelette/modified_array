@@ -50,7 +50,7 @@ _T MdArrayUtility::reduce(const MdStaticArray<_T> &__values,
 }
 
 template <typename _T, typename _func>
-_T MdArrayUtility::reduce(const typename MdStaticArray<_T>::reference &__values,
+_T MdArrayUtility::reduce(const MdStaticArrayReference<_T> &__values,
                           const _func &function_exec, const _T init) {
     return reduce<_T, _func>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,

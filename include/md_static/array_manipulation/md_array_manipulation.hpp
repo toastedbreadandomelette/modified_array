@@ -68,18 +68,16 @@ struct MdArrayManipulate {
      * @returns array of size __size with all entries as zeros
      */
     template <typename _T>
-    static MdStaticArray<_T> mat_diag(
-        const typename MdStaticArray<_T>::reference &__rows,
-        const size_t __koffset = 0);
+    static MdStaticArray<_T> mat_diag(const MdStaticArrayReference<_T> &__rows,
+                                      const size_t __koffset = 0);
 
     template <typename _T>
     static MdStaticArray<_T> flip(const MdStaticArray<_T> &__ndarray,
                                   const size_t axis = -1);
 
     template <typename _T>
-    static MdStaticArray<_T> flip(
-        const typename MdStaticArray<_T>::reference &__ndarray,
-        const size_t axis = -1);
+    static MdStaticArray<_T> flip(const MdStaticArrayReference<_T> &__ndarray,
+                                  const size_t axis = -1);
 
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> linspace(const MdStaticArray<_T1> &__first,
@@ -88,20 +86,18 @@ struct MdArrayManipulate {
 
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> linspace(
-        const typename MdStaticArray<_T1>::reference &__first,
+        const MdStaticArrayReference<_T1> &__first,
         const MdStaticArray<_T2> &__other, const size_t numbers = 50);
 
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> linspace(
-        const typename MdStaticArray<_T1>::reference &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t numbers = 50);
+        const MdStaticArrayReference<_T1> &__first,
+        const MdStaticArrayReference<_T2> &__other, const size_t numbers = 50);
 
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> linspace(
         const MdStaticArray<_T1> &__first,
-        const typename MdStaticArray<_T2>::reference &__other,
-        const size_t numbers = 50);
+        const MdStaticArrayReference<_T2> &__other, const size_t numbers = 50);
 };
 
 #endif

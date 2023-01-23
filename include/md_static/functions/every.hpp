@@ -57,7 +57,7 @@ bool MdArrayUtility::every(const MdStaticArray<_T> &__ndarray,
 
 template <typename _T>
 bool MdArrayUtility::every(
-    const typename MdStaticArray<_T>::reference &__ndarray_reference,
+    const MdStaticArrayReference<_T> &__ndarray_reference,
     const std::function<bool(const _T &)> &__function, const size_t threads) {
     return every<_T>(MdStaticArray<_T>(*__ndarray_reference.__array_reference,
                                        __ndarray_reference.offset,

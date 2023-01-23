@@ -15,7 +15,7 @@ MdStaticArray<_T> MdArrayUtility::rad_2_deg(
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::rad_2_deg(
-    const typename MdStaticArray<_T>::reference &__values) {
+    const MdStaticArrayReference<_T> &__values) {
     return MdArrayUtility::rad_2_deg<_T>(MdStaticArray<_T>(
         *__values.__array_reference, __values.offset, __values.shp_offset));
 }

@@ -72,7 +72,7 @@ MdStaticArray<_T> MdArrayUtility::diff(const MdStaticArray<_T> &__ndarray,
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::diff(
-    const typename MdStaticArray<_T>::reference &__ndarray, const size_t axis,
+    const MdStaticArrayReference<_T> &__ndarray, const size_t axis,
     const size_t thread_count) {
     return diff<_T>(MdStaticArray<_T>(*__ndarray.__array_reference,
                                       __ndarray.offset, __ndarray.shp_offset),

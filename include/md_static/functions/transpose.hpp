@@ -24,7 +24,7 @@ MdStaticArray<_T2> MdArrayUtility::transpose(
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::transpose(
-    const typename MdStaticArray<_T>::reference &__values) {
+    const MdStaticArrayReference<_T> &__values) {
     return MdArrayUtility::transpose<_T>(MdStaticArray<_T>(
         *__values.__array_reference, __values.offset, __values.shp_offset));
 }

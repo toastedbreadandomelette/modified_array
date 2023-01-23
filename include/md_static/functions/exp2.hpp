@@ -14,7 +14,7 @@ MdStaticArray<double> MdArrayUtility::exp2(const MdStaticArray<_T> &__values) {
 
 template <typename _T>
 MdStaticArray<double> MdArrayUtility::exp2(
-    const typename MdStaticArray<_T>::reference &__values) {
+    const MdStaticArrayReference<_T> &__values) {
     return MdArrayUtility::exp2<_T>(MdStaticArray<_T>(
         *__values.__array_reference, __values.offset, __values.shp_offset));
 }

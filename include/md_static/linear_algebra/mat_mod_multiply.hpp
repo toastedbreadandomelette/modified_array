@@ -105,7 +105,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
 
 template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
-    const typename MdStaticArray<_T1>::reference &__first,
+    const MdStaticArrayReference<_T1> &__first,
     const MdStaticArray<_T2> &__other, const size_t __mod,
     const size_t threads) {
     return MdLinearAlgebra::mat_multiply<_T3, _T1, _T2>(
@@ -117,7 +117,7 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
 template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
     const MdStaticArray<_T1> &__first,
-    const typename MdStaticArray<_T2>::reference &__other, const size_t __mod,
+    const MdStaticArrayReference<_T2> &__other, const size_t __mod,
     const size_t threads) {
     return MdLinearAlgebra::mat_multiply<_T3, _T1, _T2>(
         __first,
@@ -128,8 +128,8 @@ MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
 
 template <typename _T3, typename _T1, typename _T2, class _T>
 MdStaticArray<_T3> MdLinearAlgebra::mat_mod_multiply(
-    const typename MdStaticArray<_T1>::reference &__first,
-    const typename MdStaticArray<_T2>::reference &__other, const size_t __mod,
+    const MdStaticArrayReference<_T1> &__first,
+    const MdStaticArrayReference<_T2> &__other, const size_t __mod,
     const size_t threads) {
     return MdLinearAlgebra::mat_multiply<_T3, _T1, _T2>(
         MdStaticArray<_T1>(*__first.__array_reference, __first.offset,

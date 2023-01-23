@@ -5,7 +5,7 @@
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::nan_cumulative_sum(
-    const typename MdStaticArray<_T>::reference& __values, const size_t axis,
+    const MdStaticArrayReference<_T>& __values, const size_t axis,
     const size_t thread_count) {
     return MdArrayUtility::nan_cumulative_sum<_T>(
         MdStaticArray<_T>(*__values.__array_reference, __values.offset,

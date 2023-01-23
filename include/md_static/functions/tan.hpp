@@ -14,7 +14,7 @@ MdStaticArray<_T> MdArrayUtility::tan(const MdStaticArray<_T> &__values) {
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::tan(
-    const typename MdStaticArray<_T>::reference &__values) {
+    const MdStaticArrayReference<_T> &__values) {
     return MdArrayUtility::tan<_T>(MdStaticArray<_T>(
         *__values.__array_reference, __values.offset, __values.shp_offset));
 }

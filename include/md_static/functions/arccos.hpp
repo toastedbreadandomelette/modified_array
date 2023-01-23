@@ -13,7 +13,7 @@ MdStaticArray<_T> MdArrayUtility::arccos(const MdStaticArray<_T> &__values) {
 
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::arccos(
-    const typename MdStaticArray<_T>::reference &__values) {
+    const MdStaticArrayReference<_T> &__values) {
     return MdArrayUtility::arccos<_T>(MdStaticArray<_T>(
         *__values.__array_reference, __values.offset, __values.shp_offset));
 }

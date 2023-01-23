@@ -53,6 +53,9 @@ static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 16;
 
 template <typename _T>
+class MdStaticArrayReference;
+
+template <typename _T>
 class MdStaticArray {
     void init_shape(const size_t *_shape, const size_t _shp_size) {
         if (shape) {
@@ -117,16 +120,14 @@ class MdStaticArray {
     uint16_t shp_size;
 
  public:
-    class reference;
-    template <typename _T1>
-    friend class MdStaticArray<_T1>::reference;
+    friend class MdStaticArrayReference<_T>;
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
     friend struct MdArrayManipulate;
 
-    friend std::ostream &operator<<(
-        std::ostream &op, const typename MdStaticArray<_T>::reference &ot);
+    friend std::ostream &operator<<(std::ostream &op,
+                                    const MdStaticArrayReference<_T> &ot);
 
     static void set_thread_count(const uint8_t value);
 
@@ -262,7 +263,7 @@ class MdStaticArray {
     /**
      * @brief Assigning reference to the newly created array
      */
-    MdStaticArray<_T>(const reference &__other);
+    MdStaticArray<_T>(const MdStaticArrayReference<_T> &__other);
 
     /**
      * @brief Casting operator
@@ -346,7 +347,7 @@ class MdStaticArray {
     /**
      * @brief Assigning reference to the newly created array
      */
-    MdStaticArray<_T> &operator=(const reference &__other);
+    MdStaticArray<_T> &operator=(const MdStaticArrayReference<_T> &__other);
 
     /**
      * @brief Destructor for array
@@ -1077,17 +1078,21 @@ class MdStaticArray {
     }
 
     // To do: create a reference for multi-dimensional arrays.
-    inline reference operator[](const size_t index) const {
+    inline MdStaticArrayReference<_T> operator[](const size_t index) const {
         if (index >= shape[0]) {
             throw std::runtime_error(
                 "Index out of bounds while accessing index " +
                 std::to_string(index) + " ( >= " + std::to_string(shape[0]) +
                 ")");
         }
-        return reference(*this, index * skip_vec[0]);
+        return MdStaticArrayReference(*this, index * skip_vec[0]);
     }
 
     inline size_t get_size() const { return __size; }
+
+    template <typename _T1, typename _T2>
+    friend inline _T1 &operator+=(_T1 &__other,
+                                  const MdStaticArrayReference<_T2> &__first);
 };
 
 #include "./md_static_array_op.hpp"
@@ -1221,10 +1226,13 @@ inline auto operator>>(const _T1 &__other, const MdStaticArray<_T2> &first) {
     OP_INTERNAL_MACRO_EXT(__rshft_bit_iointernal)
 }
 
+#undef OP_INTERNAL_MACRO_EXT
+
 #include "./md_static_reference.hpp"
 
 template <typename _T>
-MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {
+MdStaticArray<_T> &MdStaticArray<_T>::operator=(
+    const MdStaticArrayReference<_T> &__other) {
     init_array(__other.size);
     init_shape(&__other.__array_reference->shape[__other.shp_offset],
                __other.__array_reference->shp_size - __other.shp_offset);
@@ -1246,7 +1254,7 @@ MdStaticArray<_T> &MdStaticArray<_T>::operator=(const reference &__other) {
 }
 
 template <typename _T>
-MdStaticArray<_T>::MdStaticArray(const reference &__other)
+MdStaticArray<_T>::MdStaticArray(const MdStaticArrayReference<_T> &__other)
     : shape(nullptr), skip_vec(nullptr) {
     __size = __other.size;
     init_array(__size);
@@ -1267,9 +1275,21 @@ MdStaticArray<_T>::MdStaticArray(const reference &__other)
     }
 }
 
+template <typename _T1, typename _T2>
+inline _T1 &operator+=(_T1 &__other,
+                       const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator += on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other += __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
 #undef EN_IF
 #undef IS_ARITH
 #undef OP_INTERNAL_MACRO
-#undef OP_INTERNAL_MACRO_EXT
 
 #endif

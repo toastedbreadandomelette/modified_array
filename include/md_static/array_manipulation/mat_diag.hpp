@@ -32,8 +32,7 @@ MdStaticArray<_T> MdArrayManipulate::mat_diag(
 
 template <typename _T>
 MdStaticArray<_T> MdArrayManipulate::mat_diag(
-    const typename MdStaticArray<_T>::reference& __2darray,
-    const size_t __koff) {
+    const MdStaticArrayReference<_T>& __2darray, const size_t __koff) {
     return mat_diag<_T>(
         MdStaticArray<_T>(*__2darray.__array_reference, __2darray.offset,
                           __2darray.shp_offset),

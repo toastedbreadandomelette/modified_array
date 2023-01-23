@@ -26,7 +26,7 @@ long double MdArrayUtility::std_dev(const MdStaticArray<_T> &__values) {
 
 template <typename _T>
 long double MdArrayUtility::std_dev(
-    const typename MdStaticArray<_T>::reference &__values) {
+    const MdStaticArrayReference<_T> &__values) {
     return std_dev<_T>(MdStaticArray<_T>(*__values.__array_reference,
                                          __values.offset, __values.shp_offset));
 }

@@ -8,7 +8,7 @@
 template <typename _T>
 clongdouble MdLinearAlgebra::c_det(const MdStaticArray<_T> &__2darray) {
     auto [L, U, P, sign] = MdLinearAlgebra::lu_decompose<_T>(__2darray);
-    size_t n = __2darray.get_shape()[0];
+    const size_t n = __2darray.get_shape()[0];
     clongdouble det = 1;
     for (size_t index = 0; index < n; ++index) {
         det *= U.__array[index * n + index];
@@ -19,7 +19,7 @@ clongdouble MdLinearAlgebra::c_det(const MdStaticArray<_T> &__2darray) {
 
 template <typename _T>
 clongdouble MdLinearAlgebra::c_det(
-    const typename MdStaticArray<_T>::reference &__2darray) {
+    const MdStaticArrayReference<_T> &__2darray) {
     return MdLinearAlgebra::det(MdStaticArray<_T>(
         *__2darray.__array_reference, __2darray.offset, __2darray.shp_offset));
 }
