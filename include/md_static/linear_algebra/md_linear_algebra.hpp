@@ -1064,7 +1064,7 @@ struct MdLinearAlgebra {
     lu_decompose(const MdStaticArrayReference<_T> &);
 
     /**
-     * @brief Evaluate determinant of a matrix.
+     * @brief Evaluate complex determinant of a matrix.
      * @tparam _T type of array
      * @param __first first matrix
      * @returns new matrix
@@ -1073,13 +1073,173 @@ struct MdLinearAlgebra {
     static clongdouble c_det(const MdStaticArray<_T> &);
 
     /**
-     * @brief Evaluate determinant of a matrix.
+     * @brief Evaluate complex determinant of a matrix.
      * @tparam _T type of array
      * @param __first first matrix
      * @returns new matrix
      */
     template <typename _T>
     static clongdouble c_det(const MdStaticArrayReference<_T> &);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(const MdStaticArray<MdComplex<_T1>> &__first,
+                                   const MdStaticArray<_T2> &__other,
+                                   const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(
+        const MdStaticArrayReference<MdComplex<_T1>> &__first,
+        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(const MdStaticArray<MdComplex<_T1>> &__first,
+                                   const MdStaticArrayReference<_T2> &__other,
+                                   const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(
+        const MdStaticArrayReference<MdComplex<_T1>> &__first,
+        const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(const MdStaticArray<_T1> &__first,
+                                   const MdStaticArray<_T2> &__other,
+                                   const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(const MdStaticArrayReference<_T1> &__first,
+                                   const MdStaticArray<_T2> &__other,
+                                   const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(const MdStaticArray<_T1> &__first,
+                                   const MdStaticArrayReference<_T2> &__other,
+                                   const size_t threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam _T1 complex type of first ndarray
+     * @tparam _T2 type of second ndarray
+     * @tparam _T3 type of third ndarray (upto user)
+     * @param __first first ndarray
+     * @param __other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type _T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of __first is not equal to size of first axis
+     * of
+     * __other
+     */
+    template <typename _T3, typename _T1, typename _T2>
+    static MdStaticArray<_T3> vdot(const MdStaticArrayReference<_T1> &__first,
+                                   const MdStaticArrayReference<_T2> &__other,
+                                   const size_t threads = 16);
 };
 
 #endif

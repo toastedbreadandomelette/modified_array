@@ -287,8 +287,11 @@ class MdStaticArray {
      */
     template <typename _T1>
     operator MdStaticArray<_T1>() const {
-        MdStaticArray<_T1> __result(__size);
-        __result.init_shape(shape, shp_size);
+        std::vector<size_t> shp;
+        for (size_t index = 0; index < shp_size; ++index) {
+            shp.emplace_back(shape[index]);
+        }
+        MdStaticArray<_T1> __result(shp, 0);
 
 #pragma omp parallel for
         for (size_t index = 0; index < __size; ++index) {

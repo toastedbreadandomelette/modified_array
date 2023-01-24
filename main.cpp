@@ -13,15 +13,14 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 128;
+    size_t sz = 2048;
     MdStaticArray<double>::set_threshold_size(10000);
-    MdStaticArray<cdouble> c({sz, sz, sz}, 12 + 24.3_i),
-        d({sz, sz, sz}, 12 + 2.34_i);
+    MdStaticArray<double> c({sz, sz}, 12), d({sz, sz}, 12);
 
-    std::cout << c.get_shape()[1] << '\n';
+    std::cout << c.get_shape()[0] << '\n';
     auto start = std::chrono::system_clock::now();
     // clongdouble a = MdLinearAlgebra::c_det<cdouble>(c);
-    auto p = MdLinearAlgebra::dot<cdouble>(c, d);
+    auto p = MdLinearAlgebra::mat_multiply<double>(c, d);
     auto end = std::chrono::system_clock::now();
 
     std::cout << '\n';

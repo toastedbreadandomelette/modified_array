@@ -16,5 +16,6 @@
 #include "./linear_algebra/md_linear_algebra.hpp"
 #include "./linear_algebra/multi_dot.hpp"
 #include "./linear_algebra/outer.hpp"
+#include "./linear_algebra/vdot.hpp"
 
 #endif

@@ -9,7 +9,12 @@ MdStaticArray<_T> MdArrayUtility::map(
     const std::function<_T(const _T &)> &function_exec) {
     const size_t size = __values.get_size();
 
-    MdStaticArray<_T> result(size);
+    std::vector<size_t> shp;
+    for (size_t index = 0; index < __values.get_shape_size(); ++index) {
+        shp.emplace_back(__values.shape[index]);
+    }
+
+    MdStaticArray<_T> result(shp, 0);
 
     const uint8_t thread_count = ::s_thread_count;
     const size_t threshold_size = ::s_threshold_size;
