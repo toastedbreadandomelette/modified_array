@@ -1,8 +1,8 @@
 #pragma once
 #ifndef _RMS_HPP_
 #define _RMS_HPP_
+#include "./accumulate_and_merge.hpp"
 #include "./md_static_array_utility.hpp"
-#include "./reduce.hpp"
 
 template <typename _T>
 long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,
@@ -22,8 +22,8 @@ long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,
 }
 
 template <typename _T>
-long double MdArrayUtility::rms(
-    const MdStaticArrayReference<_T> &__values, const _T init) {
+long double MdArrayUtility::rms(const MdStaticArrayReference<_T> &__values,
+                                const _T init) {
     return rms(MdStaticArray<_T>(*__values.__array_reference, __values.offset,
                                  __values.shp_offset),
                init);

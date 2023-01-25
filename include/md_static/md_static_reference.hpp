@@ -80,7 +80,12 @@ class MdStaticArrayReference {
 
     template <typename _T1>
     inline MdStaticArrayReference &operator=(const MdStaticArray<_T1> &value) {
-        static_assert(value.get_size() == size);
+        if (value.get_size() != size) {
+            throw std::runtime_error(
+                "Assignment error between reference of size " +
+                std::to_string(size) + " and array of size " +
+                std::to_string(value.get_size()));
+        }
         // assert shape sizes are equal too
         if (s_threshold_size < size) {
             for (size_t i = 0; i < size; ++i) {

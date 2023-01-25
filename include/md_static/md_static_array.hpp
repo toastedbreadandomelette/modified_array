@@ -120,7 +120,8 @@ class MdStaticArray {
     uint16_t shp_size;
 
  public:
-    friend class MdStaticArrayReference<_T>;
+    template <typename _T1>
+    friend class MdStaticArrayReference;
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
@@ -1092,6 +1093,33 @@ class MdStaticArray {
     }
 
     inline size_t get_size() const { return __size; }
+
+    friend std::ostream &operator<<(std::ostream &op,
+                                    const MdStaticArray<_T> &ot) {
+        // op << "here " << ot.size << '\n';
+        if (ot.get_size() == 1) {
+            op << ot.__array[0];
+        } else if (ot.get_shape_size() == 1) {
+            op << '[';
+            for (size_t index = 0; index < ot.get_size(); ++index) {
+                op << ot.__array[index];
+                if (index != ot.get_size() - 1) {
+                    op << ", ";
+                }
+            }
+            op << ']';
+        } else {
+            op << '[';
+            for (size_t index = 0; index < ot.get_shape()[0]; ++index) {
+                op << ot[index];
+                if (index != ot.get_shape()[0] - 1) {
+                    op << ", ";
+                }
+            }
+            op << ']';
+        }
+        return op;
+    }
 
     template <typename _T1, typename _T2>
     friend inline _T1 &operator+=(_T1 &__other,

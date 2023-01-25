@@ -43,8 +43,9 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename _T, typename _func>
-    static _T reduce(const MdStaticArray<_T> &__values,
-                     const _func &function_exec, const _T init);
+    static MdStaticArray<_T> reduce(const MdStaticArray<_T> &__values,
+                                    const _func &function_exec, const _T init,
+                                    const int axis = -1);
 
     /**
      * @brief Reduce array of values to a single value function.
@@ -57,8 +58,9 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename _T, typename _func>
-    static _T reduce(const MdStaticArrayReference<_T> &__values,
-                     const _func &function_exec, const _T init);
+    static MdStaticArray<_T> reduce(const MdStaticArrayReference<_T> &__values,
+                                    const _func &function_exec, const _T init,
+                                    const int axis = -1);
 
     /**
      * @brief Execute accumulate function, and merge these values based on
@@ -132,7 +134,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static _T sum(const MdStaticArray<_T> &__values, const _T init = 0);
+    static MdStaticArray<_T> sum(const MdStaticArray<_T> &__values,
+                                 const _T init = 0, const int axis = -1);
 
     /**
      * @brief Sum of all the values in the list __values
@@ -141,8 +144,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static _T sum(const MdStaticArrayReference<_T> &__values,
-                  const _T init = 0);
+    static MdStaticArray<_T> sum(const MdStaticArrayReference<_T> &__values,
+                                 const _T init = 0, const int axis = -1);
 
     /**
      * @brief Mean of all the values in the list __values
@@ -151,8 +154,8 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double mean(const MdStaticArray<_T> &__values,
-                            const _T init = 0);
+    static MdStaticArray<double> mean(const MdStaticArray<_T> &__values,
+                                      const _T init = 0, const int axis = -1);
 
     /**
      * @brief Mean of all the values in the list __values
@@ -161,8 +164,9 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename _T>
-    static long double mean(const MdStaticArrayReference<_T> &__values,
-                            const _T init = 0);
+    static MdStaticArray<double> mean(
+        const MdStaticArrayReference<_T> &__values, const _T init = 0,
+        const int axis = -1);
 
     /**
      * @brief Root Mean Square of all the values in the list __values

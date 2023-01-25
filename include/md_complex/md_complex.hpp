@@ -236,6 +236,13 @@ inline MdComplex<long double> operator"" _i(long double img) {
     return c;
 }
 
+inline MdComplex<unsigned long long> operator"" _i(unsigned long long img) {
+    MdComplex<unsigned long long> c;
+    c.real = 0;
+    c.img = img;
+    return c;
+}
+
 using cdouble = MdComplex<double>;
 using clongdouble = MdComplex<long double>;
 using cfloat = MdComplex<float>;
