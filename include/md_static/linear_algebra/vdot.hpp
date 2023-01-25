@@ -267,7 +267,7 @@ template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::vdot(
     const MdStaticArrayReference<MdComplex<_T1>> &__first,
     const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3>(
+    return MdLinearAlgebra::vdot<_T3>(
         MdStaticArray(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
         MdStaticArray(*__other.__array_reference, __other.offset,
@@ -279,7 +279,7 @@ template <typename _T3, typename _T1, typename _T2>
 MdStaticArray<_T3> MdLinearAlgebra::vdot(
     const MdStaticArray<MdComplex<_T1>> &__first,
     const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3>(
+    return MdLinearAlgebra::vdot<_T3>(
         __first,
         MdStaticArray(*__other.__array_reference, __other.offset,
                       __other.shp_offset),
