@@ -16,10 +16,10 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
             "Spacing given should be negative for ranges: [end (" +
             std::to_string(end) + ") < start (" + std::to_string(start) + ")]");
     }
-    if (end == -1 && spacing >= 0) {
+    if (end == -1 && spacing == 0) {
         size = start;
         increment = 1;
-    } else if (spacing == 1 && end > start) {
+    } else if (spacing == 0 && end > start) {
         const auto value = end - start;
         size = static_cast<size_t>(
             ::ceil(std::max(value, static_cast<decltype(value)>(0))));
@@ -32,6 +32,9 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
             ::ceil(std::max(value, static_cast<double>(0))));
         increment = spacing;
     }
+
+    // std::cout << size << " " << start << " " << end << " " << spacing << " "
+    //           << increment << '\n';
 
     MdStaticArray<_T> result(size);
 

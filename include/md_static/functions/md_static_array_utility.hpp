@@ -169,6 +169,46 @@ struct MdArrayUtility {
         const int axis = -1);
 
     /**
+     * @brief Mean of all the values in the list __values
+     * @param __values List of all values
+     * @param init value to be initialized with
+     * @return single number
+     */
+    template <typename _T>
+    static MdStaticArray<_T> gcd(const MdStaticArray<_T> &__values,
+                                 const int axis = -1);
+
+    /**
+     * @brief Mean of all the values in the list __values
+     * @param __values List of all values
+     * @param init value to be initialized with
+     * @return single number
+     */
+    template <typename _T>
+    static MdStaticArray<_T> gcd(const MdStaticArrayReference<_T> &__values,
+                                 const int axis = -1);
+
+    /**
+     * @brief Mean of all the values in the list __values
+     * @param __values List of all values
+     * @param init value to be initialized with
+     * @return single number
+     */
+    template <typename _T>
+    static MdStaticArray<_T> lcm(const MdStaticArray<_T> &__values,
+                                 const int axis = -1);
+
+    /**
+     * @brief Mean of all the values in the list __values
+     * @param __values List of all values
+     * @param init value to be initialized with
+     * @return single number
+     */
+    template <typename _T>
+    static MdStaticArray<_T> lcm(const MdStaticArrayReference<_T> &__values,
+                                 const int axis = -1);
+
+    /**
      * @brief Root Mean Square of all the values in the list __values
      * @param __values List of all values
      * @param init value to be initialized with

@@ -19,6 +19,8 @@
 #include "./functions/every.hpp"
 #include "./functions/exp2.hpp"
 #include "./functions/floor.hpp"
+#include "./functions/gcd.hpp"
+#include "./functions/lcm.hpp"
 #include "./functions/log.hpp"
 #include "./functions/log10.hpp"
 #include "./functions/log2.hpp"

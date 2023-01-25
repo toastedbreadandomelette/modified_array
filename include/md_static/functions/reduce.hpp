@@ -21,7 +21,7 @@ MdStaticArray<_T> MdArrayUtility::reduce(const MdStaticArray<_T> &__values,
             }
         } else {
             std::vector<std::thread> st;
-            std::vector<_T> __res_total(thread_count, 0);
+            std::vector<_T> __res_total(thread_count, init);
             auto _add_int = [&__res_total, &__values, &function_exec](
                                 const uint8_t thread_number, const size_t start,
                                 const size_t end) {
@@ -62,7 +62,7 @@ MdStaticArray<_T> MdArrayUtility::reduce(const MdStaticArray<_T> &__values,
             }
         }
 
-        MdStaticArray<_T> result(shp, 0);
+        MdStaticArray<_T> result(shp, init);
 
         const size_t skip_index = __values.skip_vec[axis];
 
