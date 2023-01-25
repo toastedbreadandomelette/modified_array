@@ -15,11 +15,12 @@ int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
     size_t sz = 1231232;
     MdStaticArray<double>::set_threshold_size(10000);
-    MdStaticArray<double> c({102, sz}, 1), d({2, sz}, 1);
-    for (size_t index = 0; index < c.get_shape()[0]; ++index) {
-        c[index] = MdArrayUtility::range<double>(1231232);
+    MdStaticArray<double> c({10, 10, sz}, 1), d({2, sz}, 1);
+    for (size_t i = 0; i < c.get_shape()[0]; ++i) {
+        for (size_t j = 0; j < c.get_shape()[1]; ++j) {
+            c[i][j] = MdArrayUtility::range<double>(1231232);
+        }
     }
-    std::cout << c.get_shape()[0] << '\n';
     auto start = std::chrono::system_clock::now();
     // clongdouble a = MdLinearAlgebra::c_det<cdouble>(c);
     auto p = MdArrayUtility::mean<double>(c, 0, 1);
@@ -33,7 +34,7 @@ int main(int argc, const char** argv) {
     // }
     // std::cout << c << '\n';
     std::cout << " Time: " << time.count() << "s"
-              << " " << p << std::endl;
+              << " " << p.get_size() << std::endl;
 
     return 0;
 }

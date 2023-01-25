@@ -9,6 +9,8 @@ template <typename _T>
 class MdStaticArrayReference {
     template <typename _T1>
     friend class MdStaticArray;
+    template <typename _T1>
+    friend class MdStaticArrayReference;
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;

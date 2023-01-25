@@ -122,6 +122,8 @@ class MdStaticArray {
  public:
     template <typename _T1>
     friend class MdStaticArrayReference;
+    template <typename _T1>
+    friend class MdStaticArray;
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
