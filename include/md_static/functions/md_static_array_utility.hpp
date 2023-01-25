@@ -112,7 +112,7 @@ struct MdArrayUtility {
     static MdStaticArray<_T> sqrt(const MdStaticArrayReference<_T> &__values);
 
     /**
-     * @brief absolute values of all values in list __values
+     * @brief absolute value of all values in list __values
      * @param __values list of values
      * @returns List of values
      */
@@ -120,7 +120,7 @@ struct MdArrayUtility {
     static MdStaticArray<_T> abs(const MdStaticArray<_T> &__values);
 
     /**
-     * @brief absolute values of all values in list __values
+     * @brief absolute value of all values in list __values
      * @param __values list of values
      * @returns List of values
      */
@@ -131,7 +131,7 @@ struct MdArrayUtility {
      * @brief Sum of all the values in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<_T> sum(const MdStaticArray<_T> &__values,
@@ -141,7 +141,7 @@ struct MdArrayUtility {
      * @brief Sum of all the values in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<_T> sum(const MdStaticArrayReference<_T> &__values,
@@ -151,7 +151,7 @@ struct MdArrayUtility {
      * @brief Mean of all the values in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<double> mean(const MdStaticArray<_T> &__values,
@@ -161,7 +161,7 @@ struct MdArrayUtility {
      * @brief Mean of all the values in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<double> mean(
@@ -169,40 +169,40 @@ struct MdArrayUtility {
         const int axis = -1);
 
     /**
-     * @brief Mean of all the values in the list __values
+     * @brief GCD of all the values combined in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<_T> gcd(const MdStaticArray<_T> &__values,
                                  const int axis = -1);
 
     /**
-     * @brief Mean of all the values in the list __values
+     * @brief GCD of all the values combined in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<_T> gcd(const MdStaticArrayReference<_T> &__values,
                                  const int axis = -1);
 
     /**
-     * @brief Mean of all the values in the list __values
+     * @brief LCM of all the values combined in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<_T> lcm(const MdStaticArray<_T> &__values,
                                  const int axis = -1);
 
     /**
-     * @brief Mean of all the values in the list __values
+     * @brief LCM of all the values combined in the list __values
      * @param __values List of all values
      * @param init value to be initialized with
-     * @return single number
+     * @return Single number (or ndarray depending on axis)
      */
     template <typename _T>
     static MdStaticArray<_T> lcm(const MdStaticArrayReference<_T> &__values,

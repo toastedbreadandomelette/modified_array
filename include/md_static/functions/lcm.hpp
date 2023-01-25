@@ -17,7 +17,6 @@ MdStaticArray<_T> MdArrayUtility::lcm(const MdStaticArray<_T> &__values,
         __values,
         [](const _T &prev_value, const _T &curr_value) {
             if (prev_value == 0 || curr_value == 0) {
-                std::cout << prev_value << " " << curr_value << '\n';
                 return prev_value == 0 ? prev_value : curr_value;
             }
             return (prev_value / __gcd2(prev_value, curr_value)) * curr_value;
