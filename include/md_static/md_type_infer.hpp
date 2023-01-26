@@ -387,6 +387,27 @@ struct cunsigned_t<
     using type = cuint64;
 };
 
+template <typename _T1, typename _T2, class = void>
+struct eval_complex_t {
+#define MX_SZ decltype(max_size_t<_T1, _T2>::value)
+    static constexpr auto value = []() {
+        if constexpr (is_any_one_floating_complex<_T1, _T2>::value) {
+            return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
+        } else if constexpr (is_any_one_unsigned_complex<_T1, _T2>::value) {
+            if constexpr (is_any_one_floating<_T1, _T2>::value) {
+                return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
+            }
+
+            return static_cast<typename cunsigned_t<MX_SZ>::type>(0);
+        }
+        if constexpr (is_any_one_floating<_T1, _T2>::value) {
+            return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
+        }
+        return static_cast<typename complex_signed_t<MX_SZ>::type>(0);
+    }();
+#undef MX_SZ
+};
+
 /**
  * @brief Evaluate resultant type of element, given two types
  * @tparam _T1 first type
@@ -398,13 +419,7 @@ struct eval_resultant_t {
 #define MX_SZ decltype(max_size_t<_T1, _T2>::value)
     static constexpr auto value = []() {
         if constexpr (is_any_one_complex<_T1, _T2>::value) {
-            if constexpr (is_any_one_floating_complex<_T1, _T2>::value) {
-                return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
-            } else if constexpr (is_any_one_unsigned_complex<_T1, _T2>::value) {
-                return static_cast<typename cunsigned_t<MX_SZ>::type>(0);
-            } else {
-                return static_cast<typename complex_signed_t<MX_SZ>::type>(0);
-            }
+            return eval_complex_t<_T1, _T2>::value;
         } else if constexpr (is_any_one_floating<_T1, _T2>::value) {
             return static_cast<typename floating_t<MX_SZ>::type>(0);
         } else if constexpr (is_any_one_signed<_T1, _T2>::value) {
