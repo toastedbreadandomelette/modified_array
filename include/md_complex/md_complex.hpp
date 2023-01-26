@@ -247,4 +247,14 @@ using cdouble = MdComplex<double>;
 using clongdouble = MdComplex<long double>;
 using cfloat = MdComplex<float>;
 
+using cuint64 = MdComplex<uint64_t>;
+using cuint32 = MdComplex<uint32_t>;
+using cuint16 = MdComplex<uint16_t>;
+using cuint8 = MdComplex<uint8_t>;
+
+using cint64 = MdComplex<int64_t>;
+using cint32 = MdComplex<int32_t>;
+using cint16 = MdComplex<int16_t>;
+using cint8 = MdComplex<int8_t>;
+
 #endif

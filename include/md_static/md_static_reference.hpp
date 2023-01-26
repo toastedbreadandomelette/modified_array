@@ -4,6 +4,7 @@
 
 #include "../md_complex/md_complex.hpp"
 #include "./md_static_array.hpp"
+#include "./md_type_infer.hpp"
 
 template <typename _T>
 class MdStaticArrayReference {

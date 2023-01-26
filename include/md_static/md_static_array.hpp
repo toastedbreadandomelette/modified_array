@@ -7,6 +7,8 @@
 #include <thread>
 #include <vector>
 
+#include "./md_type_infer.hpp"
+
 #define EN_IF(C)    std::enable_if<C>::type
 #define IS_ARITH(E) std::is_arithmetic<E>::value
 
@@ -425,93 +427,144 @@ class MdStaticArray {
      * @param __other other array (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __add_internal(const MdStaticArray<_T1> &__other,
-                                      const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __add_internal(const MdStaticArray<_T1> &__other) const;
 
     /**
      * @brief Add function, currently using threads
      * @param __other other integer (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __add_iinternal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __add_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Subtract function, currently using threads
      * @param __other other array (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __sub_internal(const MdStaticArray<_T1> &,
-                                      const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __sub_internal(const MdStaticArray<_T1> &) const;
 
     /**
      * @brief Subtract function, currently using threads
      * @param __other other integer (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __sub_iinternal(const _T1 &, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __sub_iinternal(const _T1 &) const;
 
     /**
      * @brief Subtract function, currently using threads
      * @param __other other integer (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __sub_iointernal(const _T1 &, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __sub_iointernal(const _T1 &) const;
 
     /**
      * @brief Multiplication function, currently using threads
      * @param __other other array (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __mul_internal(const MdStaticArray<_T1> &,
-                                      const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __mul_internal(const MdStaticArray<_T1> &) const;
 
     /**
      * @brief Multiplication function, currently using threads
      * @param __other other integer (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __mul_iinternal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __mul_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Division function, currently using threads
      * @param __other other array (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __div_internal(const MdStaticArray<_T1> &,
-                                      const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __div_internal(const MdStaticArray<_T1> &) const;
 
     /**
      * @brief Division function, currently using threads
      * @param __other other integer (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __div_iinternal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __div_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Modulo function, currently using threads
      * @param __other other integer (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __div_iointernal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __div_iointernal(const _T1 &__other) const;
 
     /**
      * @brief Modulo function, currently using threads
      * @param __other other array (might be of different type)
      * @returns new array of current type
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __mod_internal(const MdStaticArray<_T1> &,
-                                      const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __mod_internal(const MdStaticArray<_T1> &) const;
+
+    /**
+     * @brief Division function, currently using threads
+     * @param __other other integer (might be of different type)
+     * @returns new array of current type
+     */
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __mod_iinternal(const _T1 &__other) const;
+
+    /**
+     * @brief Modulo function, currently using threads, but the operand is to be
+     * modded
+     * @param __other other integer (might be of different type)
+     * @returns new array of current type
+     */
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __mod_iointernal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise AND function between two arrays
@@ -619,23 +672,6 @@ class MdStaticArray {
     template <typename _T1, typename _T2>
     MdStaticArray<_T2> __rshft_bit_iointernal(const _T1 &__other,
                                               const _T2) const;
-
-    /**
-     * @brief Division function, currently using threads
-     * @param __other other integer (might be of different type)
-     * @returns new array of current type
-     */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __mod_iinternal(const _T1 &__other, const _T2) const;
-
-    /**
-     * @brief Modulo function, currently using threads, but the operand is to be
-     * modded
-     * @param __other other integer (might be of different type)
-     * @returns new array of current type
-     */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __mod_iointernal(const _T1 &__other, const _T2) const;
 
     /**
      * @brief Add to self, using multi-threading
@@ -841,52 +877,52 @@ class MdStaticArray {
 
     template <typename _T1>
     inline auto operator+(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__add_iinternal)
+        return __add_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator+(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__add_internal)
+        return __add_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator-(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__sub_iinternal)
+        return __sub_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator-(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__sub_internal)
+        return __sub_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator*(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__mul_internal)
+        return __mul_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator*(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__mul_iinternal)
+        return __mul_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator/(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__div_iinternal)
+        return __div_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator/(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__div_internal)
+        return __div_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator%(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__mod_iinternal)
+        return __mod_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator%(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__mod_internal)
+        return __mod_internal(__other);
     }
 
     template <typename _T1>
@@ -1196,7 +1232,7 @@ inline auto operator*(const _T1 &__other, const MdStaticArray<_T2> &first) {
 
 template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
 inline auto operator/(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__div_iointernal)
+    return first.__div_iointernal(__other);
 }
 
 template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>

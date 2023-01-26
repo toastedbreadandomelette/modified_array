@@ -8,7 +8,7 @@
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__add_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     if (!is_same_shape(__other)) {
@@ -47,8 +47,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__add_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__add_iinternal(const _T1 &__other,
-                                                      const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__add_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(__size);
@@ -85,7 +85,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__add_iinternal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__sub_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     if (!is_same_shape(__other)) {
@@ -124,8 +124,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__sub_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__sub_iinternal(const _T1 &__other,
-                                                      const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__sub_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);
@@ -161,8 +161,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__sub_iinternal(const _T1 &__other,
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__sub_iointernal(const _T1 &__other,
-                                                       const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__sub_iointernal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);
@@ -201,7 +201,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__sub_iointernal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__mul_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -240,8 +240,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__mul_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__mul_iinternal(const _T1 &__other,
-                                                      const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__mul_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);
@@ -280,7 +280,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__mul_iinternal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__div_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -319,8 +319,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__div_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__div_iinternal(const _T1 &__other,
-                                                      const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__div_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);
@@ -356,8 +356,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__div_iinternal(const _T1 &__other,
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__div_iointernal(const _T1 &__other,
-                                                       const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__div_iointernal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);
@@ -396,7 +396,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__div_iointernal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__mod_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -435,8 +435,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__mod_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__mod_iinternal(const _T1 &__other,
-                                                      const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__mod_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);
@@ -472,8 +472,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__mod_iinternal(const _T1 &__other,
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__mod_iointernal(const _T1 &__other,
-                                                       const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__mod_iointernal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = __size;
     MdStaticArray<_T2> result(size);

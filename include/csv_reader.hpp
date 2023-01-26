@@ -25,7 +25,9 @@ enum NumberAttr { NEGATIVE = 0x01, REAL = 0x02 };
  */
 inline Cell return_number(const std::string &value, const uint8_t attr) {
     switch (attr) {
-        case NumberAttr::REAL...(NumberAttr::NEGATIVE | NumberAttr::REAL):
+        case NumberAttr::REAL:
+        case NumberAttr::NEGATIVE:
+        case (NumberAttr::NEGATIVE | NumberAttr::REAL):
             return Cell(atof(value.c_str()));
 
         default:
