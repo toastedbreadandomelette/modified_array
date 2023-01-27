@@ -17,13 +17,12 @@ class MdStaticArrayReference {
     friend struct MdLinearAlgebra;
 
     void *operator new(size_t size);
-
- public:
     const MdStaticArray<_T> *__array_reference;
     size_t size;
     size_t offset;
     uint16_t shp_offset;
 
+ public:
     MdStaticArrayReference() {}
 
     MdStaticArrayReference(const MdStaticArray<_T> &__other,

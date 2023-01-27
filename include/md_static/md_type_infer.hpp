@@ -32,7 +32,7 @@ struct is_any_one<_T1, _T2, args...> {
 
 /**
  * @brief Template to check if type is one of the complex numbers
- * @tparam _T1 value to check
+ * @tparam _T value to check
  */
 template <typename _T>
 struct is_complex {
@@ -43,7 +43,7 @@ struct is_complex {
 
 /**
  * @brief Template to check if type is one of the floating complex numbers
- * @tparam _T1 value to check
+ * @tparam _T value to check
  */
 template <typename _T>
 struct is_floating_complex {
@@ -53,7 +53,7 @@ struct is_floating_complex {
 
 /**
  * @brief Template to check if type is one of the signed complex integers
- * @tparam _T1 value to check
+ * @tparam _T value to check
  */
 template <typename _T>
 struct is_signed_complex {
@@ -63,7 +63,7 @@ struct is_signed_complex {
 
 /**
  * @brief Template to check if type is one of the unsigned complex integers
- * @tparam _T1 value to check
+ * @tparam _T value to check
  */
 template <typename _T>
 struct is_unsigned_complex {
@@ -93,8 +93,6 @@ struct is_any_one_complex<_T1, args...> {
 /**
  * @brief Variadic template to check if any one type is one of complex
  * real numbers
- * @tparam _T1 value to check
- * @tparam args variadic arguments
  */
 template <typename...>
 struct is_any_one_floating_complex : std::false_type {};
@@ -114,8 +112,6 @@ struct is_any_one_floating_complex<_T1, args...> {
 /**
  * @brief Variadic template to check if any one type is one of complex
  * signed integers
- * @tparam _T1 value to check
- * @tparam args variadic arguments
  */
 template <typename...>
 struct is_any_one_signed_complex : std::false_type {};
@@ -223,9 +219,17 @@ struct max_size_t<_T1, _T2,
     static constexpr auto value = static_cast<_T2>(0);
 };
 
+/**
+ * @brief Wrapper for returning appropriate floating integer
+ * @tparam t generic type
+ */
 template <typename t, class = void>
 struct floating_t;
 
+/**
+ * @brief Wrapper for returning appropriate floating integer
+ * @tparam _Ttypeval generic type
+ */
 template <typename _Ttypeval>
 struct floating_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
                                                       sizeof(float))>::type> {

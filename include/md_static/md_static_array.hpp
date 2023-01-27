@@ -833,45 +833,112 @@ class MdStaticArray {
     template <typename _T1>
     void __rshft_bit_self_iinternal(const _T1 &__other);
 
+    /**
+     * @brief Compare current array with other
+     * @param __other array of values to compare
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_eq_internal(
         const MdStaticArray<_T1> &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is greater than other
+     * @param __other array of values to compare
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_g_internal(
         const MdStaticArray<_T1> &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is greater or equal to
+     * other
+     * @param __other array of values to compare
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_geq_internal(
         const MdStaticArray<_T1> &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is less than other
+     * @param __other array of values to compare
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_l_internal(
         const MdStaticArray<_T1> &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is less than or equal to
+     * other
+     * @param __other array of values to compare
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_leq_internal(
         const MdStaticArray<_T1> &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is not equal to other
+     * @param __other array of values to compare
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_neq_internal(
         const MdStaticArray<_T1> &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is equal to single value
+     * @param __other single value
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_eq_iinternal(const _T1 &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is greater than a single
+     * value
+     * @param __other single value
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_g_iinternal(const _T1 &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is greater than or equal to
+     * a single value
+     * @param __other single value
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_geq_iinternal(const _T1 &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is less than a single
+     * value
+     * @param __other single value
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_l_iinternal(const _T1 &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is less than or equal a
+     * single value
+     * @param __other single value
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_leq_iinternal(const _T1 &__other) const;
 
+    /**
+     * @brief Check if every entry in current array is not equal to a single
+     * value
+     * @param __other single value
+     * @returns array of boolean values returning true or false
+     */
     template <typename _T1>
     MdStaticArray<bool> __comp_neq_iinternal(const _T1 &__other) const;
 
@@ -1222,7 +1289,7 @@ inline auto operator+(const _T1 &__other, const MdStaticArray<_T2> &first) {
 
 template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
 inline auto operator-(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__sub_iointernal)
+    return first.__sub_iointernal(__other);
 }
 
 template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
@@ -1237,7 +1304,7 @@ inline auto operator/(const _T1 &__other, const MdStaticArray<_T2> &first) {
 
 template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
 inline auto operator%(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__mod_iointernal)
+    return first.__mod_iointernal(__other);
 }
 
 template <typename _T1, typename _T2>

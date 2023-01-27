@@ -4,6 +4,8 @@
 
 #include "./functions/abs.hpp"
 #include "./functions/accumulate_and_merge.hpp"
+#include "./functions/amax.hpp"
+#include "./functions/amin.hpp"
 #include "./functions/arccos.hpp"
 #include "./functions/arcsin.hpp"
 #include "./functions/arctan.hpp"
