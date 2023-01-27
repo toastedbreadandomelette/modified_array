@@ -1661,7 +1661,7 @@ MdStaticArray<bool> MdStaticArray<_T>::__comp_neq_iinternal(
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__and_bit_internal(
-    const MdStaticArray<_T1> &__other, const _T2) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -1700,8 +1700,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__and_bit_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__and_bit_iinternal(const _T1 &__other,
-                                                          const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__and_bit_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -1738,7 +1738,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__and_bit_iinternal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__or_bit_internal(
-    const MdStaticArray<_T1> &__other, const _T2) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -1777,8 +1777,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__or_bit_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__or_bit_iinternal(const _T1 &__other,
-                                                         const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__or_bit_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -1815,7 +1815,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__or_bit_iinternal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__xor_bit_internal(
-    const MdStaticArray<_T1> &__other, const _T2) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -1854,8 +1854,8 @@ MdStaticArray<_T2> MdStaticArray<_T>::__xor_bit_internal(
 
 template <typename _T>
 template <typename _T1, typename _T2>
-MdStaticArray<_T2> MdStaticArray<_T>::__xor_bit_iinternal(const _T1 &__other,
-                                                          const _T2 as) const {
+MdStaticArray<_T2> MdStaticArray<_T>::__xor_bit_iinternal(
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -1893,7 +1893,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__xor_bit_iinternal(const _T1 &__other,
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__lshft_bit_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -1934,7 +1934,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__lshft_bit_internal(
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__lshft_bit_iinternal(
-    const _T1 &__other, const _T2 as) const {
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -1971,7 +1971,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__lshft_bit_iinternal(
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__lshft_bit_iointernal(
-    const _T1 &__other, const _T2 as) const {
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -2008,7 +2008,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__lshft_bit_iointernal(
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_internal(
-    const MdStaticArray<_T1> &__other, const _T2 as) const {
+    const MdStaticArray<_T1> &__other) const {
     // assert that sizes are equal
     if (!is_same_shape(__other)) {
         throw std::runtime_error("Dimensions do not match.");
@@ -2049,7 +2049,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_internal(
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_iinternal(
-    const _T1 &__other, const _T2 as) const {
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -2086,7 +2086,7 @@ MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_iinternal(
 template <typename _T>
 template <typename _T1, typename _T2>
 MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_iointernal(
-    const _T1 &__other, const _T2 as) const {
+    const _T1 &__other) const {
     // assert that sizes are equal
     const size_t size = get_size();
     MdStaticArray<_T2> result(size);
@@ -2112,6 +2112,40 @@ MdStaticArray<_T2> MdStaticArray<_T>::__rshft_bit_iointernal(
         }
 
         st.emplace_back(std::thread(_add_int, block * thread_but_one, size));
+
+        for (auto &th : st) {
+            th.join();
+        }
+    }
+    return result;
+}
+
+template <typename _T>
+MdStaticArray<_T> MdStaticArray<_T>::__ng_internal() const {
+    // assert that sizes are equal
+    const size_t size = get_size();
+    MdStaticArray<_T> result(size);
+    result.init_shape(shape, shp_size);
+    if (::s_thread_count == 1 || size <= s_threshold_size) {
+        for (size_t index = 0; index < get_size(); ++index) {
+            result.__array[index] = -__array[index];
+        }
+    } else {
+        std::vector<std::thread> st;
+        st.reserve(::s_thread_count);
+        auto __ng = [&result, this](const size_t start, const size_t end) {
+            for (size_t index = start; index < end; ++index) {
+                result.__array[index] = -__array[index];
+            }
+        };
+
+        const size_t block = size / s_thread_count;
+        const uint8_t thread_but_one = s_thread_count - 1;
+        for (int i = 0; i < thread_but_one; ++i) {
+            st.emplace_back(std::thread(__ng, block * i, block * (i + 1)));
+        }
+
+        st.emplace_back(std::thread(__ng, block * thread_but_one, size));
 
         for (auto &th : st) {
             th.join();

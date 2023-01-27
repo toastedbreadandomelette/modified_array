@@ -12,45 +12,6 @@
 #define EN_IF(C)    std::enable_if<C>::type
 #define IS_ARITH(E) std::is_arithmetic<E>::value
 
-#define OP_INTERNAL_MACRO(func)                                      \
-    if constexpr (sizeof(_T1) > sizeof(_T)) {                        \
-        if constexpr ((std::is_floating_point<_T>::value ||          \
-                       std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == sizeof(float)) {                \
-            return func(__other, static_cast<float>(0));             \
-        } else if constexpr ((std::is_floating_point<_T>::value ||   \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(double)) {        \
-            return func(__other, static_cast<double>(0));            \
-        } else if constexpr ((std::is_floating_point<_T>::value ||   \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(long double)) {   \
-            return func(__other, static_cast<long double>(0));       \
-        } else {                                                     \
-            return func(__other, (_T1)0);                            \
-        }                                                            \
-    } else {                                                         \
-        if constexpr ((std::is_floating_point<_T>::value ||          \
-                       std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == sizeof(float)) {                \
-            return func(__other, static_cast<double>(0));            \
-        } else if constexpr ((std::is_floating_point<_T>::value ||   \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(double)) {        \
-            return func(__other, static_cast<double>(0));            \
-        } else if constexpr ((std::is_floating_point<_T>::value ||   \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(long double)) {   \
-            return func(__other, static_cast<long double>(0));       \
-        } else if constexpr ((std::is_floating_point<_T>::value ||   \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) < 4) {                      \
-            return func(__other, static_cast<float>(0));             \
-        } else {                                                     \
-            return func(__other, static_cast<_T>(0));                \
-        }                                                            \
-    }
-
 static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 16;
 
@@ -571,69 +532,92 @@ class MdStaticArray {
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __and_bit_internal(const MdStaticArray<_T1> &__other,
-                                          const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __and_bit_internal(
+        const MdStaticArray<_T1> &__other) const;
 
     /**
      * @brief Bitwise AND function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __and_bit_iinternal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __and_bit_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise OR function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __or_bit_internal(const MdStaticArray<_T1> &__other,
-                                         const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __or_bit_internal(
+        const MdStaticArray<_T1> &__other) const;
 
     /**
      * @brief Bitwise OR function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __or_bit_iinternal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __or_bit_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise XOR function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __xor_bit_internal(const MdStaticArray<_T1> &__other,
-                                          const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __xor_bit_internal(
+        const MdStaticArray<_T1> &__other) const;
 
     /**
      * @brief Bitwise XOR function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __xor_bit_iinternal(const _T1 &__other, const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __xor_bit_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise left shift function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __lshft_bit_internal(const MdStaticArray<_T1> &__other,
-                                            const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __lshft_bit_internal(
+        const MdStaticArray<_T1> &__other) const;
 
     /**
      * @brief Bitwise left shift function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __lshft_bit_iinternal(const _T1 &__other,
-                                             const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __lshft_bit_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise left shift function between two arrays, but here
@@ -641,27 +625,34 @@ class MdStaticArray {
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __lshft_bit_iointernal(const _T1 &__other,
-                                              const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __lshft_bit_iointernal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise right shift function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __rshft_bit_internal(const MdStaticArray<_T1> &__other,
-                                            const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __rshft_bit_internal(
+        const MdStaticArray<_T1> &__other) const;
 
     /**
      * @brief Bitwise right shift function between two arrays
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __rshft_bit_iinternal(const _T1 &__other,
-                                             const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __rshft_bit_iinternal(const _T1 &__other) const;
 
     /**
      * @brief Bitwise right shift function between two arrays, but here
@@ -669,9 +660,17 @@ class MdStaticArray {
      * @param other other array to perform bitwise and
      * @returns new array
      */
-    template <typename _T1, typename _T2>
-    MdStaticArray<_T2> __rshft_bit_iointernal(const _T1 &__other,
-                                              const _T2) const;
+    template <
+        typename _T1,
+        typename _T2 = typename std::remove_const<
+            decltype(MdTypeInfer::eval_resultant_t<_T1, _T>::value)>::type>
+    MdStaticArray<_T2> __rshft_bit_iointernal(const _T1 &__other) const;
+
+    /**
+     * @brief Negative operator
+     * @returns new array
+     */
+    MdStaticArray __ng_internal(void) const;
 
     /**
      * @brief Add to self, using multi-threading
@@ -994,52 +993,52 @@ class MdStaticArray {
 
     template <typename _T1>
     inline auto operator&(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__and_bit_internal)
+        return __and_bit_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator&(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__and_bit_iinternal)
+        return __and_bit_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator|(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__or_bit_internal)
+        return __or_bit_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator|(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__or_bit_iinternal)
+        return __or_bit_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator^(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__xor_bit_internal)
+        return __xor_bit_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator^(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__xor_bit_iinternal)
+        return __xor_bit_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator<<(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__lshft_bit_internal)
+        return __lshft_bit_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator<<(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__lshft_bit_iinternal)
+        return __lshft_bit_iinternal(__other);
     }
 
     template <typename _T1>
     inline auto operator>>(const MdStaticArray<_T1> &__other) const {
-        OP_INTERNAL_MACRO(__rshft_bit_internal)
+        return __rshft_bit_internal(__other);
     }
 
     template <typename _T1>
     inline auto operator>>(const _T1 &__other) const {
-        OP_INTERNAL_MACRO(__rshft_bit_iinternal)
+        return __rshft_bit_iinternal(__other);
     }
 
     template <typename _T1>
@@ -1227,50 +1226,54 @@ class MdStaticArray {
     }
 
     template <typename _T1, typename _T2>
-    friend inline _T1 &operator+=(_T1 &__other,
-                                  const MdStaticArrayReference<_T2> &__first);
+    friend inline auto &operator+=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator-=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator*=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator/=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator%=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator<<=(_T1 &__other,
+                                    const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator>>=(_T1 &__other,
+                                    const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator&=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator|=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1, typename _T2>
+    friend inline auto &operator^=(_T1 &__other,
+                                   const MdStaticArrayReference<_T2> &__first);
+
+    template <typename _T1>
+    friend inline auto operator-(const MdStaticArray<_T1> __ndarray);
+
+    template <typename _T1>
+    friend inline MdStaticArray<_T1> operator-(
+        const MdStaticArrayReference<_T1> &__first);
 };
 
 #include "./md_static_array_op.hpp"
-
-#define OP_INTERNAL_MACRO_EXT(func)                                  \
-    if constexpr (sizeof(_T1) > sizeof(_T2)) {                       \
-        if constexpr ((std::is_floating_point<_T2>::value ||         \
-                       std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == sizeof(float)) {                \
-            return first.func(__other, static_cast<float>(0));       \
-        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(double)) {        \
-            return first.func(__other, static_cast<double>(0));      \
-        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(long double)) {   \
-            return first.func(__other, static_cast<long double>(0)); \
-        } else {                                                     \
-            return first.func(__other, (_T1)0);                      \
-        }                                                            \
-    } else {                                                         \
-        if constexpr ((std::is_floating_point<_T2>::value ||         \
-                       std::is_floating_point<_T1>::value) &&        \
-                      sizeof(_T1) == sizeof(float)) {                \
-            return first.func(__other, static_cast<double>(0));      \
-        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(double)) {        \
-            return first.func(__other, static_cast<double>(0));      \
-        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) == sizeof(long double)) {   \
-            return first.func(__other, static_cast<long double>(0)); \
-        } else if constexpr ((std::is_floating_point<_T2>::value ||  \
-                              std::is_floating_point<_T1>::value) && \
-                             sizeof(_T1) < sizeof(float)) {          \
-            return first.func(__other, static_cast<float>(0));       \
-        } else {                                                     \
-            return first.func(__other, static_cast<_T2>(0));         \
-        }                                                            \
-    }
 
 template <typename _T>
 void MdStaticArray<_T>::set_thread_count(const uint8_t value) {
@@ -1282,27 +1285,32 @@ void MdStaticArray<_T>::set_threshold_size(const size_t value) {
     s_threshold_size = value;
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator+(const _T1 &__other, const MdStaticArray<_T2> &first) {
     return first + __other;
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator-(const _T1 &__other, const MdStaticArray<_T2> &first) {
     return first.__sub_iointernal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator*(const _T1 &__other, const MdStaticArray<_T2> &first) {
     return first * __other;
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator/(const _T1 &__other, const MdStaticArray<_T2> &first) {
     return first.__div_iointernal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator%(const _T1 &__other, const MdStaticArray<_T2> &first) {
     return first.__mod_iointernal(__other);
 }
@@ -1337,32 +1345,40 @@ inline auto operator>=(const _T1 &__other, const MdStaticArray<_T2> &first) {
     return first.__comp_geq_iinternal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator&(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__and_bit_iinternal)
+    return first.__and_bit_iinternal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator|(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__or_bit_iinternal)
+    return first.__or_bit_iinternal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator^(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__xor_bit_iinternal)
+    return first.__xor_bit_iinternal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator<<(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__lshft_bit_iointernal)
+    return first.__lshft_bit_iointernal(__other);
 }
 
-template <typename _T1, typename _T2, class = typename EN_IF(IS_ARITH(_T1))>
+template <typename _T1, typename _T2,
+          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline auto operator>>(const _T1 &__other, const MdStaticArray<_T2> &first) {
-    OP_INTERNAL_MACRO_EXT(__rshft_bit_iointernal)
+    return first.__rshft_bit_iointernal(__other);
 }
 
-#undef OP_INTERNAL_MACRO_EXT
+template <typename _T>
+inline MdStaticArray<_T> operator-(const MdStaticArray<_T> &first) {
+    return first.__ng_internal();
+}
 
 #include "./md_static_reference.hpp"
 
@@ -1412,8 +1428,8 @@ MdStaticArray<_T>::MdStaticArray(const MdStaticArrayReference<_T> &__other)
 }
 
 template <typename _T1, typename _T2>
-inline _T1 &operator+=(_T1 &__other,
-                       const MdStaticArrayReference<_T2> &__first) {
+inline auto &operator+=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
     if (__first.get_size() > 1) {
         throw std::runtime_error(
             "Operator += on single element requires size to be 1, found "
@@ -1424,8 +1440,124 @@ inline _T1 &operator+=(_T1 &__other,
     return __other;
 }
 
+template <typename _T1, typename _T2>
+inline auto &operator-=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator -= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other -= __first.__array_reference->__array[__first.shp_offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator*=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator *= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other *= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator/=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator /= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other /= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator%=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator %= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other %= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator<<=(_T1 &__other,
+                         const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator <<= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other <<= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator>>=(_T1 &__other,
+                         const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator >>= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other >>= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator&=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator &= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other &= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator|=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator |= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other |= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
+template <typename _T1, typename _T2>
+inline auto &operator^=(_T1 &__other,
+                        const MdStaticArrayReference<_T2> &__first) {
+    if (__first.get_size() > 1) {
+        throw std::runtime_error(
+            "Operator ^= on single element requires size to be 1, found "
+            "size: " +
+            std::to_string(__first.get_size()));
+    }
+    __other |= __first.__array_reference->__array[__first.offset];
+    return __other;
+}
+
 #undef EN_IF
 #undef IS_ARITH
-#undef OP_INTERNAL_MACRO
 
 #endif
