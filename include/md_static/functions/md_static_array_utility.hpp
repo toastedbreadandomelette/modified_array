@@ -73,9 +73,9 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename _Toutput, typename _T>
-    static MdStaticArray<_T> reduce(
+    static MdStaticArray<_Toutput> reduce(
         const MdStaticArray<_T> &__values,
-        const std::function<_Toutput(const _T, const _T, const size_t,
+        const std::function<_Toutput(const _Toutput, const _T, const size_t,
                                      const size_t, const MdStaticArray<_T> &)>
             &function_exec,
         const _T init, const int axis = -1);
@@ -91,10 +91,11 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename _Toutput, typename _T>
-    static MdStaticArray<_T> reduce(
+    static MdStaticArray<_Toutput> reduce(
         const MdStaticArrayReference<_T> &__values,
-        const std::function<_Toutput(const _T, const _T, const size_t,
-                                     const size_t, const MdStaticArray<_T> &)>,
+        const std::function<_Toutput(const _Toutput, const _T, const size_t,
+                                     const size_t,
+                                     const MdStaticArrayReference<_T> &)> &,
         const _T init, const int axis = -1);
 
     /**
@@ -222,6 +223,26 @@ struct MdArrayUtility {
     template <typename _T>
     static MdStaticArray<_T> amax(const MdStaticArrayReference<_T> &__values,
                                   const int axis = -1);
+
+    /**
+     * @brief Maximum of all the values along given axis
+     * @param __values List of all values
+     * @param axis Given axis along which function is checked
+     * @return Single number (or ndarray depending on axis)
+     */
+    template <typename _T>
+    static MdStaticArray<size_t> argmax(const MdStaticArray<_T> &__values,
+                                        const int axis = -1);
+
+    /**
+     * @brief Maximum of all the values along given axis
+     * @param __values List of all values
+     * @param axis Given axis along which function is checked
+     * @return Single number (or ndarray depending on axis)
+     */
+    template <typename _T = size_t>
+    static MdStaticArray<size_t> argmax(
+        const MdStaticArrayReference<_T> &__values, const int axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
