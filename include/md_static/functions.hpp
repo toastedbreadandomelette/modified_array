@@ -10,6 +10,7 @@
 #include "./functions/arcsin.hpp"
 #include "./functions/arctan.hpp"
 #include "./functions/argmax.hpp"
+#include "./functions/argmin.hpp"
 #include "./functions/ceil.hpp"
 #include "./functions/cos.hpp"
 #include "./functions/cosec.hpp"

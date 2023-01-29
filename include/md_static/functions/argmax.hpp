@@ -78,7 +78,7 @@ MdStaticArray<size_t> MdArrayUtility::argmax(const MdStaticArray<_T> &__values,
 
         const size_t total_threads = ::s_thread_count;
 
-        auto __perform_reduce_parallel = [&__values, &result, skip_index,
+        auto __perform_argmin_parallel = [&__values, &result, skip_index,
                                           loop_index, total_threads,
                                           axis](const size_t thread_number) {
             size_t value_index = thread_number * loop_index;
@@ -113,7 +113,7 @@ MdStaticArray<size_t> MdArrayUtility::argmax(const MdStaticArray<_T> &__values,
         for (size_t index = 0; index < total_dispatchable_threads; ++index) {
             std::cout << index * loop_index << '\n';
             thread_pool.emplace_back(
-                std::thread(__perform_reduce_parallel, index));
+                std::thread(__perform_argmin_parallel, index));
         }
 
         for (auto &thread : thread_pool) {
@@ -122,6 +122,14 @@ MdStaticArray<size_t> MdArrayUtility::argmax(const MdStaticArray<_T> &__values,
 
         return result;
     }
+}
+
+template <typename _T>
+MdStaticArray<size_t> MdArrayUtility::argmax(
+    const MdStaticArrayReference<_T> &__values, const int axis) {
+    return argmax<_T>(MdStaticArray<_T>(*__values.__array_reference,
+                                        __values.offset, __values.shp_offset),
+                      axis);
 }
 
 #endif

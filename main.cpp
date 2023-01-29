@@ -35,7 +35,9 @@ int main(int argc, const char** argv) {
         }
     }
 
-    auto ans = MdArrayUtility::amax(arr, 2);
+    arr[18] = 18;
+
+    auto ans = MdArrayUtility::argmin(arr, 2);
     // }
     auto end = std::chrono::system_clock::now();
 
@@ -53,16 +55,16 @@ int main(int argc, const char** argv) {
     // s <<= c[12];
     // c[2] = -c[2];
 
-    for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
-        for (size_t j = 0; j < arr.get_shape()[1]; ++j) {
-            std::cout << arr[i][j] << '\n';
-        }
-        std::cout << '\n';
-    }
+    // for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
+    //     for (size_t j = 0; j < arr.get_shape()[1]; ++j) {
+    //         std::cout << arr[i][j] << '\n';
+    //     }
+    //     std::cout << '\n';
+    // }
 
-    for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
-        std::cout << ans[i] << '\n';
-    }
+    // for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
+    //     std::cout << ans[i] << '\n';
+    // }
 
     std::cout << " Time: " << time.count() << "s"
               << " " << std::endl;
