@@ -7,7 +7,7 @@
 #include <thread>
 #include <vector>
 
-#include "./md_type_infer.hpp"
+#include "./md_type_inference.hpp"
 
 #define EN_IF(C)    std::enable_if<C>::type
 #define IS_ARITH(E) std::is_arithmetic<E>::value

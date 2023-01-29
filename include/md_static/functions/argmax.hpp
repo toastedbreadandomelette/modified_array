@@ -111,7 +111,6 @@ MdStaticArray<size_t> MdArrayUtility::argmax(const MdStaticArray<_T> &__values,
         const size_t total_dispatchable_threads =
             std::min({result.get_size(), total_threads});
         for (size_t index = 0; index < total_dispatchable_threads; ++index) {
-            std::cout << index * loop_index << '\n';
             thread_pool.emplace_back(
                 std::thread(__perform_argmin_parallel, index));
         }

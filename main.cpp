@@ -35,7 +35,7 @@ int main(int argc, const char** argv) {
         }
     }
 
-    arr[18] = 18;
+    arr[18] = arr[17];
 
     auto ans = MdArrayUtility::argmin(arr, 2);
     // }
@@ -55,12 +55,12 @@ int main(int argc, const char** argv) {
     // s <<= c[12];
     // c[2] = -c[2];
 
-    // for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
-    //     for (size_t j = 0; j < arr.get_shape()[1]; ++j) {
-    //         std::cout << arr[i][j] << '\n';
-    //     }
-    //     std::cout << '\n';
-    // }
+    for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
+        for (size_t j = 0; j < arr.get_shape()[1]; ++j) {
+            std::cout << arr[i][j] << '\n';
+        }
+        std::cout << '\n';
+    }
 
     // for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
     //     std::cout << ans[i] << '\n';

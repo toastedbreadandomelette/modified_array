@@ -220,14 +220,14 @@ struct max_size_t<_T1, _T2,
 };
 
 /**
- * @brief Wrapper for returning appropriate floating integer
+ * @brief Wrapper for returning appropriate floating number
  * @tparam t generic type
  */
 template <typename t, class = void>
 struct floating_t;
 
 /**
- * @brief Wrapper for returning appropriate floating integer
+ * @brief Wrapper for returning appropriate floating number
  * @tparam _Ttypeval generic type
  */
 template <typename _Ttypeval>
@@ -249,6 +249,10 @@ struct floating_t<
     using type = long double;
 };
 
+/**
+ * @brief Wrapper for returning appropriate complex floating number
+ * @tparam _Ttypeval generic type
+ */
 template <typename t, class = void>
 struct complex_floating_t;
 
@@ -273,6 +277,10 @@ struct complex_floating_t<
     using type = clongdouble;
 };
 
+/**
+ * @brief Wrapper for returning appropriate complex signed integer
+ * @tparam _Ttypeval generic type
+ */
 template <typename _Ttypeval, class = void>
 struct complex_signed_t;
 
@@ -304,6 +312,10 @@ struct complex_signed_t<
     using type = cint64;
 };
 
+/**
+ * @brief Wrapper for returning appropriate signed integer
+ * @tparam _Ttypeval generic type
+ */
 template <typename _Ttypeval, class = void>
 struct signed_t;
 
@@ -331,6 +343,10 @@ struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
     using type = int64_t;
 };
 
+/**
+ * @brief Wrapper for returning appropriate unsigned integer
+ * @tparam _Ttypeval generic type
+ */
 template <typename _Ttypeval, class = void>
 struct unsigned_t;
 
@@ -361,6 +377,10 @@ struct unsigned_t<
     using type = uint64_t;
 };
 
+/**
+ * @brief Wrapper for returning appropriate complex unsigned integer
+ * @tparam _Ttypeval generic type
+ */
 template <typename _Ttypeval, class = void>
 struct cunsigned_t;
 
@@ -391,6 +411,10 @@ struct cunsigned_t<
     using type = cuint64;
 };
 
+/**
+ * @brief Wrapper for evaluating appropriate complex type
+ * @tparam _Ttypeval generic type
+ */
 template <typename _T1, typename _T2, class = void>
 struct eval_complex_t {
 #define MX_SZ decltype(max_size_t<_T1, _T2>::value)

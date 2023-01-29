@@ -4,7 +4,7 @@
 
 #include "../md_complex/md_complex.hpp"
 #include "./md_static_array.hpp"
-#include "./md_type_infer.hpp"
+#include "./md_type_inference.hpp"
 
 template <typename _T>
 class MdStaticArrayReference {
@@ -49,30 +49,12 @@ class MdStaticArrayReference {
         size = __other.size;
     }
 
+    /**
+     * @brief Improve copy operator: support broadcasting
+     */
     MdStaticArrayReference &operator=(
         const MdStaticArrayReference<_T> &__other) {
         __array_reference = __other.__array_reference;
-        offset = __other.offset;
-        shp_offset = __other.shp_offset;
-        size = __other.size;
-
-        return *this;
-    }
-
-    MdStaticArrayReference(const MdStaticArrayReference<_T> &&__other) {
-        __array_reference = __other.__array_reference;
-        __other.__array_reference = nullptr;
-
-        offset = __other.offset;
-        shp_offset = __other.shp_offset;
-        size = __other.size;
-    }
-
-    MdStaticArrayReference &operator=(
-        const MdStaticArrayReference<_T> &&__other) {
-        __array_reference = __other.__array_reference;
-        __other.__array_reference = nullptr;
-
         offset = __other.offset;
         shp_offset = __other.shp_offset;
         size = __other.size;
