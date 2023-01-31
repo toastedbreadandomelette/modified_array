@@ -4,6 +4,11 @@
 
 #include "./md_fft.hpp"
 
+/**
+ * @note Source:
+ * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+ * https://e-maxx.ru/algo/fft_multiply
+ */
 template <typename _T>
 MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
     size_t n = __other.get_size();

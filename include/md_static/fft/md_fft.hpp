@@ -7,6 +7,9 @@
 
 struct FFT {
     /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
      * @tparam _T type of an array
      * @param __other array for which IFFT is to be computed
@@ -16,6 +19,9 @@ struct FFT {
     static MdStaticArray<cdouble> fft(const MdStaticArray<_T>& __other);
 
     /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
      * @tparam _T type of an array
      * @param __other array for which FFT is to be computed
@@ -26,6 +32,9 @@ struct FFT {
         const MdStaticArrayReference<_T>& __other);
 
     /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
      * @tparam _T type of an array
      * @param __other array for which FFT is to be computed
@@ -35,6 +44,9 @@ struct FFT {
     static MdStaticArray<_T> ifft(const MdStaticArray<cdouble>& __other);
 
     /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
      * @tparam _T type of an array
      * @param __other array for which FFT is to be computed

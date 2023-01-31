@@ -19,6 +19,11 @@ constexpr inline size_t reverse_bits(const size_t n, const size_t bit_size) {
     return (rn >> (64 - bit_size));
 }
 
+/**
+ * @note Source:
+ * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+ * https://e-maxx.ru/algo/fft_multiply
+ */
 template <typename _T>
 MdStaticArray<cdouble> FFT::fft(const MdStaticArray<_T>& __other) {
     size_t n = __other.get_size();
