@@ -15,6 +15,7 @@ class MdStaticArrayReference {
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
+    friend struct FFT;
 
     void *operator new(size_t size);
     const MdStaticArray<_T> *__array_reference;

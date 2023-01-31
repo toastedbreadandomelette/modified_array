@@ -9,7 +9,7 @@
 template <typename _T>
 MdStaticArray<_T> MdArrayUtility::abs(const MdStaticArray<_T> &__values) {
     return MdArrayUtility::map<_T>(
-        __values, [](const _T &value) { return ::abs(value); });
+        __values, [](const _T &value) { return std::abs(value); });
 }
 
 template <typename _T>

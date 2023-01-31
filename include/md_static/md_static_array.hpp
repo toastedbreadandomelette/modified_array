@@ -91,6 +91,7 @@ class MdStaticArray {
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
     friend struct MdArrayManipulate;
+    friend struct FFT;
 
     friend std::ostream &operator<<(std::ostream &op,
                                     const MdStaticArrayReference<_T> &ot);
@@ -99,7 +100,7 @@ class MdStaticArray {
 
     static void set_threshold_size(const size_t size);
 
-    void init_array(const size_t size) {
+    constexpr void init_array(const size_t size) {
         if constexpr (std::is_fundamental<_T>::value) {
 #ifdef _WIN32
             __array = static_cast<_T *>(_aligned_malloc(size * sizeof(_T), 64));

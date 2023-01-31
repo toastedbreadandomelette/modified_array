@@ -7,7 +7,7 @@
 
 struct MdArrayManipulate {
     /**
-     * @brief Create array with entries zeros
+     * @brief Create array with entries zero
      * @tparam _T type of array
      * @param __size size to be created
      * @returns array of size __size with all entries as zeros
@@ -16,36 +16,39 @@ struct MdArrayManipulate {
     static MdStaticArray<_T> zeros(const size_t __size);
 
     /**
-     * @brief Create array with entries zeros
+     * @brief Create array with entries zero
      * @tparam _T type of array
-     * @param __size size to be created
+     * @param __shape size to be created
      * @returns array of size __size with all entries as zeros
      */
     template <typename _T>
     static MdStaticArray<_T> zeros(const std::vector<size_t> &__shape);
 
     /**
-     * @brief Create array with entries zeros
+     * @brief Create array with entries one
      * @tparam _T type of array
      * @param __size size to be created
-     * @returns array of size __size with all entries as zeros
+     * @returns array of size __size with all entries as one
      */
     template <typename _T>
     static MdStaticArray<_T> ones(const size_t __size);
 
     /**
-     * @brief Create array with entries zeros
+     * @brief Create array with entries one
      * @tparam _T type of array
-     * @param __size size to be created
-     * @returns array of size __size with all entries as zeros
+     * @param __shape size to be created
+     * @returns array of size __size with all entries as one
      */
     template <typename _T>
     static MdStaticArray<_T> ones(const std::vector<size_t> &__shape);
 
     /**
-     * @brief Create array with entries zeros
+     * @brief Create an identity matrix
      * @tparam _T type of array
-     * @param __size size to be created
+     * @param __rows total rows to create
+     * @param __cols cols to create (optional, will create square matrix if not
+     * mentioned)
+     * @param __koffset filling ones will start from offset
      * @returns array of size __size with all entries as zeros
      */
     template <typename _T>
@@ -53,23 +56,54 @@ struct MdArrayManipulate {
                                  const size_t __koffset = 0);
 
     /**
-     * @brief Create array with entries zeros
+     * @brief Return diagonal from a 2d array
      * @tparam _T type of array
-     * @param __size size to be created
+     * @param __2darray 2d array from which we read diagonal from
+     * @param __koffset diagonal reading from start offset
      * @returns array of size __size with all entries as zeros
      */
     template <typename _T>
-    static MdStaticArray<_T> mat_diag(const MdStaticArray<_T> &__rows,
+    static MdStaticArray<_T> mat_diag(const MdStaticArray<_T> &__2darray,
                                       const size_t __koffset = 0);
     /**
-     * @brief Create array with entries zeros
+     * @brief Return diagonal from a 2d array
      * @tparam _T type of array
-     * @param __size size to be created
+     * @param __2darray 2d array from which we read diagonal from
+     * @param __koffset diagonal reading from start offset
      * @returns array of size __size with all entries as zeros
      */
     template <typename _T>
     static MdStaticArray<_T> mat_diag(const MdStaticArrayReference<_T> &__rows,
                                       const size_t __koffset = 0);
+
+    /**
+     * @brief Create array with entries as vandermonte
+     * @tparam _T type of array
+     * @param __1darray 1d array
+     * @param __n total number of columns (optional, will create a square
+     * matrix)
+     * @param increasing_order will arrange each rows with ascending order of
+     * exponents when set to true
+     * @returns array of size {|__1darray|, __n}
+     */
+    template <typename _T>
+    static MdStaticArray<_T> vandermonte(const MdStaticArray<_T> &__1darray,
+                                         const int64_t __n = -1,
+                                         const bool increasing_order = false);
+    /**
+     * @brief Create array with entries as vandermonte
+     * @tparam _T type of array
+     * @param __1darray 1d array
+     * @param __n total number of columns (optional, will create a square
+     * matrix)
+     * @param increasing_order will arrange each rows with ascending order of
+     * exponents when set to true
+     * @returns array of size {|__1darray|, __n}
+     */
+    template <typename _T>
+    static MdStaticArray<_T> vandermonte(
+        const MdStaticArrayReference<_T> &__rows, const int64_t __n = -1,
+        const bool increasing_order = false);
 
     template <typename _T>
     static MdStaticArray<_T> flip(const MdStaticArray<_T> &__ndarray,
