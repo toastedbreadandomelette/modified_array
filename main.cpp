@@ -15,7 +15,7 @@
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
     size_t sz = 8;
-    MdStaticArray<double>::set_threshold_size(1000000);
+    MdStaticArray<double>::set_threshold_size(100);
     // MdStaticArray<double>::set_thread_count(1);
 
     MdStaticArray<double> c = MdArrayUtility::range(5242880);

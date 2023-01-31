@@ -60,6 +60,7 @@ MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
 
     MdStaticArray<_T> result(__other.get_size());
 
+#pragma omp parallel for
     for (size_t index = 0; index < result.get_size(); ++index) {
         result.__array[index] = __input.__array[index];
     }
