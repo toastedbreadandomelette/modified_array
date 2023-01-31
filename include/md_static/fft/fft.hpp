@@ -37,8 +37,12 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<_T>& __other) {
     }
 
     __input = MdStaticArray<cdouble>(n, 0);
+#pragma omp parallel for
     for (size_t index = 0; index < __other.get_size(); ++index) {
-        __input.__array[index] = __other.__array[index];
+        const size_t rindex = reverse_bits(index, power);
+        if (rindex < __other.get_size()) {
+            __input.__array[index] = __other.__array[rindex];
+        }
     }
 
     auto __perform_dft_internal = [](const MdStaticArray<_T>& __values) {
@@ -141,12 +145,6 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<_T>& __other) {
                                      const size_t bit_size) {
         /// Reverse the bitwise indexes
         size_t n = __1darray.get_size();
-        for (size_t index = 0; index < n; ++index) {
-            const size_t rindex = reverse_bits(index, bit_size);
-            if (index < rindex) {
-                std::swap(__1darray.__array[index], __1darray.__array[rindex]);
-            }
-        }
 
         for (size_t operate_length = 2; operate_length <= n;
              operate_length <<= 1) {

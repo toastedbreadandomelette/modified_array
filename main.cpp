@@ -18,7 +18,7 @@ int main(int argc, const char** argv) {
     MdStaticArray<double>::set_threshold_size(1000000);
     // MdStaticArray<double>::set_thread_count(1);
 
-    MdStaticArray<double> c = MdArrayUtility::range(524288);
+    MdStaticArray<double> c = MdArrayUtility::range(5242880);
     // MdStaticArray<double> c({8000}, 1.03);
     // MdStaticArray<float> d(sz, 223);
 
@@ -41,7 +41,7 @@ int main(int argc, const char** argv) {
     // arr[18] = arr[17];
     // for (size_t index = 0; index < 100; ++index) {
     auto ans = FFT::fft(c);
-    auto ians = FFT::ifft<double>(ans);
+    // auto ians = FFT::ifft<double>(ans);
     // }
     // auto ans = MdArrayManipulate::vandermonte(c);
     // }
