@@ -19,6 +19,16 @@ constexpr inline size_t reverse_bits(const size_t n, const size_t bit_size) {
     return (rn >> (64 - bit_size));
 }
 
+constexpr inline uint32_t reverse_bits_32(const uint32_t n,
+                                          const uint32_t bit_size) {
+    uint32_t rn = (n << 16) | (n >> 16);
+    rn = ((rn << 8) & 0xFF00FF00) | ((rn >> 8) & 0x00FF00FF);
+    rn = ((rn << 4) & 0xF0F0F0F0) | ((rn >> 4) & 0x0F0F0F0F);
+    rn = ((rn << 2) & 0xCCCCCCCC) | ((rn >> 2) & 0x33333333);
+    rn = ((rn << 1) & 0xAAAAAAAA) | ((rn >> 1) & 0x55555555);
+    return (rn >> (32 - bit_size));
+}
+
 /**
  * @note Source:
  * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation

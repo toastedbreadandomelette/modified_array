@@ -19,7 +19,7 @@ int main(int argc, const char** argv) {
     // MdStaticArray<double>::set_thread_count(1);
 
     MdStaticArray<double> c = MdArrayUtility::range(5242880);
-    // MdStaticArray<double> c({8000}, 1.03);
+    MdStaticArray<double> d({2000, 2000}, 12);
     // MdStaticArray<float> d(sz, 223);
 
     auto start = std::chrono::system_clock::now();
@@ -40,9 +40,10 @@ int main(int argc, const char** argv) {
 
     // arr[18] = arr[17];
     // for (size_t index = 0; index < 100; ++index) {
-    auto ans = FFT::fft(c);
+    // auto ans = FFT::fft(c);
     // auto ians = FFT::ifft<double>(ans);
     // }
+    auto v = MdLinearAlgebra::lu_decompose<double>(d);
     // auto ans = MdArrayManipulate::vandermonte(c);
     // }
     auto end = std::chrono::system_clock::now();

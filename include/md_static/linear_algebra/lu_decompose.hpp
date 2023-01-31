@@ -22,27 +22,21 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
     // Credits to algorithm: Rosetta code:
     // https://rosettacode.org/wiki/LU_decomposition#C++
     size_t n = __2darray.get_shape()[0];
-    MdStaticArray<_Tres> L({n, n}, 0);
-    MdStaticArray<_Tres> U({n, n}, 0);
-    MdStaticArray<_Tres> P({n, n}, 0);
+    MdStaticArray<_Tres> L({n, n}, 0), U({n, n}, 0), P({n, n}, 0);
     MdStaticArray<_Tres> input(__2darray);
     int sign = 1;
     MdStaticArray<size_t> permutation = MdArrayUtility::range<size_t>(n);
 
     for (size_t j = 0; j < n; ++j) {
         size_t max_index = j;
-        _Tres max_value = 0;
-        for (size_t i = j; i < n; ++i) {
+        _Tres max_value =
+            std::abs(input.__array[n * permutation.__array[j] + j]);
+        for (size_t i = j + 1; i < n; ++i) {
             const _Tres value =
                 std::abs(input.__array[n * permutation.__array[i] + j]);
             if (value > max_value) {
                 max_value = value;
                 max_index = i;
-            }
-
-            if (max_value <= std::numeric_limits<_Tres>::epsilon()) {
-                throw std::runtime_error(
-                    "Error: Given matrix for LU is singular.");
             }
         }
         if (j != max_index) {
@@ -52,27 +46,17 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
 
         size_t jmax = permutation.__array[j];
 
-        if (n - j - 1 >= 64) {
 #pragma omp parallel for
-            for (size_t i = j + 1; i < n; ++i) {
-                size_t imax = permutation.__array[i];
-                input.__array[imax * n + j] /= input.__array[jmax * n + j];
-                for (size_t k = j + 1; k < n; ++k) {
-                    input.__array[imax * n + k] -= input.__array[imax * n + j] *
-                                                   input.__array[jmax * n + k];
-                }
-            }
-        } else {
-            for (size_t i = j + 1; i < n; ++i) {
-                size_t imax = permutation.__array[i];
-                input.__array[imax * n + j] /= input.__array[jmax * n + j];
-                for (size_t k = j + 1; k < n; ++k) {
-                    input.__array[imax * n + k] -= input.__array[imax * n + j] *
-                                                   input.__array[jmax * n + k];
-                }
+        for (size_t i = j + 1; i < n; ++i) {
+            size_t imax = permutation.__array[i];
+            input.__array[imax * n + j] /= input.__array[jmax * n + j];
+            for (size_t k = j + 1; k < n; ++k) {
+                input.__array[imax * n + k] -=
+                    input.__array[imax * n + j] * input.__array[jmax * n + k];
             }
         }
     }
+
 #pragma omp parallel for
     for (size_t j = 0; j < n; ++j) {
         L.__array[j * n + j] = 1;
@@ -87,7 +71,7 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
     }
 
     for (size_t index = 0; index < n; ++index) {
-        P.__array[index * n + permutation.__array[index]] = index;
+        P.__array[index * n + permutation.__array[index]] = 1;
     }
 
     return {L, U, P, sign};
