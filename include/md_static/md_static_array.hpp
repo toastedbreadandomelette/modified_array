@@ -208,6 +208,7 @@ class MdStaticArray {
         __other.skip_vec = nullptr;
 
         dont_free = __other.dont_free;
+        __other.dont_free = true;
     }
 
     MdStaticArray &operator=(MdStaticArray<_T> &&__other) {
@@ -223,6 +224,7 @@ class MdStaticArray {
         __other.skip_vec = nullptr;
 
         dont_free = __other.dont_free;
+        __other.dont_free = true;
 
         return *this;
     }
@@ -336,7 +338,6 @@ class MdStaticArray {
                 }
                 __array = nullptr;
             }
-
             if (shape != nullptr) {
                 free(shape);
                 shape = nullptr;
@@ -345,6 +346,10 @@ class MdStaticArray {
                 free(skip_vec);
                 skip_vec = nullptr;
             }
+        } else {
+            __array = nullptr;
+            shape = nullptr;
+            skip_vec = nullptr;
         }
     }
 

@@ -6,4 +6,7 @@ set(CMAKE_CXX_FLAGS "-O3 -march=native -mavx -msse4a -funroll-loops -mfpmath=sse
 
 file(GLOB SOURCES "main.cpp")
 
+enable_testing()
+add_subdirectory(tests/md_static)
+
 add_executable(nd_array ${SOURCES})

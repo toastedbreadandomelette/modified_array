@@ -55,6 +55,15 @@ struct FFT {
     template <typename _T>
     static MdStaticArray<_T> ifft(
         const MdStaticArrayReference<cdouble>& __other);
+
+    /**
+     * @brief Compute 2 dimensional FFT on 2 dimensional array
+     * @tparam _T type of an array
+     * @param __other array for which IFFT is to be computed
+     * @return values of complex numbers in 2D-array
+     */
+    template <typename _T>
+    static MdStaticArray<cdouble> fft2(const MdStaticArray<_T>& __other);
 };
 
 #endif

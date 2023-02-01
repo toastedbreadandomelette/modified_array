@@ -5,29 +5,8 @@
 #include <bitset>
 
 #include "../functions/range.hpp"
+#include "../utility/md_math.hpp"
 #include "./md_fft.hpp"
-
-constexpr double pi = 3.14159265358979323846;
-
-constexpr inline size_t reverse_bits(const size_t n, const size_t bit_size) {
-    size_t rn = (n << 32) | (n >> 32);
-    rn = ((rn << 16) & 0xFFFF0000FFFF0000) | ((rn >> 16) & 0x0000FFFF0000FFFF);
-    rn = ((rn << 8) & 0xFF00FF00FF00FF00) | ((rn >> 8) & 0x00FF00FF00FF00FF);
-    rn = ((rn << 4) & 0xF0F0F0F0F0F0F0F0) | ((rn >> 4) & 0x0F0F0F0F0F0F0F0F);
-    rn = ((rn << 2) & 0xCCCCCCCCCCCCCCCC) | ((rn >> 2) & 0x3333333333333333);
-    rn = ((rn << 1) & 0xAAAAAAAAAAAAAAAA) | ((rn >> 1) & 0x5555555555555555);
-    return (rn >> (64 - bit_size));
-}
-
-constexpr inline uint32_t reverse_bits_32(const uint32_t n,
-                                          const uint32_t bit_size) {
-    uint32_t rn = (n << 16) | (n >> 16);
-    rn = ((rn << 8) & 0xFF00FF00) | ((rn >> 8) & 0x00FF00FF);
-    rn = ((rn << 4) & 0xF0F0F0F0) | ((rn >> 4) & 0x0F0F0F0F);
-    rn = ((rn << 2) & 0xCCCCCCCC) | ((rn >> 2) & 0x33333333);
-    rn = ((rn << 1) & 0xAAAAAAAA) | ((rn >> 1) & 0x55555555);
-    return (rn >> (32 - bit_size));
-}
 
 /**
  * @note Source:
@@ -47,21 +26,22 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<_T>& __other) {
     }
 
     __input = MdStaticArray<cdouble>(n, 0);
+
+    /// Reverse the index bits
 #pragma omp parallel for
     for (size_t index = 0; index < __other.get_size(); ++index) {
-        const size_t rindex = reverse_bits(index, power);
+        const size_t rindex = MdMath::reverse_bits(index, power);
         if (rindex < __other.get_size()) {
             __input.__array[index] = __other.__array[rindex];
         }
     }
 
     auto __perform_fft_in_place = [](MdStaticArray<cdouble>& __1darray) {
-        /// Reverse the bitwise indexes
         size_t n = __1darray.get_size();
 
         for (size_t operate_length = 2; operate_length <= n;
              operate_length <<= 1) {
-            double angle = 2.0 * pi / operate_length;
+            double angle = 2.0 * MdMath::pi / operate_length;
             const cdouble init = {std::cos(angle), -std::sin(angle)};
 #pragma omp parallel for
             for (size_t i = 0; i < n; i += operate_length) {

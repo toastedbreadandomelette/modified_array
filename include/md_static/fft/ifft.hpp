@@ -2,6 +2,7 @@
 #ifndef _IFFT_HPP_
 #define _IFFT_HPP_
 
+#include "../utility/md_math.hpp"
 #include "./md_fft.hpp"
 
 /**
@@ -24,7 +25,7 @@ MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
     __input = MdStaticArray<cdouble>(n, 0);
 #pragma omp parallel for
     for (size_t index = 0; index < __other.get_size(); ++index) {
-        const size_t rindex = reverse_bits(index, power);
+        const size_t rindex = MdMath::reverse_bits(index, power);
         if (rindex < __other.get_size()) {
             __input.__array[index] = __other.__array[rindex];
         }
@@ -37,7 +38,7 @@ MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
 
         for (size_t operate_length = 2; operate_length <= n;
              operate_length <<= 1) {
-            double angle = 2.0 * pi / operate_length;
+            double angle = 2.0 * MdMath::pi / operate_length;
             const cdouble init = {std::cos(angle), std::sin(angle)};
 #pragma omp parallel for
             for (size_t i = 0; i < n; i += operate_length) {

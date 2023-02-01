@@ -9,7 +9,7 @@ Makefile
 *test.py
 *sam.py
 *sam.cpp
-*.txt
+out*.txt
 Testing/
 
 .idea

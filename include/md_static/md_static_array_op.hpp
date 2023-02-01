@@ -1630,7 +1630,7 @@ MdStaticArray<bool> MdStaticArray<_T>::__comp_neq_iinternal(
     MdStaticArray<bool> result(size);
     result.init_shape(shape, shp_size);
     if (::s_thread_count == 1 || size <= s_threshold_size) {
-        for (size_t index = 0; index < get_size(); ++index) {
+        for (size_t index = 0; index < size; ++index) {
             result.__array[index] = __array[index] != __other;
         }
     } else {

@@ -281,8 +281,10 @@ struct complex_floating_t<
  * @brief Wrapper for returning appropriate complex signed integer
  * @tparam _Ttypeval generic type
  */
-template <typename _Ttypeval, class = void>
-struct complex_signed_t;
+template <typename _Ttypeval, typename...>
+struct complex_signed_t {
+    using type = _Ttypeval;
+};
 
 template <typename _Ttypeval>
 struct complex_signed_t<
@@ -381,8 +383,10 @@ struct unsigned_t<
  * @brief Wrapper for returning appropriate complex unsigned integer
  * @tparam _Ttypeval generic type
  */
-template <typename _Ttypeval, class = void>
-struct cunsigned_t;
+template <typename _Ttypeval, class...>
+struct cunsigned_t {
+    using type = _Ttypeval;
+};
 
 template <typename _Ttypeval>
 struct cunsigned_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==

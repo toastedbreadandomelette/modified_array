@@ -1,3 +1,5 @@
+#include <omp.h>
+
 #include <chrono>
 #include <cmath>
 #include <complex>
@@ -15,11 +17,12 @@
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
     size_t sz = 8;
+    // omp_set_num_threads(8);
     MdStaticArray<double>::set_threshold_size(100);
     // MdStaticArray<double>::set_thread_count(1);
 
     MdStaticArray<double> c = MdArrayUtility::range(5242880);
-    MdStaticArray<double> d({2000, 2000}, 12);
+    // MdStaticArray<double> d({2000, 2000}, 12);
     // MdStaticArray<float> d(sz, 223);
 
     auto start = std::chrono::system_clock::now();
@@ -40,10 +43,10 @@ int main(int argc, const char** argv) {
 
     // arr[18] = arr[17];
     // for (size_t index = 0; index < 100; ++index) {
-    // auto ans = FFT::fft(c);
+    auto ans = FFT::fft(c);
     // auto ians = FFT::ifft<double>(ans);
     // }
-    auto v = MdLinearAlgebra::lu_decompose<double>(d);
+    // auto v = MdLinearAlgebra::lu_decompose<double>(d);
     // auto ans = MdArrayManipulate::vandermonte(c);
     // }
     auto end = std::chrono::system_clock::now();

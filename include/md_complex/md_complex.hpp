@@ -2,6 +2,7 @@
 #ifndef _MD_COMPLEX_HPP_
 #define _MD_COMPLEX_HPP_
 
+#include <cmath>
 #include <ostream>
 
 template <typename _T,
@@ -144,12 +145,12 @@ struct MdComplex {
     }
 
     inline constexpr std::pair<double, double> to_polar() const {
-        return {abs(), std::atan(img / real)};
+        return {abs(), ::atan(img / real)};
     }
 
     static inline constexpr MdComplex from_polar(const double __R,
                                                  const double __A) {
-        return {__R * std::cos(__A), __R * std::sin(__A)};
+        return {__R * ::cos(__A), __R * ::sin(__A)};
     }
 
     template <typename _T1>
@@ -160,7 +161,7 @@ struct MdComplex {
     inline constexpr double sq_abs() const { return real * real + img * img; }
 
     inline constexpr double abs() const {
-        return std::sqrt(real * real + img * img);
+        return ::sqrt(real * real + img * img);
     }
 
     template <typename _T1>
@@ -168,6 +169,26 @@ struct MdComplex {
         real /= __other;
         img /= __other;
         return *this;
+    }
+
+    template <typename _T1>
+    inline constexpr bool operator==(const MdComplex<_T1>& __other) {
+        return __other.real == real && __other.img == img;
+    }
+
+    template <typename _T1>
+    inline constexpr bool operator==(const _T1& __other) {
+        return __other == real && __other.img == 0;
+    }
+
+    template <typename _T1>
+    inline constexpr bool operator!=(const MdComplex<_T1>& __other) {
+        return __other.real != real || __other.img != img;
+    }
+
+    template <typename _T1>
+    inline constexpr bool operator!=(const _T1& __other) {
+        return __other != real || img != 0;
     }
 
     friend std::ostream& operator<<(std::ostream& op, const MdComplex& c) {
@@ -261,5 +282,11 @@ using cint8 = MdComplex<int8_t>;
 
 template <>
 struct std::is_fundamental<cdouble> : std::true_type {};
+template <>
+struct std::is_fundamental<clongdouble> : std::true_type {};
+template <>
+struct std::is_arithmetic<cdouble> : std::true_type {};
+template <>
+struct std::is_arithmetic<clongdouble> : std::true_type {};
 
 #endif
