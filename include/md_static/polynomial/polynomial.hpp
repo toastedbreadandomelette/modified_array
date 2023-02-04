@@ -2,8 +2,7 @@
 #ifndef _POLYNOMIAL_HPP_
 #define _POLYNOMIAL_HPP_
 
-class Polynomial {
-    
-};
+template <typename T>
+class Polynomial {};
 
 #endif

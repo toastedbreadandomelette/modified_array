@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "../../include/md_static/md_static_array.hpp"
-#include "../tests.hpp"
+#include "../../../include/md_static/md_static_array.hpp"
+#include "../../tests.hpp"
 
 int main() {
     MdStaticArray<int> a(10, 5), b(10, 12);
@@ -118,7 +118,8 @@ int main() {
     }
 
     {
-        auto d = MdStaticArray<size_t>({312, 123, 11, 2123, 321324}) << MdStaticArray<int8_t>({3, 4, 5, 6, 7});
+        auto d = MdStaticArray<size_t>({312, 123, 11, 2123, 321324})
+                 << MdStaticArray<int8_t>({3, 4, 5, 6, 7});
         TEST_EQ(d.get_size(), 5);
         TEST_EQ(d.get_shape_size(), 1);
         TEST_EQ(d.get_shape()[0], 5);
@@ -131,16 +132,17 @@ int main() {
     }
 
     {
-        auto d = MdStaticArray<size_t>({312, 123, 11, 2123, 321324}) >> MdStaticArray<int8_t>({3, 4, 5, 6, 7});
+        auto d = MdStaticArray<size_t>({312, 123, 11, 2123, 321324}) >>
+                 MdStaticArray<int8_t>({3, 4, 5, 6, 7});
         TEST_EQ(d.get_size(), 5);
         TEST_EQ(d.get_shape_size(), 1);
         TEST_EQ(d.get_shape()[0], 5);
 
-        TEST_EQ(d[0], 312 >> 3);
-        TEST_EQ(d[1], 123 >> 4);
-        TEST_EQ(d[2], 11 >> 5);
-        TEST_EQ(d[3], 2123 >> 6);
-        TEST_EQ(d[4], 321324 >> 7);
+        TEST_EQ(d[0], 39);
+        TEST_EQ(d[1], 5);
+        TEST_EQ(d[2], 0);
+        TEST_EQ(d[3], 33);
+        TEST_EQ(d[4], 2510);
     }
 
     return 0;

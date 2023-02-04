@@ -415,6 +415,12 @@ struct cunsigned_t<
     using type = cuint64;
 };
 
+template <typename>
+struct is_vector : std::false_type {};
+
+template <typename T, typename A>
+struct is_vector<std::vector<T, A>> : std::true_type {};
+
 /**
  * @brief Wrapper for evaluating appropriate complex type
  * @tparam _Ttypeval generic type

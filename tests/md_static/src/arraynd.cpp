@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "../../include/md_static/md_static_array.hpp"
-#include "../tests.hpp"
+#include "../../../include/md_static/md_static_array.hpp"
+#include "../../tests.hpp"
 
 #define TEST(condition)                                    \
     if (!(condition)) {                                    \

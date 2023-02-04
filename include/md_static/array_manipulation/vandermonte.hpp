@@ -17,24 +17,6 @@ MdStaticArray<_T> MdArrayManipulate::vandermonte(
 
     MdStaticArray<_T> result({__rows.get_size(), loop}, 1);
 
-    constexpr auto int_power = [](_T n, size_t power) -> _T {
-        if (power == 0) {
-            return 1;
-        } else if (power == 1) {
-            return n;
-        }
-        _T c = n;
-        while (power > 0) {
-            if (power & 1) {
-                c *= n;
-            }
-            n *= n;
-            power >>= 1;
-        }
-
-        return c;
-    };
-
     if (::s_thread_count == 1 || ::s_threshold_size > result.get_size()) {
         if (!increasing_order) {
             for (size_t row = 0; row < __rows.get_size(); ++row) {
@@ -55,8 +37,8 @@ MdStaticArray<_T> MdArrayManipulate::vandermonte(
         }
     } else {
         auto __perform_vandermonte_parallel =
-            [&__rows, loop, &result, &int_power, increasing_order](
-                const size_t start, const size_t end) {
+            [&__rows, loop, &result, increasing_order](const size_t start,
+                                                       const size_t end) {
                 if (!increasing_order) {
                     for (size_t row = start; row < end; ++row) {
                         const auto c = __rows.__array[row];
