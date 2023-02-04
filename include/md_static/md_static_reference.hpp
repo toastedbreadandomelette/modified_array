@@ -147,10 +147,10 @@ class MdStaticArrayReference {
                  index < ot.__array_reference->shape[ot.shp_offset]; ++index) {
                 op << ot[index];
                 if (index != ot.__array_reference->shape[ot.shp_offset] - 1) {
-                    op << ", ";
+                    op << ",\n";
                 }
             }
-            op << ']';
+            op << "]";
         }
         return op;
     }

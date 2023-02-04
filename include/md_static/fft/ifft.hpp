@@ -9,6 +9,7 @@
  * @note Source:
  * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
  * https://e-maxx.ru/algo/fft_multiply
+ * Only works for size for 2 to the power index.
  */
 template <typename _T>
 MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
@@ -17,18 +18,14 @@ MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
     MdStaticArray<cdouble> __input;
 
     if ((n & (n - 1)) != 0) {
-        power = static_cast<size_t>(std::log2(n));
         n = (__other.get_size() >> (power)) << (power + 1);
         ++power;
     }
 
     __input = MdStaticArray<cdouble>(n, 0);
-#pragma omp parallel for
-    for (size_t index = 0; index < __other.get_size(); ++index) {
+    for (size_t index = 1; index < __other.get_size(); ++index) {
         const size_t rindex = MdMath::reverse_bits(index, power);
-        if (rindex < __other.get_size()) {
-            __input.__array[index] = __other.__array[rindex];
-        }
+        __input.__array[rindex] = __other.__array[index];
     }
 
     auto __perform_fft_in_place = [](MdStaticArray<cdouble>& __1darray,
@@ -39,8 +36,8 @@ MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
         for (size_t operate_length = 2; operate_length <= n;
              operate_length <<= 1) {
             double angle = 2.0 * MdMath::pi / operate_length;
-            const cdouble init = {std::cos(angle), std::sin(angle)};
-#pragma omp parallel for
+            const cdouble init = {::cos(angle), -::sin(angle)};
+
             for (size_t i = 0; i < n; i += operate_length) {
                 cdouble w = {1, 0};
                 for (size_t j = 0; j < operate_length / 2; ++j) {
@@ -59,14 +56,14 @@ MdStaticArray<_T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
 
     __perform_fft_in_place(__input, power);
 
-    MdStaticArray<_T> result(__other.get_size());
+    //     MdStaticArray<_T> result(__other.get_size());
 
-#pragma omp parallel for
-    for (size_t index = 0; index < result.get_size(); ++index) {
-        result.__array[index] = __input.__array[index];
-    }
+    // #pragma omp parallel for
+    //     for (size_t index = 0; index < result.get_size(); ++index) {
+    //         result.__array[index] = __input.__array[index];
+    //     }
 
-    return result;
+    return __input;
 }
 
 template <typename _T>

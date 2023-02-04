@@ -94,8 +94,8 @@ struct MdComplex {
 
     template <typename _T1>
     inline constexpr auto operator*(const MdComplex<_T1>& __other) const {
-        return MdComplex<_T>(real * __other.real - img * __other.img,
-                             real * __other.img + img * __other.real);
+        return MdComplex(real * __other.real - img * __other.img,
+                         real * __other.img + img * __other.real);
     }
 
     template <typename _T1>
@@ -193,9 +193,9 @@ struct MdComplex {
 
     friend std::ostream& operator<<(std::ostream& op, const MdComplex& c) {
         if (c.img < 0) {
-            op << c.real << '-' << (-c.img) << 'i';
+            op << c.real << '-' << (-c.img) << 'j';
         } else {
-            op << c.real << '+' << c.img << 'i';
+            op << c.real << '+' << c.img << 'j';
         }
         return op;
     }
@@ -284,9 +284,5 @@ template <>
 struct std::is_fundamental<cdouble> : std::true_type {};
 template <>
 struct std::is_fundamental<clongdouble> : std::true_type {};
-template <>
-struct std::is_arithmetic<cdouble> : std::true_type {};
-template <>
-struct std::is_arithmetic<clongdouble> : std::true_type {};
 
 #endif

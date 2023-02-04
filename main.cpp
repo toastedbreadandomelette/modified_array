@@ -16,66 +16,24 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 8;
+    size_t sz = 16;
     // omp_set_num_threads(8);
-    MdStaticArray<double>::set_threshold_size(100);
+    // MdStaticArray<double>::set_threshold_size(100);
     // MdStaticArray<double>::set_thread_count(1);
 
-    MdStaticArray<double> c = MdArrayUtility::range(5242880);
-    // MdStaticArray<double> d({2000, 2000}, 12);
-    // MdStaticArray<float> d(sz, 223);
-
+    MdStaticArray<double> c({sz, sz}, 0);
+    for (size_t index = 0; index < sz; ++index) {
+        c[index] = MdArrayUtility::range(index, index + sz);
+    }
     auto start = std::chrono::system_clock::now();
-    // clongdouble a = MdLinearAlgebra::c_det<cdouble>(c);
-    // for (size_t index = 0; index < 1; ++index) {
-    // auto p = c + d;
-    // auto l = c - (d) / 2.5;
-    // auto m = c * d + 222;
-    // auto n = (201112 / c) + 1.93;
 
-    // MdStaticArray<double> arr({20, 20, 20}, 0);
-    // for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
-    //     for (size_t j = 0; j < arr.get_shape()[1]; ++j) {
-    //         arr[i][j] = MdArrayUtility::range<double>(0 + i + j, 20 + i + j,
-    //         1);
-    //     }
-    // }
-
-    // arr[18] = arr[17];
-    // for (size_t index = 0; index < 100; ++index) {
-    auto ans = FFT::fft(c);
-    // auto ians = FFT::ifft<double>(ans);
-    // }
-    // auto v = MdLinearAlgebra::lu_decompose<double>(d);
-    // auto ans = MdArrayManipulate::vandermonte(c);
-    // }
+    cdouble ans = cdouble{-8, 8} * cdouble{0.707107, -0.707107};
+    std::cout << FFT::fft(c[0]) << '\n';
     auto end = std::chrono::system_clock::now();
 
-    std::cout << '\n';
+    std::cout << c[0] << '\n';
+    std::cout << ans << '\n';
     std::chrono::duration<double> time = end - start;
-
-    // for (size_t i = 0; i < std::get<1>(a).get_shape()[0]; ++i) {
-    //     std::cout << std::get<1>(a)[i] << '\n';
-    // }
-    // std::cout << std::setprecision(20) << '\n';
-    // std::cout << p << '\n';
-    // std::cout << l << '\n';
-    // std::cout << m << '\n';
-    // std::cout << n << '\n';
-    // s <<= c[12];
-    // c[2] = -c[2];
-
-    // for (size_t i = 0; i < arr.get_shape()[0]; ++i) {
-    //     for (size_t j = 0; j < arr.get_shape()[1]; ++j) {
-    //         std::cout << arr[i][j] << '\n';
-    //     }
-    //     std::cout << '\n';
-    // }
-
-    // std::cout << ians << '\n';
-    // for (size_t i = 0; i < ans.get_shape_size(); ++i) {
-    //     std::cout << ans.get_shape()[i] << '\n';
-    // }
 
     std::cout << '\n';
 

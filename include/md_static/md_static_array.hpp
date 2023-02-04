@@ -1223,10 +1223,10 @@ class MdStaticArray {
             for (size_t index = 0; index < ot.get_shape()[0]; ++index) {
                 op << ot[index];
                 if (index != ot.get_shape()[0] - 1) {
-                    op << ", ";
+                    op << ",\n";
                 }
             }
-            op << ']';
+            op << "]";
         }
         return op;
     }
