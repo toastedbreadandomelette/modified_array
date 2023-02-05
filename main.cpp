@@ -16,23 +16,24 @@
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
-    size_t sz = 16;
-    // omp_set_num_threads(8);
+
+    size_t sz = (123222) << 2;
+    omp_set_num_threads(16);
     // MdStaticArray<double>::set_threshold_size(100);
     // MdStaticArray<double>::set_thread_count(1);
 
-    MdStaticArray<double> c({sz, sz}, 0);
-    for (size_t index = 0; index < sz; ++index) {
-        c[index] = MdArrayUtility::range(index, index + sz);
-    }
+    MdStaticArray<double> c = MdArrayUtility::range(sz);
+    // for (size_t index = 0; index < sz; ++index) {
+    //     c[index] = MdArrayUtility::range(index, index + sz);
+    // }
     auto start = std::chrono::system_clock::now();
 
-    cdouble ans = cdouble{-8, 8} * cdouble{0.707107, -0.707107};
-    std::cout << FFT::fft(c[0]) << '\n';
+    // cdouble ans = cdouble{-8, 8} * cdouble{0.707107, -0.707107};
+    auto ans = FFT::ifft<double>(FFT::fft(c));
     auto end = std::chrono::system_clock::now();
 
-    std::cout << c[0] << '\n';
-    std::cout << ans << '\n';
+    // std::cout << c[0] << '\n';
+    // std::cout << ans << '\n';
     std::chrono::duration<double> time = end - start;
 
     std::cout << '\n';
