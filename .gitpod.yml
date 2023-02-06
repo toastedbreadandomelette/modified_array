@@ -1,7 +1,7 @@
 tasks:
   - init: |
       sudo apt install cmake --assume-yes
-      chmod +x build.sh
+      chmod +x scripts/build.sh scripts/clean-build.sh
 
 github:
   prebuilds:

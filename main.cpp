@@ -17,10 +17,10 @@
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
 
-    size_t sz = 8192;
+    size_t sz = 4096;
     // MdStaticArray<double>::set_threshold_size(100);
     // MdStaticArray<double>::set_thread_count(1);
-
+    omp_set_num_threads(16);
     MdStaticArray<double> c({sz, sz}, 0);
     // = MdArrayUtility::range<double>(0, 16384, 0.0625);
 

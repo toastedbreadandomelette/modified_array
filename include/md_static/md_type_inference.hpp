@@ -245,7 +245,7 @@ struct floating_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
 template <typename _Ttypeval>
 struct floating_t<
     _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(long double))>::type> {
+    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(long double))>::type> {
     using type = long double;
 };
 
@@ -273,7 +273,7 @@ struct complex_floating_t<
 template <typename _Ttypeval>
 struct complex_floating_t<
     _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(clongdouble))>::type> {
+    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(clongdouble))>::type> {
     using type = clongdouble;
 };
 
@@ -310,7 +310,7 @@ struct complex_signed_t<
 template <typename _Ttypeval>
 struct complex_signed_t<
     _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cint64))>::type> {
+    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(cint64))>::type> {
     using type = cint64;
 };
 
@@ -340,7 +340,7 @@ struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
 };
 
 template <typename _Ttypeval>
-struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
+struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) >=
                                                     sizeof(int64_t))>::type> {
     using type = int64_t;
 };
@@ -375,7 +375,7 @@ struct unsigned_t<
 template <typename _Ttypeval>
 struct unsigned_t<
     _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(uint64_t))>::type> {
+    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(uint64_t))>::type> {
     using type = uint64_t;
 };
 
@@ -411,7 +411,7 @@ struct cunsigned_t<
 template <typename _Ttypeval>
 struct cunsigned_t<
     _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cuint64))>::type> {
+    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(cuint64))>::type> {
     using type = cuint64;
 };
 
