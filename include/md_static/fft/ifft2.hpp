@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _IFFT_HPP_
-#define _IFFT_HPP_
+#ifndef _IFFT2_HPP_
+#define _IFFT2_HPP_
 
 #include "../utility/md_math.hpp"
 #include "./md_fft.hpp"
@@ -10,8 +10,7 @@
  * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
  * https://e-maxx.ru/algo/fft_multiply
  */
-template <typename T>
-MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
+MdStaticArray<cdouble> FFT::ifft_int(const MdStaticArray<cdouble>& __other) {
     auto __idft_internal = [](MdStaticArray<cdouble>& array, const size_t start,
                               const size_t end) {
         MdStaticArray<cdouble> result(end - start, 0);
@@ -23,7 +22,6 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
         for (size_t i = start; i < end; ++i) {
             result.__array[0] += array.__array[i];
         }
-#pragma omp parallel for
         for (size_t index = 1; index < n; ++index) {
             cdouble w = {1, 0};
             for (size_t i = start; i < end; ++i) {
@@ -47,10 +45,6 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
         }
         __idft_internal(input, 0, input.get_size());
 
-        for (size_t index = 1; index < n - index; ++index) {
-            std::swap(input.__array[index], input.__array[n - index]);
-        }
-        input /= input.get_size();
         return input;
     } else {
         // Get last zero numbers
@@ -80,7 +74,6 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
             }
         }
 
-#pragma omp parallel for
         for (size_t index = 0; index < n; ++index) {
             input.__array[index] = __other.__array[indexes.__array[index]];
         }
@@ -89,7 +82,6 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
             while (i < 16) {
                 i <<= 1;
             }
-#pragma omp parallel for
             for (size_t index = 0; index < n; index += i) {
                 __idft_internal(input, index, index + i);
             }
@@ -104,7 +96,7 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
              operate_length <<= 1) {
             double angle = MdMath::pi_2 / operate_length;
             const cdouble init = {::cos(angle), ::sin(angle)};
-#pragma omp parallel for
+
             for (size_t i = 0; i < n; i += operate_length) {
                 cdouble w = {1, 0};
                 for (size_t j = 0; j < operate_length / 2; ++j) {
@@ -117,24 +109,57 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
                 }
             }
         }
-        __1darray /= __1darray.get_size();
     };
 
     __perform_fft_in_place(input, i);
 
-    MdStaticArray<T> result(n, 0);
-    result.__array[0] = input.__array[0];
-#pragma omp parallel for
-    for (size_t index = 1; index < n; ++index) {
-        result.__array[index] = input.__array[n - index];
-    }
-    return result;
+    // for (size_t index = 1; index < n - index; ++index) {
+    //     std::swap(input.__array[index], input.__array[n - index]);
+    // }
+    return input;
 }
 
-template <typename _T>
-MdStaticArray<_T> FFT::ifft(const MdStaticArrayReference<cdouble>& __values) {
-    return ifft<_T>(MdStaticArray<_T>(*__values.__array_reference,
-                                      __values.offset, __values.shp_offset));
+// template <typename T>
+MdStaticArray<cdouble> FFT::ifft_int(
+    const MdStaticArrayReference<cdouble>& __values) {
+    return FFT::ifft_int(MdStaticArray<cdouble>(
+        *__values.__array_reference, __values.offset, __values.shp_offset));
+}
+
+template <typename T>
+MdStaticArray<T> FFT::ifft2(const MdStaticArray<cdouble>& _2darray) {
+    if (_2darray.get_shape_size() != 2) {
+        throw std::runtime_error("Expected dimension to be 2, found " +
+                                 std::to_string(_2darray.get_shape_size()));
+    }
+
+    // Perform FFT row-wise
+    MdStaticArray<cdouble> result(
+        {_2darray.get_shape()[0], _2darray.get_shape()[1]}, 0);
+
+#pragma omp parallel for
+    for (size_t index = 0; index < _2darray.get_shape()[0]; ++index) {
+        result[index] = FFT::ifft_int(_2darray[index]);
+    }
+
+#pragma omp parallel for
+    for (size_t index = 0; index < result.get_shape()[1]; ++index) {
+        MdStaticArray<cdouble> temp(result.get_shape()[0], 0);
+        for (size_t j = index, i = 0; j < result.get_size();
+             j += result.get_shape()[1], ++i) {
+            temp.__array[i] = result.__array[j];
+        }
+        temp = FFT::ifft_int(temp);
+
+        for (size_t j = index, i = 0; j < result.get_size();
+             j += result.get_shape()[1], ++i) {
+            result.__array[j] = temp.__array[i];
+        }
+    }
+
+    result /= result.get_size();
+
+    return MdStaticArray<T>(result);
 }
 
 #endif

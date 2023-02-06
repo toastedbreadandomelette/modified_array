@@ -45,13 +45,12 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<T>& __other) {
     size_t n = __other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n, 0);
-    if (n & 1) {
-        MdStaticArray<cdouble> __input(n, 0);
-        for (size_t index = 1; index < __other.get_size(); ++index) {
-            __input.__array[index] = __other.__array[index];
+    if ((n & 1) || n < 64) {
+        for (size_t index = 0; index < __other.get_size(); ++index) {
+            input.__array[index] = __other.__array[index];
         }
-        __dft_internal(__input, 0, __input.get_size());
-        return __input;
+        __dft_internal(input, 0, input.get_size());
+        return input;
     } else {
         // Get last zero numbers
         const size_t ls = ((n ^ (n - 1)) + 1) >> 1;
@@ -80,12 +79,16 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<T>& __other) {
             }
         }
 
+        // #pragma omp parallel for
         for (size_t index = 0; index < n; ++index) {
             input.__array[index] = __other.__array[indexes.__array[index]];
         }
 
         if (i > 1) {
-#pragma omp parallel for
+            while (i < 16) {
+                i <<= 1;
+            }
+            // #pragma omp parallel for
             for (size_t index = 0; index < n; index += i) {
                 __dft_internal(input, index, index + i);
             }
@@ -100,7 +103,7 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<T>& __other) {
              operate_length <<= 1) {
             double angle = 2.0 * MdMath::pi / operate_length;
             const cdouble init = {::cos(angle), -::sin(angle)};
-#pragma omp parallel for
+            // #pragma omp parallel for
             for (size_t i = 0; i < n; i += operate_length) {
                 cdouble w = {1, 0};
                 for (size_t j = 0; j < operate_length / 2; ++j) {
