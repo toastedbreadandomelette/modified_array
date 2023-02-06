@@ -4,7 +4,9 @@
 
 #include "./fft/fft.hpp"
 #include "./fft/fft2.hpp"
+#include "./fft/fft3.hpp"
 #include "./fft/ifft.hpp"
 #include "./fft/ifft2.hpp"
+#include "./fft/ifft3.hpp"
 
 #endif

@@ -72,7 +72,7 @@ class MdStaticArrayReference {
                 std::to_string(value.get_size()));
         }
         // assert shape sizes are equal too
-        if (s_threshold_size < size) {
+        if (s_threshold_size > size) {
             for (size_t i = 0; i < size; ++i) {
                 __array_reference->__array[offset + i] = value.__array[i];
             }
@@ -92,7 +92,7 @@ class MdStaticArrayReference {
             __array_reference->__array[offset] = __other;
             return *this;
         }
-        if (s_threshold_size < size) {
+        if (s_threshold_size > size) {
             for (size_t i = 0; i < size; ++i) {
                 __array_reference->__array[offset + i] = __other;
             }

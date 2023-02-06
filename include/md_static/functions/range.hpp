@@ -47,6 +47,11 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
         }
     };
 
+    if (::s_thread_count == 1 || size < ::s_threshold_size) {
+        __allocate_internal(0, start_value, size, increment);
+        return result;
+    }
+
     const size_t block = size / s_thread_count;
     const _T b_increment = increment * block;
 
