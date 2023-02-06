@@ -7,21 +7,21 @@
 
 template <typename _T,
           class = typename std::enable_if<std::is_arithmetic<_T>::value>::type>
-struct MdComplex {
+struct Complex {
     _T real{}, img{};
 
-    constexpr MdComplex() = default;
+    constexpr Complex() = default;
 
-    constexpr MdComplex(const _T __other) : real(__other) {}
+    constexpr Complex(const _T __other) : real(__other) {}
 
-    constexpr MdComplex(const _T r, const _T i) : real(r), img(i) {}
+    constexpr Complex(const _T r, const _T i) : real(r), img(i) {}
 
     template <typename _T1>
-    constexpr MdComplex(const MdComplex<_T1>& __other)
+    constexpr Complex(const Complex<_T1>& __other)
         : real(__other.real), img(__other.img) {}
 
     template <typename _T1>
-    inline constexpr MdComplex<_T>& operator=(const MdComplex<_T1>& __other) {
+    inline constexpr Complex<_T>& operator=(const Complex<_T1>& __other) {
         real = __other.real;
         img = __other.img;
         return *this;
@@ -30,81 +30,81 @@ struct MdComplex {
     inline constexpr operator _T() const { return real; }
 
     template <typename _T1>
-    inline constexpr operator MdComplex() const {
-        return MdComplex<_T>(real, img);
+    inline constexpr operator Complex() const {
+        return Complex<_T>(real, img);
     }
 
     template <typename _T1>
-    inline MdComplex<_T>& operator=(const _T1& __other) {
+    inline Complex<_T>& operator=(const _T1& __other) {
         real = __other;
         img = 0;
         return *this;
     }
 
     template <typename _T1>
-    inline constexpr auto operator+(const MdComplex<_T1>& __other) const {
-        return MdComplex(real + __other.real, img + __other.img);
+    inline constexpr auto operator+(const Complex<_T1>& __other) const {
+        return Complex(real + __other.real, img + __other.img);
     }
 
     template <typename _T1, class>
     inline constexpr auto operator+(const _T1& __other) const {
-        return MdComplex(real + __other, img);
+        return Complex(real + __other, img);
     }
 
     template <typename _T1>
-    inline MdComplex& operator+=(const MdComplex<_T1>& __other) {
+    inline Complex& operator+=(const Complex<_T1>& __other) {
         real += __other.real;
         img += __other.img;
         return *this;
     }
 
     template <typename _T1>
-    inline constexpr MdComplex& operator+=(const _T1& __other) {
+    inline constexpr Complex& operator+=(const _T1& __other) {
         real += __other;
         return *this;
     }
 
     template <typename _T1>
-    inline constexpr auto operator-(const MdComplex<_T1>& __other) const {
-        return MdComplex(real - __other.real, img - __other.img);
+    inline constexpr auto operator-(const Complex<_T1>& __other) const {
+        return Complex(real - __other.real, img - __other.img);
     }
 
     template <typename _T1>
     inline constexpr auto operator-() const {
-        return MdComplex(-real, -img);
+        return Complex(-real, -img);
     }
 
     template <typename _T1>
     inline constexpr auto operator-(const _T1& __other) const {
-        return MdComplex(real - __other, img);
+        return Complex(real - __other, img);
     }
 
     template <typename _T1>
-    inline constexpr MdComplex& operator-=(const MdComplex<_T1>& __other) {
+    inline constexpr Complex& operator-=(const Complex<_T1>& __other) {
         real -= __other.real;
         img -= __other.img;
         return *this;
     }
 
     template <typename _T1>
-    inline constexpr MdComplex& operator-=(const _T1& __other) {
+    inline constexpr Complex& operator-=(const _T1& __other) {
         real -= __other;
         return *this;
     }
 
     template <typename _T1>
-    inline constexpr auto operator*(const MdComplex<_T1>& __other) const {
-        return MdComplex(real * __other.real - img * __other.img,
-                         real * __other.img + img * __other.real);
+    inline constexpr auto operator*(const Complex<_T1>& __other) const {
+        return Complex(real * __other.real - img * __other.img,
+                       real * __other.img + img * __other.real);
     }
 
     template <typename _T1>
     inline constexpr auto operator*(const _T1& __other) const {
-        return MdComplex<_T>(real * __other, img * __other);
+        return Complex<_T>(real * __other, img * __other);
     }
 
     template <typename _T1>
-    inline constexpr MdComplex& operator*=(const MdComplex<_T1>& __other) {
+    inline constexpr Complex& operator*=(const Complex<_T1>& __other) {
         const auto temp = real * __other.real - img * __other.img;
         img = img * __other.real + real * __other.img;
         real = temp;
@@ -112,28 +112,27 @@ struct MdComplex {
     }
 
     template <typename _T1>
-    inline constexpr MdComplex& operator*=(const _T1& __other) {
+    inline constexpr Complex& operator*=(const _T1& __other) {
         real *= __other;
         img *= __other;
         return *this;
     }
 
     template <typename _T1>
-    inline auto operator/(const MdComplex<_T1>& __other) const {
+    inline auto operator/(const Complex<_T1>& __other) const {
         const auto sq_abs =
             (__other.real * __other.real + __other.img * __other.img);
-        return MdComplex<_T>(
-            (real * __other.real + img * __other.img) / sq_abs,
-            (real * __other.img - img * __other.real) / sq_abs);
+        return Complex<_T>((real * __other.real + img * __other.img) / sq_abs,
+                           (real * __other.img - img * __other.real) / sq_abs);
     }
 
     template <typename _T1>
     inline auto operator/(const _T1& __other) const {
-        return MdComplex<_T>(real / __other, img / __other);
+        return Complex<_T>(real / __other, img / __other);
     }
 
     template <typename _T1>
-    inline MdComplex& operator/=(const MdComplex<_T1>& __other) {
+    inline Complex& operator/=(const Complex<_T1>& __other) {
         const auto sq_abs =
             (__other.real * __other.real + __other.img * __other.img);
         const auto temp = real * __other.real + img * __other.img;
@@ -148,14 +147,14 @@ struct MdComplex {
         return {abs(), ::atan(img / real)};
     }
 
-    static inline constexpr MdComplex from_polar(const double __R,
-                                                 const double __A) {
+    static inline constexpr Complex from_polar(const double __R,
+                                               const double __A) {
         return {__R * ::cos(__A), __R * ::sin(__A)};
     }
 
     template <typename _T1>
-    static inline constexpr MdComplex<_T1> conj(const MdComplex<_T1>& __other) {
-        return MdComplex<_T1>(__other.real, -__other.img);
+    static inline constexpr Complex<_T1> conj(const Complex<_T1>& __other) {
+        return Complex<_T1>(__other.real, -__other.img);
     }
 
     inline constexpr double sq_abs() const { return real * real + img * img; }
@@ -165,14 +164,14 @@ struct MdComplex {
     }
 
     template <typename _T1>
-    inline MdComplex& operator/=(const _T1& __other) {
+    inline Complex& operator/=(const _T1& __other) {
         real /= __other;
         img /= __other;
         return *this;
     }
 
     template <typename _T1>
-    inline constexpr bool operator==(const MdComplex<_T1>& __other) {
+    inline constexpr bool operator==(const Complex<_T1>& __other) {
         return __other.real == real && __other.img == img;
     }
 
@@ -182,7 +181,7 @@ struct MdComplex {
     }
 
     template <typename _T1>
-    inline constexpr bool operator!=(const MdComplex<_T1>& __other) {
+    inline constexpr bool operator!=(const Complex<_T1>& __other) {
         return __other.real != real || __other.img != img;
     }
 
@@ -191,7 +190,7 @@ struct MdComplex {
         return __other != real || img != 0;
     }
 
-    friend std::ostream& operator<<(std::ostream& op, const MdComplex& c) {
+    friend std::ostream& operator<<(std::ostream& op, const Complex& c) {
         if (c.img < 0) {
             op << c.real << '-' << (-c.img) << 'j';
         } else {
@@ -204,19 +203,19 @@ struct MdComplex {
 namespace std {
 
 template <typename _T>
-inline constexpr MdComplex<_T> sqrt(const MdComplex<_T>& __other) {
+inline constexpr Complex<_T> sqrt(const Complex<_T>& __other) {
     const auto polar = __other.to_polar();
-    return MdComplex<_T>::from_polar(std::sqrt(polar.first), polar.second / 2);
+    return Complex<_T>::from_polar(std::sqrt(polar.first), polar.second / 2);
 }
 
 template <typename _T>
-inline constexpr MdComplex<_T> pow(const MdComplex<_T>& __other, double value) {
+inline constexpr Complex<_T> pow(const Complex<_T>& __other, double value) {
     const auto [__R, __A] = __other.to_polar();
-    return MdComplex<_T>::from_polar(std::pow(__R, value), __A * value);
+    return Complex<_T>::from_polar(std::pow(__R, value), __A * value);
 }
 
 template <typename _T>
-inline constexpr MdComplex<_T> abs(const MdComplex<_T>& __other) {
+inline constexpr Complex<_T> abs(const Complex<_T>& __other) {
     return __other.abs();
 }
 }  // namespace std
@@ -224,61 +223,61 @@ inline constexpr MdComplex<_T> abs(const MdComplex<_T>& __other) {
 template <typename _T, typename _T1,
           class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline constexpr auto operator+(const _T1& __other,
-                                const MdComplex<_T>& __first) {
-    return MdComplex<_T>(__other + __first.real, __first.img);
+                                const Complex<_T>& __first) {
+    return Complex<_T>(__other + __first.real, __first.img);
 }
 
 template <typename _T, typename _T1,
           class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
-inline constexpr MdComplex<_T> operator-(const _T1& __other,
-                                         const MdComplex<_T>& __first) {
-    return MdComplex<_T>(__other - __first.real, -__first.img);
+inline constexpr Complex<_T> operator-(const _T1& __other,
+                                       const Complex<_T>& __first) {
+    return Complex<_T>(__other - __first.real, -__first.img);
 }
 
 template <typename _T, typename _T1,
           class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline constexpr auto operator*(const _T1& __other,
-                                const MdComplex<_T>& __first) {
-    return MdComplex<_T>(__first.real * __other, __first.img * __other);
+                                const Complex<_T>& __first) {
+    return Complex<_T>(__first.real * __other, __first.img * __other);
 }
 
 template <typename _T, typename _T1,
           class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
 inline constexpr auto operator/(const _T1& __other,
-                                const MdComplex<_T>& __first) {
+                                const Complex<_T>& __first) {
     const auto sq_abs = __first.real * __first.real + __first.img * __first.img;
-    return MdComplex<_T>((__other * __first.real) / sq_abs,
-                         -((__other * __first.img) / sq_abs));
+    return Complex<_T>((__other * __first.real) / sq_abs,
+                       -((__other * __first.img) / sq_abs));
 }
 
-inline constexpr MdComplex<long double> operator"" _i(long double img) {
-    MdComplex<long double> c;
+inline constexpr Complex<long double> operator"" _i(long double img) {
+    Complex<long double> c;
     c.real = 0;
     c.img = img;
     return c;
 }
 
-inline constexpr MdComplex<unsigned long long> operator"" _i(
+inline constexpr Complex<unsigned long long> operator"" _i(
     unsigned long long img) {
-    MdComplex<unsigned long long> c;
+    Complex<unsigned long long> c;
     c.real = 0;
     c.img = img;
     return c;
 }
 
-using cdouble = MdComplex<double>;
-using clongdouble = MdComplex<long double>;
-using cfloat = MdComplex<float>;
+using cdouble = Complex<double>;
+using clongdouble = Complex<long double>;
+using cfloat = Complex<float>;
 
-using cuint64 = MdComplex<uint64_t>;
-using cuint32 = MdComplex<uint32_t>;
-using cuint16 = MdComplex<uint16_t>;
-using cuint8 = MdComplex<uint8_t>;
+using cuint64 = Complex<uint64_t>;
+using cuint32 = Complex<uint32_t>;
+using cuint16 = Complex<uint16_t>;
+using cuint8 = Complex<uint8_t>;
 
-using cint64 = MdComplex<int64_t>;
-using cint32 = MdComplex<int32_t>;
-using cint16 = MdComplex<int16_t>;
-using cint8 = MdComplex<int8_t>;
+using cint64 = Complex<int64_t>;
+using cint32 = Complex<int32_t>;
+using cint16 = Complex<int16_t>;
+using cint8 = Complex<int8_t>;
 
 template <>
 struct std::is_fundamental<cdouble> : std::true_type {};

@@ -421,6 +421,12 @@ struct is_vector : std::false_type {};
 template <typename T, typename A>
 struct is_vector<std::vector<T, A>> : std::true_type {};
 
+template <typename T>
+struct is_mallocable {
+    static constexpr bool value =
+        std::is_fundamental<T>::value || is_any_one_complex<T>::value;
+};
+
 /**
  * @brief Wrapper for evaluating appropriate complex type
  * @tparam _Ttypeval generic type

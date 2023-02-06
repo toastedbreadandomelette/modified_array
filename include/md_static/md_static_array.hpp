@@ -101,7 +101,7 @@ class MdStaticArray {
     static void set_threshold_size(const size_t size);
 
     constexpr void init_array(const size_t size) {
-        if constexpr (std::is_fundamental<_T>::value) {
+        if constexpr (MdTypeInfer::is_mallocable<_T>::value) {
 #ifdef _WIN32
             __array = static_cast<_T *>(_aligned_malloc(size * sizeof(_T), 64));
 #else

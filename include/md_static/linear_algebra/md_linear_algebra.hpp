@@ -1097,7 +1097,7 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArray<MdComplex<_T1>> &__first,
+    static MdStaticArray<_T3> vdot(const MdStaticArray<Complex<_T1>> &__first,
                                    const MdStaticArray<_T2> &__other,
                                    const size_t threads = 16);
 
@@ -1118,7 +1118,7 @@ struct MdLinearAlgebra {
      */
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> vdot(
-        const MdStaticArrayReference<MdComplex<_T1>> &__first,
+        const MdStaticArrayReference<Complex<_T1>> &__first,
         const MdStaticArray<_T2> &__other, const size_t threads = 16);
 
     /**
@@ -1137,7 +1137,7 @@ struct MdLinearAlgebra {
      * __other
      */
     template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArray<MdComplex<_T1>> &__first,
+    static MdStaticArray<_T3> vdot(const MdStaticArray<Complex<_T1>> &__first,
                                    const MdStaticArrayReference<_T2> &__other,
                                    const size_t threads = 16);
 
@@ -1158,7 +1158,7 @@ struct MdLinearAlgebra {
      */
     template <typename _T3, typename _T1, typename _T2>
     static MdStaticArray<_T3> vdot(
-        const MdStaticArrayReference<MdComplex<_T1>> &__first,
+        const MdStaticArrayReference<Complex<_T1>> &__first,
         const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
 
     /**
