@@ -39,7 +39,7 @@ MdStaticArray<cdouble> FFT::ifft_int(const MdStaticArray<cdouble>& __other) {
     size_t n = __other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n, 0);
-    if ((n & 1) || n <= 64) {
+    if ((n & 1)) {
         for (size_t index = 0; index < __other.get_size(); ++index) {
             input.__array[index] = __other.__array[index];
         }
