@@ -14,17 +14,16 @@ MdStaticArray<cdouble> FFT::fft2(const MdStaticArray<T>& _2darray) {
     }
 
     // Perform FFT row-wise
-    MdStaticArray<cdouble> result(
-        {_2darray.get_shape()[0], _2darray.get_shape()[1]}, 0);
+    MdStaticArray<cdouble> result({_2darray.shape[0], _2darray.shape[1]}, 0);
 
 #pragma omp parallel for
-    for (size_t index = 0; index < _2darray.get_shape()[0]; ++index) {
+    for (size_t index = 0; index < _2darray.shape[0]; ++index) {
         result[index] = fft_int<T>(_2darray[index]);
     }
 
 #pragma omp parallel for
-    for (size_t index = 0; index < result.get_shape()[1]; ++index) {
-        MdStaticArray<cdouble> temp(result.get_shape()[0]);
+    for (size_t index = 0; index < result.shape[1]; ++index) {
+        MdStaticArray<cdouble> temp(result.shape[0]);
         for (size_t j = index, i = 0; j < result.get_size();
              j += result.get_shape()[1], ++i) {
             temp.__array[i] = result.__array[j];

@@ -17,22 +17,22 @@
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
 
-    size_t sz = 4096;
+    size_t sz = 256;
     // MdStaticArray<double>::set_threshold_size(100);
     // MdStaticArray<double>::set_thread_count(1);
     omp_set_num_threads(16);
-    MdStaticArray<double> c({sz, sz}, 0);
+    MdStaticArray<double> c({sz, sz, sz}, 0);
     // = MdArrayUtility::range<double>(0, 16384, 0.0625);
 
-    // for (size_t i = 0; i < sz; ++i) {
-    for (size_t j = 1; j <= sz; ++j) {
-        c[j - 1] = MdArrayUtility::range<double>(j, j + sz * j, j);
+    for (size_t i = 0; i < sz; ++i) {
+        for (size_t j = 1; j <= sz; ++j) {
+            c[i][j - 1] = MdArrayUtility::range<double>(j, j + sz * j, j);
+        }
     }
-    // }
     // std::cout << c << '\n';
     auto start = std::chrono::system_clock::now();
     // cdouble ans = cdouble{-8, 8} * cdouble{0.707107, -0.707107};
-    auto ans = FFT::ifft2<double>(FFT::fft2(c));
+    auto ans = FFT::ifft3<double>(FFT::fft3(c));
     auto end = std::chrono::system_clock::now();
 
     // std::cout << c[0] << '\n';
