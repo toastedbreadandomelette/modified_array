@@ -30,12 +30,19 @@ int main(int argc, const char** argv) {
                 for (size_t l = 1; l <= sz; ++l) {
                     c[i - 1][j - 1][k - 1][l - 1] =
                         MdArrayUtility::range<double>(
-                            j + i, j + i + sz * (j + i), j + i);
+                            j + i + k + l, j + i + l + k + sz * (j + i + l + k),
+                            j + i + l + k);
                 }
             }
         }
     }
-    // std::cout << c.get_size() << '\n';
+
+    // std::cout << c << '\n';
+    // std::cout << c.get_axis_reference(0) << '\n';
+    // std::cout << c.get_axis_reference(1) << '\n';
+    // std::cout << c.get_axis_reference(2) << '\n';
+    // std::cout << c.get_axis_reference(3) << '\n';
+    // std::cout << c.get_axis_reference(4) << '\n';
     auto start = std::chrono::system_clock::now();
     // cdouble ans = cdouble{-8, 8} * cdouble{0.707107, -0.707107};
     auto ans = FFT::ifftn<double>(FFT::fftn(c));
