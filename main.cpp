@@ -12,7 +12,7 @@
 #include "./include/md_static/functions.hpp"
 #include "./include/md_static/functions/md_static_array_utility.hpp"
 #include "./include/md_static/linear_algebra.hpp"
-#include "./include/md_static/md_static_array.hpp"
+#include "./include/md_static/md_static_array/md_static_array.hpp"
 
 int main(int argc, const char** argv) {
     // auto c = MdArrayUtility::f_arctan(f);
@@ -28,15 +28,14 @@ int main(int argc, const char** argv) {
         for (size_t k = 1; k <= sz; ++k) {
             for (size_t j = 1; j <= sz; ++j) {
                 for (size_t l = 1; l <= sz; ++l) {
-                    c[i - 1][k - 1][j - 1][l - 1] =
+                    c[i - 1][j - 1][k - 1][l - 1] =
                         MdArrayUtility::range<double>(
-                            j + i + k + l, j + i + k + l + sz * (j + i + k + l),
-                            j + i + k + l);
+                            j + i, j + i + sz * (j + i), j + i);
                 }
             }
         }
-    };
-    std::cout << c.get_size() << '\n';
+    }
+    // std::cout << c.get_size() << '\n';
     auto start = std::chrono::system_clock::now();
     // cdouble ans = cdouble{-8, 8} * cdouble{0.707107, -0.707107};
     auto ans = FFT::ifftn<double>(FFT::fftn(c));
@@ -44,7 +43,7 @@ int main(int argc, const char** argv) {
 
     std::chrono::duration<double> time = end - start;
 
-    std::cout << '\n';
+    // std::cout << ans << '\n';
 
     std::cout << " Time: " << time.count() << "s"
               << " " << std::endl;

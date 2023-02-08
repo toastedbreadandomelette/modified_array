@@ -5,7 +5,7 @@
 #include <string>
 
 #include "./cell.hpp"
-#include "./md_static/md_static_array.hpp"
+#include "./md_static/md_static_array/md_static_array.hpp"
 #include "./tables.hpp"
 
 struct Table;

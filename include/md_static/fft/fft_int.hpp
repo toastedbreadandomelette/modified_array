@@ -99,7 +99,7 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& __other) {
         }
 
         if (i > 1) {
-            while (i < 16) {
+            while (i < 8) {
                 i <<= 1;
             }
 

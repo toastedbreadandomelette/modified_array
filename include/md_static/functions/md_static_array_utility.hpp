@@ -3,7 +3,7 @@
 #define _MD_STATIC_ARRAY_UTILITY_HPP_
 #include <functional>
 
-#include "./../md_static_array.hpp"
+#include "./../md_static_array/md_static_array.hpp"
 
 struct MdArrayUtility {
     /**

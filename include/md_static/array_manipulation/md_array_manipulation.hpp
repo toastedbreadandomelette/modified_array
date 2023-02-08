@@ -3,7 +3,7 @@
 #ifndef _MD_ARRAY_MANIPULATION_HPP_
 #define _MD_ARRAY_MANIPULATION_HPP_
 
-#include "../md_static_array.hpp"
+#include "../md_static_array/md_static_array.hpp"
 
 struct MdArrayManipulate {
     /**

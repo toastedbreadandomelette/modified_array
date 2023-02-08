@@ -28,8 +28,8 @@ MdStaticArray<cdouble> FFT::fft3(const MdStaticArray<T>& array) {
 #pragma omp parallel for
     for (size_t i = 0; i < array.shape[0]; ++i) {
         size_t start = i * array.skip_vec[0];
+        MdStaticArray<cdouble> temp(result.shape[1]);
         for (size_t j = 0; j < array.shape[2]; ++j) {
-            MdStaticArray<cdouble> temp(result.shape[1]);
             for (size_t k = 0; k < array.shape[1]; ++k) {
                 temp.__array[k] =
                     result.__array[start + j + array.skip_vec[1] * k];

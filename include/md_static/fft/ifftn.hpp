@@ -48,39 +48,20 @@ MdStaticArray<T> FFT::ifftn(const MdStaticArray<cdouble>& ndarray) {
         const auto element_loop = ndarray.skip_vec[k],
                    total_iterations = ndarray.skip_vec[k - 1];
 
-        if (result.get_size() / total_iterations > 64) {
-#pragma omp paralllel for
-            for (size_t i = 0; i < result.get_size(); i += total_iterations) {
-                for (size_t j = 0; j < element_loop; ++j) {
-                    MdStaticArray<cdouble> temp(result.shape[k]);
-                    for (size_t l = 0; l < ndarray.shape[k]; ++l) {
-                        temp.__array[l] =
-                            result.__array[i + j + ndarray.skip_vec[k] * l];
-                    }
-
-                    temp = ifft_int(temp);
-
-                    for (size_t l = 0; l < ndarray.shape[k]; ++l) {
-                        result.__array[i + j + ndarray.skip_vec[k] * l] =
-                            temp.__array[l];
-                    }
+        MdStaticArray<cdouble> temp(result.shape[k]);
+        // #pragma omp paralllel for
+        for (size_t i = 0; i < result.get_size(); i += total_iterations) {
+            for (size_t j = 0; j < element_loop; ++j) {
+                for (size_t l = 0; l < ndarray.shape[k]; ++l) {
+                    temp.__array[l] =
+                        result.__array[i + j + ndarray.skip_vec[k] * l];
                 }
-            }
-        } else {
-            for (size_t i = 0; i < result.get_size(); i += total_iterations) {
-                for (size_t j = 0; j < element_loop; ++j) {
-                    MdStaticArray<cdouble> temp(result.shape[k]);
-                    for (size_t l = 0; l < ndarray.shape[k]; ++l) {
-                        temp.__array[l] =
-                            result.__array[i + j + ndarray.skip_vec[k] * l];
-                    }
 
-                    temp = ifft_int(temp);
+                temp = ifft_int(temp);
 
-                    for (size_t l = 0; l < ndarray.shape[k]; ++l) {
-                        result.__array[i + j + ndarray.skip_vec[k] * l] =
-                            temp.__array[l];
-                    }
+                for (size_t l = 0; l < ndarray.shape[k]; ++l) {
+                    result.__array[i + j + ndarray.skip_vec[k] * l] =
+                        temp.__array[l];
                 }
             }
         }

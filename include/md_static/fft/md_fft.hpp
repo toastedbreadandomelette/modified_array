@@ -3,7 +3,7 @@
 #define _MD_FFT_HPP_
 
 #include "../../md_complex/md_complex.hpp"
-#include "../md_static_array.hpp"
+#include "../md_static_array/md_static_array.hpp"
 
 struct FFT {
  private:

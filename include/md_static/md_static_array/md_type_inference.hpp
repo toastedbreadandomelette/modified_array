@@ -3,7 +3,7 @@
 #define _MD_TYPE_INTER_HPP_
 #include <cassert>
 
-#include "../md_complex/md_complex.hpp"
+#include "../../md_complex/md_complex.hpp"
 
 /**
  * @brief Type inference namespace to infer implicit return types

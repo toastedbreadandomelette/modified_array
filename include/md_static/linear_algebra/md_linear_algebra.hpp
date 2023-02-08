@@ -3,7 +3,7 @@
 #ifndef _MD_LINEAR_ALGEBRA_HPP_
 #define _MD_LINEAR_ALGEBRA_HPP_
 
-#include "../md_static_array.hpp"
+#include "../md_static_array/md_static_array.hpp"
 
 struct MdLinearAlgebra {
     /**

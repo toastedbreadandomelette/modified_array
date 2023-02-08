@@ -79,7 +79,7 @@ MdStaticArray<cdouble> FFT::ifft_int(const MdStaticArray<cdouble>& __other) {
         }
 
         if (i > 1) {
-            while (i < 16) {
+            while (i < 8) {
                 i <<= 1;
             }
             for (size_t index = 0; index < n; index += i) {
