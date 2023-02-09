@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <cmath>
-#include <complex>
 #include <iomanip>
 #include <iostream>
 
@@ -32,25 +31,24 @@ int main(int argc, const char** argv) {
     //     }
     // }
 
-    size_t sz = 25;
-    omp_set_num_threads(16);
-    MdStaticArray<double> c({sz, sz, sz}, 0);
+    size_t sz = (1 << 25);
+    omp_set_num_threads(12);
+    MdStaticArray<double> c({sz}, 0);
 
-    for (size_t i = 1; i <= sz; ++i) {
-        for (size_t k = 1; k <= sz; ++k) {
-            c[i - 1][k - 1] =
-                MdArrayUtility::range<double>(i, i + (sz) * (i), i);
-        }
-    }
+    // for (size_t i = 1; i <= sz; ++i) {
+    // for (size_t k = 1; k <= sz; ++k) {
+    c = MdArrayUtility::range<double>(sz);
+    // }
+    // }
 
     auto start = std::chrono::system_clock::now();
 
-    auto ans = FFT::ifftn<double>(FFT::fftn(c));
+    auto ans = FFT::fftn(c);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<double> time = end - start;
 
-    std::cout << ans << '\n';
+    // std::cout << ans << '\n';
 
     std::cout << " Time: " << time.count() << "s"
               << " " << std::endl;

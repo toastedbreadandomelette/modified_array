@@ -79,7 +79,7 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<T>& __other) {
             }
         }
 
-        // #pragma omp parallel for
+#pragma omp parallel for
         for (size_t index = 0; index < n; ++index) {
             input.__array[index] = __other.__array[indexes.__array[index]];
         }
@@ -88,7 +88,7 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<T>& __other) {
             while (i < 16) {
                 i <<= 1;
             }
-            // #pragma omp parallel for
+#pragma omp parallel for
             for (size_t index = 0; index < n; index += i) {
                 __dft_internal(input, index, index + i);
             }
@@ -103,7 +103,7 @@ MdStaticArray<cdouble> FFT::fft(const MdStaticArray<T>& __other) {
              operate_length <<= 1) {
             double angle = 2.0 * MdMath::pi / operate_length;
             const cdouble init = {::cos(angle), -::sin(angle)};
-            // #pragma omp parallel for
+#pragma omp parallel for
             for (size_t i = 0; i < n; i += operate_length) {
                 cdouble w = {1, 0};
                 for (size_t j = 0; j < operate_length / 2; ++j) {

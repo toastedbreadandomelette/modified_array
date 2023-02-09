@@ -25,7 +25,6 @@ MdStaticArray<cdouble> FFT::fft2(const MdStaticArray<T>& _2darray) {
 #pragma omp parallel for
     for (size_t index = 0; index < result.shape[1]; ++index) {
         auto axis_reference = result.get_nth_axis_reference(0, index);
-        // std::cout << axis_reference << '\n';
         axis_reference = fft_int(axis_reference);
     }
 
