@@ -22,11 +22,6 @@ MdStaticArray<cdouble> FFT::fftn(const MdStaticArray<T>& ndarray) {
             break;
     }
 
-    std::vector<size_t> shape;
-    for (size_t i = 0; i < ndarray.get_shape_size(); ++i) {
-        shape.push_back(ndarray.shape[i]);
-    }
-
     MdStaticArray<cdouble> result(ndarray);
     // Perform ndarray FFT
     for (size_t k = 0; k < ndarray.get_shape_size(); ++k) {
