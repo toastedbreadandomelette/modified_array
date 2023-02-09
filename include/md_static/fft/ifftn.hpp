@@ -29,15 +29,14 @@ MdStaticArray<T> FFT::ifftn(const MdStaticArray<cdouble>& ndarray) {
 
     MdStaticArray<cdouble> result(ndarray);
 
-    // Perform ndarray FFT
     for (size_t k = 0; k < ndarray.get_shape_size(); ++k) {
-        // if (result.get_size() / total_iterations > 64) {
-        // MdStaticArray<cdouble> temp(result.shape[k]);
-        auto axis_reference = result.get_axis_reference(k);
-        // #pragma omp paralllel for
-        do {
-            axis_reference = ifft_int(axis_reference);
-        } while ((axis_reference.switch_to_next_axis_index()));
+        const size_t loop = result.get_axis_reference(k).get_total_axes();
+
+#pragma omp parallel for
+        for (size_t index = 0; index < loop; ++index) {
+            auto axis_ref = result.get_nth_axis_reference(k, index);
+            axis_ref = ifft_int(axis_ref);
+        }
     }
 
     result /= result.get_size();

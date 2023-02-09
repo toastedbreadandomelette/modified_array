@@ -14,26 +14,19 @@ MdStaticArray<cdouble> FFT::fft2(const MdStaticArray<T>& _2darray) {
     }
 
     // Perform FFT row-wise
-    MdStaticArray<cdouble> result({_2darray.shape[0], _2darray.shape[1]}, 0);
+    MdStaticArray<cdouble> result(_2darray);
 
 #pragma omp parallel for
-    for (size_t index = 0; index < _2darray.shape[0]; ++index) {
-        result[index] = fft_int<T>(_2darray[index]);
+    for (size_t index = 0; index < result.shape[0]; ++index) {
+        auto axis_reference = result.get_nth_axis_reference(1, index);
+        axis_reference = fft_int(axis_reference);
     }
 
 #pragma omp parallel for
     for (size_t index = 0; index < result.shape[1]; ++index) {
-        MdStaticArray<cdouble> temp(result.shape[0]);
-        for (size_t j = index, i = 0; j < result.get_size();
-             j += result.get_shape()[1], ++i) {
-            temp.__array[i] = result.__array[j];
-        }
-        temp = fft_int(temp);
-
-        for (size_t j = index, i = 0; j < result.get_size();
-             j += result.get_shape()[1], ++i) {
-            result.__array[j] = temp.__array[i];
-        }
+        auto axis_reference = result.get_nth_axis_reference(0, index);
+        // std::cout << axis_reference << '\n';
+        axis_reference = fft_int(axis_reference);
     }
 
     return result;

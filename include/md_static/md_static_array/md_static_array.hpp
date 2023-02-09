@@ -396,6 +396,9 @@ class MdStaticArray {
 
     MdStaticAxisReference<_T> get_axis_reference(const size_t axis);
 
+    MdStaticAxisReference<_T> get_nth_axis_reference(const size_t axis,
+                                                     const size_t n);
+
     /**
      * @brief Add function, currently using threads
      * @param __other other array (might be of different type)
@@ -1575,6 +1578,12 @@ template <typename T>
 MdStaticAxisReference<T> MdStaticArray<T>::get_axis_reference(
     const size_t axis) {
     return MdStaticAxisReference(*this, axis);
+}
+
+template <typename T>
+MdStaticAxisReference<T> MdStaticArray<T>::get_nth_axis_reference(
+    const size_t axis, const size_t n) {
+    return MdStaticAxisReference(*this, axis, n);
 }
 
 #undef EN_IF

@@ -192,7 +192,8 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticAxisReference<T>& other) {
     size_t n = other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n);
-    if ((n & 1)) {
+
+    if ((n & 1) || n < 16) {
         for (size_t index = 0; index < n; ++index) {
             input.__array[index] = other[index];
         }
@@ -231,7 +232,7 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         }
 
         if (i > 1) {
-            while (i < 8) {
+            while (i < 8 && (i << 1 < n)) {
                 i <<= 1;
             }
 

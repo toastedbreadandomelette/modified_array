@@ -149,7 +149,7 @@ MdStaticArray<cdouble> FFT::ifft_int(
     size_t n = other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n, 0);
-    if ((n & 1)) {
+    if ((n & 1) || n < 16) {
         for (size_t index = 0; index < other.get_size(); ++index) {
             input.__array[index] = other[index];
         }
@@ -189,7 +189,7 @@ MdStaticArray<cdouble> FFT::ifft_int(
         }
 
         if (i > 1) {
-            while (i < 8) {
+            while (i < 8 && (i << 1 < n)) {
                 i <<= 1;
             }
             for (size_t index = 0; index < n; index += i) {

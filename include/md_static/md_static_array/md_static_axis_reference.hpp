@@ -48,9 +48,23 @@ class MdStaticAxisReference {
         start = 0;
     }
 
+    constexpr MdStaticAxisReference(const MdStaticArray<T> &new_array,
+                                    const size_t a, const size_t n) {
+        arr_ref = &new_array;
+        axis = a;
+        stride = new_array.skip_vec[axis];
+        axis_size = new_array.shape[axis];
+        total_number_of_axes = new_array.get_size() / new_array.shape[axis];
+        current_axes = n;
+        const size_t dim_skip = stride * axis_size;
+        start = (n / stride) * (dim_skip) + n % stride;
+    }
+
     inline T &operator[](const size_t index) const {
-        // std::cout << "index " << start << " " << stride << " " << index <<
-        // '\n';
+        // std::cout << "index " << start << " " << stride << " " << index << "
+        // "
+        //           << arr_ref->get_size() << " " << (start + stride * index)
+        //           << '\n';
         return arr_ref->__array[start + stride * index];
     }
 
