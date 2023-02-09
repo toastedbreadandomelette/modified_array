@@ -27,43 +27,15 @@ MdStaticArray<T> FFT::ifftn(const MdStaticArray<cdouble>& ndarray) {
         shape.push_back(ndarray.shape[i]);
     }
 
-    MdStaticArray<cdouble> result(shape, 0);
+    MdStaticArray<cdouble> result(ndarray);
 
-#pragma omp paralllel for
-    for (size_t i = 0; i < ndarray.skip_vec[0]; ++i) {
-        MdStaticArray<cdouble> temp(result.shape[0]);
-        for (size_t j = 0; j < ndarray.shape[0]; ++j) {
-            temp.__array[j] = ndarray.__array[i + ndarray.skip_vec[0] * j];
-        }
+    for (size_t k = 0; k < ndarray.get_shape_size(); ++k) {
+        const size_t loop = result.get_axis_reference(k).get_total_axes();
 
-        temp = ifft_int(temp);
-
-        for (size_t j = 0; j < ndarray.shape[0]; ++j) {
-            result.__array[i + ndarray.skip_vec[0] * j] = temp.__array[j];
-        }
-    }
-
-    // Perform ndarray FFT
-    for (size_t k = 1; k < ndarray.get_shape_size(); ++k) {
-        const auto element_loop = ndarray.skip_vec[k],
-                   total_iterations = ndarray.skip_vec[k - 1];
-
-        MdStaticArray<cdouble> temp(result.shape[k]);
-        // #pragma omp paralllel for
-        for (size_t i = 0; i < result.get_size(); i += total_iterations) {
-            for (size_t j = 0; j < element_loop; ++j) {
-                for (size_t l = 0; l < ndarray.shape[k]; ++l) {
-                    temp.__array[l] =
-                        result.__array[i + j + ndarray.skip_vec[k] * l];
-                }
-
-                temp = ifft_int(temp);
-
-                for (size_t l = 0; l < ndarray.shape[k]; ++l) {
-                    result.__array[i + j + ndarray.skip_vec[k] * l] =
-                        temp.__array[l];
-                }
-            }
+#pragma omp parallel for
+        for (size_t index = 0; index < loop; ++index) {
+            auto axis_ref = result.get_nth_axis_reference(k, index);
+            axis_ref = ifft_int(axis_ref);
         }
     }
 

@@ -15,8 +15,11 @@
 static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 16;
 
-template <typename _T>
+template <typename T>
 class MdStaticArrayReference;
+
+template <typename T>
+class MdStaticAxisReference;
 
 template <typename _T>
 class MdStaticArray {
@@ -85,6 +88,8 @@ class MdStaticArray {
  public:
     template <typename _T1>
     friend class MdStaticArrayReference;
+    template <typename T1>
+    friend class MdStaticAxisReference;
     template <typename _T1>
     friend class MdStaticArray;
 
@@ -388,6 +393,11 @@ class MdStaticArray {
 
         return true;
     }
+
+    MdStaticAxisReference<_T> get_axis_reference(const size_t axis);
+
+    MdStaticAxisReference<_T> get_nth_axis_reference(const size_t axis,
+                                                     const size_t n);
 
     /**
      * @brief Add function, currently using threads
@@ -1386,6 +1396,7 @@ inline MdStaticArray<_T> operator-(const MdStaticArray<_T> &first) {
     return first.__ng_internal();
 }
 
+#include "./md_static_axis_reference.hpp"
 #include "./md_static_reference.hpp"
 
 template <typename _T>
@@ -1561,6 +1572,18 @@ inline auto &operator^=(_T1 &__other,
     }
     __other |= __first.__array_reference->__array[__first.offset];
     return __other;
+}
+
+template <typename T>
+MdStaticAxisReference<T> MdStaticArray<T>::get_axis_reference(
+    const size_t axis) {
+    return MdStaticAxisReference(*this, axis);
+}
+
+template <typename T>
+MdStaticAxisReference<T> MdStaticArray<T>::get_nth_axis_reference(
+    const size_t axis, const size_t n) {
+    return MdStaticAxisReference(*this, axis, n);
 }
 
 #undef EN_IF

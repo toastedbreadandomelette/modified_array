@@ -13,28 +13,17 @@ MdStaticArray<T> FFT::ifft2(const MdStaticArray<cdouble>& _2darray) {
                                  std::to_string(_2darray.get_shape_size()));
     }
 
-    // Perform FFT row-wise
-    MdStaticArray<cdouble> result(
-        {_2darray.get_shape()[0], _2darray.get_shape()[1]}, 0);
+    MdStaticArray<cdouble> result(_2darray);
 
 #pragma omp parallel for
-    for (size_t index = 0; index < _2darray.get_shape()[0]; ++index) {
-        result[index] = FFT::ifft_int(_2darray[index]);
+    for (size_t index = 0; index < result.shape[0]; ++index) {
+        result[index] = fft_int(result[index]);
     }
 
 #pragma omp parallel for
-    for (size_t index = 0; index < result.get_shape()[1]; ++index) {
-        MdStaticArray<cdouble> temp(result.get_shape()[0], 0);
-        for (size_t j = index, i = 0; j < result.get_size();
-             j += result.get_shape()[1], ++i) {
-            temp.__array[i] = result.__array[j];
-        }
-        temp = FFT::ifft_int(temp);
-
-        for (size_t j = index, i = 0; j < result.get_size();
-             j += result.get_shape()[1], ++i) {
-            result.__array[j] = temp.__array[i];
-        }
+    for (size_t index = 0; index < result.shape[1]; ++index) {
+        auto axis_reference = result.get_nth_axis_reference(0, index);
+        axis_reference = ifft_int(axis_reference);
     }
 
     result /= result.get_size();

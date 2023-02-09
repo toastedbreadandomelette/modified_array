@@ -4,6 +4,7 @@
 
 #include "../../md_complex/md_complex.hpp"
 #include "../md_static_array/md_static_array.hpp"
+#include "../md_static_array/md_static_axis_reference.hpp"
 
 struct FFT {
  private:
@@ -38,6 +39,19 @@ struct FFT {
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
      * @tparam _T type of an array
+     * @param __other array for which IFFT is to be computed
+     * @return values of complex numbers
+     */
+    template <typename T>
+    static MdStaticArray<cdouble> fft_int(
+        const MdStaticAxisReference<T>& __other);
+
+    /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
+     * @brief Compute 1 dimensional FFT on 1 dimensional array
+     * @tparam _T type of an array
      * @param __other array for which FFT is to be computed
      * @return values of complex numbers
      */
@@ -55,6 +69,18 @@ struct FFT {
      */
     static MdStaticArray<cdouble> ifft_int(
         const MdStaticArrayReference<cdouble>& __other);
+
+    /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
+     * @brief Compute 1 dimensional FFT on 1 dimensional array
+     * @tparam _T type of an array
+     * @param __other array for which FFT is to be computed
+     * @return values of complex numbers
+     */
+    static MdStaticArray<cdouble> ifft_int(
+        const MdStaticAxisReference<cdouble>& __other);
 
  public:
     /**

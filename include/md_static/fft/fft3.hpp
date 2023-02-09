@@ -17,6 +17,7 @@ MdStaticArray<cdouble> FFT::fft3(const MdStaticArray<T>& array) {
     MdStaticArray<cdouble> result(
         {array.shape[0], array.shape[1], array.shape[2]}, 0);
 
+    // last axes calculation
 #pragma omp parallel for
     for (size_t i = 0; i < array.shape[0]; ++i) {
         const auto result_ref = result[i], array_ref = array[i];
@@ -25,39 +26,21 @@ MdStaticArray<cdouble> FFT::fft3(const MdStaticArray<T>& array) {
         }
     }
 
-#pragma omp parallel for
-    for (size_t i = 0; i < array.shape[0]; ++i) {
-        size_t start = i * array.skip_vec[0];
-        MdStaticArray<cdouble> temp(result.shape[1]);
-        for (size_t j = 0; j < array.shape[2]; ++j) {
-            for (size_t k = 0; k < array.shape[1]; ++k) {
-                temp.__array[k] =
-                    result.__array[start + j + array.skip_vec[1] * k];
-            }
-
-            temp = fft_int(temp);
-
-            for (size_t k = 0; k < array.shape[1]; ++k) {
-                result.__array[start + j + array.skip_vec[1] * k] =
-                    temp.__array[k];
-            }
-        }
-    }
+    const size_t total_1_axes = array.get_size() / array.shape[1];
 
 #pragma omp parallel for
-    for (size_t i = 0; i < array.skip_vec[0]; ++i) {
-        MdStaticArray<cdouble> temp(result.shape[0]);
-        for (size_t j = 0; j < array.shape[0]; ++j) {
-            temp.__array[j] = result.__array[i + array.skip_vec[0] * j];
-        }
-
-        temp = fft_int(temp);
-
-        for (size_t j = 0; j < array.shape[0]; ++j) {
-            result.__array[i + array.skip_vec[0] * j] = temp.__array[j];
-        }
+    for (size_t index = 0; index < total_1_axes; ++index) {
+        auto axis_1_ref = result.get_nth_axis_reference(1, index);
+        axis_1_ref = fft_int(axis_1_ref);
     }
 
+    const size_t total_0_axes = array.get_size() / array.shape[0];
+
+#pragma omp parallel for
+    for (size_t index = 0; index < total_0_axes; ++index) {
+        auto axis_0_ref = result.get_nth_axis_reference(0, index);
+        axis_0_ref = fft_int(axis_0_ref);
+    }
     return result;
 }
 
