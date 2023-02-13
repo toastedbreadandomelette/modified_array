@@ -1,5 +1,5 @@
-# Modified Arrays
-Modified Arrays for performing numpy like operations
+# Multi-dimensional Arrays
+Multi-dimensional arrays for performing numpy like operations
 
 > Note: ***In development, and made just for fun.***
 
