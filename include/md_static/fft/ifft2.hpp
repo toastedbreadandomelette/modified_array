@@ -17,7 +17,8 @@ MdStaticArray<T> FFT::ifft2(const MdStaticArray<cdouble>& _2darray) {
 
 #pragma omp parallel for
     for (size_t index = 0; index < result.shape[0]; ++index) {
-        result[index] = fft_int(result[index]);
+        auto axis_reference = result.get_nth_axis_reference(1, index);
+        axis_reference = ifft_int(axis_reference);
     }
 
 #pragma omp parallel for

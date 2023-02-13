@@ -172,44 +172,6 @@ struct FFT {
         const MdStaticArrayReference<cdouble>& __other);
 
     /**
-     * @brief Compute 3 dimensional FFT on 3 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
-     * @return values of complex numbers in 3D-array
-     */
-    template <typename _T>
-    static MdStaticArray<cdouble> fft3(const MdStaticArray<_T>& __other);
-
-    /**
-     * @brief Compute 3 dimensional FFT on 3 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
-     * @return values of complex numbers in 3D-array
-     */
-    template <typename _T>
-    static MdStaticArray<cdouble> fft3(
-        const MdStaticArrayReference<_T>& __other);
-
-    /**
-     * @brief Compute 3 dimensional FFT on 3 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
-     * @return values in 3D-array
-     */
-    template <typename T>
-    static MdStaticArray<T> ifft3(const MdStaticArray<cdouble>& __other);
-
-    /**
-     * @brief Compute 3 dimensional FFT on 3 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
-     * @return values in 3D-array
-     */
-    template <typename T>
-    static MdStaticArray<T> ifft3(
-        const MdStaticArrayReference<cdouble>& __other);
-
-    /**
      * @brief Compute n dimensional FFT on n dimensional array
      * @tparam _T type of an array
      * @param __other array for which IFFT is to be computed

@@ -5,7 +5,6 @@
 #include "../utility/md_math.hpp"
 #include "./ifft.hpp"
 #include "./ifft2.hpp"
-#include "./ifft3.hpp"
 #include "./ifft_int.hpp"
 #include "./md_fft.hpp"
 
@@ -16,8 +15,6 @@ MdStaticArray<T> FFT::ifftn(const MdStaticArray<cdouble>& ndarray) {
             return FFT::ifft<T>(ndarray);
         case 2:
             return FFT::ifft2<T>(ndarray);
-        case 3:
-            return FFT::ifft3<T>(ndarray);
         default:
             break;
     }
