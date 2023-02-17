@@ -2,7 +2,6 @@
 #ifndef _IFFT2_HPP_
 #define _IFFT2_HPP_
 
-#include "../utility/md_math.hpp"
 #include "./ifft_int.hpp"
 #include "./md_fft.hpp"
 

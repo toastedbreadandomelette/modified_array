@@ -31,25 +31,25 @@ int main(int argc, const char** argv) {
     //     }
     // }
 
-    size_t sz = (12);
-    omp_set_num_threads(12);
-    MdStaticArray<double> c({sz, sz}, 0);
+    size_t sz = (16384);
+    // MdStaticArray<double>::set_thread_count(1);
+    MdStaticArray<double> c({sz, sz + 1}, 0);
 
     for (size_t i = 1; i <= sz; ++i) {
         // for (size_t k = 1; k <= sz; ++k) {
         // c[i - 1][k - 1] = MdArrayUtility::range<double>(i, sz + i);
-        c[i - 1] = MdArrayUtility::range<double>(i, sz + i);
+        c[i - 1] = MdArrayUtility::range<double>(i, sz + 1 + i);
         // }
     }
 
     auto start = std::chrono::system_clock::now();
 
-    auto ans = FFT::ifftn<double>(FFT::fftn(c));
+    auto ans = MdArrayManipulate::flip(c, 1);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<double> time = end - start;
 
-    std::cout << ans << '\n';
+    // std::cout << ans << '\n';
 
     std::cout << " Time: " << time.count() << "s"
               << " " << std::endl;

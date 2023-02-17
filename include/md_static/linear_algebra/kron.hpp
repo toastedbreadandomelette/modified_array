@@ -12,9 +12,8 @@ MdStaticArray<_T3> MdLinearAlgebra::kron(const MdStaticArray<_T1>& __first,
     for (size_t findex = __first.get_shape_size() - 1,
                 oindex = __other.get_shape_size() - 1;
          findex >= 0 || oindex >= 0; --findex, --oindex) {
-        overall_shape.emplace_back(
-            (findex >= 0 ? __first.get_shape()[findex] : 1) *
-            (oindex >= 0 ? __other.get_shape()[oindex] : 1));
+        overall_shape.emplace_back((findex >= 0 ? __first.shape[findex] : 1) *
+                                   (oindex >= 0 ? __other.shape[oindex] : 1));
     }
 
     MdStaticArray<_T3> result(overall_shape, 0);
