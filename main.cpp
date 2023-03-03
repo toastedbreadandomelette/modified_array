@@ -31,14 +31,14 @@ int main(int argc, const char** argv) {
     //     }
     // }
 
-    size_t sz = (16384);
+    size_t sz = (8192);
     // MdStaticArray<double>::set_thread_count(1);
-    MdStaticArray<double> c({sz, sz + 1}, 0);
+    MdStaticArray<double> c({sz, sz}, 0);
 
     for (size_t i = 1; i <= sz; ++i) {
         // for (size_t k = 1; k <= sz; ++k) {
         // c[i - 1][k - 1] = MdArrayUtility::range<double>(i, sz + i);
-        c[i - 1] = MdArrayUtility::range<double>(i, sz + 1 + i);
+        c[i - 1] = MdArrayUtility::range<double>(i, sz + i);
         // }
     }
 

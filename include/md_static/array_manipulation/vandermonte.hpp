@@ -4,10 +4,10 @@
 
 #include "./md_array_manipulation.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::vandermonte(
-    const MdStaticArray<_T> &__rows, const int64_t __n,
-    const bool increasing_order) {
+template <typename T>
+MdStaticArray<T> MdArrayManipulate::vandermonte(const MdStaticArray<T> &__rows,
+                                                const int64_t __n,
+                                                const bool increasing_order) {
     if (__rows.get_shape_size() != 1) {
         throw std::runtime_error("Given array must be 1-dimensional; found: " +
                                  std::to_string(__rows.get_shape_size()));
@@ -15,7 +15,7 @@ MdStaticArray<_T> MdArrayManipulate::vandermonte(
 
     const size_t loop = (__n != -1 ? __n : __rows.get_size());
 
-    MdStaticArray<_T> result({__rows.get_size(), loop}, 1);
+    MdStaticArray<T> result({__rows.get_size(), loop}, 1);
 
     if (::s_thread_count == 1 || ::s_threshold_size > result.get_size()) {
         if (!increasing_order) {
@@ -77,12 +77,12 @@ MdStaticArray<_T> MdArrayManipulate::vandermonte(
     return result;
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::vandermonte(
-    const MdStaticArrayReference<_T> &__rows, const int64_t __n,
+template <typename T>
+MdStaticArray<T> MdArrayManipulate::vandermonte(
+    const MdStaticArrayReference<T> &__rows, const int64_t __n,
     const bool increasing_order) {
-    return vandermonte<_T>(MdStaticArray<_T>(*__rows.__array_reference,
-                                             __rows.offset, __rows.shp_offset),
-                           __n, increasing_order);
+    return vandermonte<T>(MdStaticArray<T>(*__rows.__array_reference,
+                                           __rows.offset, __rows.shp_offset),
+                          __n, increasing_order);
 }
 #endif

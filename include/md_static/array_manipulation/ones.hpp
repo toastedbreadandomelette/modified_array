@@ -4,14 +4,14 @@
 
 #include "./md_array_manipulation.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::ones(const size_t __size) {
-    return MdStaticArray<_T>(__size, 1);
+template <typename T>
+MdStaticArray<T> MdArrayManipulate::ones(const size_t __size) {
+    return MdStaticArray<T>(__size, 1);
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::ones(const std::vector<size_t>& __shape) {
-    return MdStaticArray<_T>(__shape, 1);
+template <typename T>
+MdStaticArray<T> MdArrayManipulate::ones(const std::vector<size_t>& __shape) {
+    return MdStaticArray<T>(__shape, 1);
 }
 
 #endif

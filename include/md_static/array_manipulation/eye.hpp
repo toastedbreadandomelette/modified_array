@@ -4,13 +4,13 @@
 
 #include "./md_array_manipulation.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::eye(const size_t __rows,
-                                         const size_t __cols,
-                                         const size_t __koff) {
+template <typename T>
+MdStaticArray<T> MdArrayManipulate::eye(const size_t __rows,
+                                        const size_t __cols,
+                                        const size_t __koff) {
     const size_t rows = __rows;
     const size_t cols = __cols == -1 ? __rows : __cols;
-    MdStaticArray<_T> result({rows, cols}, 0);
+    MdStaticArray<T> result({rows, cols}, 0);
 
     size_t out_of_bounds = 0, min_row_col = std::min(rows, cols) - __koff;
 
