@@ -23,7 +23,6 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
         for (size_t i = start; i < end; ++i) {
             result.__array[0] += array.__array[i];
         }
-#pragma omp parallel for
         for (size_t index = 1; index < n; ++index) {
             cdouble w = {1, 0};
             for (size_t i = start; i < end; ++i) {
@@ -41,17 +40,13 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
     size_t n = __other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n, 0);
-    if ((n & 1) || n <= 64) {
+    if ((n & 1) || n < 64) {
         for (size_t index = 0; index < __other.get_size(); ++index) {
             input.__array[index] = __other.__array[index];
         }
         __idft_internal(input, 0, input.get_size());
-
-        for (size_t index = 1; index < n - index; ++index) {
-            std::swap(input.__array[index], input.__array[n - index]);
-        }
         input /= input.get_size();
-        return input;
+        return MdStaticArray<T>(input);
     } else {
         // Get last zero numbers
         const size_t ls = ((n ^ (n - 1)) + 1) >> 1;
@@ -86,9 +81,6 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
         }
 
         if (i > 1) {
-            while (i < 16) {
-                i <<= 1;
-            }
 #pragma omp parallel for
             for (size_t index = 0; index < n; index += i) {
                 __idft_internal(input, index, index + i);
@@ -122,13 +114,7 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
 
     __perform_fft_in_place(input, i);
 
-    MdStaticArray<T> result(n, 0);
-    result.__array[0] = input.__array[0];
-#pragma omp parallel for
-    for (size_t index = 1; index < n; ++index) {
-        result.__array[index] = input.__array[n - index];
-    }
-    return result;
+    return MdStaticArray<T>(input);
 }
 
 template <typename _T>

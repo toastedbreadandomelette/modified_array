@@ -99,10 +99,6 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& __other) {
         }
 
         if (i > 1) {
-            while (i < 8) {
-                i <<= 1;
-            }
-
             for (size_t index = 0; index < n; index += i) {
                 __dft_internal(input, index, index + i);
             }
