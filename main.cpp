@@ -31,9 +31,9 @@ int main(int argc, const char** argv) {
     //     }
     // }
 
-    size_t sz = 24;
+    size_t sz = 1024;
     // MdStaticArray<double>::set_thread_count(1);
-    MdStaticArray<double> c = MdArrayUtility::range<double>(sz);
+    MdStaticArray<double> c({sz, sz}, 1), d({sz, sz}, 2);
 
     // for (size_t i = 1; i <= sz; ++i) {
     // for (size_t k = 1; k <= sz; ++k) {
@@ -44,12 +44,12 @@ int main(int argc, const char** argv) {
 
     auto start = std::chrono::system_clock::now();
 
-    auto ans = FFT::ifft<double>(FFT::fft(c));
+    auto ans = MdLinearAlgebra::mat_multiply<double>(c, d);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<double> time = end - start;
 
-    std::cout << ans << '\n';
+    // std::cout << ans << '\n';
 
     std::cout << " Time: " << time.count() << "s"
               << " " << std::endl;

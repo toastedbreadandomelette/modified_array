@@ -4,11 +4,11 @@
 
 #include "./md_linear_algebra.hpp"
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::outer(const MdStaticArray<_T1> &__first,
-                                          const MdStaticArray<_T2> &__other,
-                                          const size_t threads) {
-    MdStaticArray<_T3> result({__first.get_size(), __other.get_size()}, 0);
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::outer(const MdStaticArray<T1> &__first,
+                                         const MdStaticArray<T2> &__other,
+                                         const size_t threads) {
+    MdStaticArray<T3> result({__first.get_size(), __other.get_size()}, 0);
 
     auto __perform_outer_internal = [&result, &__first, &__other](
                                         const size_t start, const size_t end) {
@@ -42,36 +42,36 @@ MdStaticArray<_T3> MdLinearAlgebra::outer(const MdStaticArray<_T1> &__first,
     return result;
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::outer(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::outer<_T3, _T1, _T2>(
-        MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
-                           __first.shp_offset),
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::outer(
+    const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
+    const size_t threads) {
+    return MdLinearAlgebra::outer<T3, T1, T2>(
+        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
+                          __first.shp_offset),
         __other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::outer(
-    const MdStaticArray<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::outer<_T3, _T1, _T2>(
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::outer(
+    const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
+    const size_t threads) {
+    return MdLinearAlgebra::outer<T3, T1, T2>(
         __first,
-        MdStaticArray<_T1>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset),
+        MdStaticArray<T1>(*__other.__array_reference, __other.offset,
+                          __other.shp_offset),
         threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::outer(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::outer<_T3, _T1, _T2>(
-        MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
-                           __first.shp_offset),
-        MdStaticArray<_T1>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset),
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::outer(
+    const MdStaticArrayReference<T1> &__first,
+    const MdStaticArrayReference<T2> &__other, const size_t threads) {
+    return MdLinearAlgebra::outer<T3, T1, T2>(
+        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
+                          __first.shp_offset),
+        MdStaticArray<T1>(*__other.__array_reference, __other.offset,
+                          __other.shp_offset),
         threads);
 }
 

@@ -6,50 +6,50 @@
 #include "../functions/map.hpp"
 #include "./md_linear_algebra.hpp"
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(const MdStaticArray<_T1> &__first,
-                                         const MdStaticArray<_T2> &__other,
-                                         const size_t threads) {
-    return MdLinearAlgebra::dot<_T3>(__first, __other, threads);
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(const MdStaticArray<T1> &__first,
+                                        const MdStaticArray<T2> &__other,
+                                        const size_t threads) {
+    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3>(__first, __other, threads);
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
+    const size_t threads) {
+    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3>(__first, __other, threads);
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArrayReference<T1> &__first,
+    const MdStaticArrayReference<T2> &__other, const size_t threads) {
+    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArray<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3>(__first, __other, threads);
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
+    const size_t threads) {
+    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArray<Complex<_T1>> &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArray<Complex<T1>> &__first, const MdStaticArray<T2> &__other,
+    const size_t threads) {
     // Basically, compute dot product of vector:::
     // Last axis of vector __first should be multiplied with second last
     // axis of __other
     if (__other.get_shape_size() >= 2 && __first.get_shape_size() >= 2) {
         if (__other.get_shape_size() == 2 && __first.get_shape_size() == 2) {
-            return MdLinearAlgebra::mat_multiply<_T3, Complex<_T1>, _T2>(
-                MdArrayUtility::map<Complex<_T1>>(
+            return MdLinearAlgebra::mat_multiply<T3, Complex<T1>, T2>(
+                MdArrayUtility::map<Complex<T1>>(
                     __first,
-                    [](const Complex<_T1> &__value) {
-                        return Complex<_T1>::conj(__value);
+                    [](const Complex<T1> &__value) {
+                        return Complex<T1>::conj(__value);
                     }),
                 __other, threads);
         }
@@ -73,7 +73,7 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
             }
         }
 
-        MdStaticArray<_T3> result(overall_shape, 0);
+        MdStaticArray<T3> result(overall_shape, 0);
         const size_t res_base_matrix_size = (result.shape[result.shp_size - 1] *
                                              result.shape[result.shp_size - 2]);
 
@@ -104,8 +104,8 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
                     // performance reasons, to fulfil offset, we add $other_col$
                     // to $index$ in result array)
                     for (size_t j = 0; j < n; ++j) {
-                        const auto c = Complex<_T1>::conj(
-                            __first.__array[first_row + j]);
+                        const auto c =
+                            Complex<T1>::conj(__first.__array[first_row + j]);
                         // Iterator over last axis of __other.
                         for (size_t other_col = 0; other_col < p; ++other_col) {
                             result.__array[index + other_col] +=
@@ -141,11 +141,11 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
             }
 
             // A single valued answer.
-            return MdLinearAlgebra::inner<_T3, Complex<_T1>, _T2>(
-                MdArrayUtility::map<Complex<_T1>>(
+            return MdLinearAlgebra::inner<T3, Complex<T1>, T2>(
+                MdArrayUtility::map<Complex<T1>>(
                     __first,
-                    [](const Complex<_T1> &__value) {
-                        return Complex<_T1>::conj(__value);
+                    [](const Complex<T1> &__value) {
+                        return Complex<T1>::conj(__value);
                     }),
                 __other, threads);
         } else if (__other.get_shape_size() == 1) {
@@ -161,7 +161,7 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
                  ++index) {
                 overall_shape[index] = __first.shape[index];
             }
-            MdStaticArray<_T3> result(overall_shape, 0);
+            MdStaticArray<T3> result(overall_shape, 0);
 
             auto __perform_dot_parallel = [&__first, &__other, &result](
                                               const size_t start,
@@ -175,8 +175,7 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
                     // Iterate over the last axis of array __other
                     for (size_t row = 0; row < __other.shape[0]; ++row) {
                         result.__array[res_index] +=
-                            (Complex<_T1>::conj(
-                                 __first.__array[index + row]) *
+                            (Complex<T1>::conj(__first.__array[index + row]) *
                              __other.__array[row]);
                     }
                     ++res_index;
@@ -211,7 +210,7 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
                     overall_shape[shp_index++] = __other.shape[index];
                 }
             }
-            MdStaticArray<_T3> result(overall_shape, 0);
+            MdStaticArray<T3> result(overall_shape, 0);
 
             auto __perform_dot_parallel =
                 [&__first, &__other, &result,
@@ -230,7 +229,7 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
                         for (size_t element = 0; element < other_mat_size;
                              ++element) {
                             result.__array[res_index + (element % rows)] +=
-                                Complex<_T1>::conj(
+                                Complex<T1>::conj(
                                     __first.__array[element /
                                                     __other.shape[shp + 1]]) *
                                 __other.__array[other_mat_index + element];
@@ -253,21 +252,21 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
     }
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArrayReference<Complex<_T1>> &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::vdot<_T3>(
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArrayReference<Complex<T1>> &__first,
+    const MdStaticArray<T2> &__other, const size_t threads) {
+    return MdLinearAlgebra::vdot<T3>(
         MdStaticArray(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
         __other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArrayReference<Complex<_T1>> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::vdot<_T3>(
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArrayReference<Complex<T1>> &__first,
+    const MdStaticArrayReference<T2> &__other, const size_t threads) {
+    return MdLinearAlgebra::vdot<T3>(
         MdStaticArray(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
         MdStaticArray(*__other.__array_reference, __other.offset,
@@ -275,11 +274,11 @@ MdStaticArray<_T3> MdLinearAlgebra::vdot(
         threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::vdot(
-    const MdStaticArray<Complex<_T1>> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::vdot<_T3>(
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::vdot(
+    const MdStaticArray<Complex<T1>> &__first,
+    const MdStaticArrayReference<T2> &__other, const size_t threads) {
+    return MdLinearAlgebra::vdot<T3>(
         __first,
         MdStaticArray(*__other.__array_reference, __other.offset,
                       __other.shp_offset),

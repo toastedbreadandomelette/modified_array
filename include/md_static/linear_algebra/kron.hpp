@@ -4,10 +4,10 @@
 
 #include "./md_linear_algebra.hpp"
 
-template <typename _T1, typename _T2, typename _T3>
-MdStaticArray<_T3> MdLinearAlgebra::kron(const MdStaticArray<_T1>& __first,
-                                         const MdStaticArray<_T2>& __other,
-                                         const size_t total_threads) {
+template <typename T1, typename T2, typename T3>
+MdStaticArray<T3> MdLinearAlgebra::kron(const MdStaticArray<T1>& __first,
+                                        const MdStaticArray<T2>& __other,
+                                        const size_t total_threads) {
     std::vector<size_t> overall_shape;
     for (size_t findex = __first.get_shape_size() - 1,
                 oindex = __other.get_shape_size() - 1;
@@ -16,7 +16,7 @@ MdStaticArray<_T3> MdLinearAlgebra::kron(const MdStaticArray<_T1>& __first,
                                    (oindex >= 0 ? __other.shape[oindex] : 1));
     }
 
-    MdStaticArray<_T3> result(overall_shape, 0);
+    MdStaticArray<T3> result(overall_shape, 0);
 
     size_t index = 0;
 

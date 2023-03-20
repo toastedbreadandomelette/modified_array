@@ -6,9 +6,9 @@
 #include "./mat_mod_multiply.hpp"
 #include "./md_linear_algebra.hpp"
 
-template <typename _T, class _T1>
-MdStaticArray<_T> MdLinearAlgebra::matrix_mod_power(
-    const MdStaticArray<_T> &__matrix, const size_t pow, const size_t __mod) {
+template <typename T, class T1>
+MdStaticArray<T> MdLinearAlgebra::matrix_mod_power(
+    const MdStaticArray<T> &__matrix, const size_t pow, const size_t __mod) {
     if (__matrix.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given input should be of dimension 2. Found dimension " +
@@ -22,30 +22,29 @@ MdStaticArray<_T> MdLinearAlgebra::matrix_mod_power(
             std::to_string(__matrix.get_shape()[1]) + ").");
     }
     auto power = pow;
-    MdStaticArray<_T> result = MdLinearAlgebra::identity<_T>(
-                          __matrix.get_shape()[0]),
-                      __ocp = __matrix;
+    MdStaticArray<T> result =
+                         MdLinearAlgebra::identity<T>(__matrix.get_shape()[0]),
+                     __ocp = __matrix;
 
     while (power > 0) {
         if (power & 1) {
-            result = MdLinearAlgebra::mat_mod_multiply<_T, _T, _T>(
-                result, __ocp, __mod);
+            result = MdLinearAlgebra::mat_mod_multiply<T, T, T>(result, __ocp,
+                                                                __mod);
         }
-        __ocp =
-            MdLinearAlgebra::mat_mod_multiply<_T, _T, _T>(__ocp, __ocp, __mod);
+        __ocp = MdLinearAlgebra::mat_mod_multiply<T, T, T>(__ocp, __ocp, __mod);
         power >>= 1;
     }
 
     return result;
 }
 
-template <typename _T, class _T1>
-MdStaticArray<_T> MdLinearAlgebra::matrix_mod_power(
-    const MdStaticArrayReference<_T> &__matrix, const size_t power,
+template <typename T, class T1>
+MdStaticArray<T> MdLinearAlgebra::matrix_mod_power(
+    const MdStaticArrayReference<T> &__matrix, const size_t power,
     const size_t __mod) {
-    return MdLinearAlgebra::matrix_mod_power<_T>(
-        MdStaticArray<_T>(*__matrix.__array_reference, __matrix.offset,
-                          __matrix.shp_offset),
+    return MdLinearAlgebra::matrix_mod_power<T>(
+        MdStaticArray<T>(*__matrix.__array_reference, __matrix.offset,
+                         __matrix.shp_offset),
         power, __mod);
 }
 

@@ -5,10 +5,9 @@
 #include "../functions/range.hpp"
 #include "./md_linear_algebra.hpp"
 
-template <typename _Tres, typename _T>
-std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>,
-           int>
-MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
+template <typename Tres, typename T>
+std::tuple<MdStaticArray<Tres>, MdStaticArray<Tres>, MdStaticArray<Tres>, int>
+MdLinearAlgebra::lu_decompose(const MdStaticArray<T> &__2darray) {
     if (__2darray.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given array should be of 2 dimension, found " +
@@ -22,17 +21,17 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
     // Credits to algorithm: Rosetta code:
     // https://rosettacode.org/wiki/LU_decomposition#C++
     size_t n = __2darray.get_shape()[0];
-    MdStaticArray<_Tres> L({n, n}, 0), U({n, n}, 0), P({n, n}, 0);
-    MdStaticArray<_Tres> input(__2darray);
+    MdStaticArray<Tres> L({n, n}, 0), U({n, n}, 0), P({n, n}, 0);
+    MdStaticArray<Tres> input(__2darray);
     int sign = 1;
     MdStaticArray<size_t> permutation = MdArrayUtility::range<size_t>(n);
 
     for (size_t j = 0; j < n; ++j) {
         size_t max_index = j;
-        _Tres max_value =
+        Tres max_value =
             std::abs(input.__array[n * permutation.__array[j] + j]);
         for (size_t i = j + 1; i < n; ++i) {
-            const _Tres value =
+            const Tres value =
                 std::abs(input.__array[n * permutation.__array[i] + j]);
             if (value > max_value) {
                 max_value = value;
@@ -77,12 +76,11 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<_T> &__2darray) {
     return {L, U, P, sign};
 }
 
-template <typename _Tres, typename _T>
-std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>, MdStaticArray<_Tres>,
-           int>
+template <typename Tres, typename T>
+std::tuple<MdStaticArray<Tres>, MdStaticArray<Tres>, MdStaticArray<Tres>, int>
 MdLinearAlgebra::lu_decompose(
-    const MdStaticArrayReference<_T> &__2darray_reference) {
-    return MdLinearAlgebra::lu_decompose<_Tres>(MdStaticArray<_T>(
+    const MdStaticArrayReference<T> &__2darray_reference) {
+    return MdLinearAlgebra::lu_decompose<Tres>(MdStaticArray<T>(
         *__2darray_reference.__array_reference, __2darray_reference.offset,
         __2darray_reference.shp_offset));
 }

@@ -18,7 +18,6 @@ MdStaticArray<size_t> MdArrayUtility::argmax(const MdStaticArray<_T> &__values,
                                             __values.__array[index]
                                         ? result.__array[0]
                                         : index;
-                ;
             }
         } else {
             std::vector<std::thread> st;

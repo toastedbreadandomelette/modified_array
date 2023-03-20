@@ -202,20 +202,20 @@ struct Complex {
 
 namespace std {
 
-template <typename _T>
-inline constexpr Complex<_T> sqrt(const Complex<_T>& __other) {
+template <typename T>
+inline constexpr Complex<T> sqrt(const Complex<T>& __other) {
     const auto polar = __other.to_polar();
-    return Complex<_T>::from_polar(std::sqrt(polar.first), polar.second / 2);
+    return Complex<T>::from_polar(std::sqrt(polar.first), polar.second / 2);
 }
 
-template <typename _T>
-inline constexpr Complex<_T> pow(const Complex<_T>& __other, double value) {
+template <typename T>
+inline constexpr Complex<T> pow(const Complex<T>& __other, double value) {
     const auto [__R, __A] = __other.to_polar();
-    return Complex<_T>::from_polar(std::pow(__R, value), __A * value);
+    return Complex<T>::from_polar(std::pow(__R, value), __A * value);
 }
 
-template <typename _T>
-inline constexpr Complex<_T> abs(const Complex<_T>& __other) {
+template <typename T>
+inline constexpr Complex<T> abs(const Complex<T>& __other) {
     return __other.abs();
 }
 }  // namespace std

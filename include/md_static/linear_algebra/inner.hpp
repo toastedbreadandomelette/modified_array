@@ -5,10 +5,10 @@
 #include "../functions/accumulate_and_merge.hpp"
 #include "./md_linear_algebra.hpp"
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
-                                          const MdStaticArray<_T2> &__other,
-                                          const size_t threads) {
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::inner(const MdStaticArray<T1> &__first,
+                                         const MdStaticArray<T2> &__other,
+                                         const size_t threads) {
     if (__first.get_shape()[__first.get_shape_size() - 1] !=
         __other.get_shape()[__other.get_shape_size() - 1]) {
         throw std::runtime_error(
@@ -34,7 +34,7 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
     // do this separately.
     if (resultant_shape.size() == 0) {
         if (s_threshold_size < __first.get_size()) {
-            std::vector<_T3> value(threads, 0);
+            std::vector<T3> value(threads, 0);
 
             auto __perform_inner_internal = [&__first, &__other, &value](
                                                 const size_t thread_number,
@@ -61,23 +61,23 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
                 thread.join();
             }
 
-            _T3 result = 0;
+            T3 result = 0;
             for (auto &res_part : value) {
                 result += res_part;
             }
 
-            return MdStaticArray<_T3>(1, result);
+            return MdStaticArray<T3>(1, result);
         } else {
-            _T3 value = 0;
+            T3 value = 0;
 #pragma omp parallel for
             for (size_t i = 0; i < __other.get_size(); ++i) {
                 value += __first.__array[i] * __other.__array[i];
             }
 
-            return MdStaticArray<_T3>(1, value);
+            return MdStaticArray<T3>(1, value);
         }
     } else {
-        MdStaticArray<_T3> result(resultant_shape, 0);
+        MdStaticArray<T3> result(resultant_shape, 0);
 
         const size_t row = __first.shape[__first.get_shape_size() - 1];
 
@@ -116,36 +116,36 @@ MdStaticArray<_T3> MdLinearAlgebra::inner(const MdStaticArray<_T1> &__first,
     }
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::inner(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::inner<_T3, _T1, _T2>(
-        MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
-                           __first.shp_offset),
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::inner(
+    const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
+    const size_t threads) {
+    return MdLinearAlgebra::inner<T3, T1, T2>(
+        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
+                          __first.shp_offset),
         __other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::inner(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::inner<_T3, _T1, _T2>(
-        MdStaticArray<_T1>(*__first.__array_reference, __first.offset,
-                           __first.shp_offset),
-        MdStaticArray<_T1>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset),
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::inner(
+    const MdStaticArrayReference<T1> &__first,
+    const MdStaticArrayReference<T2> &__other, const size_t threads) {
+    return MdLinearAlgebra::inner<T3, T1, T2>(
+        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
+                          __first.shp_offset),
+        MdStaticArray<T1>(*__other.__array_reference, __other.offset,
+                          __other.shp_offset),
         threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::inner(
-    const MdStaticArray<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::inner<_T3, _T1, _T2>(
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> MdLinearAlgebra::inner(
+    const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
+    const size_t threads) {
+    return MdLinearAlgebra::inner<T3, T1, T2>(
         __first,
-        MdStaticArray<_T1>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset),
+        MdStaticArray<T1>(*__other.__array_reference, __other.offset,
+                          __other.shp_offset),
         threads);
 }
 
