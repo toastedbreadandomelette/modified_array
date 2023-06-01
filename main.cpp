@@ -37,12 +37,6 @@ int main(int argc, const char** argv) {
     // MdStaticArray<double>::set_thread_count(1);
     MdStaticArray<double> c({sz, sz}, 12), d({sz, sz}, 1024);
     std::cout << c.get_size() << '\n';
-    // for (size_t i = 1; i <= sz; ++i) {
-    // for (size_t k = 1; k <= sz; ++k) {
-    // c[i - 1][k - 1] = MdArrayUtility::range<double>(i, sz + i);
-    // c[i - 1] = MdArrayUtility::range<double>(i, sz + i);
-    // }
-    // }
 
     auto start = std::chrono::system_clock::now();
 
@@ -50,8 +44,6 @@ int main(int argc, const char** argv) {
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<double> time = end - start;
-
-    // std::cout << val << '\n';
 
     std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;
