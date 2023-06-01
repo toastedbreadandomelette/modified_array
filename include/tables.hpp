@@ -40,8 +40,8 @@ struct Table {
     /**
      * @brief Arrange the table
      */
-    template <typename _T1, typename _T2>
-    std::pair<MdStaticArray<_T1>, MdStaticArray<_T2>>
+    template <typename T1, typename T2>
+    std::pair<MdStaticArray<T1>, MdStaticArray<T2>>
     split_dep_and_indep_variables(const std::string &classifier_header_name);
 
     /**

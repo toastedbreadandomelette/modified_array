@@ -20,3 +20,8 @@ Testing/
 *.csv
 
 .obsidian/*
+
+nd_array
+*/array_op
+*/array1d
+*/arraynd
