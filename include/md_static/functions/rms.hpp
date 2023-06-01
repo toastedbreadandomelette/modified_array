@@ -4,28 +4,27 @@
 #include "./accumulate_and_merge.hpp"
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-long double MdArrayUtility::rms(const MdStaticArray<_T> &__values,
-                                const _T init) {
+template <typename T>
+long double MdArrayUtility::rms(const MdStaticArray<T> &values, const T init) {
     long double mean_sq =
         accumulate_and_merge_fn(
-            __values,
-            [](const _T prev_value, const _T current_value) {
+            values,
+            [](const T prev_value, const T current_value) {
                 return prev_value + (current_value * current_value);
             },
-            [](const _T prev_value, const _T current_value) {
+            [](const T prev_value, const T current_value) {
                 return prev_value + current_value;
             },
-            static_cast<_T>(init)) /
-        (__values.get_size() * 1.0);
+            static_cast<T>(init)) /
+        (values.get_size() * 1.0);
     return ::sqrt(mean_sq);
 }
 
-template <typename _T>
-long double MdArrayUtility::rms(const MdStaticArrayReference<_T> &__values,
-                                const _T init) {
-    return rms(MdStaticArray<_T>(*__values.__array_reference, __values.offset,
-                                 __values.shp_offset),
+template <typename T>
+long double MdArrayUtility::rms(const MdStaticArrayReference<T> &values,
+                                const T init) {
+    return rms(MdStaticArray<T>(*values.__array_reference, values.offset,
+                                values.shp_offset),
                init);
 }
 

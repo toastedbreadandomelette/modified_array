@@ -105,9 +105,9 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](MdStaticArray<cdouble>& __1darray,
+    auto __perform_fft_in_place = [](MdStaticArray<cdouble>& array,
                                      const size_t start) {
-        size_t n = __1darray.get_size();
+        size_t n = array.get_size();
 
         for (size_t operate_length = (start << 1); operate_length <= n;
              operate_length <<= 1) {
@@ -117,11 +117,10 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& other) {
             for (size_t i = 0; i < n; i += operate_length) {
                 cdouble w = {1, 0};
                 for (size_t j = 0; j < operate_length / 2; ++j) {
-                    cdouble u = __1darray.__array[i + j];
-                    cdouble v =
-                        __1darray.__array[i + j + operate_length / 2] * w;
-                    __1darray.__array[i + j] = u + v;
-                    __1darray.__array[i + j + operate_length / 2] = u - v;
+                    cdouble u = array.__array[i + j];
+                    cdouble v = array.__array[i + j + operate_length / 2] * w;
+                    array.__array[i + j] = u + v;
+                    array.__array[i + j + operate_length / 2] = u - v;
                     w *= init;
                 }
             }
@@ -238,10 +237,9 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](MdStaticArray<cdouble>& __1darray,
+    auto __perform_fft_in_place = [](MdStaticArray<cdouble>& array,
                                      const size_t start) {
-        size_t n = __1darray.get_size();
-
+        size_t n = array.get_size();
         for (size_t operate_length = (start << 1); operate_length <= n;
              operate_length <<= 1) {
             double angle = MdMath::pi_2 / operate_length;
@@ -250,11 +248,10 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticAxisReference<T>& other) {
             for (size_t i = 0; i < n; i += operate_length) {
                 cdouble w = {1, 0};
                 for (size_t j = 0; j < operate_length / 2; ++j) {
-                    cdouble u = __1darray.__array[i + j];
-                    cdouble v =
-                        __1darray.__array[i + j + operate_length / 2] * w;
-                    __1darray.__array[i + j] = u + v;
-                    __1darray.__array[i + j + operate_length / 2] = u - v;
+                    cdouble u = array.__array[i + j];
+                    cdouble v = array.__array[i + j + operate_length / 2] * w;
+                    array.__array[i + j] = u + v;
+                    array.__array[i + j + operate_length / 2] = u - v;
                     w *= init;
                 }
             }

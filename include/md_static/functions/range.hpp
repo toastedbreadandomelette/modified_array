@@ -5,12 +5,12 @@
 #include "./md_static_array_utility.hpp"
 
 // To do: improve and update since it does not work for all cases
-template <typename _T, class _T1>
-MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
-                                        const _T spacing) {
+template <typename T, class _T1>
+MdStaticArray<T> MdArrayUtility::range(const T start, const T end,
+                                       const T spacing) {
     size_t size = 0;
     size_t start_value = 0;
-    _T increment = 1;
+    T increment = 1;
     if (end < start && spacing > 0) {
         throw std::runtime_error(
             "Spacing given should be negative for ranges: [end (" +
@@ -36,12 +36,12 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
     // std::cout << size << " " << start << " " << end << " " << spacing << " "
     //           << increment << '\n';
 
-    MdStaticArray<_T> result(size);
+    MdStaticArray<T> result(size);
 
-    const auto __allocate_internal = [&result](const size_t start,
-                                               const _T init, const size_t end,
-                                               const _T increment) {
-        _T value = init;
+    const auto __allocate_internal = [&result](const size_t start, const T init,
+                                               const size_t end,
+                                               const T increment) {
+        T value = init;
         for (size_t index = start; index < end; ++index, value += increment) {
             result.__array[index] = value;
         }
@@ -53,10 +53,10 @@ MdStaticArray<_T> MdArrayUtility::range(const _T start, const _T end,
     }
 
     const size_t block = size / s_thread_count;
-    const _T b_increment = increment * block;
+    const T b_increment = increment * block;
 
     std::vector<std::thread> thread_pool;
-    _T b_start = start_value;
+    T b_start = start_value;
     for (size_t thread_i = 0; thread_i < s_thread_count - 1;
          ++thread_i, b_start += b_increment) {
         thread_pool.emplace_back(__allocate_internal, block * thread_i, b_start,

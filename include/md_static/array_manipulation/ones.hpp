@@ -5,13 +5,13 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayManipulate::ones(const size_t __size) {
-    return MdStaticArray<T>(__size, 1);
+MdStaticArray<T> Manip::ones(const size_t size) {
+    return MdStaticArray<T>(size, 1);
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayManipulate::ones(const std::vector<size_t>& __shape) {
-    return MdStaticArray<T>(__shape, 1);
+MdStaticArray<T> Manip::ones(const std::vector<size_t>& shape) {
+    return MdStaticArray<T>(shape, 1);
 }
 
 #endif

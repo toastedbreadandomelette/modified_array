@@ -6,18 +6,17 @@
 #define M_PI 3.14159265358979323846
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::deg_2_rad(
-    const MdStaticArray<_T> &__ndarray) {
-    return MdArrayUtility::map<_T>(
-        __ndarray, [](const _T value) -> _T { return value * M_PI / 180.0; });
+template <typename T>
+MdStaticArray<T> MdArrayUtility::deg_2_rad(const MdStaticArray<T> &ndarray) {
+    return MdArrayUtility::map<T>(
+        ndarray, [](const T value) -> T { return value * M_PI / 180.0; });
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::deg_2_rad(
-    const MdStaticArrayReference<_T> &__values) {
-    return MdArrayUtility::deg_2_rad<_T>(MdStaticArray<_T>(
-        *__values.__array_reference, __values.offset, __values.shp_offset));
+template <typename T>
+MdStaticArray<T> MdArrayUtility::deg_2_rad(
+    const MdStaticArrayReference<T> &values) {
+    return MdArrayUtility::deg_2_rad<T>(MdStaticArray<T>(
+        *values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

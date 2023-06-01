@@ -5,8 +5,8 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::mat_diag(
-    const MdStaticArray<_T>& __2darray, const size_t __koff) {
+MdStaticArray<_T> Manip::mat_diag(const MdStaticArray<_T>& __2darray,
+                                  const size_t __koff) {
     if (__2darray.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given input should be of dimension 2. Found dimension " +
@@ -31,8 +31,8 @@ MdStaticArray<_T> MdArrayManipulate::mat_diag(
 }
 
 template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::mat_diag(
-    const MdStaticArrayReference<_T>& __2darray, const size_t __koff) {
+MdStaticArray<_T> Manip::mat_diag(const MdStaticArrayReference<_T>& __2darray,
+                                  const size_t __koff) {
     return mat_diag<_T>(
         MdStaticArray<_T>(*__2darray.__array_reference, __2darray.offset,
                           __2darray.shp_offset),

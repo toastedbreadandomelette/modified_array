@@ -5,17 +5,16 @@
 
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::ceil(const MdStaticArray<_T> &__ndarray) {
-    return MdArrayUtility::map<_T>(
-        __ndarray, [](const _T value) -> _T { return ::ceil(value); });
+template <typename T>
+MdStaticArray<T> MdArrayUtility::ceil(const MdStaticArray<T> &ndarray) {
+    return MdArrayUtility::map<T>(
+        ndarray, [](const T value) -> T { return ::ceil(value); });
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::ceil(
-    const MdStaticArrayReference<_T> &__values) {
-    return MdArrayUtility::ceil<_T>(MdStaticArray<_T>(
-        *__values.__array_reference, __values.offset, __values.shp_offset));
+template <typename T>
+MdStaticArray<T> MdArrayUtility::ceil(const MdStaticArrayReference<T> &values) {
+    return MdArrayUtility::ceil<T>(MdStaticArray<T>(
+        *values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

@@ -6,29 +6,28 @@
 #include "./accumulate_and_merge.hpp"
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-long double MdArrayUtility::std_dev(const MdStaticArray<_T> &__values) {
-    long double fmean = mean(__values);
+template <typename T>
+long double MdArrayUtility::std_dev(const MdStaticArray<T> &values) {
+    long double fmean = mean(values);
     long double mean_sq_err =
         accumulate_and_merge_fn(
-            __values,
-            [&fmean](const _T prev_value, const _T current_value) {
+            values,
+            [&fmean](const T prev_value, const T current_value) {
                 return prev_value +
                        (fmean - current_value) * (fmean - current_value);
             },
-            [](const _T prev_value, const _T current_value) {
+            [](const T prev_value, const T current_value) {
                 return prev_value + current_value;
             },
-            static_cast<_T>(0.0)) /
-        (__values.get_size() * 1.0);
+            static_cast<T>(0.0)) /
+        (values.get_size() * 1.0);
     return ::sqrt(mean_sq_err);
 }
 
-template <typename _T>
-long double MdArrayUtility::std_dev(
-    const MdStaticArrayReference<_T> &__values) {
-    return std_dev<_T>(MdStaticArray<_T>(*__values.__array_reference,
-                                         __values.offset, __values.shp_offset));
+template <typename T>
+long double MdArrayUtility::std_dev(const MdStaticArrayReference<T> &values) {
+    return std_dev<T>(MdStaticArray<T>(*values.__array_reference, values.offset,
+                                       values.shp_offset));
 }
 
 #endif

@@ -5,28 +5,28 @@
 
 #include "./md_static_array_utility.hpp"
 
-template <typename _T, typename _func, typename _merge_func>
-_T MdArrayUtility::accumulate_and_merge_fn(const MdStaticArray<_T> &__values,
-                                           const _func &function_exec,
-                                           const _merge_func &merge_func,
-                                           const _T init) {
-    const size_t size = __values.get_size();
-    _T result = init;
+template <typename T, typename function, typename merge_function>
+T MdArrayUtility::accumulate_and_merge_fn(const MdStaticArray<T> &values,
+                                          const function &function_exec,
+                                          const merge_function &merge_func,
+                                          const T init) {
+    const size_t size = values.get_size();
+    T result = init;
     const uint8_t thread_count = ::s_thread_count;
     const size_t threshold_size = ::s_threshold_size;
     if (thread_count == 1 || size <= threshold_size) {
         for (size_t index = 0; index < size; ++index) {
-            result = function_exec(result, __values.__array[index]);
+            result = function_exec(result, values.__array[index]);
         }
     } else {
         std::vector<std::thread> st;
-        std::vector<_T> __res_total(thread_count);
-        auto _add_int = [&__res_total, &__values, &function_exec](
+        std::vector<T> accumulator(thread_count);
+        auto _add_int = [&accumulator, &values, &function_exec](
                             const uint8_t thread_number, const size_t start,
                             const size_t end) {
             for (size_t index = start; index < end; ++index) {
-                __res_total[thread_number] = function_exec(
-                    __res_total[thread_number], __values.__array[index]);
+                accumulator[thread_number] = function_exec(
+                    accumulator[thread_number], values.__array[index]);
             }
         };
 
@@ -44,20 +44,20 @@ _T MdArrayUtility::accumulate_and_merge_fn(const MdStaticArray<_T> &__values,
             th.join();
         }
 
-        for (auto &result_th : __res_total) {
+        for (auto &result_th : accumulator) {
             result = merge_func(result, result_th);
         }
     }
     return result;
 }
 
-template <typename _T, typename _func, typename _merge_func>
-_T MdArrayUtility::accumulate_and_merge_fn(
-    const MdStaticArrayReference<_T> &__values, const _func &function_exec,
-    const _merge_func &merge_func, const _T init) {
-    return MdArrayUtility::accumulate_and_merge_fn<_T, _func, _merge_func>(
-        MdStaticArray<_T>(*__values.__array_reference, __values.offset,
-                          __values.shp_offset),
+template <typename T, typename function, typename merge_function>
+T MdArrayUtility::accumulate_and_merge_fn(
+    const MdStaticArrayReference<T> &values, const function &function_exec,
+    const merge_function &merge_func, const T init) {
+    return MdArrayUtility::accumulate_and_merge_fn<T, function, merge_function>(
+        MdStaticArray<T>(*values.__array_reference, values.offset,
+                         values.shp_offset),
         function_exec, merge_func, init);
 }
 

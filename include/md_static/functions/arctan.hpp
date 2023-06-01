@@ -6,17 +6,17 @@
 #include "./map.hpp"
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::arctan(const MdStaticArray<_T> &__values) {
-    return MdArrayUtility::map<_T>(
-        __values, [](const _T &__value) -> _T { return ::atan(__value); });
+template <typename T>
+MdStaticArray<T> MdArrayUtility::arctan(const MdStaticArray<T> &values) {
+    return MdArrayUtility::map<T>(
+        values, [](const T &value) -> T { return ::atan(value); });
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::arctan(
-    const MdStaticArrayReference<_T> &__values) {
-    return MdArrayUtility::arctan<_T>(MdStaticArray<_T>(
-        *__values.__array_reference, __values.offset, __values.shp_offset));
+template <typename T>
+MdStaticArray<T> MdArrayUtility::arctan(
+    const MdStaticArrayReference<T> &values) {
+    return MdArrayUtility::arctan<T>(MdStaticArray<T>(
+        *values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

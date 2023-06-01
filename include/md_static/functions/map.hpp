@@ -3,18 +3,18 @@
 #define _MAP_HPP_
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::map(
-    const MdStaticArray<_T> &__values,
-    const std::function<_T(const _T &)> &function_exec) {
-    const size_t size = __values.get_size();
+template <typename T>
+MdStaticArray<T> MdArrayUtility::map(
+    const MdStaticArray<T> &values,
+    const std::function<T(const T &)> &function_exec) {
+    const size_t size = values.get_size();
 
     std::vector<size_t> shp;
-    for (size_t index = 0; index < __values.get_shape_size(); ++index) {
-        shp.emplace_back(__values.shape[index]);
+    for (size_t index = 0; index < values.get_shape_size(); ++index) {
+        shp.emplace_back(values.shape[index]);
     }
 
-    MdStaticArray<_T> result(shp, 0);
+    MdStaticArray<T> result(shp, 0);
 
     const uint8_t thread_count = ::s_thread_count;
     const size_t threshold_size = ::s_threshold_size;
@@ -22,15 +22,15 @@ MdStaticArray<_T> MdArrayUtility::map(
     if (thread_count == 1 || size <= threshold_size) {
 #pragma omp parallel for
         for (size_t index = 0; index < size; ++index) {
-            result.__array[index] = function_exec(__values.__array[index]);
+            result.__array[index] = function_exec(values.__array[index]);
         }
     } else {
         std::vector<std::thread> st;
         st.reserve(thread_count);
-        auto _add_int = [&result, &__values, &function_exec](const size_t start,
-                                                             const size_t end) {
+        auto _add_int = [&result, &values, &function_exec](const size_t start,
+                                                           const size_t end) {
             for (size_t index = start; index < end; ++index) {
-                result.__array[index] = function_exec(__values.__array[index]);
+                result.__array[index] = function_exec(values.__array[index]);
             }
         };
 
@@ -49,13 +49,13 @@ MdStaticArray<_T> MdArrayUtility::map(
     return result;
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::map(
-    const MdStaticArrayReference<_T> &__values,
-    const std::function<_T(const _T &)> &function_exec) {
-    return map<_T>(MdStaticArray(*__values.__array_reference, __values.offset,
-                                 __values.shp_offset),
-                   function_exec);
+template <typename T>
+MdStaticArray<T> MdArrayUtility::map(
+    const MdStaticArrayReference<T> &values,
+    const std::function<T(const T &)> &function_exec) {
+    return map<T>(MdStaticArray(*values.__array_reference, values.offset,
+                                values.shp_offset),
+                  function_exec);
 }
 
 #endif

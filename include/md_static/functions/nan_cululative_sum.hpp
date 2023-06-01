@@ -3,22 +3,22 @@
 #define _NAN_CUMULATIVE_SUM_HPP_
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::nan_cumulative_sum(
-    const MdStaticArrayReference<_T>& __values, const size_t axis,
+template <typename T>
+MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
+    const MdStaticArrayReference<T>& values, const size_t axis,
     const size_t thread_count) {
-    return MdArrayUtility::nan_cumulative_sum<_T>(
-        MdStaticArray<_T>(*__values.__array_reference, __values.offset,
-                          __values.shp_offset),
+    return MdArrayUtility::nan_cumulative_sum<T>(
+        MdStaticArray<T>(*values.__array_reference, values.offset,
+                         values.shp_offset),
         axis, thread_count);
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::nan_cumulative_sum(
-    const MdStaticArray<_T>& __ndarray, const size_t axis,
+template <typename T>
+MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
+    const MdStaticArray<T>& __ndarray, const size_t axis,
     const size_t thread_count) {
     if (axis == -1) {
-        MdStaticArray<_T> result(__ndarray.get_size());
+        MdStaticArray<T> result(__ndarray.get_size());
 
         result.__array[0] =
             !isnan(__ndarray.__array[0]) ? __ndarray.__array[0] : 1;
@@ -51,7 +51,7 @@ MdStaticArray<_T> MdArrayUtility::nan_cumulative_sum(
         resultant_shape.emplace_back(__ndarray.get_shape()[index]);
     }
 
-    MdStaticArray<_T> result(resultant_shape, 0);
+    MdStaticArray<T> result(resultant_shape, 0);
 
     auto __perform_cu_sum_internal =
         [&__ndarray, &result, skip_value, looping_value](

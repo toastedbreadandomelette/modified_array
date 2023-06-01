@@ -6,17 +6,16 @@
 #include "./map.hpp"
 #include "./md_static_array_utility.hpp"
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::cos(const MdStaticArray<_T> &__values) {
-    return MdArrayUtility::map<_T>(
-        __values, [](const _T &__value) { return ::cos(__value); });
+template <typename T>
+MdStaticArray<T> MdArrayUtility::cos(const MdStaticArray<T> &values) {
+    return MdArrayUtility::map<T>(values,
+                                  [](const T &value) { return ::cos(value); });
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::cos(
-    const MdStaticArrayReference<_T> &__values) {
-    return MdArrayUtility::cos<_T>(MdStaticArray<_T>(
-        *__values.__array_reference, __values.offset, __values.shp_offset));
+template <typename T>
+MdStaticArray<T> MdArrayUtility::cos(const MdStaticArrayReference<T> &values) {
+    return MdArrayUtility::cos<T>(MdStaticArray<T>(
+        *values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

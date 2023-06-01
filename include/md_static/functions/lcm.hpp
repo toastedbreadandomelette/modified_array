@@ -5,17 +5,17 @@
 #include "./md_static_array_utility.hpp"
 #include "./reduce.hpp"
 
-template <typename _T>
-_T __gcd2(_T a, _T b) {
+template <typename T>
+T __gcd2(T a, T b) {
     return b == 0 ? a : __gcd2(b, a % b);
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::lcm(const MdStaticArray<_T> &__values,
-                                      const int axis) {
-    return reduce<_T>(
-        __values,
-        [](const _T &prev_value, const _T &curr_value) {
+template <typename T>
+MdStaticArray<T> MdArrayUtility::lcm(const MdStaticArray<T> &values,
+                                     const int axis) {
+    return reduce<T>(
+        values,
+        [](const T &prev_value, const T &curr_value) {
             if (prev_value == 0 || curr_value == 0) {
                 return prev_value == 0 ? prev_value : curr_value;
             }
@@ -24,11 +24,11 @@ MdStaticArray<_T> MdArrayUtility::lcm(const MdStaticArray<_T> &__values,
         1, axis);
 }
 
-template <typename _T>
-MdStaticArray<_T> MdArrayUtility::lcm(
-    const MdStaticArrayReference<_T> &__values, const int axis) {
-    return lcm(MdStaticArray<_T>(*__values.__array_reference, __values.offset,
-                                 __values.shp_offset),
+template <typename T>
+MdStaticArray<T> MdArrayUtility::lcm(const MdStaticArrayReference<T> &values,
+                                     const int axis) {
+    return lcm(MdStaticArray<T>(*values.__array_reference, values.offset,
+                                values.shp_offset),
                axis);
 }
 

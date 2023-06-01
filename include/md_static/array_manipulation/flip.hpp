@@ -5,10 +5,10 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename _T>
-MdStaticArray<_T> MdArrayManipulate::flip(const MdStaticArray<_T> &__ndarray,
-                                          const size_t axis) {
+MdStaticArray<_T> Manip::flip(const MdStaticArray<_T> &ndarray,
+                              const size_t axis) {
     if (axis == -1) {
-        MdStaticArray<_T> result(__ndarray);
+        MdStaticArray<_T> result(ndarray);
 
         for (size_t index = 0; index < result.get_size() / 2; ++index) {
             const auto temp = result.__array[index];
@@ -19,16 +19,16 @@ MdStaticArray<_T> MdArrayManipulate::flip(const MdStaticArray<_T> &__ndarray,
 
         return result;
     }
-    if (axis >= __ndarray.get_shape_size()) {
+    if (axis >= ndarray.get_shape_size()) {
         throw std::runtime_error("Unknown axis " + std::to_string(axis) +
                                  " requested for operation flip");
     }
 
-    MdStaticArray<_T> result(__ndarray);
+    MdStaticArray<_T> result(ndarray);
 
     const size_t total_axes = result.get_axis_reference(axis).get_total_axes();
 
-    if (s_thread_count == 1 || s_threshold_size > __ndarray.get_size()) {
+    if (s_thread_count == 1 || s_threshold_size > ndarray.get_size()) {
         for (size_t index = 0; index < total_axes; ++index) {
             const auto axis_ref = result.get_nth_axis_reference(axis, index);
             for (size_t i = 0; i < axis_ref.get_size() - i; ++i) {

@@ -4,77 +4,72 @@
 #include "./map.hpp"
 #include "./md_static_array_utility.hpp"
 
-template <typename _T, class _T1>
-MdStaticArray<_T> MdArrayUtility::mod_pow(const MdStaticArray<_T> &__values,
-                                          const size_t power,
-                                          const size_t _mod) {
-    return MdArrayUtility::map<_T>(
-        __values, [power, _mod](const _T &__value) -> _T {
-            if (power == 0ULL) {
-                return static_cast<_T>(1);
+template <typename T, class T1>
+MdStaticArray<T> MdArrayUtility::mod_pow(const MdStaticArray<T> &values,
+                                         const size_t power, const size_t mod) {
+    return MdArrayUtility::map<T>(values, [power, mod](const T &value) -> T {
+        if (power == 0ULL) {
+            return static_cast<T>(1);
+        }
+        if (power == 1ULL) {
+            return value;
+        }
+        uint64_t result = 1ULL, val = value, pow = power;
+        while (pow > 0) {
+            if (pow & 1) {
+                result *= value;
+                result %= mod;
             }
-            if (power == 1ULL) {
-                return __value;
-            }
-            uint64_t result = 1ULL, value = __value, pow = power;
-            while (pow > 0) {
-                if (pow & 1) {
-                    result *= value;
-                    result %= _mod;
-                }
-                value *= value;
-                value %= _mod;
-                pow >>= 1;
-            }
-            return result;
-        });
+            val *= value;
+            val %= mod;
+            pow >>= 1;
+        }
+        return result;
+    });
 }
 
-template <typename _T, typename _T1>
-MdStaticArray<_T> MdArrayUtility::mod_pow(const uint64_t n,
-                                          const MdStaticArray<_T> &__values,
-                                          const size_t _mod) {
-    return MdArrayUtility::map<_T>(
-        __values, [n, _mod](const _T &__value) -> _T {
-            if (__value == 0) {
-                return static_cast<_T>(1);
+template <typename T, typename T1>
+MdStaticArray<T> MdArrayUtility::mod_pow(const uint64_t n,
+                                         const MdStaticArray<T> &values,
+                                         const size_t mod) {
+    return MdArrayUtility::map<T>(values, [n, mod](const T &value) -> T {
+        if (value == 0) {
+            return static_cast<T>(1);
+        }
+        if (value == 1) {
+            return static_cast<T>(n);
+        }
+        uint64_t result = 1, pow = value, val = n;
+        while (pow > 0) {
+            if (pow & 1) {
+                result *= value;
+                result %= mod;
             }
-            if (__value == 1) {
-                return static_cast<_T>(n);
-            }
-            uint64_t result = 1, pow = __value, value = n;
-            while (pow > 0) {
-                if (pow & 1) {
-                    result *= value;
-                    result %= _mod;
-                }
-                value *= value;
-                value %= _mod;
-                pow >>= 1;
-            }
-            return result;
-        });
+            val *= value;
+            val %= mod;
+            pow >>= 1;
+        }
+        return result;
+    });
 }
 
-template <typename _T, typename _T1>
-MdStaticArray<_T> MdArrayUtility::mod_pow(
-    const uint64_t n, const MdStaticArrayReference<_T> &__values,
-    const size_t _mod) {
-    return mod_pow<_T, _T1>(
-        n,
-        MdStaticArray<_T>(*__values.__array_reference, __values.offset,
-                          __values.shp_offset),
-        _mod);
+template <typename T, typename T1>
+MdStaticArray<T> MdArrayUtility::mod_pow(
+    const uint64_t n, const MdStaticArrayReference<T> &values,
+    const size_t mod) {
+    return mod_pow<T, T1>(n,
+                          MdStaticArray<T>(*values.__array_reference,
+                                           values.offset, values.shp_offset),
+                          mod);
 }
 
-template <typename _T, typename _T1>
-MdStaticArray<_T> MdArrayUtility::mod_pow(
-    const MdStaticArrayReference<_T> &__values, const size_t power,
-    const size_t _mod) {
-    return mod_pow<_T, _T1>(
-        MdStaticArray<_T>(*__values.__array_reference, __values.offset,
-                          __values.shp_offset),
-        power, _mod);
+template <typename T, typename T1>
+MdStaticArray<T> MdArrayUtility::mod_pow(
+    const MdStaticArrayReference<T> &values, const size_t power,
+    const size_t mod) {
+    return mod_pow<T, T1>(MdStaticArray<T>(*values.__array_reference,
+                                           values.offset, values.shp_offset),
+                          power, mod);
 }
 
 #endif
