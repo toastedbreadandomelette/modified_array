@@ -7,7 +7,7 @@
 
 template <typename Tres, typename T>
 std::tuple<MdStaticArray<Tres>, MdStaticArray<Tres>, MdStaticArray<Tres>, int>
-MdLinearAlgebra::lu_decompose(const MdStaticArray<T> &__2darray) {
+Linalg::lu_decompose(const MdStaticArray<T> &__2darray) {
     if (__2darray.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given array should be of 2 dimension, found " +
@@ -78,9 +78,9 @@ MdLinearAlgebra::lu_decompose(const MdStaticArray<T> &__2darray) {
 
 template <typename Tres, typename T>
 std::tuple<MdStaticArray<Tres>, MdStaticArray<Tres>, MdStaticArray<Tres>, int>
-MdLinearAlgebra::lu_decompose(
+Linalg::lu_decompose(
     const MdStaticArrayReference<T> &__2darray_reference) {
-    return MdLinearAlgebra::lu_decompose<Tres>(MdStaticArray<T>(
+    return Linalg::lu_decompose<Tres>(MdStaticArray<T>(
         *__2darray_reference.__array_reference, __2darray_reference.offset,
         __2darray_reference.shp_offset));
 }

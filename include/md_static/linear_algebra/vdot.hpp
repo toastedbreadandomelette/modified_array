@@ -7,37 +7,37 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(const MdStaticArray<T1> &__first,
+MdStaticArray<T3> Linalg::vdot(const MdStaticArray<T1> &__first,
                                         const MdStaticArray<T2> &__other,
                                         const size_t threads) {
-    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
+    return Linalg::dot<T3>(__first, __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
     const size_t threads) {
-    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
+    return Linalg::dot<T3>(__first, __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArrayReference<T1> &__first,
     const MdStaticArrayReference<T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
+    return Linalg::dot<T3>(__first, __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
     const size_t threads) {
-    return MdLinearAlgebra::dot<T3>(__first, __other, threads);
+    return Linalg::dot<T3>(__first, __other, threads);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArray<Complex<T1>> &__first, const MdStaticArray<T2> &__other,
     const size_t threads) {
     // Basically, compute dot product of vector:::
@@ -45,7 +45,7 @@ MdStaticArray<T3> MdLinearAlgebra::vdot(
     // axis of __other
     if (__other.get_shape_size() >= 2 && __first.get_shape_size() >= 2) {
         if (__other.get_shape_size() == 2 && __first.get_shape_size() == 2) {
-            return MdLinearAlgebra::mat_multiply<T3, Complex<T1>, T2>(
+            return Linalg::mat_multiply<T3, Complex<T1>, T2>(
                 MdArrayUtility::map<Complex<T1>>(
                     __first,
                     [](const Complex<T1> &__value) {
@@ -141,7 +141,7 @@ MdStaticArray<T3> MdLinearAlgebra::vdot(
             }
 
             // A single valued answer.
-            return MdLinearAlgebra::inner<T3, Complex<T1>, T2>(
+            return Linalg::inner<T3, Complex<T1>, T2>(
                 MdArrayUtility::map<Complex<T1>>(
                     __first,
                     [](const Complex<T1> &__value) {
@@ -253,20 +253,20 @@ MdStaticArray<T3> MdLinearAlgebra::vdot(
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArrayReference<Complex<T1>> &__first,
     const MdStaticArray<T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::vdot<T3>(
+    return Linalg::vdot<T3>(
         MdStaticArray(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
         __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArrayReference<Complex<T1>> &__first,
     const MdStaticArrayReference<T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::vdot<T3>(
+    return Linalg::vdot<T3>(
         MdStaticArray(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
         MdStaticArray(*__other.__array_reference, __other.offset,
@@ -275,10 +275,10 @@ MdStaticArray<T3> MdLinearAlgebra::vdot(
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::vdot(
+MdStaticArray<T3> Linalg::vdot(
     const MdStaticArray<Complex<T1>> &__first,
     const MdStaticArrayReference<T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::vdot<T3>(
+    return Linalg::vdot<T3>(
         __first,
         MdStaticArray(*__other.__array_reference, __other.offset,
                       __other.shp_offset),

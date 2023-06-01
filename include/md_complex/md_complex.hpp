@@ -175,9 +175,9 @@ struct Complex {
         return __other.real == real && __other.img == img;
     }
 
-    template <typename _T1>
-    inline constexpr bool operator==(const _T1& __other) {
-        return __other == real && __other.img == 0;
+    template <typename T1>
+    inline constexpr bool operator==(const T1& other) {
+        return other == real && img == 0;
     }
 
     template <typename _T1>

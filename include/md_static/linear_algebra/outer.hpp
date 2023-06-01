@@ -5,7 +5,7 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::outer(const MdStaticArray<T1> &__first,
+MdStaticArray<T3> Linalg::outer(const MdStaticArray<T1> &__first,
                                          const MdStaticArray<T2> &__other,
                                          const size_t threads) {
     MdStaticArray<T3> result({__first.get_size(), __other.get_size()}, 0);
@@ -43,20 +43,20 @@ MdStaticArray<T3> MdLinearAlgebra::outer(const MdStaticArray<T1> &__first,
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::outer(
+MdStaticArray<T3> Linalg::outer(
     const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
     const size_t threads) {
-    return MdLinearAlgebra::outer<T3, T1, T2>(
+    return Linalg::outer<T3, T1, T2>(
         MdStaticArray<T1>(*__first.__array_reference, __first.offset,
                           __first.shp_offset),
         __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::outer(
+MdStaticArray<T3> Linalg::outer(
     const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
     const size_t threads) {
-    return MdLinearAlgebra::outer<T3, T1, T2>(
+    return Linalg::outer<T3, T1, T2>(
         __first,
         MdStaticArray<T1>(*__other.__array_reference, __other.offset,
                           __other.shp_offset),
@@ -64,10 +64,10 @@ MdStaticArray<T3> MdLinearAlgebra::outer(
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> MdLinearAlgebra::outer(
+MdStaticArray<T3> Linalg::outer(
     const MdStaticArrayReference<T1> &__first,
     const MdStaticArrayReference<T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::outer<T3, T1, T2>(
+    return Linalg::outer<T3, T1, T2>(
         MdStaticArray<T1>(*__first.__array_reference, __first.offset,
                           __first.shp_offset),
         MdStaticArray<T1>(*__other.__array_reference, __other.offset,

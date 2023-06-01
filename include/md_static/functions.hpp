@@ -43,6 +43,7 @@
 #include "./functions/sin.hpp"
 #include "./functions/sinh.hpp"
 #include "./functions/some.hpp"
+#include "./functions/sort.hpp"
 #include "./functions/sqrt.hpp"
 #include "./functions/std_dev.hpp"
 #include "./functions/sum.hpp"

@@ -17,7 +17,7 @@ MdStaticArray<T> MdArrayManipulate::eye(const size_t __rows,
     for (size_t index = __koff;
          index < result.get_size() && out_of_bounds < min_row_col;
          index += (cols + 1)) {
-        result.__array[index] = 1;
+         result.__array[index] = 1;
     }
 
     return result;

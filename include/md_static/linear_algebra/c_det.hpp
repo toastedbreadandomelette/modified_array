@@ -6,9 +6,9 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T>
-clongdouble MdLinearAlgebra::c_det(const MdStaticArray<T> &__2darray) {
-    auto [L, U, P, sign] = MdLinearAlgebra::lu_decompose<T>(__2darray);
-    const size_t n = __2darray.get_shape()[0];
+clongdouble Linalg::c_det(const MdStaticArray<T> &mat) {
+    auto [L, U, P, sign] = Linalg::lu_decompose<T>(mat);
+    const size_t n = mat.get_shape()[0];
     clongdouble det = 1;
     for (size_t index = 0; index < n; ++index) {
         det *= U.__array[index * n + index];
@@ -18,9 +18,9 @@ clongdouble MdLinearAlgebra::c_det(const MdStaticArray<T> &__2darray) {
 }
 
 template <typename T>
-clongdouble MdLinearAlgebra::c_det(const MdStaticArrayReference<T> &__2darray) {
-    return MdLinearAlgebra::det(MdStaticArray<T>(
-        *__2darray.__array_reference, __2darray.offset, __2darray.shp_offset));
+clongdouble Linalg::c_det(const MdStaticArrayReference<T> &mat) {
+    return Linalg::det(
+        MdStaticArray<T>(*mat.__array_reference, mat.offset, mat.shp_offset));
 }
 
 #endif

@@ -13,74 +13,73 @@ struct FFT {
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<cdouble> fft_int(const MdStaticArray<T>& __other);
+    static MdStaticArray<cdouble> fft_int(const MdStaticArray<T>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
-     * @return values of complex numbers
-     */
-    template <typename T>
-    static MdStaticArray<cdouble> fft_int(
-        const MdStaticArrayReference<T>& __other);
-
-    /**
-     * @note Source:
-     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
-     * https://e-maxx.ru/algo/fft_multiply
-     * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
     template <typename T>
     static MdStaticArray<cdouble> fft_int(
-        const MdStaticAxisReference<T>& __other);
+        const MdStaticArrayReference<T>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers
      */
-    static MdStaticArray<cdouble> ifft_int(
-        const MdStaticArray<cdouble>& __other);
+    template <typename T>
+    static MdStaticArray<cdouble> fft_int(
+        const MdStaticAxisReference<T>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    static MdStaticArray<cdouble> ifft_int(
-        const MdStaticArrayReference<cdouble>& __other);
+    static MdStaticArray<cdouble> ifft_int(const MdStaticArray<cdouble>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
     static MdStaticArray<cdouble> ifft_int(
-        const MdStaticAxisReference<cdouble>& __other);
+        const MdStaticArrayReference<cdouble>& other);
+
+    /**
+     * @note Source:
+     * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
+     * https://e-maxx.ru/algo/fft_multiply
+     * @brief Compute 1 dimensional FFT on 1 dimensional array
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
+     * @return values of complex numbers
+     */
+    static MdStaticArray<cdouble> ifft_int(
+        const MdStaticAxisReference<cdouble>& other);
 
  public:
     /**
@@ -88,126 +87,120 @@ struct FFT {
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers
      */
-    template <typename _T>
-    static MdStaticArray<cdouble> fft(const MdStaticArray<_T>& __other);
+    template <typename T>
+    static MdStaticArray<cdouble> fft(const MdStaticArray<T>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    template <typename _T>
-    static MdStaticArray<cdouble> fft(
-        const MdStaticArrayReference<_T>& __other);
+    template <typename T>
+    static MdStaticArray<cdouble> fft(const MdStaticArrayReference<T>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    template <typename _T>
-    static MdStaticArray<_T> ifft(const MdStaticArray<cdouble>& __other);
+    template <typename T>
+    static MdStaticArray<T> ifft(const MdStaticArray<cdouble>& other);
 
     /**
      * @note Source:
      * https://cp-algorithms.com/algebra/fft.html#improved-implementation-in-place-computation
      * https://e-maxx.ru/algo/fft_multiply
      * @brief Compute 1 dimensional FFT on 1 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which FFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    template <typename _T>
-    static MdStaticArray<_T> ifft(
-        const MdStaticArrayReference<cdouble>& __other);
+    template <typename T>
+    static MdStaticArray<T> ifft(const MdStaticArrayReference<cdouble>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
-     * @return values of complex numbers in 2D-array
-     */
-    template <typename _T>
-    static MdStaticArray<cdouble> fft2(const MdStaticArray<_T>& __other);
-
-    /**
-     * @brief Compute 2 dimensional FFT on 2 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
-     * @return values of complex numbers in 2D-array
-     */
-    template <typename _T>
-    static MdStaticArray<cdouble> fft2(
-        const MdStaticArrayReference<_T>& __other);
-
-    /**
-     * @brief Compute 2 dimensional FFT on 2 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<T> ifft2(const MdStaticArray<cdouble>& __other);
+    static MdStaticArray<cdouble> fft2(const MdStaticArray<T>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<T> ifft2(
-        const MdStaticArrayReference<cdouble>& __other);
+    static MdStaticArray<cdouble> fft2(const MdStaticArrayReference<T>& other);
 
     /**
-     * @brief Compute n dimensional FFT on n dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @brief Compute 2 dimensional FFT on 2 dimensional array
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers in 2D-array
      */
-    template <typename _T>
-    static MdStaticArray<cdouble> fftn(const MdStaticArray<_T>& __other);
+    template <typename T>
+    static MdStaticArray<T> ifft2(const MdStaticArray<cdouble>& other);
 
     /**
-     * @brief Compute n dimensional FFT on n dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @brief Compute 2 dimensional FFT on 2 dimensional array
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers in 2D-array
      */
-    template <typename _T>
-    static MdStaticArray<cdouble> fftn(
-        const MdStaticArrayReference<_T>& __other);
+    template <typename T>
+    static MdStaticArray<T> ifft2(const MdStaticArrayReference<cdouble>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
+     * @return values of complex numbers in 2D-array
+     */
+    template <typename T>
+    static MdStaticArray<cdouble> fftn(const MdStaticArray<T>& other);
+
+    /**
+     * @brief Compute n dimensional FFT on n dimensional array
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
+     * @return values of complex numbers in 2D-array
+     */
+    template <typename T>
+    static MdStaticArray<cdouble> fftn(const MdStaticArrayReference<T>& other);
+
+    /**
+     * @brief Compute n dimensional FFT on n dimensional array
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers in nD-array
      */
     template <typename T>
-    static MdStaticArray<T> ifftn(const MdStaticArray<cdouble>& __other);
+    static MdStaticArray<T> ifftn(const MdStaticArray<cdouble>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
-     * @tparam _T type of an array
-     * @param __other array for which IFFT is to be computed
+     * @tparam T type of an array
+     * @param other array for which IFFT is to be computed
      * @return values of complex numbers in ND-array
      */
     template <typename T>
-    static MdStaticArray<T> ifftn(
-        const MdStaticArrayReference<cdouble>& __other);
+    static MdStaticArray<T> ifftn(const MdStaticArrayReference<cdouble>& other);
 };
 
 #endif

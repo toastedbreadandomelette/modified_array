@@ -9,1237 +9,1226 @@ struct MdLinearAlgebra {
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(const MdStaticArray<_T1> &__first,
-                                  const MdStaticArray<_T2> &__other,
-                                  const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> dot(const MdStaticArray<T1> &first,
+                                 const MdStaticArray<T2> &other,
+                                 const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(const MdStaticArray<_T1> &__first,
-                                  const MdStaticArrayReference<_T2> &__other,
-                                  const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> dot(const MdStaticArray<T1> &first,
+                                 const MdStaticArrayReference<T2> &other,
+                                 const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(const MdStaticArrayReference<_T1> &__first,
-                                  const MdStaticArray<_T2> &__other,
-                                  const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> dot(const MdStaticArrayReference<T1> &first,
+                                 const MdStaticArray<T2> &other,
+                                 const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> dot(const MdStaticArrayReference<_T1> &__first,
-                                  const MdStaticArrayReference<_T2> &__other,
-                                  const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> dot(const MdStaticArrayReference<T1> &first,
+                                 const MdStaticArrayReference<T2> &other,
+                                 const size_t threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArray<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other,
+        const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArray<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other,
+        const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
-    static MdStaticArray<_Tfinal> multi_dot(const MdStaticArray<_T1> &__first,
-                                            const MdStaticArray<_T2> &__other);
+    template <typename _Tfinal, typename T1, typename T2>
+    static MdStaticArray<_Tfinal> multi_dot(const MdStaticArray<T1> &first,
+                                            const MdStaticArray<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
+    template <typename _Tfinal, typename T1, typename T2>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other);
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
+    template <typename _Tfinal, typename T1, typename T2>
     static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other);
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArray<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
-    static MdStaticArray<_Tfinal> multi_dot(
-        const MdStaticArray<_T1> &, const MdStaticArrayReference<_T2> &);
+    template <typename _Tfinal, typename T1, typename T2>
+    static MdStaticArray<_Tfinal> multi_dot(const MdStaticArray<T1> &,
+                                            const MdStaticArrayReference<T2> &);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other,
+        const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArray<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other,
+        const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2, typename... arg>
+    template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other,
+        const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
         const MdStaticArrayReference<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
+    template <typename _Tfinal, typename T1, typename T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other);
+        const MdStaticArray<T1> &first, const MdStaticArray<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
+    template <typename _Tfinal, typename T1, typename T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other);
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
+    template <typename _Tfinal, typename T1, typename T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other);
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArray<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
      * @todo perform operations for 1D arrays as well
-     * @tparam _T1 type of __first array
-     * @tparam _T2 type of __other array
-     * @tparam _T3 type of result array
-     * @param __first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
+     * @tparam T1 type of first array
+     * @tparam T2 type of other array
+     * @tparam T3 type of result array
+     * @param first first nd array of shape (a1, a2, ... , a(m-1), am) (m are
      * total dimensions of array a)
-     * @param __other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
+     * @param other second nd array of shape (b1, b2, ... , b(n-1), bn) (n are
      * total dimensions of array b)
      * @returns new nd array of shape (a1, a2, ... , a(x-1), b1, b2, ... ,
      * b(n-2), bn)
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
-    template <typename _Tfinal, typename _T1, typename _T2>
+    template <typename _Tfinal, typename T1, typename T2>
     static MdStaticArray<_Tfinal> matrix_chain_multiply(
-        const MdStaticArray<_T1> &, const MdStaticArrayReference<_T2> &);
+        const MdStaticArray<T1> &, const MdStaticArrayReference<T2> &);
 
     /**
      * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> mat_multiply(const MdStaticArray<_T1> &__first,
-                                           const MdStaticArray<_T2> &__other,
-                                           const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> mat_multiply(const MdStaticArray<T1> &first,
+                                          const MdStaticArray<T2> &other,
+                                          const size_t threads = 16);
 
     /**
      * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> mat_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other, const size_t threads = 16);
-
-    /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
-     * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
-     * @throws Runtime error when
-     *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
-     * of
-     * __other
-     */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> mat_multiply(
-        const MdStaticArray<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
-
-    /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
-     * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
-     * @throws Runtime error when
-     *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
-     * of
-     * __other
-     */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> mat_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
-
-    /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
-     * @param __mod modulo to operate
-     * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
-     * @throws Runtime error when
-     *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
-     * of
-     * __other
-     */
-    template <
-        typename _T3, typename _T1, typename _T2,
-        class = typename std::enable_if<std::is_integral<_T1>::value &&
-                                        std::is_integral<_T2>::value &&
-                                        std::is_integral<_T3>::value>::type>
-    static MdStaticArray<_T3> mat_mod_multiply(
-        const MdStaticArray<_T1> &__first, const MdStaticArray<_T2> &__other,
-        const size_t __mod, const size_t threads = 16);
-
-    /**
-     * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
-     * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
-     * @throws Runtime error when
-     *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
-     * of
-     * __other
-     */
-    template <
-        typename _T3, typename _T1, typename _T2,
-        class = typename std::enable_if<std::is_integral<_T1>::value &&
-                                        std::is_integral<_T2>::value &&
-                                        std::is_integral<_T3>::value>::type>
-    static MdStaticArray<_T3> mat_mod_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArray<_T2> &__other, const size_t __mod,
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> mat_multiply(
+        const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
         const size_t threads = 16);
 
     /**
      * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <
-        typename _T3, typename _T1, typename _T2,
-        class = typename std::enable_if<std::is_integral<_T1>::value &&
-                                        std::is_integral<_T2>::value &&
-                                        std::is_integral<_T3>::value>::type>
-    static MdStaticArray<_T3> mat_mod_multiply(
-        const MdStaticArray<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other, const size_t __mod,
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> mat_multiply(
+        const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
         const size_t threads = 16);
 
     /**
      * @brief Multiply two matrices
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <
-        typename _T3, typename _T1, typename _T2,
-        class = typename std::enable_if<std::is_integral<_T1>::value &&
-                                        std::is_integral<_T2>::value &&
-                                        std::is_integral<_T3>::value>::type>
-    static MdStaticArray<_T3> mat_mod_multiply(
-        const MdStaticArrayReference<_T1> &__first,
-        const MdStaticArrayReference<_T2> &__other, const size_t __mod,
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> mat_multiply(
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
+     * @param mod modulo to operate
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2,
+              class = typename std::enable_if<
+                  std::is_integral<T1>::value && std::is_integral<T2>::value &&
+                  std::is_integral<T3>::value>::type>
+    static MdStaticArray<T3> mat_mod_multiply(const MdStaticArray<T1> &first,
+                                              const MdStaticArray<T2> &other,
+                                              const size_t mod,
+                                              const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2,
+              class = typename std::enable_if<
+                  std::is_integral<T1>::value && std::is_integral<T2>::value &&
+                  std::is_integral<T3>::value>::type>
+    static MdStaticArray<T3> mat_mod_multiply(
+        const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
+        const size_t mod, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2,
+              class = typename std::enable_if<
+                  std::is_integral<T1>::value && std::is_integral<T2>::value &&
+                  std::is_integral<T3>::value>::type>
+    static MdStaticArray<T3> mat_mod_multiply(
+        const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
+        const size_t mod, const size_t threads = 16);
+
+    /**
+     * @brief Multiply two matrices
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
+     * @param threads (optional) number of threads to operate on
+     * @returns new matrix of type T3
+     * @throws Runtime error when
+     *  1. matrix dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2,
+              class = typename std::enable_if<
+                  std::is_integral<T1>::value && std::is_integral<T2>::value &&
+                  std::is_integral<T3>::value>::type>
+    static MdStaticArray<T3> mat_mod_multiply(
+        const MdStaticArrayReference<T1> &first,
+        const MdStaticArrayReference<T2> &other, const size_t mod,
         const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
-     * @tparam _T1 type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(const MdStaticArray<_T1> &__first,
-                                    const MdStaticArray<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> inner(const MdStaticArray<T1> &first,
+                                   const MdStaticArray<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
-     * @tparam _T1 type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(const MdStaticArrayReference<_T1> &__first,
-                                    const MdStaticArray<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> inner(const MdStaticArrayReference<T1> &first,
+                                   const MdStaticArray<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
-     * @tparam _T1 type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(const MdStaticArray<_T1> &__first,
-                                    const MdStaticArrayReference<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> inner(const MdStaticArray<T1> &first,
+                                   const MdStaticArrayReference<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief inner product of two nd arrays
-     * @tparam _T1 type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> inner(const MdStaticArrayReference<_T1> &__first,
-                                    const MdStaticArrayReference<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> inner(const MdStaticArrayReference<T1> &first,
+                                   const MdStaticArrayReference<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(const MdStaticArray<_T1> &__first,
-                                    const MdStaticArray<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> outer(const MdStaticArray<T1> &first,
+                                   const MdStaticArray<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(const MdStaticArrayReference<_T1> &__first,
-                                    const MdStaticArray<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> outer(const MdStaticArrayReference<T1> &first,
+                                   const MdStaticArray<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(const MdStaticArray<_T1> &__first,
-                                    const MdStaticArrayReference<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> outer(const MdStaticArray<T1> &first,
+                                   const MdStaticArrayReference<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
-     * @tparam _T1 type of first matrix
-     * @tparam _T2 type of second matrix
-     * @tparam _T3 type of third matrix (upto user)
-     * @param __first first matrix
-     * @param __other second matrix
+     * @tparam T1 type of first matrix
+     * @tparam T2 type of second matrix
+     * @tparam T3 type of third matrix (upto user)
+     * @param first first matrix
+     * @param other second matrix
      * @param threads (optional) number of threads to operate on
-     * @returns new matrix of type _T3
+     * @returns new matrix of type T3
      * @throws Runtime error when
      *  1. matrix dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> outer(const MdStaticArrayReference<_T1> &__first,
-                                    const MdStaticArrayReference<_T2> &__other,
-                                    const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> outer(const MdStaticArrayReference<T1> &first,
+                                   const MdStaticArrayReference<T2> &other,
+                                   const size_t threads = 16);
 
     /**
      * @brief Create a identity matrix
-     * @param _T type for matrix
+     * @param T type for matrix
      * @param n size of matrix
      * @returns a n x n matrix
      */
-    template <typename _T>
-    static MdStaticArray<_T> identity(size_t n);
+    template <typename T>
+    static MdStaticArray<T> identity(size_t n);
 
     /**
      * @brief Verify if matrix is boolean
-     * @tparam _T matrix type
-     * @param __other test matrix
+     * @tparam T matrix type
+     * @param other test matrix
      * @return true if matrix is identity, else false
      */
-    template <typename _T>
-    static bool is_identity(const MdStaticArray<_T> &__other);
+    template <typename T>
+    static bool is_identity(const MdStaticArray<T> &other);
 
     /**
      * @brief Verify if matrix is boolean
-     * @tparam _T matrix type
-     * @param __other test matrix reference
+     * @tparam T matrix type
+     * @param other test matrix reference
      * @return true if matrix is identity, else false
      */
-    template <typename _T>
-    static bool is_identity(const MdStaticArrayReference<_T> &__other);
+    template <typename T>
+    static bool is_identity(const MdStaticArrayReference<T> &other);
 
     /**
      * @brief Perform kron operations between 2 n-d array
-     * @tparam _T1 nd array of type _T1
-     * @tparam _T2 nd array of type _T2
-     * @tparam _T3 nd array output of type _T3
-     * @param __first first nd array
-     * @param __other other md array
+     * @tparam T1 nd array of type T1
+     * @tparam T2 nd array of type T2
+     * @tparam T3 nd array output of type T3
+     * @param first first nd array
+     * @param other other md array
      * @param total_threads total threads to perform the operation.
      * @returns resultant array of size max(n,m) dimension
      */
-    template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(const MdStaticArray<_T1> &__first,
-                                   const MdStaticArray<_T2> &__other,
-                                   const size_t total_threads = 16);
+    template <typename T1, typename T2, typename T3>
+    static MdStaticArray<T3> kron(const MdStaticArray<T1> &first,
+                                  const MdStaticArray<T2> &other,
+                                  const size_t total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
-     * @tparam _T1 nd array of type _T1
-     * @tparam _T2 nd array of type _T2
-     * @tparam _T3 nd array output of type _T3
-     * @param __first first nd array
-     * @param __other other md array
+     * @tparam T1 nd array of type T1
+     * @tparam T2 nd array of type T2
+     * @tparam T3 nd array output of type T3
+     * @param first first nd array
+     * @param other other md array
      * @param total_threads total threads to perform the operation.
      * @returns resultant array of size max(n,m) dimension
      */
-    template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(const MdStaticArrayReference<_T1> &__first,
-                                   const MdStaticArrayReference<_T2> &__other,
-                                   const size_t total_threads = 16);
+    template <typename T1, typename T2, typename T3>
+    static MdStaticArray<T3> kron(const MdStaticArrayReference<T1> &first,
+                                  const MdStaticArrayReference<T2> &other,
+                                  const size_t total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
-     * @tparam _T1 nd array of type _T1
-     * @tparam _T2 nd array of type _T2
-     * @tparam _T3 nd array output of type _T3
-     * @param __first first nd array
-     * @param __other other md array
+     * @tparam T1 nd array of type T1
+     * @tparam T2 nd array of type T2
+     * @tparam T3 nd array output of type T3
+     * @param first first nd array
+     * @param other other md array
      * @param total_threads total threads to perform the operation.
      * @returns resultant array of size max(n,m) dimension
      */
-    template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(const MdStaticArrayReference<_T1> &__first,
-                                   const MdStaticArray<_T2> &__other,
-                                   const size_t total_threads = 16);
+    template <typename T1, typename T2, typename T3>
+    static MdStaticArray<T3> kron(const MdStaticArrayReference<T1> &first,
+                                  const MdStaticArray<T2> &other,
+                                  const size_t total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
-     * @tparam _T1 nd array of type _T1
-     * @tparam _T2 nd array of type _T2
-     * @tparam _T3 nd array output of type _T3
-     * @param __first first nd array
-     * @param __other other md array
+     * @tparam T1 nd array of type T1
+     * @tparam T2 nd array of type T2
+     * @tparam T3 nd array output of type T3
+     * @param first first nd array
+     * @param other other md array
      * @param total_threads total threads to perform the operation.
      * @returns resultant array of size max(n,m) dimension
      */
-    template <typename _T1, typename _T2, typename _T3>
-    static MdStaticArray<_T3> kron(const MdStaticArray<_T1> &__first,
-                                   const MdStaticArrayReference<_T2> &__other,
-                                   const size_t total_threads = 16);
+    template <typename T1, typename T2, typename T3>
+    static MdStaticArray<T3> kron(const MdStaticArray<T1> &first,
+                                  const MdStaticArrayReference<T2> &other,
+                                  const size_t total_threads = 16);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @param power the power
      * @returns new matrix
      */
-    template <typename _T, class = typename std::enable_if<
-                               std::is_floating_point<_T>::value>::type>
-    static MdStaticArray<_T> matrix_power(const MdStaticArray<_T> &,
-                                          const size_t power);
+    template <typename T, class = typename std::enable_if<
+                              std::is_floating_point<T>::value>::type>
+    static MdStaticArray<T> matrix_power(const MdStaticArray<T> &,
+                                         const size_t power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @param power the power
      * @returns new matrix
      */
-    template <typename _T, class = typename std::enable_if<
-                               std::is_floating_point<_T>::value>::type>
-    static MdStaticArray<_T> matrix_power(const MdStaticArrayReference<_T> &,
-                                          const size_t power);
+    template <typename T, class = typename std::enable_if<
+                              std::is_floating_point<T>::value>::type>
+    static MdStaticArray<T> matrix_power(const MdStaticArrayReference<T> &,
+                                         const size_t power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @param power the power
      * @returns new matrix
      */
-    template <typename _T, class = typename std::enable_if<
-                               std::is_integral<_T>::value>::type>
-    static MdStaticArray<_T> matrix_mod_power(const MdStaticArray<_T> &,
-                                              const size_t power,
-                                              const size_t __mod);
+    template <typename T,
+              class = typename std::enable_if<std::is_integral<T>::value>::type>
+    static MdStaticArray<T> matrix_mod_power(const MdStaticArray<T> &,
+                                             const size_t power,
+                                             const size_t mod);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @param power the power
      * @returns new matrix
      */
-    template <typename _T, class = typename std::enable_if<
-                               std::is_integral<_T>::value>::type>
-    static MdStaticArray<_T> matrix_mod_power(
-        const MdStaticArrayReference<_T> &, const size_t power,
-        const size_t __mod);
+    template <typename T,
+              class = typename std::enable_if<std::is_integral<T>::value>::type>
+    static MdStaticArray<T> matrix_mod_power(const MdStaticArrayReference<T> &,
+                                             const size_t power,
+                                             const size_t mod);
 
     /**
      * @brief Evaluate determinant of a matrix.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @returns new matrix
      */
-    template <typename _T>
-    static long double det(const MdStaticArray<_T> &);
+    template <typename T>
+    static long double det(const MdStaticArray<T> &);
 
     /**
      * @brief Evaluate determinant of a matrix.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @returns new matrix
      */
-    template <typename _T>
-    static long double det(const MdStaticArrayReference<_T> &);
+    template <typename T>
+    static long double det(const MdStaticArrayReference<T> &);
 
     /**
      * @brief Evaluate LU factorization of a matrix.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @returns new matrix
      */
-    template <typename _Tres, typename _T>
+    template <typename _Tres, typename T>
     static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
                       MdStaticArray<_Tres>, int>
-    lu_decompose(const MdStaticArray<_T> &);
+    lu_decompose(const MdStaticArray<T> &);
 
     /**
      * @brief Evaluate LU factorization of a matrix.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @returns new matrix
      */
-    template <typename _Tres, typename _T>
+    template <typename _Tres, typename T>
     static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
                       MdStaticArray<_Tres>, int>
-    lu_decompose(const MdStaticArrayReference<_T> &);
+    lu_decompose(const MdStaticArrayReference<T> &);
 
     /**
      * @brief Evaluate complex determinant of a matrix.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @returns new matrix
      */
-    template <typename _T>
-    static clongdouble c_det(const MdStaticArray<_T> &);
+    template <typename T>
+    static clongdouble c_det(const MdStaticArray<T> &);
 
     /**
      * @brief Evaluate complex determinant of a matrix.
-     * @tparam _T type of array
-     * @param __first first matrix
+     * @tparam T type of array
+     * @param first first matrix
      * @returns new matrix
      */
-    template <typename _T>
-    static clongdouble c_det(const MdStaticArrayReference<_T> &);
+    template <typename T>
+    static clongdouble c_det(const MdStaticArrayReference<T> &);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArray<Complex<_T1>> &__first,
-                                   const MdStaticArray<_T2> &__other,
-                                   const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(const MdStaticArray<Complex<T1>> &first,
+                                  const MdStaticArray<T2> &other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(
-        const MdStaticArrayReference<Complex<_T1>> &__first,
-        const MdStaticArray<_T2> &__other, const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(
+        const MdStaticArrayReference<Complex<T1>> &first,
+        const MdStaticArray<T2> &other, const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArray<Complex<_T1>> &__first,
-                                   const MdStaticArrayReference<_T2> &__other,
-                                   const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(const MdStaticArray<Complex<T1>> &first,
+                                  const MdStaticArrayReference<T2> &other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(
-        const MdStaticArrayReference<Complex<_T1>> &__first,
-        const MdStaticArrayReference<_T2> &__other, const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(
+        const MdStaticArrayReference<Complex<T1>> &first,
+        const MdStaticArrayReference<T2> &other, const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArray<_T1> &__first,
-                                   const MdStaticArray<_T2> &__other,
-                                   const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(const MdStaticArray<T1> &first,
+                                  const MdStaticArray<T2> &other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArrayReference<_T1> &__first,
-                                   const MdStaticArray<_T2> &__other,
-                                   const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(const MdStaticArrayReference<T1> &first,
+                                  const MdStaticArray<T2> &other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArray<_T1> &__first,
-                                   const MdStaticArrayReference<_T2> &__other,
-                                   const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(const MdStaticArray<T1> &first,
+                                  const MdStaticArrayReference<T2> &other,
+                                  const size_t threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
-     * @tparam _T1 complex type of first ndarray
-     * @tparam _T2 type of second ndarray
-     * @tparam _T3 type of third ndarray (upto user)
-     * @param __first first ndarray
-     * @param __other second ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
      * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type _T3
+     * @returns new ndarray of type T3
      * @throws Runtime error when
      *  1. ndarray dimensions do not match
-     *  2. size of second axis of __first is not equal to size of first axis
+     *  2. size of second axis of first is not equal to size of first axis
      * of
-     * __other
+     * other
      */
-    template <typename _T3, typename _T1, typename _T2>
-    static MdStaticArray<_T3> vdot(const MdStaticArrayReference<_T1> &__first,
-                                   const MdStaticArrayReference<_T2> &__other,
-                                   const size_t threads = 16);
+    template <typename T3, typename T1, typename T2>
+    static MdStaticArray<T3> vdot(const MdStaticArrayReference<T1> &first,
+                                  const MdStaticArrayReference<T2> &other,
+                                  const size_t threads = 16);
 };
+
+typedef MdLinearAlgebra Linalg;
 
 #endif

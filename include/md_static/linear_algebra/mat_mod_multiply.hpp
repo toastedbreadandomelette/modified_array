@@ -5,34 +5,34 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
-    const MdStaticArray<T1> &__first, const MdStaticArray<T2> &__other,
-    const size_t __mod, const size_t threads) {
-    if (__first.shp_size != 2 || __other.shp_size != 2) {
+MdStaticArray<T3> Linalg::mat_mod_multiply(const MdStaticArray<T1> &first,
+                                           const MdStaticArray<T2> &other,
+                                           const size_t mod,
+                                           const size_t threads) {
+    if (first.shp_size != 2 || other.shp_size != 2) {
         throw std::runtime_error("Matrix dimension do not match.");
     }
 
-    if (__first.shape[1] != __other.shape[0]) {
+    if (first.shape[1] != other.shape[0]) {
         throw std::runtime_error(
             "Total column of first matrix are not same as total rows in "
             "second "
             "matrix.");
     }
 
-    MdStaticArray<T3> result({__first.shape[0], __other.shape[1]}, 0);
+    MdStaticArray<T3> result({first.shape[0], other.shape[1]}, 0);
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks
     const size_t block_size = 32;
 
-    if (__first.get_size() > s_threshold_size) {
-        auto __multiply_internal = [&__first, &__other, block_size, &result,
-                                    __mod](const size_t start,
-                                           const size_t end) {
+    if (first.get_size() > s_threshold_size) {
+        auto __multiply_internal = [&first, &other, block_size, &result, mod](
+                                       const size_t start, const size_t end) {
             size_t k_bound = 0, i_bound = 0, j_bound = 0;
-            const size_t fshape0 = __first.get_shape()[0],
-                         fshape1 = __first.get_shape()[1],
-                         oshape1 = __other.get_shape()[1];
+            const size_t fshape0 = first.get_shape()[0],
+                         fshape1 = first.get_shape()[1],
+                         oshape1 = other.get_shape()[1];
 
             for (size_t k_block = 0; k_block < fshape1; k_block += block_size) {
                 k_bound = std::min(k_block + block_size, fshape1);
@@ -43,15 +43,14 @@ MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
 
                     for (size_t i = i_block; i < i_bound; ++i) {
                         for (size_t k = k_block; k < k_bound; ++k) {
-                            const auto c =
-                                __first.__array[i * fshape1 + k] % __mod;
+                            const auto c = first.__array[i * fshape1 + k] % mod;
 
                             for (size_t j = 0; j < fshape1; ++j) {
                                 result.__array[i * oshape1 + j] =
                                     (result.__array[i * oshape1 + j] +
-                                     c * (__other.__array[k * oshape1 + j] %
-                                          __mod)) %
-                                    __mod;
+                                     c * (other.__array[k * oshape1 + j] %
+                                          mod)) %
+                                    mod;
                             }
                         }
                     }
@@ -59,7 +58,7 @@ MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
             }
         };
 
-        size_t blocks = __first.shape[0] / threads;
+        size_t blocks = first.shape[0] / threads;
         std::vector<std::thread> thread_pool;
         for (int i = 0; i < threads - 1; ++i) {
             thread_pool.emplace_back(
@@ -67,16 +66,16 @@ MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
         }
 
         thread_pool.emplace_back(std::thread(
-            __multiply_internal, blocks * (threads - 1), __other.shape[1]));
+            __multiply_internal, blocks * (threads - 1), other.shape[1]));
 
         for (auto &thread : thread_pool) {
             thread.join();
         }
     } else {
         size_t k_bound = 0, i_bound = 0, j_bound = 0;
-        const size_t fshape0 = __first.get_shape()[0],
-                     fshape1 = __first.get_shape()[1],
-                     oshape1 = __other.get_shape()[1];
+        const size_t fshape0 = first.get_shape()[0],
+                     fshape1 = first.get_shape()[1],
+                     oshape1 = other.get_shape()[1];
 
         for (size_t k_block = 0; k_block < fshape1; k_block += block_size) {
             k_bound = std::min(k_block + block_size, fshape1);
@@ -86,13 +85,12 @@ MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
 
                 for (size_t i = i_block; i < i_bound; ++i) {
                     for (size_t k = k_block; k < k_bound; ++k) {
-                        const auto c =
-                            (__first.__array[i * fshape1 + k] % __mod);
+                        const auto c = (first.__array[i * fshape1 + k] % mod);
 
                         for (size_t j = 0; j < fshape1; ++j) {
                             result.__array[i * oshape1 + j] +=
-                                c * (__other.__array[k * oshape1 + j] % __mod);
-                            result.__array[i * oshape1 + j] %= __mod;
+                                c * (other.__array[k * oshape1 + j] % mod);
+                            result.__array[i * oshape1 + j] %= mod;
                         }
                     }
                 }
@@ -104,36 +102,36 @@ MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
 }
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
-    const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
-    const size_t __mod, const size_t threads) {
-    return MdLinearAlgebra::mat_multiply<T3, T1, T2>(
-        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
-                          __first.shp_offset),
-        __other, threads);
+MdStaticArray<T3> Linalg::mat_mod_multiply(
+    const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
+    const size_t mod, const size_t threads) {
+    return Linalg::mat_multiply<T3, T1, T2>(
+        MdStaticArray<T1>(*first.__array_reference, first.offset,
+                          first.shp_offset),
+        other, threads);
 }
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
-    const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
-    const size_t __mod, const size_t threads) {
-    return MdLinearAlgebra::mat_multiply<T3, T1, T2>(
-        __first,
-        MdStaticArray<T2>(*__other.__array_reference, __other.offset,
-                          __other.shp_offset),
+MdStaticArray<T3> Linalg::mat_mod_multiply(
+    const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
+    const size_t mod, const size_t threads) {
+    return Linalg::mat_multiply<T3, T1, T2>(
+        first,
+        MdStaticArray<T2>(*other.__array_reference, other.offset,
+                          other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> MdLinearAlgebra::mat_mod_multiply(
-    const MdStaticArrayReference<T1> &__first,
-    const MdStaticArrayReference<T2> &__other, const size_t __mod,
+MdStaticArray<T3> Linalg::mat_mod_multiply(
+    const MdStaticArrayReference<T1> &first,
+    const MdStaticArrayReference<T2> &other, const size_t mod,
     const size_t threads) {
-    return MdLinearAlgebra::mat_multiply<T3, T1, T2>(
-        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
-                          __first.shp_offset),
-        MdStaticArray<T2>(*__other.__array_reference, __other.offset,
-                          __other.shp_offset),
+    return Linalg::mat_multiply<T3, T1, T2>(
+        MdStaticArray<T1>(*first.__array_reference, first.offset,
+                          first.shp_offset),
+        MdStaticArray<T2>(*other.__array_reference, other.offset,
+                          other.shp_offset),
         threads);
 }
 

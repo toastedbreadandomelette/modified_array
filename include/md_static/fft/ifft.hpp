@@ -11,7 +11,7 @@
  * https://e-maxx.ru/algo/fft_multiply
  */
 template <typename T>
-MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
+MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& other) {
     auto __idft_internal = [](MdStaticArray<cdouble>& array, const size_t start,
                               const size_t end) {
         MdStaticArray<cdouble> result(end - start, 0);
@@ -37,12 +37,12 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
         }
     };
 
-    size_t n = __other.get_size();
+    size_t n = other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n, 0);
     if ((n & 1) || n < 64) {
-        for (size_t index = 0; index < __other.get_size(); ++index) {
-            input.__array[index] = __other.__array[index];
+        for (size_t index = 0; index < other.get_size(); ++index) {
+            input.__array[index] = other.__array[index];
         }
         __idft_internal(input, 0, input.get_size());
         input /= input.get_size();
@@ -77,7 +77,7 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<cdouble>& __other) {
 
 #pragma omp parallel for
         for (size_t index = 0; index < n; ++index) {
-            input.__array[index] = __other.__array[indexes.__array[index]];
+            input.__array[index] = other.__array[indexes.__array[index]];
         }
 
         if (i > 1) {

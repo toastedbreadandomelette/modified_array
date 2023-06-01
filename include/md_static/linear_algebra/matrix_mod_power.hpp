@@ -7,31 +7,29 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T, class T1>
-MdStaticArray<T> MdLinearAlgebra::matrix_mod_power(
-    const MdStaticArray<T> &__matrix, const size_t pow, const size_t __mod) {
-    if (__matrix.get_shape_size() != 2) {
+MdStaticArray<T> Linalg::matrix_mod_power(const MdStaticArray<T> &matrix,
+                                          const size_t pow, const size_t mod) {
+    if (matrix.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given input should be of dimension 2. Found dimension " +
-            std::to_string(__matrix.get_shape_size()) + ".");
+            std::to_string(matrix.get_shape_size()) + ".");
     }
 
-    if (__matrix.get_shape()[0] != __matrix.get_shape()[1]) {
+    if (matrix.get_shape()[0] != matrix.get_shape()[1]) {
         throw std::runtime_error(
             "Given input matrix should be square. Found dimension (" +
-            std::to_string(__matrix.get_shape()[0]) + ", " +
-            std::to_string(__matrix.get_shape()[1]) + ").");
+            std::to_string(matrix.get_shape()[0]) + ", " +
+            std::to_string(matrix.get_shape()[1]) + ").");
     }
     auto power = pow;
-    MdStaticArray<T> result =
-                         MdLinearAlgebra::identity<T>(__matrix.get_shape()[0]),
-                     __ocp = __matrix;
+    MdStaticArray<T> result = Linalg::identity<T>(matrix.get_shape()[0]),
+                     omat = matrix;
 
     while (power > 0) {
         if (power & 1) {
-            result = MdLinearAlgebra::mat_mod_multiply<T, T, T>(result, __ocp,
-                                                                __mod);
+            result = Linalg::mat_mod_multiply<T, T, T>(result, omat, mod);
         }
-        __ocp = MdLinearAlgebra::mat_mod_multiply<T, T, T>(__ocp, __ocp, __mod);
+        omat = Linalg::mat_mod_multiply<T, T, T>(omat, omat, mod);
         power >>= 1;
     }
 
@@ -39,13 +37,13 @@ MdStaticArray<T> MdLinearAlgebra::matrix_mod_power(
 }
 
 template <typename T, class T1>
-MdStaticArray<T> MdLinearAlgebra::matrix_mod_power(
-    const MdStaticArrayReference<T> &__matrix, const size_t power,
-    const size_t __mod) {
-    return MdLinearAlgebra::matrix_mod_power<T>(
-        MdStaticArray<T>(*__matrix.__array_reference, __matrix.offset,
-                         __matrix.shp_offset),
-        power, __mod);
+MdStaticArray<T> Linalg::matrix_mod_power(
+    const MdStaticArrayReference<T> &matrix, const size_t power,
+    const size_t mod) {
+    return Linalg::matrix_mod_power<T>(
+        MdStaticArray<T>(*matrix.__array_reference, matrix.offset,
+                         matrix.shp_offset),
+        power, mod);
 }
 
 #endif

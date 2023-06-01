@@ -991,7 +991,47 @@ struct MdArrayUtility {
      */
     template <typename _T>
     static MdStaticArray<double> tanh(
-        const MdStaticArrayReference<_T> &__ndarray__reference);
+        const MdStaticArrayReference<_T> &__ndarray);
+
+    /**
+     * @brief Compute tanh from array of values
+     * @tparam T array type
+     * @param ndarray n-dimensional array
+     * @param func function that test for every element
+     * @returns boolean value
+     */
+    template <typename T>
+    static void sort(
+        MdStaticArray<T> &,
+        const std::function<bool(const T first, const T second)> &comp =
+            [](const T first, const T sec) { return first < sec; },
+        const int axis = -1);
+
+    /**
+     * @brief Sort array in place
+     * @tparam T array type
+     * @param ndarray n-dimensional array
+     * @param comp function that test for every element
+     * @returns boolean value
+     */
+    template <typename T>
+    static void sort(
+        MdStaticArrayReference<T> &,
+        const std::function<bool(const T first, const T second)> &comp =
+            [](const T first, const T sec) { return first < sec; },
+        const int axis = -1);
+
+    /**
+     * @brief Sort array in place along the axis
+     * @tparam T array type
+     * @param ndarray n-dimensional array
+     * @param comp function that test for every element
+     * @returns boolean value
+     */
+    template <typename T>
+    static void sort(
+        MdStaticAxisReference<T> &, MdStaticArray<T> &,
+        const std::function<bool(const T first, const T second)> &comp);
 };
 
 #endif

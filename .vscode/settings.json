@@ -89,5 +89,8 @@
         "xtree": "cpp",
         "xutility": "cpp"
     },
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": false,
+    "C_Cpp.vcFormat.newLine.scopeBracesOnSeparateLines": false,
+    "C_Cpp.vcFormat.newLine.beforeOpenBrace.function": "sameLine",
     "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
 }

@@ -6,77 +6,75 @@
 #include "./mat_multiply.hpp"
 #include "./md_linear_algebra.hpp"
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
-                                        const MdStaticArray<_T2> &__other,
-                                        const size_t thread_count) {
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
+                              const MdStaticArray<T2> &other,
+                              const size_t thread_count) {
     // Basically, compute dot product of vector:::
-    // Last axis of vector __first should be multiplied with second last
-    // axis of __other
-    if (__other.get_shape_size() >= 2 && __first.get_shape_size() >= 2) {
-        if (__other.get_shape_size() == 2 && __first.get_shape_size() == 2) {
-            return MdLinearAlgebra::mat_multiply<_T1, _T2, _T3>(
-                __first, __other, thread_count);
+    // Last axis of vector first should be multiplied with second last
+    // axis of other
+    if (other.get_shape_size() >= 2 && first.get_shape_size() >= 2) {
+        if (other.get_shape_size() == 2 && first.get_shape_size() == 2) {
+            return Linalg::mat_multiply<T1, T2, T3>(first, other, thread_count);
         }
-        if (__first.shape[__first.shp_size - 1] !=
-            __other.shape[__other.shp_size - 2]) {
+        if (first.shape[first.shp_size - 1] !=
+            other.shape[other.shp_size - 2]) {
             throw std::runtime_error(
                 "Axis size do not match for dot multiplication.");
         }
         const size_t overall_size =
-            __first.get_shape_size() - 2 + __other.get_shape_size();
+            first.get_shape_size() - 2 + other.get_shape_size();
 
         std::vector<size_t> overall_shape(overall_size);
         size_t index = 0;
-        for (size_t i = 0; i < __first.get_shape_size() - 1; ++i) {
-            overall_shape[index++] = __first.shape[i];
+        for (size_t i = 0; i < first.get_shape_size() - 1; ++i) {
+            overall_shape[index++] = first.shape[i];
         }
 
-        for (size_t i = 0; i < __other.get_shape_size(); ++i) {
-            if (i != __other.get_shape_size() - 2) {
-                overall_shape[index++] = __other.shape[i];
+        for (size_t i = 0; i < other.get_shape_size(); ++i) {
+            if (i != other.get_shape_size() - 2) {
+                overall_shape[index++] = other.shape[i];
             }
         }
 
-        MdStaticArray<_T3> result(overall_shape, 0);
+        MdStaticArray<T3> result(overall_shape, 0);
         const size_t res_base_matrix_size = (result.shape[result.shp_size - 1] *
                                              result.shape[result.shp_size - 2]);
 
-        const size_t m = __first.shape[__first.shp_size - 2];
-        const size_t n = __first.shape[__first.shp_size - 1];
-        const size_t p = __other.shape[__other.shp_size - 1];
+        const size_t m = first.shape[first.shp_size - 2];
+        const size_t n = first.shape[first.shp_size - 1];
+        const size_t p = other.shape[other.shp_size - 1];
 
         const size_t other_base_matrix_size = n * p;
 
         index = 0;
         uint16_t threads = thread_count;
-        size_t skip_count = __other.get_size() / n;
+        size_t skip_count = other.get_size() / n;
 
-        auto __perform_dot_parallel = [&result, &__first, &__other, m, n, p,
+        auto __perform_dot_parallel = [&result, &first, &other, m, n, p,
                                        threads, other_base_matrix_size,
                                        skip_count](const size_t thread_number) {
-            // We iterate over each row of __first ndarray. Each $i^{th}$ thread
+            // We iterate over each row of first ndarray. Each $i^{th}$ thread
             // will handle alternate $i^{th}$ row.
             size_t index = thread_number * skip_count;
             for (size_t first_row = thread_number * n;
-                 first_row < __first.get_size(); first_row += (threads * n)) {
-                // Considering a 2D - layer of n-dimensional array $__other$, we
+                 first_row < first.get_size(); first_row += (threads * n)) {
+                // Considering a 2D - layer of n-dimensional array $other$, we
                 // iterate over every 2D-layer.
-                for (size_t other_block = 0; other_block < __other.get_size();
+                for (size_t other_block = 0; other_block < other.get_size();
                      other_block += other_base_matrix_size) {
-                    const auto f = __other.__array[other_block];
-                    // Iterator over second row of __first and column of __other
+                    const auto f = other.__array[other_block];
+                    // Iterator over second row of first and column of other
                     // array (note that $j$ and $other_col$ loop are swapped for
                     // performance reasons, to fulfil offset, we add $other_col$
                     // to $index$ in result array)
                     for (size_t j = 0; j < n; ++j) {
-                        const auto c = __first.__array[first_row + j];
-                        // Iterator over last axis of __other.
+                        const auto c = first.__array[first_row + j];
+                        // Iterator over last axis of other.
                         for (size_t other_col = 0; other_col < p; ++other_col) {
                             result.__array[index + other_col] +=
                                 c *
-                                __other
-                                    .__array[other_block + j * p + other_col];
+                                other.__array[other_block + j * p + other_col];
                         }
                     }
                     // Index is skipped by p, because the row is processed for
@@ -99,44 +97,41 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
 
         return result;
     } else {
-        if (__other.get_shape_size() == 1 && __first.get_shape_size() == 1) {
-            if (__other.shape[0] != __first.shape[0]) {
+        if (other.get_shape_size() == 1 && first.get_shape_size() == 1) {
+            if (other.shape[0] != first.shape[0]) {
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
 
             // A single valued answer.
-            return MdLinearAlgebra::inner<_T3, _T1, _T2>(__first, __other,
-                                                         thread_count);
-        } else if (__other.get_shape_size() == 1) {
+            return Linalg::inner<T3, T1, T2>(first, other, thread_count);
+        } else if (other.get_shape_size() == 1) {
             // Note: first does have $n$ dimensions
-            if (__other.shape[0] !=
-                __first.shape[__first.get_shape_size() - 1]) {
+            if (other.shape[0] != first.shape[first.get_shape_size() - 1]) {
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
 
-            std::vector<size_t> overall_shape(__first.get_shape_size() - 1);
-            for (size_t index = 0; index < __first.get_shape_size() - 1;
+            std::vector<size_t> overall_shape(first.get_shape_size() - 1);
+            for (size_t index = 0; index < first.get_shape_size() - 1;
                  ++index) {
-                overall_shape[index] = __first.shape[index];
+                overall_shape[index] = first.shape[index];
             }
-            MdStaticArray<_T3> result(overall_shape, 0);
+            MdStaticArray<T3> result(overall_shape, 0);
 
-            auto __perform_dot_parallel = [&__first, &__other, &result](
+            auto __perform_dot_parallel = [&first, &other, &result](
                                               const size_t start,
                                               const size_t end) {
                 size_t res_index = start;
-                size_t shp = __first.get_shape_size() - 1;
-                // For each last axis of __first array
-                for (size_t index = start * __first.shape[shp];
-                     index < end * __first.shape[shp];
-                     index += __first.shape[shp]) {
-                    // Iterate over the last axis of array __other
-                    for (size_t row = 0; row < __other.shape[0]; ++row) {
+                size_t shp = first.get_shape_size() - 1;
+                // For each last axis of first array
+                for (size_t index = start * first.shape[shp];
+                     index < end * first.shape[shp];
+                     index += first.shape[shp]) {
+                    // Iterate over the last axis of array other
+                    for (size_t row = 0; row < other.shape[0]; ++row) {
                         result.__array[res_index] +=
-                            (__first.__array[index + row] *
-                             __other.__array[row]);
+                            (first.__array[index + row] * other.__array[row]);
                     }
                     ++res_index;
                 }
@@ -157,42 +152,40 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
             }
             return result;
         } else {
-            if (__other.shape[__other.get_shape_size() - 2] !=
-                __first.shape[0]) {
+            if (other.shape[other.get_shape_size() - 2] != first.shape[0]) {
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
 
-            std::vector<size_t> overall_shape(__other.get_shape_size() - 1);
+            std::vector<size_t> overall_shape(other.get_shape_size() - 1);
             size_t shp_index = 0;
-            for (size_t index = 0; index < __other.get_shape_size(); ++index) {
-                if (index != __other.get_shape_size() - 2) {
-                    overall_shape[shp_index++] = __other.shape[index];
+            for (size_t index = 0; index < other.get_shape_size(); ++index) {
+                if (index != other.get_shape_size() - 2) {
+                    overall_shape[shp_index++] = other.shape[index];
                 }
             }
-            MdStaticArray<_T3> result(overall_shape, 0);
+            MdStaticArray<T3> result(overall_shape, 0);
 
-            auto __perform_dot_parallel = [&__first, &__other, &result,
+            auto __perform_dot_parallel = [&first, &other, &result,
                                            &thread_count](
                                               const size_t thread_number) {
-                size_t shp = __other.get_shape_size() - 2;
-                size_t res_index = thread_number * __other.shape[shp + 1];
-                size_t rows = __first.get_size();
-                size_t other_mat_size =
-                    __other.shape[shp] * __other.shape[shp + 1];
-                // Traversing through each layer of matrix of __other
+                size_t shp = other.get_shape_size() - 2;
+                size_t res_index = thread_number * other.shape[shp + 1];
+                size_t rows = first.get_size();
+                size_t other_mat_size = other.shape[shp] * other.shape[shp + 1];
+                // Traversing through each layer of matrix of other
                 for (size_t other_mat_index = 0;
-                     other_mat_index < __other.get_size();
+                     other_mat_index < other.get_size();
                      other_mat_index += (thread_count * other_mat_size)) {
                     // For each layer, calculate dot-product
                     // Each element will be
                     for (size_t element = 0; element < other_mat_size;
                          ++element) {
                         result.__array[res_index + (element % rows)] +=
-                            __first.__array[element / __other.shape[shp + 1]] *
-                            __other.__array[other_mat_index + element];
+                            first.__array[element / other.shape[shp + 1]] *
+                            other.__array[other_mat_index + element];
                     }
-                    res_index += (thread_count * __other.shape[shp + 1]);
+                    res_index += (thread_count * other.shape[shp + 1]);
                 }
             };
 
@@ -210,36 +203,32 @@ MdStaticArray<_T3> MdLinearAlgebra::dot(const MdStaticArray<_T1> &__first,
     }
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::dot(
-    const MdStaticArray<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3, _T1, _T2>(
-        __first,
-        MdStaticArray(*__other.__array_reference, __other.offset,
-                      __other.shp_offset),
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
+                              const MdStaticArrayReference<T2> &other,
+                              const size_t threads) {
+    return Linalg::dot<T3, T1, T2>(
+        first,
+        MdStaticArray(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::dot(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArray<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3, _T1, _T2>(
-        MdStaticArray(*__first.__array_reference, __first.offset,
-                      __first.shp_offset),
-        __other, threads);
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> Linalg::dot(const MdStaticArrayReference<T1> &first,
+                              const MdStaticArray<T2> &other,
+                              const size_t threads) {
+    return Linalg::dot<T3, T1, T2>(
+        MdStaticArray(*first.__array_reference, first.offset, first.shp_offset),
+        other, threads);
 }
 
-template <typename _T3, typename _T1, typename _T2>
-MdStaticArray<_T3> MdLinearAlgebra::dot(
-    const MdStaticArrayReference<_T1> &__first,
-    const MdStaticArrayReference<_T2> &__other, const size_t threads) {
-    return MdLinearAlgebra::dot<_T3, _T1, _T2>(
-        MdStaticArray(*__first.__array_reference, __first.offset,
-                      __first.shp_offset),
-        MdStaticArray(*__other.__array_reference, __other.offset,
-                      __other.shp_offset),
+template <typename T3, typename T1, typename T2>
+MdStaticArray<T3> Linalg::dot(const MdStaticArrayReference<T1> &first,
+                              const MdStaticArrayReference<T2> &other,
+                              const size_t threads) {
+    return Linalg::dot<T3, T1, T2>(
+        MdStaticArray(*first.__array_reference, first.offset, first.shp_offset),
+        MdStaticArray(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 

@@ -6,14 +6,14 @@
 #include "./md_fft.hpp"
 
 template <typename T>
-MdStaticArray<cdouble> FFT::fft2(const MdStaticArray<T>& _2darray) {
-    if (_2darray.get_shape_size() != 2) {
+MdStaticArray<cdouble> FFT::fft2(const MdStaticArray<T>& mat) {
+    if (mat.get_shape_size() != 2) {
         throw std::runtime_error("Expected dimension to be 2, found " +
-                                 std::to_string(_2darray.get_shape_size()));
+                                 std::to_string(mat.get_shape_size()));
     }
 
     // Perform FFT row-wise
-    MdStaticArray<cdouble> result(_2darray);
+    MdStaticArray<cdouble> result(mat);
 
 #pragma omp parallel for
     for (size_t index = 0; index < result.shape[0]; ++index) {

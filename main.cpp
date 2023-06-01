@@ -31,10 +31,12 @@ int main(int argc, const char** argv) {
     //     }
     // }
 
-    size_t sz = 1024;
+    MdStaticArray<double>::set_threshold_size(100000);
+    MdStaticArray<double>::set_thread_count(8);
+    size_t sz = 2048;
     // MdStaticArray<double>::set_thread_count(1);
-    MdStaticArray<double> c({sz, sz}, 1), d({sz, sz}, 2);
-
+    MdStaticArray<double> c({sz, sz}, 12), d({sz, sz}, 1024);
+    std::cout << c.get_size() << '\n';
     // for (size_t i = 1; i <= sz; ++i) {
     // for (size_t k = 1; k <= sz; ++k) {
     // c[i - 1][k - 1] = MdArrayUtility::range<double>(i, sz + i);
@@ -44,14 +46,14 @@ int main(int argc, const char** argv) {
 
     auto start = std::chrono::system_clock::now();
 
-    auto ans = MdLinearAlgebra::mat_multiply<double>(c, d);
+    auto ans = Linalg::mat_multiply<double>(c, d);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<double> time = end - start;
 
-    // std::cout << ans << '\n';
+    // std::cout << val << '\n';
 
-    std::cout << " Time: " << time.count() << "s"
+    std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;
 
     return 0;

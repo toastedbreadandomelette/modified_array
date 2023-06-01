@@ -6,7 +6,7 @@
 #include "./md_fft.hpp"
 
 template <typename T>
-MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& __other) {
+MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& other) {
     auto __dft_internal = [](MdStaticArray<cdouble>& array, const size_t start,
                              const size_t end) {
         MdStaticArray<cdouble> result(end - start, 0);
@@ -57,12 +57,12 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& __other) {
         return result;
     };
 
-    size_t n = __other.get_size();
+    size_t n = other.get_size();
     size_t i = 0;
     MdStaticArray<cdouble> input(n);
     if ((n & 1)) {
         for (size_t index = 0; index < n; ++index) {
-            input.__array[index] = __other.__array[index];
+            input.__array[index] = other.__array[index];
         }
         return __dft_ret_internal(input, 0, n);
     } else {
@@ -95,7 +95,7 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticArray<T>& __other) {
 
         // #pragma omp parallel for
         for (size_t index = 0; index < n; ++index) {
-            input.__array[index] = __other.__array[indexes.__array[index]];
+            input.__array[index] = other.__array[indexes.__array[index]];
         }
 
         if (i > 1) {
@@ -267,9 +267,9 @@ MdStaticArray<cdouble> FFT::fft_int(const MdStaticAxisReference<T>& other) {
 }
 
 template <typename T>
-MdStaticArray<cdouble> FFT::fft_int(const MdStaticArrayReference<T>& __other) {
-    return fft_int<T>(MdStaticArray<T>(*__other.__array_reference,
-                                       __other.offset, __other.shp_offset));
+MdStaticArray<cdouble> FFT::fft_int(const MdStaticArrayReference<T>& other) {
+    return fft_int<T>(MdStaticArray<T>(*other.__array_reference, other.offset,
+                                       other.shp_offset));
 }
 
 #endif
