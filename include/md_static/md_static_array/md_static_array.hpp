@@ -7,6 +7,7 @@
 #include <thread>
 #include <vector>
 
+#include "../utility/alloc.hpp"
 #include "./md_type_inference.hpp"
 
 #define EN_IF(C)    std::enable_if<C>::type
@@ -107,11 +108,7 @@ class MdStaticArray {
 
     constexpr void init_array(const size_t size) {
         if constexpr (MdTypeInfer::is_mallocable<T>::value) {
-#ifdef _WIN32
-            __array = static_cast<T *>(_aligned_malloc(size * sizeof(T), 64));
-#else
-            __array = static_cast<T *>(aligned_alloc(64, size * sizeof(T)));
-#endif
+            __array = aligned_allocate<T>(64, size);
         } else {
             __array = new T[size];
         }
@@ -333,11 +330,7 @@ class MdStaticArray {
         if (!dont_free) {
             if (__array != nullptr) {
                 if constexpr (std::is_fundamental<T>::value) {
-#ifdef _WIN32
-                    _aligned_free(__array);
-#else
-                    free(__array);
-#endif
+                    aligned_free(__array);
                 } else {
                     delete[] __array;
                 }
