@@ -3,6 +3,7 @@
 #define _MAT_MULTIPLY_HPP_
 
 #include "./mat_multiply/double.hpp"
+#include "./mat_multiply/float.hpp"
 #include "./md_linear_algebra.hpp"
 
 /**
@@ -85,6 +86,15 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
                       std::is_same<T3, double>::value) {
             auto ans = mul_st(first.__array, other_t.__array, fshape0, fshape1,
                               oshape1);
+
+            for (int i = 0; i < fshape0 * oshape1; ++i) {
+                result.__array[i] = ans[i];
+            }
+        } else if constexpr (std::is_same<T1, float>::value &&
+                             std::is_same<T2, float>::value &&
+                             std::is_same<T3, float>::value) {
+            auto ans = mul_st_f32(first.__array, other_t.__array, fshape0,
+                                  fshape1, oshape1);
 
             for (int i = 0; i < fshape0 * oshape1; ++i) {
                 result.__array[i] = ans[i];

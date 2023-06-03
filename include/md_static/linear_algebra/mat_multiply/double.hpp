@@ -13,6 +13,7 @@
  * @param m first axis of A
  * @param n second axis of A | first axis of B
  * @param p second axis of B
+ * @returns third array containing result of matmul
  */
 double *mul_st(double *a, double *tb, int m, int n, int p) {
     double *c = aligned_allocate<double>(64, m * p);
