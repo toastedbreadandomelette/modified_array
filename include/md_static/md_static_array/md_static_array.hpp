@@ -10,9 +10,6 @@
 #include "../utility/alloc.hpp"
 #include "./md_type_inference.hpp"
 
-#define EN_IF(C)    std::enable_if<C>::type
-#define IS_ARITH(E) std::is_arithmetic<E>::value
-
 static size_t s_threshold_size = 10000000;
 static uint8_t s_thread_count = 16;
 
@@ -1546,8 +1543,5 @@ MdStaticAxisReference<T> MdStaticArray<T>::get_nth_axis_reference(
     const size_t axis, const size_t n) {
     return MdStaticAxisReference(*this, axis, n);
 }
-
-#undef EN_IF
-#undef IS_ARITH
 
 #endif

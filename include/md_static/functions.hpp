@@ -12,6 +12,7 @@
 #include "./functions/argmax.hpp"
 #include "./functions/argmin.hpp"
 #include "./functions/ceil.hpp"
+#include "./functions/compare.hpp"
 #include "./functions/cos.hpp"
 #include "./functions/cosec.hpp"
 #include "./functions/cosh.hpp"

@@ -8,6 +8,7 @@
 
 /**
  * @brief Multiply two matrices A and transposed B matrix
+ * This is a single-thread operation.
  * @param a matrix A
  * @param tb Transposed matrix B
  * @param m first axis of A

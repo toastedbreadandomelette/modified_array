@@ -8,6 +8,7 @@
 
 /**
  * @brief Multiply two matrices A and transposed B matrix
+ * This is a single-thread operation.
  * @param a matrix A
  * @param tb Transposed matrix B
  * @param m first axis of A
@@ -74,7 +75,7 @@ float *mul_st_f32(float *a, float *tb, int m, int n, int p) {
                     __m256 acc33 = _mm256_setzero_ps();
 
                     // Loop over second axis of A and first axis of B
-                    // Processing 4 values at a time, loop unrolled by 4,
+                    // Processing 8 values at a time, loop unrolled by 4,
                     // we get
                     for (int k = 0; k < n - remainder_vec; k += 32) {
                         auto avec = _mm256_loadu_ps(a + (i * n + k));

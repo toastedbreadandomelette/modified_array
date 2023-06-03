@@ -885,7 +885,7 @@ struct MdArrayUtility {
      * @brief Compute 2 raised to value from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
+
      * @returns boolean value
      */
     template <typename T>
@@ -895,7 +895,7 @@ struct MdArrayUtility {
      * @brief Compute 2 raised to value from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
+
      * @returns boolean value
      */
     template <typename T>
@@ -906,7 +906,6 @@ struct MdArrayUtility {
      * @brief Compute reciprocal from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -917,7 +916,6 @@ struct MdArrayUtility {
      * @brief Compute reciprocal from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -928,7 +926,6 @@ struct MdArrayUtility {
      * @brief Compute sinh from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -938,7 +935,6 @@ struct MdArrayUtility {
      * @brief Compute sinh from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -949,7 +945,6 @@ struct MdArrayUtility {
      * @brief Compute cosh from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -960,7 +955,6 @@ struct MdArrayUtility {
      * @brief Compute cosh from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -971,7 +965,6 @@ struct MdArrayUtility {
      * @brief Compute tanh from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
@@ -981,12 +974,23 @@ struct MdArrayUtility {
      * @brief Compute tanh from array of values
      * @tparam T array type
      * @param __ndarray n-dimensional array
-     * @param _func function that test for every element
+
      * @returns boolean value
      */
     template <typename T>
     static MdStaticArray<double> tanh(
         const MdStaticArrayReference<T> &__ndarray);
+
+    /**
+     * @brief Compare if two arrays are equal
+     * @tparam T array type
+     * @param first n-dimensional array
+     * @param other n-dimensional array
+     * @returns boolean value
+     */
+    template <typename T1, typename T2>
+    static bool compare(const MdStaticArray<T1> &first,
+                        const MdStaticArray<T2> &other);
 
     /**
      * @brief Compute tanh from array of values
