@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _MAT_MULTIPLY_DOUBLE_MT_HPP_
-#define _MAT_MULTIPLY_DOUBLE_MT_HPP_
+#ifndef _MAT_MULTIPLY_FLOAT_MT_HPP_
+#define _MAT_MULTIPLY_FLOAT_MT_HPP_
 
 #include <immintrin.h>
 
