@@ -14,25 +14,26 @@
 #include "./include/md_static/md_static_array/md_static_array.hpp"
 
 int main(int argc, const char** argv) {
-    // MdStaticArray<double>::set_threshold_size(10000000);
-    MdStaticArray<double>::set_thread_count(1);
+    // MdStaticArray<double>::set_threshold_size(1000);
     size_t sz = 1024;
     // MdStaticArray<double>::set_thread_count(1);
     MdStaticArray<double> c({sz, sz}, 0), d({sz, sz}, 0);
     for (size_t i = 0; i < sz; ++i) {
-        c[i] = MdArrayUtility::range(sz);
-        d[i] = MdArrayUtility::range(sz);
+        c[i] = MdArrayUtility::range<double>(1, sz + 1);
+        d[i] = MdArrayUtility::range<double>(1, sz + 1);
     }
 
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = Linalg::mat_multiply<double>(c, d);
+    auto ans = Linalg::mat_multiply<double>(c, d, 16);
     auto end = std::chrono::system_clock::now();
+
+    auto an = Linalg::mat_multiply<double>(c, d, 1);
 
     std::chrono::duration<double> time = end - start;
 
-    // std::cout << ans << '\n';
+    std::cout << MdArrayUtility::compare(ans, an) << '\n' << '\n';
 
     std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;

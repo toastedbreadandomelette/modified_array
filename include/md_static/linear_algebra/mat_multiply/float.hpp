@@ -19,7 +19,7 @@
 float *mul_st_f32(float *a, float *tb, int m, int n, int p) {
     float *c = aligned_allocate<float>(64, m * p);
 
-    int rem = (m * p) & 3;
+    int rem = (m * p) & 7;
 
     // Initialize vector to zero
     for (size_t index = 0; index < m * p - rem; index += 8) {

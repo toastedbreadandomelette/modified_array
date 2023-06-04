@@ -2,6 +2,8 @@
 
 #ifndef _MD_STATIC_ARRAY_HPP_
 #define _MD_STATIC_ARRAY_HPP_
+#include <omp.h>
+
 #include <algorithm>
 #include <iostream>
 #include <thread>
@@ -10,7 +12,8 @@
 #include "../utility/alloc.hpp"
 #include "./md_type_inference.hpp"
 
-static size_t s_threshold_size = 10000000;
+// Todo: Create a thread pool.
+static size_t s_threshold_size = 100000;
 static uint8_t s_thread_count = 16;
 
 template <typename T>
@@ -1258,6 +1261,7 @@ class MdStaticArray {
 template <typename T>
 void MdStaticArray<T>::set_thread_count(const uint8_t value) {
     s_thread_count = value;
+    omp_set_num_threads(value);
 }
 
 template <typename T>

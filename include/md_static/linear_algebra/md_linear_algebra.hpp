@@ -556,7 +556,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(const MdStaticArray<T1> &first,
                                           const MdStaticArray<T2> &other,
-                                          const size_t threads = 16);
+                                          const int threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -576,7 +576,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(
         const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
-        const size_t threads = 16);
+        const int threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -596,7 +596,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(
         const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
-        const size_t threads = 16);
+        const int threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -616,7 +616,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(
         const MdStaticArrayReference<T1> &first,
-        const MdStaticArrayReference<T2> &other, const size_t threads = 16);
+        const MdStaticArrayReference<T2> &other, const int threads = -1);
 
     /**
      * @brief Multiply two matrices

@@ -1,46 +1,27 @@
 #pragma once
-#ifndef _MAT_MULTIPLY_DOUBLE_HPP_
-#define _MAT_MULTIPLY_DOUBLE_HPP_
+#ifndef _MAT_MULTIPLY_DOUBLE_MT_HPP_
+#define _MAT_MULTIPLY_DOUBLE_MT_HPP_
 
 #include <immintrin.h>
 
+#include <thread>
+#include <vector>
+
+#include "../../md_static_array/md_static_array.hpp"
 #include "../../utility/alloc.hpp"
 
-/**
- * @brief Multiply two matrices A and transposed B matrix
- * This is a single-thread operation.
- * @param a matrix A
- * @param tb Transposed matrix B
- * @param m first axis of A
- * @param n second axis of A | first axis of B
- * @param p second axis of B
- * @returns third array containing result of matmul
- */
-double *mul_st(double *a, double *tb, int m, int n, int p) {
-    double *c = aligned_allocate<double>(64, m * p);
-
-    int rem = (m * p) & 3;
-
-    // Initialize vector to zero
-    for (size_t index = 0; index < m * p - rem; index += 4) {
-        _mm256_store_pd(c + index, _mm256_setzero_pd());
-    }
-
-    // Set remainder values to zero as well
-    for (size_t index = m * p - rem; index < m * p; ++index) {
-        c[index] = 0;
-    }
-
+void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
+                     int start_row, int end_row) {
     const int block_size = 128;
     const int remainder_cols = p & 3;
-    const int remainder_rows = m & 3;
+    const int remainder_rows = (end_row - start_row) & 3;
     const int remainder_vec = n & 15;
-
     // Compute block by block
-    for (int iblock = 0; iblock < m - remainder_rows; iblock += block_size) {
+    for (int iblock = start_row; iblock < end_row - remainder_rows;
+         iblock += block_size) {
         // This will compute c tile by tile
-        int ibound = iblock + block_size > m - remainder_rows
-                         ? m - remainder_rows
+        int ibound = iblock + block_size > end_row - remainder_rows
+                         ? end_row - remainder_rows
                          : iblock + block_size;
         for (int jblock = 0; jblock < p - remainder_cols;
              jblock += block_size) {
@@ -312,7 +293,7 @@ double *mul_st(double *a, double *tb, int m, int n, int p) {
             }
         }
     }
-    for (int i = m - remainder_rows; i < m; ++i) {
+    for (int i = end_row - remainder_rows; i < end_row; ++i) {
         for (int j = 0; j < p; ++j) {
             double ans = 0;
             for (int k = 0; k < n; ++k) {
@@ -320,6 +301,52 @@ double *mul_st(double *a, double *tb, int m, int n, int p) {
             }
             c[i * p + j] = ans;
         }
+    }
+}
+
+/**
+ * @brief Multiply two matrices A and transposed B matrix
+ * This is a single-thread operation.
+ * @param a matrix A
+ * @param tb Transposed matrix B
+ * @param m first axis of A
+ * @param n second axis of A | first axis of B
+ * @param p second axis of B
+ * @returns third array containing result of matmul
+ */
+double *mul_mt(double *a, double *tb, int m, int n, int p) {
+    double *c = aligned_allocate<double>(64, m * p);
+
+    int rem = (m * p) & 3;
+
+    // Initialize vector to zero
+    for (size_t index = 0; index < m * p - rem; index += 4) {
+        _mm256_store_pd(c + index, _mm256_setzero_pd());
+    }
+
+    // Set remainder values to zero as well
+    for (size_t index = m * p - rem; index < m * p; ++index) {
+        c[index] = 0;
+    }
+
+    std::vector<std::thread> threads;
+
+    int clamped_thread_count = std::min((int)::s_thread_count, m / 128);
+
+    int total_rows_per_thread = m / clamped_thread_count;
+
+    for (size_t index = 0; index < clamped_thread_count - 1; ++index) {
+        threads.emplace_back(std::thread(mul_mt_internal, a, tb, c, m, n, p,
+                                         index * total_rows_per_thread,
+                                         (index + 1) * total_rows_per_thread));
+    }
+
+    threads.emplace_back(
+        std::thread(mul_mt_internal, a, tb, c, m, n, p,
+                    (clamped_thread_count - 1) * total_rows_per_thread, m));
+
+    for (auto &thread : threads) {
+        thread.join();
     }
     return c;
 }

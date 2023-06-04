@@ -87,7 +87,9 @@
         "xloctime": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp"
     },
     "typescript.format.placeOpenBraceOnNewLineForFunctions": false,
     "C_Cpp.vcFormat.newLine.scopeBracesOnSeparateLines": false,
