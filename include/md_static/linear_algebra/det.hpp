@@ -4,10 +4,10 @@
 
 #include "./md_linear_algebra.hpp"
 
-template <typename _T>
-long double Linalg::det(const MdStaticArray<_T> &__2darray) {
-    const auto [L, U, P, sign] = Linalg::lu_decompose<_T>(__2darray);
-    size_t n = __2darray.get_shape()[0];
+template <typename T>
+long double Linalg::det(const MdStaticArray<T> &matrix) {
+    const auto [L, U, P, sign] = Linalg::lu_decompose<T>(matrix);
+    size_t n = matrix.get_shape()[0];
     long double det = 1;
     for (size_t index = 0; index < n; ++index) {
         det *= U.__array[index * n + index];
@@ -16,10 +16,10 @@ long double Linalg::det(const MdStaticArray<_T> &__2darray) {
     return sign * det;
 }
 
-template <typename _T>
-long double Linalg::det(const MdStaticArrayReference<_T> &__2darray) {
-    return Linalg::det(MdStaticArray<_T>(
-        *__2darray.__array_reference, __2darray.offset, __2darray.shp_offset));
+template <typename T>
+long double Linalg::det(const MdStaticArrayReference<T> &matrix) {
+    return Linalg::det(MdStaticArray<T>(*matrix.__array_reference,
+                                        matrix.offset, matrix.shp_offset));
 }
 
 #endif

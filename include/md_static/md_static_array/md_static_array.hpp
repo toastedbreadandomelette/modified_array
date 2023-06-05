@@ -400,7 +400,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __add_internal(const MdStaticArray<T1> &other) const;
+    MdStaticArray<T2> add_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Add function, currently using threads
@@ -410,7 +410,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __add_iinternal(const T1 &other) const;
+    MdStaticArray<T2> add_iinternal_(const T1 &other) const;
 
     /**
      * @brief Subtract function, currently using threads
@@ -420,7 +420,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __sub_internal(const MdStaticArray<T1> &) const;
+    MdStaticArray<T2> sub_internal_(const MdStaticArray<T1> &) const;
 
     /**
      * @brief Subtract function, currently using threads
@@ -430,7 +430,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __sub_iinternal(const T1 &) const;
+    MdStaticArray<T2> sub_iinternal_(const T1 &) const;
 
     /**
      * @brief Subtract function, currently using threads
@@ -440,7 +440,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __sub_iointernal(const T1 &) const;
+    MdStaticArray<T2> sub_iointernal_(const T1 &) const;
 
     /**
      * @brief Multiplication function, currently using threads
@@ -450,7 +450,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __mul_internal(const MdStaticArray<T1> &) const;
+    MdStaticArray<T2> mul_internal_(const MdStaticArray<T1> &) const;
 
     /**
      * @brief Multiplication function, currently using threads
@@ -460,7 +460,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __mul_iinternal(const T1 &other) const;
+    MdStaticArray<T2> mul_iinternal_(const T1 &other) const;
 
     /**
      * @brief Division function, currently using threads
@@ -470,7 +470,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __div_internal(const MdStaticArray<T1> &) const;
+    MdStaticArray<T2> div_internal_(const MdStaticArray<T1> &) const;
 
     /**
      * @brief Division function, currently using threads
@@ -480,7 +480,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __div_iinternal(const T1 &other) const;
+    MdStaticArray<T2> div_iinternal_(const T1 &other) const;
 
     /**
      * @brief Modulo function, currently using threads
@@ -490,7 +490,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __div_iointernal(const T1 &other) const;
+    MdStaticArray<T2> div_iointernal_(const T1 &other) const;
 
     /**
      * @brief Modulo function, currently using threads
@@ -500,7 +500,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __mod_internal(const MdStaticArray<T1> &) const;
+    MdStaticArray<T2> mod_internal_(const MdStaticArray<T1> &) const;
 
     /**
      * @brief Division function, currently using threads
@@ -510,7 +510,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __mod_iinternal(const T1 &other) const;
+    MdStaticArray<T2> mod_iinternal_(const T1 &other) const;
 
     /**
      * @brief Modulo function, currently using threads, but the operand is to be
@@ -521,7 +521,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __mod_iointernal(const T1 &other) const;
+    MdStaticArray<T2> mod_iointernal_(const T1 &other) const;
 
     /**
      * @brief Bitwise AND function between two arrays
@@ -531,7 +531,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __and_bit_internal(const MdStaticArray<T1> &other) const;
+    MdStaticArray<T2> and_bit_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Bitwise AND function between two arrays
@@ -541,7 +541,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __and_bit_iinternal(const T1 &other) const;
+    MdStaticArray<T2> and_bit_iinternal_(const T1 &other) const;
 
     /**
      * @brief Bitwise OR function between two arrays
@@ -551,7 +551,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __or_bit_internal(const MdStaticArray<T1> &other) const;
+    MdStaticArray<T2> or_bit_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Bitwise OR function between two arrays
@@ -561,7 +561,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __or_bit_iinternal(const T1 &other) const;
+    MdStaticArray<T2> or_bit_iinternal_(const T1 &other) const;
 
     /**
      * @brief Bitwise XOR function between two arrays
@@ -571,7 +571,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __xor_bit_internal(const MdStaticArray<T1> &other) const;
+    MdStaticArray<T2> xor_bit_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Bitwise XOR function between two arrays
@@ -581,7 +581,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __xor_bit_iinternal(const T1 &other) const;
+    MdStaticArray<T2> xor_bit_iinternal_(const T1 &other) const;
 
     /**
      * @brief Bitwise left shift function between two arrays
@@ -591,8 +591,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __lshft_bit_internal(
-        const MdStaticArray<T1> &other) const;
+    MdStaticArray<T2> lshft_bit_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Bitwise left shift function between two arrays
@@ -602,7 +601,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __lshft_bit_iinternal(const T1 &other) const;
+    MdStaticArray<T2> lshft_bit_iinternal_(const T1 &other) const;
 
     /**
      * @brief Bitwise left shift function between two arrays, but here
@@ -613,7 +612,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __lshft_bit_iointernal(const T1 &other) const;
+    MdStaticArray<T2> lshft_bit_iointernal_(const T1 &other) const;
 
     /**
      * @brief Bitwise right shift function between two arrays
@@ -623,8 +622,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __rshft_bit_internal(
-        const MdStaticArray<T1> &other) const;
+    MdStaticArray<T2> rshft_bit_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Bitwise right shift function between two arrays
@@ -634,7 +632,7 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __rshft_bit_iinternal(const T1 &other) const;
+    MdStaticArray<T2> rshft_bit_iinternal_(const T1 &other) const;
 
     /**
      * @brief Bitwise right shift function between two arrays, but here
@@ -645,13 +643,13 @@ class MdStaticArray {
     template <typename T1,
               typename T2 = typename std::remove_const<
                   decltype(MdTypeInfer::eval_resultant_t<T1, T>::value)>::type>
-    MdStaticArray<T2> __rshft_bit_iointernal(const T1 &other) const;
+    MdStaticArray<T2> rshft_bit_iointernal_(const T1 &other) const;
 
     /**
      * @brief Negative operator
      * @returns new array
      */
-    MdStaticArray __ng_internal(void) const;
+    MdStaticArray ng_internal_(void) const;
 
     /**
      * @brief Add to self, using multi-threading
@@ -659,7 +657,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __add_self_internal(const MdStaticArray<T1> &other);
+    void add_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Subtract to self, using multi-threading
@@ -667,7 +665,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __sub_self_internal(const MdStaticArray<T1> &other);
+    void sub_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Multiply to self, using multi-threading
@@ -675,7 +673,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __mul_self_internal(const MdStaticArray<T1> &other);
+    void mul_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Divide to self, using multi-threading
@@ -683,7 +681,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __div_self_internal(const MdStaticArray<T1> &other);
+    void div_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Modulus to self, using multi-threading
@@ -691,7 +689,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __mod_self_internal(const MdStaticArray<T1> &other);
+    void mod_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Add to self, using multi-threading
@@ -699,7 +697,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __add_self_iinternal(const T1 &other);
+    void add_self_iinternal_(const T1 &other);
 
     /**
      * @brief Subtract to self, using multi-threading
@@ -707,7 +705,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __sub_self_iinternal(const T1 &other);
+    void sub_self_iinternal_(const T1 &other);
 
     /**
      * @brief Multiply to self, using multi-threading
@@ -715,7 +713,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __mul_self_iinternal(const T1 &other);
+    void mul_self_iinternal_(const T1 &other);
 
     /**
      * @brief Divide to self, using multi-threading
@@ -723,7 +721,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __div_self_iinternal(const T1 &other);
+    void div_self_iinternal_(const T1 &other);
 
     /**
      * @brief Modulo to self, using multi-threading
@@ -731,7 +729,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __mod_self_iinternal(const T1 &other);
+    void mod_self_iinternal_(const T1 &other);
 
     /**
      * @brief Bitwise and to self, using multi-threading
@@ -739,7 +737,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __and_bit_self_internal(const MdStaticArray<T1> &other);
+    void and_bit_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Bitwise and to self, using multi-threading
@@ -747,7 +745,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __and_bit_self_iinternal(const T1 &other);
+    void and_bit_self_iinternal_(const T1 &other);
 
     /**
      * @brief Bitwise OR to self, using multi-threading
@@ -755,7 +753,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __or_bit_self_internal(const MdStaticArray<T1> &other);
+    void or_bit_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Bitwise OR to self, using multi-threading
@@ -763,7 +761,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __or_bit_self_iinternal(const T1 &other);
+    void or_bit_self_iinternal_(const T1 &other);
 
     /**
      * @brief Bitwise XOR to self, using multi-threading
@@ -771,7 +769,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __xor_bit_self_internal(const MdStaticArray<T1> &other);
+    void xor_bit_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Bitwise XOR to self, using multi-threading
@@ -779,7 +777,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __xor_bit_self_iinternal(const T1 &other);
+    void xor_bit_self_iinternal_(const T1 &other);
 
     /**
      * @brief Left shift to self, using multi-threading
@@ -787,7 +785,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __lshft_bit_self_internal(const MdStaticArray<T1> &other);
+    void lshft_bit_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Left shift to self, using multi-threading
@@ -795,7 +793,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __lshft_bit_self_iinternal(const T1 &other);
+    void lshft_bit_self_iinternal_(const T1 &other);
 
     /**
      * @brief Right shift to self, using multi-threading
@@ -803,7 +801,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __rshft_bit_self_internal(const MdStaticArray<T1> &other);
+    void rshft_bit_self_internal_(const MdStaticArray<T1> &other);
 
     /**
      * @brief Right shift to self, using multi-threading
@@ -811,7 +809,7 @@ class MdStaticArray {
      * @returns new array
      */
     template <typename T1>
-    void __rshft_bit_self_iinternal(const T1 &other);
+    void rshft_bit_self_iinternal_(const T1 &other);
 
     /**
      * @brief Compare current array with other
@@ -819,8 +817,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_eq_internal(
-        const MdStaticArray<T1> &other) const;
+    MdStaticArray<bool> comp_eq_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Check if every entry in current array is greater than other
@@ -828,7 +825,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_g_internal(const MdStaticArray<T1> &other) const;
+    MdStaticArray<bool> comp_g_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Check if every entry in current array is greater or equal to
@@ -838,7 +835,7 @@ class MdStaticArray {
      */
     template <typename T1, typename c = typename std::enable_if<
                                MdTypeInfer::is_arith<T1>::value>::value>
-    MdStaticArray<bool> __comp_geq_internal(
+    MdStaticArray<bool> comp_geq_internal_(
         const MdStaticArray<T1> &other) const;
 
     /**
@@ -847,7 +844,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_l_internal(const MdStaticArray<T1> &other) const;
+    MdStaticArray<bool> comp_l_internal_(const MdStaticArray<T1> &other) const;
 
     /**
      * @brief Check if every entry in current array is less than or equal to
@@ -856,7 +853,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_leq_internal(
+    MdStaticArray<bool> comp_leq_internal_(
         const MdStaticArray<T1> &other) const;
 
     /**
@@ -865,7 +862,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_neq_internal(
+    MdStaticArray<bool> comp_neq_internal_(
         const MdStaticArray<T1> &other) const;
 
     /**
@@ -874,7 +871,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_eq_iinternal(const T1 &other) const;
+    MdStaticArray<bool> comp_eq_iinternal_(const T1 &other) const;
 
     /**
      * @brief Check if every entry in current array is greater than a single
@@ -883,7 +880,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_g_iinternal(const T1 &other) const;
+    MdStaticArray<bool> comp_g_iinternal_(const T1 &other) const;
 
     /**
      * @brief Check if every entry in current array is greater than or equal to
@@ -892,7 +889,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_geq_iinternal(const T1 &other) const;
+    MdStaticArray<bool> comp_geq_iinternal_(const T1 &other) const;
 
     /**
      * @brief Check if every entry in current array is less than a single
@@ -901,7 +898,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_l_iinternal(const T1 &other) const;
+    MdStaticArray<bool> comp_l_iinternal_(const T1 &other) const;
 
     /**
      * @brief Check if every entry in current array is less than or equal a
@@ -910,7 +907,7 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_leq_iinternal(const T1 &other) const;
+    MdStaticArray<bool> comp_leq_iinternal_(const T1 &other) const;
 
     /**
      * @brief Check if every entry in current array is not equal to a single
@@ -919,189 +916,189 @@ class MdStaticArray {
      * @returns array of boolean values returning true or false
      */
     template <typename T1>
-    MdStaticArray<bool> __comp_neq_iinternal(const T1 &other) const;
+    MdStaticArray<bool> comp_neq_iinternal_(const T1 &other) const;
 
     template <typename T1>
     inline auto operator+(const T1 &other) const {
-        return __add_iinternal(other);
+        return add_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator+(const MdStaticArray<T1> &other) const {
-        return __add_internal(other);
+        return add_internal_(other);
     }
 
     template <typename T1>
     inline auto operator-(const T1 &other) const {
-        return __sub_iinternal(other);
+        return sub_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator-(const MdStaticArray<T1> &other) const {
-        return __sub_internal(other);
+        return sub_internal_(other);
     }
 
     template <typename T1>
     inline auto operator*(const MdStaticArray<T1> &other) const {
-        return __mul_internal(other);
+        return mul_internal_(other);
     }
 
     template <typename T1>
     inline auto operator*(const T1 &other) const {
-        return __mul_iinternal(other);
+        return mul_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator/(const T1 &other) const {
-        return __div_iinternal(other);
+        return div_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator/(const MdStaticArray<T1> &other) const {
-        return __div_internal(other);
+        return div_internal_(other);
     }
 
     template <typename T1>
     inline auto operator%(const T1 &other) const {
-        return __mod_iinternal(other);
+        return mod_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator%(const MdStaticArray<T1> &other) const {
-        return __mod_internal(other);
+        return mod_internal_(other);
     }
 
     template <typename T1>
     inline auto operator&(const MdStaticArray<T1> &other) const {
-        return __and_bit_internal(other);
+        return and_bit_internal_(other);
     }
 
     template <typename T1>
     inline auto operator&(const T1 &other) const {
-        return __and_bit_iinternal(other);
+        return and_bit_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator|(const MdStaticArray<T1> &other) const {
-        return __or_bit_internal(other);
+        return or_bit_internal_(other);
     }
 
     template <typename T1>
     inline auto operator|(const T1 &other) const {
-        return __or_bit_iinternal(other);
+        return or_bit_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator^(const MdStaticArray<T1> &other) const {
-        return __xor_bit_internal(other);
+        return xor_bit_internal_(other);
     }
 
     template <typename T1>
     inline auto operator^(const T1 &other) const {
-        return __xor_bit_iinternal(other);
+        return xor_bit_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator<<(const MdStaticArray<T1> &other) const {
-        return __lshft_bit_internal(other);
+        return lshft_bit_internal_(other);
     }
 
     template <typename T1>
     inline auto operator<<(const T1 &other) const {
-        return __lshft_bit_iinternal(other);
+        return lshft_bit_iinternal_(other);
     }
 
     template <typename T1>
     inline auto operator>>(const MdStaticArray<T1> &other) const {
-        return __rshft_bit_internal(other);
+        return rshft_bit_internal_(other);
     }
 
     template <typename T1>
     inline auto operator>>(const T1 &other) const {
-        return __rshft_bit_iinternal(other);
+        return rshft_bit_iinternal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray &operator+=(const MdStaticArray<T1> &other) {
-        __add_self_internal(other);
+        add_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator-=(const MdStaticArray<T1> &other) {
-        __sub_self_internal(other);
+        sub_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator*=(const MdStaticArray<T1> &other) {
-        __mul_self_internal(other);
+        mul_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator/=(const MdStaticArray<T1> &other) {
-        __div_self_internal(other);
+        div_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator%=(const MdStaticArray<T1> &other) {
-        __mod_self_internal(other);
+        mod_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator+=(const T1 &other) {
-        __add_self_iinternal(other);
+        add_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator-=(const T1 &other) {
-        __sub_self_ionternal(other);
+        sub_self_iointernal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator*=(const T1 &other) {
-        __mul_self_iinternal(other);
+        mul_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator/=(const T1 &other) {
-        __div_self_iinternal(other);
+        div_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator%=(const T1 &other) {
-        __mod_self_iinternal(other);
+        mod_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator<<=(const MdStaticArray<T1> &other) {
-        __lshft_bit_self_internal(other);
+        lshft_bit_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator<<=(const T1 &other) {
-        __lshft_bit_self_iinternal(other);
+        lshft_bit_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator>>=(const MdStaticArray<T1> &other) {
-        __rshft_bit_self_internal(other);
+        rshft_bit_self_internal_(other);
         return *this;
     }
 
     template <typename T1>
     inline MdStaticArray &operator>>=(const T1 &other) {
-        __rshft_bit_self_iinternal(other);
+        rshft_bit_self_iinternal_(other);
         return *this;
     }
 
@@ -1109,63 +1106,63 @@ class MdStaticArray {
                                MdTypeInfer::is_native<T1>::value ||
                                MdTypeInfer::is_complex<T1>::value>::value>
     inline MdStaticArray<bool> operator==(const MdStaticArray<T1> &other) {
-        return __comp_eq_internal(other);
+        return comp_eq_internal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator>(const MdStaticArray<T1> &other) {
-        return __comp_g_internal(other);
+        return comp_g_internal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator>=(const MdStaticArray<T1> &other) {
-        return __comp_geq_internal(other);
+        return comp_geq_internal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator<(const MdStaticArray<T1> &other) {
-        return __comp_l_internal(other);
+        return comp_l_internal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator<=(const MdStaticArray<T1> &other) {
-        return __comp_leq_internal(other);
+        return comp_leq_internal_(other);
     }
 
     template <typename T1,
               typename std::enable_if<MdTypeInfer::is_arith<T1>::value>::value>
     inline MdStaticArray<bool> operator!=(const MdStaticArray<T1> &other) {
-        return __comp_neq_internal(other);
+        return comp_neq_internal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator==(const T1 &other) {
-        return __comp_eq_iinternal(other);
+        return comp_eq_iinternal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator>(const T1 &other) {
-        return __comp_g_iinternal(other);
+        return comp_g_iinternal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator>=(const T1 &other) {
-        return __comp_geq_iinternal(other);
+        return comp_geq_iinternal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator<(const T1 &other) {
-        return __comp_l_iinternal(other);
+        return comp_l_iinternal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator<=(const T1 &other) {
-        return __comp_leq_iinternal(other);
+        return comp_leq_iinternal_(other);
     }
 
     template <typename T1>
     inline MdStaticArray<bool> operator!=(const T1 &other) {
-        return __comp_neq_iinternal(other);
+        return comp_neq_iinternal_(other);
     }
 
     // To do: create a reference for multi-dimensional arrays.
@@ -1278,7 +1275,7 @@ inline auto operator+(const T1 &other, const MdStaticArray<T2> &first) {
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator-(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__sub_iointernal(other);
+    return first.sub_iointernal_(other);
 }
 
 template <typename T1, typename T2,
@@ -1290,82 +1287,82 @@ inline auto operator*(const T1 &other, const MdStaticArray<T2> &first) {
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator/(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__div_iointernal(other);
+    return first.div_iointernal_(other);
 }
 
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator%(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__mod_iointernal(other);
+    return first.mod_iointernal_(other);
 }
 
 template <typename T1, typename T2,
           typename std::enable_if<MdTypeInfer::is_native<T2>::value ||
                                   MdTypeInfer::is_complex<T2>::value>::value>
 inline auto operator==(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__comp_eq_iinternal(other);
+    return first.comp_eq_iinternal_(other);
 }
 
 template <typename T1, typename T2,
           typename std::enable_if<MdTypeInfer::is_native<T2>::value ||
                                   MdTypeInfer::is_complex<T2>::value>::value>
 inline auto operator!=(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__comp_neq_iinternal(other);
+    return first.comp_neq_iinternal_(other);
 }
 
 template <typename T1, typename T2>
 inline auto operator>(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__comp_g_iinternal(other);
+    return first.comp_g_iinternal_(other);
 }
 
 template <typename T1, typename T2>
 inline auto operator<(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__comp_l_iinternal(other);
+    return first.comp_l_iinternal_(other);
 }
 
 template <typename T1, typename T2>
 inline auto operator<=(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__comp_leq_iinternal(other);
+    return first.comp_leq_iinternal_(other);
 }
 
 template <typename T1, typename T2>
 inline auto operator>=(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__comp_geq_iinternal(other);
+    return first.comp_geq_iinternal_(other);
 }
 
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator&(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__and_bit_iinternal(other);
+    return first.and_bit_iinternal_(other);
 }
 
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator|(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__or_bit_iinternal(other);
+    return first.or_bit_iinternal_(other);
 }
 
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator^(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__xor_bit_iinternal(other);
+    return first.xor_bit_iinternal_(other);
 }
 
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator<<(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__lshft_bit_iointernal(other);
+    return first.lshft_bit_iointernal_(other);
 }
 
 template <typename T1, typename T2,
           class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
 inline auto operator>>(const T1 &other, const MdStaticArray<T2> &first) {
-    return first.__rshft_bit_iointernal(other);
+    return first.rshft_bit_iointernal_(other);
 }
 
 template <typename T>
 inline MdStaticArray<T> operator-(const MdStaticArray<T> &first) {
-    return first.__ng_internal();
+    return first.ng_internal_();
 }
 
 #include "./md_static_axis_reference.hpp"

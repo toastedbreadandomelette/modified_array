@@ -1033,4 +1033,6 @@ struct MdArrayUtility {
         const std::function<bool(const T first, const T second)> &comp);
 };
 
+typedef MdArrayUtility Utils;
+
 #endif
