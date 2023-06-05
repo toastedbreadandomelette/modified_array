@@ -16,9 +16,7 @@
  * @param p second axis of B
  * @returns third array containing result of matmul
  */
-float *mul_st_f32(float *a, float *tb, int m, int n, int p) {
-    float *c = aligned_allocate<float>(64, m * p);
-
+void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
     int rem = (m * p) & 7;
 
     // Initialize vector to zero
@@ -346,7 +344,6 @@ float *mul_st_f32(float *a, float *tb, int m, int n, int p) {
             c[i * p + j] = ans;
         }
     }
-    return c;
 }
 
 #endif

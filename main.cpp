@@ -26,14 +26,12 @@ int main(int argc, const char** argv) {
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = Linalg::mat_multiply<double>(c, d, 16);
+    auto ans = Linalg::mat_multiply<double>(c, d, 1);
     auto end = std::chrono::system_clock::now();
-
-    auto an = Linalg::mat_multiply<double>(c, d, 1);
 
     std::chrono::duration<double> time = end - start;
 
-    std::cout << MdArrayUtility::compare(ans, an) << '\n' << '\n';
+    // std::cout << MdArrayUtility::compare(ans, an) << '\n' << '\n';
 
     std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;

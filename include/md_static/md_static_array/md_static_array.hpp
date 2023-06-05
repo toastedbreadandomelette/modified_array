@@ -836,7 +836,7 @@ class MdStaticArray {
      * @param other array of values to compare
      * @returns array of boolean values returning true or false
      */
-    template <typename T1, typename c = std::enable_if<
+    template <typename T1, typename c = typename std::enable_if<
                                MdTypeInfer::is_arith<T1>::value>::value>
     MdStaticArray<bool> __comp_geq_internal(
         const MdStaticArray<T1> &other) const;

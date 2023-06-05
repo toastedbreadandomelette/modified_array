@@ -312,11 +312,8 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
  * @param m first axis of A
  * @param n second axis of A | first axis of B
  * @param p second axis of B
- * @returns third array containing result of matmul
  */
-double *mul_mt(double *a, double *tb, int m, int n, int p) {
-    double *c = aligned_allocate<double>(64, m * p);
-
+void mul_mt(double *a, double *tb, double *c, int m, int n, int p) {
     int rem = (m * p) & 3;
 
     // Initialize vector to zero
@@ -348,7 +345,6 @@ double *mul_mt(double *a, double *tb, int m, int n, int p) {
     for (auto &thread : threads) {
         thread.join();
     }
-    return c;
 }
 
 #endif

@@ -16,26 +16,33 @@
  * @param p second axis of B
  * @returns third array containing result of matmul
  */
-double *mul_st(double *a, double *tb, int m, int n, int p) {
-    double *c = aligned_allocate<double>(64, m * p);
-
+void mul_st(double *a, double *tb, double *c, int m, int n, int p) {
     int rem = (m * p) & 3;
-
-    // Initialize vector to zero
-    for (size_t index = 0; index < m * p - rem; index += 4) {
-        _mm256_store_pd(c + index, _mm256_setzero_pd());
-    }
-
-    // Set remainder values to zero as well
-    for (size_t index = m * p - rem; index < m * p; ++index) {
-        c[index] = 0;
-    }
 
     const int block_size = 128;
     const int remainder_cols = p & 3;
     const int remainder_rows = m & 3;
     const int remainder_vec = n & 15;
 
+    __m256d acc00 = _mm256_setzero_pd();
+    __m256d acc01 = _mm256_setzero_pd();
+    __m256d acc02 = _mm256_setzero_pd();
+    __m256d acc03 = _mm256_setzero_pd();
+
+    __m256d acc10 = _mm256_setzero_pd();
+    __m256d acc11 = _mm256_setzero_pd();
+    __m256d acc12 = _mm256_setzero_pd();
+    __m256d acc13 = _mm256_setzero_pd();
+
+    __m256d acc20 = _mm256_setzero_pd();
+    __m256d acc21 = _mm256_setzero_pd();
+    __m256d acc22 = _mm256_setzero_pd();
+    __m256d acc23 = _mm256_setzero_pd();
+
+    __m256d acc30 = _mm256_setzero_pd();
+    __m256d acc31 = _mm256_setzero_pd();
+    __m256d acc32 = _mm256_setzero_pd();
+    __m256d acc33 = _mm256_setzero_pd();
     // Compute block by block
     for (int iblock = 0; iblock < m - remainder_rows; iblock += block_size) {
         // This will compute c tile by tile
@@ -54,25 +61,25 @@ double *mul_st(double *a, double *tb, int m, int n, int p) {
                 for (int j = jblock; j < jbound; j += 4) {
                     // Accumulator:
                     // we compute 4x4 matrix at a time
-                    __m256d acc00 = _mm256_setzero_pd();
-                    __m256d acc01 = _mm256_setzero_pd();
-                    __m256d acc02 = _mm256_setzero_pd();
-                    __m256d acc03 = _mm256_setzero_pd();
+                    acc00 = _mm256_setzero_pd();
+                    acc01 = _mm256_setzero_pd();
+                    acc02 = _mm256_setzero_pd();
+                    acc03 = _mm256_setzero_pd();
 
-                    __m256d acc10 = _mm256_setzero_pd();
-                    __m256d acc11 = _mm256_setzero_pd();
-                    __m256d acc12 = _mm256_setzero_pd();
-                    __m256d acc13 = _mm256_setzero_pd();
+                    acc10 = _mm256_setzero_pd();
+                    acc11 = _mm256_setzero_pd();
+                    acc12 = _mm256_setzero_pd();
+                    acc13 = _mm256_setzero_pd();
 
-                    __m256d acc20 = _mm256_setzero_pd();
-                    __m256d acc21 = _mm256_setzero_pd();
-                    __m256d acc22 = _mm256_setzero_pd();
-                    __m256d acc23 = _mm256_setzero_pd();
+                    acc20 = _mm256_setzero_pd();
+                    acc21 = _mm256_setzero_pd();
+                    acc22 = _mm256_setzero_pd();
+                    acc23 = _mm256_setzero_pd();
 
-                    __m256d acc30 = _mm256_setzero_pd();
-                    __m256d acc31 = _mm256_setzero_pd();
-                    __m256d acc32 = _mm256_setzero_pd();
-                    __m256d acc33 = _mm256_setzero_pd();
+                    acc30 = _mm256_setzero_pd();
+                    acc31 = _mm256_setzero_pd();
+                    acc32 = _mm256_setzero_pd();
+                    acc33 = _mm256_setzero_pd();
 
                     // Loop over second axis of A and first axis of B
                     // Processing 4 values at a time, loop unrolled by 4,
@@ -257,41 +264,41 @@ double *mul_st(double *a, double *tb, int m, int n, int p) {
                     }
 
                     double ans[4] = {0, 0, 0, 0};
-                    _mm256_store_pd(ans, acc00);
-                    c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc01);
-                    c[i * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc02);
-                    c[i * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc03);
-                    c[i * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    auto dd = _mm256_hadd_pd(acc00, acc01);
+                    _mm256_store_pd(ans, dd);
+                    c[i * p + j] += ans[0] + ans[2];
+                    c[i * p + j + 1] += ans[1] + ans[3];
+                    dd = _mm256_hadd_pd(acc02, acc03);
+                    _mm256_store_pd(ans, dd);
+                    c[i * p + j + 2] += ans[0] + ans[2];
+                    c[i * p + j + 3] += ans[1] + ans[3];
 
-                    _mm256_store_pd(ans, acc10);
-                    c[(i + 1) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc11);
-                    c[(i + 1) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc12);
-                    c[(i + 1) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc13);
-                    c[(i + 1) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    dd = _mm256_hadd_pd(acc10, acc11);
+                    _mm256_store_pd(ans, dd);
+                    c[(i + 1) * p + j] += ans[0] + ans[2];
+                    c[(i + 1) * p + j + 1] += ans[1] + ans[3];
+                    dd = _mm256_hadd_pd(acc12, acc13);
+                    _mm256_store_pd(ans, dd);
+                    c[(i + 1) * p + j + 2] += ans[0] + ans[2];
+                    c[(i + 1) * p + j + 3] += ans[1] + ans[3];
 
-                    _mm256_store_pd(ans, acc20);
-                    c[(i + 2) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc21);
-                    c[(i + 2) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc22);
-                    c[(i + 2) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc23);
-                    c[(i + 2) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    dd = _mm256_hadd_pd(acc20, acc21);
+                    _mm256_store_pd(ans, dd);
+                    c[(i + 2) * p + j] += ans[0] + ans[2];
+                    c[(i + 2) * p + j + 1] += ans[1] + ans[3];
+                    dd = _mm256_hadd_pd(acc22, acc23);
+                    _mm256_store_pd(ans, dd);
+                    c[(i + 2) * p + j + 2] += ans[0] + ans[2];
+                    c[(i + 2) * p + j + 3] += ans[1] + ans[3];
 
-                    _mm256_store_pd(ans, acc30);
-                    c[(i + 3) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc31);
-                    c[(i + 3) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc32);
-                    c[(i + 3) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc33);
-                    c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    dd = _mm256_hadd_pd(acc30, acc31);
+                    _mm256_store_pd(ans, dd);
+                    c[(i + 3) * p + j] += ans[0] + ans[2];
+                    c[(i + 3) * p + j + 1] += ans[1] + ans[3];
+                    dd = _mm256_hadd_pd(acc32, acc33);
+                    _mm256_store_pd(ans, dd);
+                    c[(i + 3) * p + j + 2] += ans[0] + ans[2];
+                    c[(i + 3) * p + j + 3] += ans[1] + ans[3];
                 }
                 for (int j = p - remainder_cols; j < p; ++j) {
                     double ans0 = 0;
@@ -321,7 +328,6 @@ double *mul_st(double *a, double *tb, int m, int n, int p) {
             c[i * p + j] = ans;
         }
     }
-    return c;
 }
 
 #endif

@@ -46,21 +46,13 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
         if constexpr (std::is_same<T1, double>::value &&
                       std::is_same<T2, double>::value &&
                       std::is_same<T3, double>::value) {
-            auto ans = mul_mt(first.__array, other_t.__array, fshape0, fshape1,
-                              oshape1);
-
-            for (int i = 0; i < fshape0 * oshape1; ++i) {
-                result.__array[i] = ans[i];
-            }
+            mul_mt(first.__array, other_t.__array, result.__array, fshape0,
+                   fshape1, oshape1);
         } else if constexpr (std::is_same<T1, float>::value &&
                              std::is_same<T2, float>::value &&
                              std::is_same<T3, float>::value) {
-            auto ans = mul_mt_f32(first.__array, other_t.__array, fshape0,
-                                  fshape1, oshape1);
-
-            for (int i = 0; i < fshape0 * oshape1; ++i) {
-                result.__array[i] = ans[i];
-            }
+            mul_mt_f32(first.__array, other_t.__array, result.__array, fshape0,
+                       fshape1, oshape1);
         } else {
             auto __multiply_internal = [&first, &other_t, block_size, &result,
                                         fshape0, fshape1, oshape0,
@@ -108,21 +100,13 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
         if constexpr (std::is_same<T1, double>::value &&
                       std::is_same<T2, double>::value &&
                       std::is_same<T3, double>::value) {
-            auto ans = mul_st(first.__array, other_t.__array, fshape0, fshape1,
-                              oshape1);
-
-            for (int i = 0; i < fshape0 * oshape1; ++i) {
-                result.__array[i] = ans[i];
-            }
+            mul_st(first.__array, other_t.__array, result.__array, fshape0,
+                   fshape1, oshape1);
         } else if constexpr (std::is_same<T1, float>::value &&
                              std::is_same<T2, float>::value &&
                              std::is_same<T3, float>::value) {
-            auto ans = mul_st_f32(first.__array, other_t.__array, fshape0,
-                                  fshape1, oshape1);
-
-            for (int i = 0; i < fshape0 * oshape1; ++i) {
-                result.__array[i] = ans[i];
-            }
+            mul_st_f32(first.__array, other_t.__array, result.__array, fshape0,
+                       fshape1, oshape1);
         } else {
             for (size_t i_block = 0; i_block < fshape0; i_block += block_size) {
                 i_bound = std::min(i_block + block_size, fshape0);

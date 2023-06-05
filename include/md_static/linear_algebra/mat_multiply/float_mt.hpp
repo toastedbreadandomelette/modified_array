@@ -239,46 +239,71 @@ void mul_mt_f32_internal(float *a, float *tb, float *c, int m, int n, int p,
 
                     float ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
                     _mm256_store_ps(ans, acc00);
-                    c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3] + ans[4] +
+                                    ans[5] + ans[6] + ans[7];
                     _mm256_store_ps(ans, acc01);
-                    c[i * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[i * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3] +
+                                        ans[4] + ans[5] + ans[6] + ans[7];
                     _mm256_store_ps(ans, acc02);
-                    c[i * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[i * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3] +
+                                        ans[4] + ans[5] + ans[6] + ans[7];
                     _mm256_store_ps(ans, acc03);
-                    c[i * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[i * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3] +
+                                        ans[4] + ans[5] + ans[6] + ans[7];
 
                     _mm256_store_ps(ans, acc10);
-                    c[(i + 1) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 1) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
+                                          ans[4] + ans[5] + ans[6] + ans[7];
                     _mm256_store_ps(ans, acc11);
-                    c[(i + 1) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 1) * p + j + 1] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                     _mm256_store_ps(ans, acc12);
-                    c[(i + 1) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 1) * p + j + 2] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                     _mm256_store_ps(ans, acc13);
-                    c[(i + 1) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 1) * p + j + 3] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
 
                     _mm256_store_ps(ans, acc20);
-                    c[(i + 2) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 2) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
+                                          ans[4] + ans[5] + ans[6] + ans[7];
                     _mm256_store_ps(ans, acc21);
-                    c[(i + 2) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 2) * p + j + 1] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                     _mm256_store_ps(ans, acc22);
-                    c[(i + 2) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 2) * p + j + 2] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                     _mm256_store_ps(ans, acc23);
-                    c[(i + 2) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 2) * p + j + 3] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
 
                     _mm256_store_ps(ans, acc30);
-                    c[(i + 3) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 3) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
+                                          ans[4] + ans[5] + ans[6] + ans[7];
                     _mm256_store_ps(ans, acc31);
-                    c[(i + 3) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 3) * p + j + 1] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                     _mm256_store_ps(ans, acc32);
-                    c[(i + 3) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 3) * p + j + 2] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                     _mm256_store_ps(ans, acc33);
-                    c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] +
+                                              ans[3] + ans[4] + ans[5] +
+                                              ans[6] + ans[7];
                 }
                 for (int j = p - remainder_cols; j < p; ++j) {
-                    double ans0 = 0;
-                    double ans1 = 0;
-                    double ans2 = 0;
-                    double ans3 = 0;
+                    float ans0 = 0;
+                    float ans1 = 0;
+                    float ans2 = 0;
+                    float ans3 = 0;
                     for (int k = 0; k < n; ++k) {
                         ans0 += a[i * n + k] * tb[j * n + k];
                         ans1 += a[(i + 1) * n + k] * tb[j * n + k];
@@ -295,7 +320,7 @@ void mul_mt_f32_internal(float *a, float *tb, float *c, int m, int n, int p,
     }
     for (int i = end_row - remainder_rows; i < end_row; ++i) {
         for (int j = 0; j < p; ++j) {
-            double ans = 0;
+            float ans = 0;
             for (int k = 0; k < n; ++k) {
                 ans += a[i * n + k] * tb[j * n + k];
             }
@@ -314,13 +339,11 @@ void mul_mt_f32_internal(float *a, float *tb, float *c, int m, int n, int p,
  * @param p second axis of B
  * @returns third array containing result of matmul
  */
-float *mul_mt_f32(float *a, float *tb, int m, int n, int p) {
-    float *c = aligned_allocate<float>(64, m * p);
-
-    int rem = (m * p) & 3;
+void mul_mt_f32(float *a, float *tb, float *c, int m, int n, int p) {
+    int rem = (m * p) & 7;
 
     // Initialize vector to zero
-    for (size_t index = 0; index < m * p - rem; index += 4) {
+    for (size_t index = 0; index < m * p - rem; index += 8) {
         _mm256_store_ps(c + index, _mm256_setzero_ps());
     }
 
@@ -348,7 +371,6 @@ float *mul_mt_f32(float *a, float *tb, int m, int n, int p) {
     for (auto &thread : threads) {
         thread.join();
     }
-    return c;
 }
 
 #endif
