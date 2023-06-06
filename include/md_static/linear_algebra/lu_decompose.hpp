@@ -78,7 +78,7 @@ std::tuple<Array<Tres>, Array<Tres>, Array<Tres>, i32> Linalg::lu_decompose(
 
 template <typename Tres, typename T>
 std::tuple<Array<Tres>, Array<Tres>, Array<Tres>, i32> Linalg::lu_decompose(
-    const Reference<T> &matrix) {
+    const ArraySlice<T> &matrix) {
     return Linalg::lu_decompose<Tres>(
         Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset));
 }

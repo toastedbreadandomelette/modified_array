@@ -5,8 +5,8 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::diff(const Array<T> &ndarray, const usize axis,
-                              const usize thread_count) {
+Array<T> Utils::diff(const Array<T> &ndarray, const usize axis,
+                     const usize thread_count) {
     if (axis == -1) {
         Array<T> result(ndarray.get_size() - 1);
 #pragma omp parallel for
@@ -70,8 +70,8 @@ Array<T> MdArrayUtility::diff(const Array<T> &ndarray, const usize axis,
 }
 
 template <typename T>
-Array<T> MdArrayUtility::diff(const Reference<T> &ndarray, const usize axis,
-                              const usize thread_count) {
+Array<T> Utils::diff(const ArraySlice<T> &ndarray, const usize axis,
+                     const usize thread_count) {
     return diff<T>(Array<T>(*ndarray.__array_reference, ndarray.offset,
                             ndarray.shp_offset),
                    axis, thread_count);

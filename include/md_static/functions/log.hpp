@@ -7,15 +7,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::log(const Array<T> &values) {
-    return MdArrayUtility::map<T>(values,
-                                  [](const T &value) { return ::log(value); });
+Array<T> Utils::log(const Array<T> &values) {
+    return Utils::map<T>(values, [](const T &value) { return ::log(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::log(const Reference<T> &values) {
-    return MdArrayUtility::log<T>(Array<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+Array<T> Utils::log(const ArraySlice<T> &values) {
+    return Utils::log<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

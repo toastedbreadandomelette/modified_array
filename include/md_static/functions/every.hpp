@@ -5,7 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-bool MdArrayUtility::every(const Array<T> &ndarray,
+bool Utils::every(const Array<T> &ndarray,
                            const fn<bool(const T &)> &function,
                            const usize threads) {
     if (ndarray.get_size() < s_threshold_size || threads == 1) {
@@ -55,7 +55,7 @@ bool MdArrayUtility::every(const Array<T> &ndarray,
 }
 
 template <typename T>
-bool MdArrayUtility::every(const Reference<T> &__ndarray_reference,
+bool Utils::every(const ArraySlice<T> &__ndarray_reference,
                            const fn<bool(const T &)> &function,
                            const usize threads) {
     return every<T>(

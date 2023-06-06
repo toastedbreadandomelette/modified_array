@@ -5,9 +5,8 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-bool MdArrayUtility::some(const Array<T> &ndarray,
-                          const fn<bool(const T &)> &function,
-                          const usize threads) {
+bool Utils::some(const Array<T> &ndarray, const fn<bool(const T &)> &function,
+                 const usize threads) {
     if (ndarray.get_size() < s_threshold_size) {
         usize index = 0;
         for (; index < ndarray.get_size() && !function(ndarray.__array[index]);
@@ -54,9 +53,8 @@ bool MdArrayUtility::some(const Array<T> &ndarray,
 }
 
 template <typename T>
-bool MdArrayUtility::some(const Reference<T> &ndarray,
-                          const fn<bool(const T &)> &function,
-                          const usize threads) {
+bool Utils::some(const ArraySlice<T> &ndarray,
+                 const fn<bool(const T &)> &function, const usize threads) {
     return some<T>(Array<T>(*ndarray.__array_reference, ndarray.offset,
                             ndarray.shp_offset),
                    function, threads);

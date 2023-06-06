@@ -7,8 +7,8 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T, class T1>
-Array<T> Linalg::matrix_mod_power(const Array<T> &matrix,
-                                          const usize pow, const usize mod) {
+Array<T> Linalg::matrix_mod_power(const Array<T> &matrix, const usize pow,
+                                  const usize mod) {
     if (matrix.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given input should be of dimension 2. Found dimension " +
@@ -22,8 +22,7 @@ Array<T> Linalg::matrix_mod_power(const Array<T> &matrix,
             std::to_string(matrix.get_shape()[1]) + ").");
     }
     auto power = pow;
-    Array<T> result = Linalg::identity<T>(matrix.get_shape()[0]),
-                     omat = matrix;
+    Array<T> result = Linalg::identity<T>(matrix.get_shape()[0]), omat = matrix;
 
     while (power > 0) {
         if (power & 1) {
@@ -37,12 +36,10 @@ Array<T> Linalg::matrix_mod_power(const Array<T> &matrix,
 }
 
 template <typename T, class T1>
-Array<T> Linalg::matrix_mod_power(
-    const Reference<T> &matrix, const usize power,
-    const usize mod) {
+Array<T> Linalg::matrix_mod_power(const ArraySlice<T> &matrix,
+                                  const usize power, const usize mod) {
     return Linalg::matrix_mod_power<T>(
-        Array<T>(*matrix.__array_reference, matrix.offset,
-                         matrix.shp_offset),
+        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset),
         power, mod);
 }
 

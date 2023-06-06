@@ -31,7 +31,7 @@ Array<T> Manip::mat_diag(const Array<T>& matrix,
 }
 
 template <typename T>
-Array<T> Manip::mat_diag(const Reference<T>& matrix,
+Array<T> Manip::mat_diag(const ArraySlice<T>& matrix,
                                  const usize offset) {
     return mat_diag<T>(Array<T>(*matrix.__array_reference,
                                         matrix.offset, matrix.shp_offset),

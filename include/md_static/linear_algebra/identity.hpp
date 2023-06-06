@@ -36,9 +36,9 @@ bool Linalg::is_identity(const Array<_T> &other) {
 }
 
 template <typename _T>
-bool Linalg::is_identity(const Reference<_T> &other) {
-    return Linalg::is_identity(Array<_T>(
-        *other.array_reference, other.offset, other.shp_offset));
+bool Linalg::is_identity(const ArraySlice<_T> &other) {
+    return Linalg::is_identity(
+        Array<_T>(*other.array_reference, other.offset, other.shp_offset));
 }
 
 #endif

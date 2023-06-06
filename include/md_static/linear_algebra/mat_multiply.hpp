@@ -53,9 +53,9 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
             mul_mt_f32(first.__array, other_t.__array, result.__array, fshape0,
                        fshape1, oshape1);
         } else {
-            auto __multiply_internal = [&first, &other_t, block_size, &result,
-                                        fshape0, fshape1, oshape0, oshape1](
-                                           const usize start, const usize end) {
+            auto mul_internal_ = [&first, &other_t, block_size, &result,
+                                  fshape0, fshape1, oshape0,
+                                  oshape1](const usize start, const usize end) {
                 usize k_bound = 0, i_bound = 0, j_bound = 0;
 
                 for (usize i_block = start; i_block < end;
@@ -83,12 +83,12 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
             usize blocks = first.shape[0] / threads;
             std::vector<std::thread> thread_pool;
             for (i32 i = 0; i < threads - 1; ++i) {
-                thread_pool.emplace_back(std::thread(
-                    __multiply_internal, blocks * i, blocks * (i + 1)));
+                thread_pool.emplace_back(
+                    std::thread(mul_internal_, blocks * i, blocks * (i + 1)));
             }
 
             thread_pool.emplace_back(std::thread(
-                __multiply_internal, blocks * (threads - 1), other.shape[1]));
+                mul_internal_, blocks * (threads - 1), other.shape[1]));
 
             for (auto &thread : thread_pool) {
                 thread.join();
@@ -132,7 +132,7 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::mat_multiply(const Reference<T1> &first,
+Array<T3> Linalg::mat_multiply(const ArraySlice<T1> &first,
                                const Array<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
@@ -141,7 +141,7 @@ Array<T3> Linalg::mat_multiply(const Reference<T1> &first,
 
 template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::mat_multiply(const Array<T1> &first,
-                               const Reference<T2> &other, const i32 threads) {
+                               const ArraySlice<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
         Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
@@ -149,8 +149,8 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::mat_multiply(const Reference<T1> &first,
-                               const Reference<T2> &other, const i32 threads) {
+Array<T3> Linalg::mat_multiply(const ArraySlice<T1> &first,
+                               const ArraySlice<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
         Array<T2>(*other.__array_reference, other.offset, other.shp_offset),

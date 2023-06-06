@@ -5,7 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<usize> MdArrayUtility::argmin(const Array<T> &values,
+Array<usize> Utils::argmin(const Array<T> &values,
                                             const i32 axis) {
     if (axis == -1) {
         const usize size = values.get_size();
@@ -124,8 +124,8 @@ Array<usize> MdArrayUtility::argmin(const Array<T> &values,
 }
 
 template <typename T>
-Array<usize> MdArrayUtility::argmin(
-    const Reference<T> &values, const i32 axis) {
+Array<usize> Utils::argmin(
+    const ArraySlice<T> &values, const i32 axis) {
     return argmin<T>(Array<T>(*values.__array_reference, values.offset,
                                       values.shp_offset),
                      axis);

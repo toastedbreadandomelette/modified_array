@@ -11,8 +11,7 @@ T __gcd2(T a, T b) {
 }
 
 template <typename T>
-Array<T> MdArrayUtility::lcm(const Array<T> &values,
-                                     const i32 axis) {
+Array<T> Utils::lcm(const Array<T> &values, const i32 axis) {
     return reduce<T>(
         values,
         [](const T &prev_value, const T &curr_value) {
@@ -25,11 +24,10 @@ Array<T> MdArrayUtility::lcm(const Array<T> &values,
 }
 
 template <typename T>
-Array<T> MdArrayUtility::lcm(const Reference<T> &values,
-                                     const i32 axis) {
-    return lcm(Array<T>(*values.__array_reference, values.offset,
-                                values.shp_offset),
-               axis);
+Array<T> Utils::lcm(const ArraySlice<T> &values, const i32 axis) {
+    return lcm(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        axis);
 }
 
 #endif

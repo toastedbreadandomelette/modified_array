@@ -6,8 +6,7 @@
 #include "./reduce.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::amin(const Array<T> &values,
-                                      const i32 axis) {
+Array<T> Utils::amin(const Array<T> &values, const i32 axis) {
     return reduce<T>(
         values,
         [](const T &prev_value, const T &curr_value) {
@@ -17,11 +16,10 @@ Array<T> MdArrayUtility::amin(const Array<T> &values,
 }
 
 template <typename T>
-Array<T> MdArrayUtility::amin(const Reference<T> &values,
-                                      const i32 axis) {
-    return amin(Array<T>(*values.__array_reference, values.offset,
-                                 values.shp_offset),
-                axis);
+Array<T> Utils::amin(const ArraySlice<T> &values, const i32 axis) {
+    return amin(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        axis);
 }
 
 #endif

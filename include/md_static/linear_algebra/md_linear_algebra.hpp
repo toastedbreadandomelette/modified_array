@@ -41,7 +41,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> dot(const Array<T1> &first,
-                                 const Reference<T2> &other,
+                                 const ArraySlice<T2> &other,
                                  const usize threads = 16);
 
     /**
@@ -59,7 +59,7 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> dot(const Reference<T1> &first,
+    static Array<T3> dot(const ArraySlice<T1> &first,
                                  const Array<T2> &other,
                                  const usize threads = 16);
 
@@ -78,8 +78,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> dot(const Reference<T1> &first,
-                                 const Reference<T2> &other,
+    static Array<T3> dot(const ArraySlice<T1> &first,
+                                 const ArraySlice<T2> &other,
                                  const usize threads = 16);
 
     /**
@@ -117,8 +117,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
-        const Reference<T1> &first,
-        const Reference<T2> &other,
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other,
         const Array<arg> &...arguments);
 
     /**
@@ -137,7 +137,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
-        const Array<T1> &first, const Reference<T2> &other,
+        const Array<T1> &first, const ArraySlice<T2> &other,
         const Array<arg> &...arguments);
 
     /**
@@ -156,7 +156,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
-        const Reference<T1> &first, const Array<T2> &other,
+        const ArraySlice<T1> &first, const Array<T2> &other,
         const Array<arg> &...arguments);
 
     /**
@@ -176,7 +176,7 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
         const Array<T1> &first, const Array<T2> &other,
-        const Reference<arg> &...arguments);
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -194,9 +194,9 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
-        const Reference<T1> &first,
-        const Reference<T2> &other,
-        const Reference<arg> &...arguments);
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other,
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -214,8 +214,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
-        const Array<T1> &first, const Reference<T2> &other,
-        const Reference<arg> &...arguments);
+        const Array<T1> &first, const ArraySlice<T2> &other,
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -233,8 +233,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> multi_dot(
-        const Reference<T1> &first, const Array<T2> &other,
-        const Reference<arg> &...arguments);
+        const ArraySlice<T1> &first, const Array<T2> &other,
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -270,8 +270,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> multi_dot(
-        const Reference<T1> &first,
-        const Reference<T2> &other);
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -289,7 +289,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> multi_dot(
-        const Reference<T1> &first,
+        const ArraySlice<T1> &first,
         const Array<T2> &other);
 
     /**
@@ -308,7 +308,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> multi_dot(const Array<T1> &,
-                                            const Reference<T2> &);
+                                            const ArraySlice<T2> &);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -345,8 +345,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Reference<T1> &first,
-        const Reference<T2> &other,
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other,
         const Array<arg> &...arguments);
 
     /**
@@ -365,7 +365,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &first, const Reference<T2> &other,
+        const Array<T1> &first, const ArraySlice<T2> &other,
         const Array<arg> &...arguments);
 
     /**
@@ -384,7 +384,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Reference<T1> &first, const Array<T2> &other,
+        const ArraySlice<T1> &first, const Array<T2> &other,
         const Array<arg> &...arguments);
 
     /**
@@ -404,7 +404,7 @@ struct MdLinearAlgebra {
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
         const Array<T1> &first, const Array<T2> &other,
-        const Reference<arg> &...arguments);
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -422,9 +422,9 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Reference<T1> &first,
-        const Reference<T2> &other,
-        const Reference<arg> &...arguments);
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other,
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -442,8 +442,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &first, const Reference<T2> &other,
-        const Reference<arg> &...arguments);
+        const Array<T1> &first, const ArraySlice<T2> &other,
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -461,8 +461,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Reference<T1> &first, const Array<T2> &other,
-        const Reference<arg> &...arguments);
+        const ArraySlice<T1> &first, const Array<T2> &other,
+        const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -498,8 +498,8 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Reference<T1> &first,
-        const Reference<T2> &other);
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -517,7 +517,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Reference<T1> &first,
+        const ArraySlice<T1> &first,
         const Array<T2> &other);
 
     /**
@@ -536,7 +536,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &, const Reference<T2> &);
+        const Array<T1> &, const ArraySlice<T2> &);
 
     /**
      * @brief Multiply two matrices
@@ -575,7 +575,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> mat_multiply(
-        const Reference<T1> &first, const Array<T2> &other,
+        const ArraySlice<T1> &first, const Array<T2> &other,
         const i32 threads = -1);
 
     /**
@@ -595,7 +595,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> mat_multiply(
-        const Array<T1> &first, const Reference<T2> &other,
+        const Array<T1> &first, const ArraySlice<T2> &other,
         const i32 threads = -1);
 
     /**
@@ -615,8 +615,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> mat_multiply(
-        const Reference<T1> &first,
-        const Reference<T2> &other, const i32 threads = -1);
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other, const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -663,7 +663,7 @@ struct MdLinearAlgebra {
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
     static Array<T3> mat_mod_multiply(
-        const Reference<T1> &first, const Array<T2> &other,
+        const ArraySlice<T1> &first, const Array<T2> &other,
         const usize mod, const usize threads = 16);
 
     /**
@@ -686,7 +686,7 @@ struct MdLinearAlgebra {
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
     static Array<T3> mat_mod_multiply(
-        const Array<T1> &first, const Reference<T2> &other,
+        const Array<T1> &first, const ArraySlice<T2> &other,
         const usize mod, const usize threads = 16);
 
     /**
@@ -709,8 +709,8 @@ struct MdLinearAlgebra {
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
     static Array<T3> mat_mod_multiply(
-        const Reference<T1> &first,
-        const Reference<T2> &other, const usize mod,
+        const ArraySlice<T1> &first,
+        const ArraySlice<T2> &other, const usize mod,
         const usize threads = 16);
 
     /**
@@ -749,7 +749,7 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> inner(const Reference<T1> &first,
+    static Array<T3> inner(const ArraySlice<T1> &first,
                                    const Array<T2> &other,
                                    const usize threads = 16);
 
@@ -770,7 +770,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> inner(const Array<T1> &first,
-                                   const Reference<T2> &other,
+                                   const ArraySlice<T2> &other,
                                    const usize threads = 16);
 
     /**
@@ -789,8 +789,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> inner(const Reference<T1> &first,
-                                   const Reference<T2> &other,
+    static Array<T3> inner(const ArraySlice<T1> &first,
+                                   const ArraySlice<T2> &other,
                                    const usize threads = 16);
 
     /**
@@ -829,7 +829,7 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> outer(const Reference<T1> &first,
+    static Array<T3> outer(const ArraySlice<T1> &first,
                                    const Array<T2> &other,
                                    const usize threads = 16);
 
@@ -850,7 +850,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> outer(const Array<T1> &first,
-                                   const Reference<T2> &other,
+                                   const ArraySlice<T2> &other,
                                    const usize threads = 16);
 
     /**
@@ -869,8 +869,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> outer(const Reference<T1> &first,
-                                   const Reference<T2> &other,
+    static Array<T3> outer(const ArraySlice<T1> &first,
+                                   const ArraySlice<T2> &other,
                                    const usize threads = 16);
 
     /**
@@ -894,11 +894,11 @@ struct MdLinearAlgebra {
     /**
      * @brief Verify if matrix is boolean
      * @tparam T matrix type
-     * @param other test matrix reference
+     * @param other test matrix ArraySlice
      * @return true if matrix is identity, else false
      */
     template <typename T>
-    static bool is_identity(const Reference<T> &other);
+    static bool is_identity(const ArraySlice<T> &other);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -926,8 +926,8 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename T1, typename T2, typename T3>
-    static Array<T3> kron(const Reference<T1> &first,
-                                  const Reference<T2> &other,
+    static Array<T3> kron(const ArraySlice<T1> &first,
+                                  const ArraySlice<T2> &other,
                                   const usize total_threads = 16);
 
     /**
@@ -941,7 +941,7 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename T1, typename T2, typename T3>
-    static Array<T3> kron(const Reference<T1> &first,
+    static Array<T3> kron(const ArraySlice<T1> &first,
                                   const Array<T2> &other,
                                   const usize total_threads = 16);
 
@@ -957,7 +957,7 @@ struct MdLinearAlgebra {
      */
     template <typename T1, typename T2, typename T3>
     static Array<T3> kron(const Array<T1> &first,
-                                  const Reference<T2> &other,
+                                  const ArraySlice<T2> &other,
                                   const usize total_threads = 16);
 
     /**
@@ -981,7 +981,7 @@ struct MdLinearAlgebra {
      */
     template <typename T, class = typename std::enable_if<
                               std::is_floating_point<T>::value>::type>
-    static Array<T> matrix_power(const Reference<T> &,
+    static Array<T> matrix_power(const ArraySlice<T> &,
                                          const usize power);
 
     /**
@@ -1006,7 +1006,7 @@ struct MdLinearAlgebra {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static Array<T> matrix_mod_power(const Reference<T> &,
+    static Array<T> matrix_mod_power(const ArraySlice<T> &,
                                              const usize power,
                                              const usize mod);
 
@@ -1026,7 +1026,7 @@ struct MdLinearAlgebra {
      * @returns new matrix
      */
     template <typename T>
-    static long double det(const Reference<T> &);
+    static long double det(const ArraySlice<T> &);
 
     /**
      * @brief Evaluate LU factorization of a matrix.
@@ -1048,7 +1048,7 @@ struct MdLinearAlgebra {
     template <typename Tout, typename T>
     static std::tuple<Array<Tout>, Array<Tout>,
                       Array<Tout>, i32>
-    lu_decompose(const Reference<T> &);
+    lu_decompose(const ArraySlice<T> &);
 
     /**
      * @brief Evaluate complex determinant of a matrix.
@@ -1066,7 +1066,7 @@ struct MdLinearAlgebra {
      * @returns new matrix
      */
     template <typename T>
-    static clongdouble c_det(const Reference<T> &);
+    static clongdouble c_det(const ArraySlice<T> &);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1105,7 +1105,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(
-        const Reference<Complex<T1>> &first,
+        const ArraySlice<Complex<T1>> &first,
         const Array<T2> &other, const usize threads = 16);
 
     /**
@@ -1125,7 +1125,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(const Array<Complex<T1>> &first,
-                                  const Reference<T2> &other,
+                                  const ArraySlice<T2> &other,
                                   const usize threads = 16);
 
     /**
@@ -1145,8 +1145,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(
-        const Reference<Complex<T1>> &first,
-        const Reference<T2> &other, const usize threads = 16);
+        const ArraySlice<Complex<T1>> &first,
+        const ArraySlice<T2> &other, const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1184,7 +1184,7 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(const Reference<T1> &first,
+    static Array<T3> vdot(const ArraySlice<T1> &first,
                                   const Array<T2> &other,
                                   const usize threads = 16);
 
@@ -1205,7 +1205,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(const Array<T1> &first,
-                                  const Reference<T2> &other,
+                                  const ArraySlice<T2> &other,
                                   const usize threads = 16);
 
     /**
@@ -1224,8 +1224,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(const Reference<T1> &first,
-                                  const Reference<T2> &other,
+    static Array<T3> vdot(const ArraySlice<T1> &first,
+                                  const ArraySlice<T2> &other,
                                   const usize threads = 16);
 };
 

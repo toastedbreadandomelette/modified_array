@@ -26,7 +26,7 @@ int main(i32 argc, const char** argv) {
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = FFT::ifft2<f64>(FFT::fft2<f64>(c));
+    auto ans = Linalg::mat_multiply<f64>(c, d, 1);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<f64> time = end - start;

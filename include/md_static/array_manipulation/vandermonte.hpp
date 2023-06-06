@@ -77,7 +77,7 @@ Array<T> Manip::vandermonte(const Array<T> &rows, const i64 n,
 }
 
 template <typename T>
-Array<T> Manip::vandermonte(const Reference<T> &rows,
+Array<T> Manip::vandermonte(const ArraySlice<T> &rows,
                                     const i64 n, const bool increasing_order) {
     return vandermonte<T>(
         Array<T>(*rows.__array_reference, rows.offset, rows.shp_offset),

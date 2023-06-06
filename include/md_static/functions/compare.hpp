@@ -5,7 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T1, typename T2>
-bool MdArrayUtility::compare(const Array<T1> &first,
+bool Utils::compare(const Array<T1> &first,
                              const Array<T2> &other) {
     if (first.get_shape_size() != other.get_shape_size()) {
         return false;

@@ -4,7 +4,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T1, typename T2>
-Array<T2> MdArrayUtility::transpose(const Array<T1> &first) {
+Array<T2> Utils::transpose(const Array<T1> &first) {
     if (first.get_shape_size() != 2) {
         throw std::runtime_error("Matrix Error: Expected dimension 2.");
     }
@@ -22,8 +22,8 @@ Array<T2> MdArrayUtility::transpose(const Array<T1> &first) {
 }
 
 template <typename T>
-Array<T> MdArrayUtility::transpose(const Reference<T> &values) {
-    return MdArrayUtility::transpose<T>(
+Array<T> Utils::transpose(const ArraySlice<T> &values) {
+    return Utils::transpose<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 

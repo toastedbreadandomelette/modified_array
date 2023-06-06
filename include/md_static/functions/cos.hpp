@@ -7,15 +7,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::cos(const Array<T> &values) {
-    return MdArrayUtility::map<T>(values,
-                                  [](const T &value) { return ::cos(value); });
+Array<T> Utils::cos(const Array<T> &values) {
+    return Utils::map<T>(values, [](const T &value) { return ::cos(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::cos(const Reference<T> &values) {
-    return MdArrayUtility::cos<T>(Array<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+Array<T> Utils::cos(const ArraySlice<T> &values) {
+    return Utils::cos<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

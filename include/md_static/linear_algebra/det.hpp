@@ -17,7 +17,7 @@ f128 Linalg::det(const Array<T> &matrix) {
 }
 
 template <typename T>
-f128 Linalg::det(const Reference<T> &matrix) {
+f128 Linalg::det(const ArraySlice<T> &matrix) {
     return Linalg::det(
         Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset));
 }

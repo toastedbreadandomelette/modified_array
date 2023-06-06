@@ -7,14 +7,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::pow(const Array<T> &values, f64 power) {
-    return MdArrayUtility::map<T>(
+Array<T> Utils::pow(const Array<T> &values, f64 power) {
+    return Utils::map<T>(
         values, [power](const T value) { return ::pow(value, power); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::pow(const Reference<T> &values, f64 power) {
-    return MdArrayUtility::pow<T>(
+Array<T> Utils::pow(const ArraySlice<T> &values, f64 power) {
+    return Utils::pow<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         power);
 }

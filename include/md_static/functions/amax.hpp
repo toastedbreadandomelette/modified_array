@@ -6,8 +6,7 @@
 #include "./reduce.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::amax(const Array<T> &values,
-                                      const i32 axis) {
+Array<T> Utils::amax(const Array<T> &values, const i32 axis) {
     return reduce<T>(
         values,
         [](const T &prev_value, const T &curr_value) {
@@ -17,11 +16,10 @@ Array<T> MdArrayUtility::amax(const Array<T> &values,
 }
 
 template <typename T>
-Array<T> MdArrayUtility::amax(const Reference<T> &values,
-                                      const i32 axis) {
-    return amax(Array<T>(*values.__array_reference, values.offset,
-                                 values.shp_offset),
-                axis);
+Array<T> Utils::amax(const ArraySlice<T> &values, const i32 axis) {
+    return amax(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        axis);
 }
 
 #endif

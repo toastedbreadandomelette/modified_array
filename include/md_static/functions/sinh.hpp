@@ -7,14 +7,13 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<f64> MdArrayUtility::sinh(const Array<T> &values) {
-    return MdArrayUtility::map<T>(values,
-                                  [](const T &value) { return ::sinh(value); });
+Array<f64> Utils::sinh(const Array<T> &values) {
+    return Utils::map<T>(values, [](const T &value) { return ::sinh(value); });
 }
 
 template <typename T>
-Array<f64> MdArrayUtility::sinh(const Reference<T> &values) {
-    return MdArrayUtility::sinh<T>(
+Array<f64> Utils::sinh(const ArraySlice<T> &values) {
+    return Utils::sinh<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 

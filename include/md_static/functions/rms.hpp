@@ -5,7 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-f128 MdArrayUtility::rms(const Array<T> &values, const T init) {
+f128 Utils::rms(const Array<T> &values, const T init) {
     f128 mean_sq = accumulate_and_merge_fn(
                        values,
                        [](const T prev_value, const T current_value) {
@@ -20,7 +20,7 @@ f128 MdArrayUtility::rms(const Array<T> &values, const T init) {
 }
 
 template <typename T>
-f128 MdArrayUtility::rms(const Reference<T> &values,
+f128 Utils::rms(const ArraySlice<T> &values,
                          const T init) {
     return rms(Array<T>(*values.__array_reference, values.offset,
                                 values.shp_offset),

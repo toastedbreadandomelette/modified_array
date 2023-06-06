@@ -4,8 +4,8 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::map(const Array<T> &values,
-                             const fn<T(const T &)> &function_exec) {
+Array<T> Utils::map(const Array<T> &values,
+                    const fn<T(const T &)> &function_exec) {
     const usize size = values.get_size();
 
     std::vector<usize> shp;
@@ -49,8 +49,8 @@ Array<T> MdArrayUtility::map(const Array<T> &values,
 }
 
 template <typename T>
-Array<T> MdArrayUtility::map(const Reference<T> &values,
-                             const fn<T(const T &)> &function_exec) {
+Array<T> Utils::map(const ArraySlice<T> &values,
+                    const fn<T(const T &)> &function_exec) {
     return map<T>(
         Array(*values.__array_reference, values.offset, values.shp_offset),
         function_exec);

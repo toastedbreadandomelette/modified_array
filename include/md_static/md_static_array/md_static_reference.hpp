@@ -7,11 +7,11 @@
 #include "./md_type_inference.hpp"
 
 template <typename T>
-class MdStaticArrayReference {
+class ArraySlice {
     template <typename T1>
     friend class MdStaticArray;
     template <typename T1>
-    friend class MdStaticArrayReference;
+    friend class ArraySlice;
 
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
@@ -24,24 +24,23 @@ class MdStaticArrayReference {
     u16 shp_offset;
 
  public:
-    MdStaticArrayReference() {}
+    ArraySlice() {}
 
-    MdStaticArrayReference(const MdStaticArray<T> &other, const usize offst) {
+    ArraySlice(const MdStaticArray<T> &other, const usize offst) {
         __array_reference = &other;
         offset = offst;
         size = other.get_size() / other.shape[0];
         shp_offset = 1;
     }
 
-    MdStaticArrayReference(const MdStaticArrayReference<T> &other,
-                           const usize offst) {
+    ArraySlice(const ArraySlice<T> &other, const usize offst) {
         __array_reference = other.__array_reference;
         offset = offst;
         shp_offset = other.shp_offset + 1;
         size = other.size / (other.__array_reference->shape[shp_offset - 1]);
     }
 
-    MdStaticArrayReference(const MdStaticArrayReference<T> &other) {
+    ArraySlice(const ArraySlice<T> &other) {
         __array_reference = other.__array_reference;
         offset = other.offset;
         shp_offset = other.shp_offset;
@@ -51,7 +50,7 @@ class MdStaticArrayReference {
     /**
      * @brief Improve copy operator: support broadcasting
      */
-    MdStaticArrayReference &operator=(const MdStaticArrayReference<T> &other) {
+    ArraySlice &operator=(const ArraySlice<T> &other) {
         __array_reference = other.__array_reference;
         offset = other.offset;
         shp_offset = other.shp_offset;
@@ -61,10 +60,10 @@ class MdStaticArrayReference {
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator=(const MdStaticArray<T1> &value) {
+    inline ArraySlice &operator=(const MdStaticArray<T1> &value) {
         if (value.get_size() != size) {
             throw std::runtime_error(
-                "Assignment error between reference of size " +
+                "Assignment error between ArraySlice of size " +
                 std::to_string(size) + " and MdStaticArray of size " +
                 std::to_string(value.get_size()));
         }
@@ -84,7 +83,7 @@ class MdStaticArrayReference {
     }
 
     template <typename T1>
-    MdStaticArrayReference &operator=(const T1 other) {
+    ArraySlice &operator=(const T1 other) {
         if (size == 1) {
             __array_reference->__array[offset] = other;
             return *this;
@@ -102,7 +101,7 @@ class MdStaticArrayReference {
         return *this;
     }
 
-    inline MdStaticArrayReference operator[](const usize index) const {
+    inline ArraySlice operator[](const usize index) const {
         if (shp_offset >= __array_reference->shp_size) {
             char c[100];
             sprintf(c, "Expected dimension %d, found %d", shp_offset + 1,
@@ -116,13 +115,12 @@ class MdStaticArrayReference {
                 std::to_string(__array_reference->shape[shp_offset]) + ")");
         }
 
-        return MdStaticArrayReference<T>(
+        return ArraySlice<T>(
             *this, offset + index * __array_reference->skip_vec[shp_offset]);
     }
 
     // To do: efficient printing
-    friend std::ostream &operator<<(std::ostream &op,
-                                    const MdStaticArrayReference<T> &ot) {
+    friend std::ostream &operator<<(std::ostream &op, const ArraySlice<T> &ot) {
         // op << "here " << ot.size << '\n';
         if (ot.size == 1) {
             op << ot.__array_reference->__array[ot.offset];
@@ -189,14 +187,14 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) + other;
     }
 
-    inline auto operator+(const MdStaticArrayReference<T> &other) const {
+    inline auto operator+(const ArraySlice<T> &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) +
                MdStaticArray(*other.__array_reference, other.offset,
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator+(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) + other;
     }
@@ -206,7 +204,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) - other;
     }
 
-    inline auto operator-(const MdStaticArrayReference<T> &other) const {
+    inline auto operator-(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] -
@@ -217,8 +215,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator-(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) - other;
     }
@@ -228,7 +226,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) * other;
     }
 
-    inline auto operator*(const MdStaticArrayReference<T> &other) const {
+    inline auto operator*(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] *
@@ -239,8 +237,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator*(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) * other;
     }
@@ -250,14 +248,14 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) / other;
     }
 
-    inline auto operator/(const MdStaticArrayReference<T> &other) const {
+    inline auto operator/(const ArraySlice<T> &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) /
                MdStaticArray(*other.__array_reference, other.offset,
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator/(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) / other;
     }
@@ -267,7 +265,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) % other;
     }
 
-    inline auto operator%(const MdStaticArrayReference<T> &other) const {
+    inline auto operator%(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] /
@@ -278,8 +276,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator%(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) % other;
     }
@@ -289,7 +287,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) & other;
     }
 
-    inline auto operator&(const MdStaticArrayReference<T> &other) const {
+    inline auto operator&(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] &
@@ -300,8 +298,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator&(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) & other;
     }
@@ -311,7 +309,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) | other;
     }
 
-    inline auto operator|(const MdStaticArrayReference<T> &other) const {
+    inline auto operator|(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] |
@@ -322,8 +320,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator|(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) | other;
     }
@@ -333,7 +331,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) ^ other;
     }
 
-    inline auto operator^(const MdStaticArrayReference<T> &other) const {
+    inline auto operator^(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] ^
@@ -344,8 +342,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator^(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) ^ other;
     }
@@ -355,7 +353,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) << other;
     }
 
-    inline auto operator<<(const MdStaticArrayReference<T> &other) const {
+    inline auto operator<<(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset]
@@ -366,8 +364,8 @@ class MdStaticArrayReference {
                                 other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator<<(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) << other;
     }
@@ -377,7 +375,7 @@ class MdStaticArrayReference {
         return MdStaticArray(*__array_reference, offset, shp_offset) >> other;
     }
 
-    inline auto operator>>(const MdStaticArrayReference<T> &other) const {
+    inline auto operator>>(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] >>
@@ -388,8 +386,8 @@ class MdStaticArrayReference {
                              other.shp_offset);
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline auto operator>>(const T1 &other) const {
         return MdStaticArray(*__array_reference, offset, shp_offset) >> other;
     }
@@ -400,7 +398,7 @@ class MdStaticArrayReference {
             .comp_neq_internal_(other);
     }
 
-    inline auto operator!=(const MdStaticArrayReference<T> &other) const {
+    inline auto operator!=(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] !=
@@ -411,8 +409,8 @@ class MdStaticArrayReference {
                                               other.offset, other.shp_offset));
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline MdStaticArray<bool> operator!=(const T1 &other) const {
         if (size == 1) {
             return MdStaticArray(1,
@@ -428,8 +426,7 @@ class MdStaticArrayReference {
             .comp_eq_internal_(other);
     }
 
-    inline MdStaticArray<bool> operator==(
-        const MdStaticArrayReference<T> &other) const {
+    inline MdStaticArray<bool> operator==(const ArraySlice<T> &other) const {
         if (size == 1 && other.size == 1) {
             return MdStaticArray(
                 1, __array_reference->__array[offset] ==
@@ -440,8 +437,8 @@ class MdStaticArrayReference {
                                              other.offset, other.shp_offset));
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline MdStaticArray<bool> operator==(const T1 &other) const {
         if (size == 1) {
             return MdStaticArray(1,
@@ -452,228 +449,220 @@ class MdStaticArrayReference {
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator+=(MdStaticArray<T1> &other) {
+    inline ArraySlice &operator+=(MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .add_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator+=(MdStaticArrayReference &other) {
+    inline ArraySlice &operator+=(ArraySlice &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .add_self_internal_(MdStaticArray(*other.__array_reference,
                                               other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator+=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator+=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .add_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator-=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator-=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .sub_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator-=(MdStaticArrayReference &other) {
+    inline ArraySlice &operator-=(ArraySlice &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .sub_self_internal_(MdStaticArray(*other.__array_reference,
                                               other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator-=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator-=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .sub_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator*=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator*=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .mul_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator*=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator*=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .mul_self_internal_(MdStaticArray(*other.__array_reference,
                                               other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator*=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator*=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .mul_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator/=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator/=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .div_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator/=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator/=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .div_self_internal_(MdStaticArray(*other.__array_reference,
                                               other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator/=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator/=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .div_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator%=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator%=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .mod_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator%=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator%=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .mod_self_internal_(MdStaticArray(*other.__array_reference,
                                               other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator%=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator%=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .mod_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator&=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator&=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .and_bit_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator&=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator&=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .and_bit_self_internal_(MdStaticArray(
                 *other.__array_reference, other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator&=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator&=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .and_bit_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator|=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator|=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .or_bit_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator|=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator|=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .or_bit_self_internal_(MdStaticArray(
                 *other.__array_reference, other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator|=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator|=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .or_bit_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator^=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator^=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .xor_bit_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator^=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator^=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .xor_bit_self_internal_(MdStaticArray(
                 *other.__array_reference, other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator^=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator^=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .xor_bit_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator<<=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator<<=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .lshft_bit_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator<<=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator<<=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .lshft_bit_self_internal_(MdStaticArray(
                 *other.__array_reference, other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator<<=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator<<=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .lshft_bit_self_iinternal_(other);
         return *this;
     }
 
     template <typename T1>
-    inline MdStaticArrayReference &operator>>=(const MdStaticArray<T1> &other) {
+    inline ArraySlice &operator>>=(const MdStaticArray<T1> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .rshft_bit_self_internal_(other);
         return *this;
     }
 
-    inline MdStaticArrayReference &operator>>=(
-        const MdStaticArrayReference<T> &other) {
+    inline ArraySlice &operator>>=(const ArraySlice<T> &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .rshft_bit_self_internal_(MdStaticArray(
                 *other.__array_reference, other.offset, other.shp_offset));
         return *this;
     }
 
-    template <typename T1, class = typename std::enable_if<!std::is_same<
-                               T1, MdStaticArrayReference<T>>::value>::type>
-    inline MdStaticArrayReference &operator>>=(const T1 &other) {
+    template <typename T1, class = typename std::enable_if<
+                               !std::is_same<T1, ArraySlice<T>>::value>::type>
+    inline ArraySlice &operator>>=(const T1 &other) {
         MdStaticArray(*__array_reference, offset, shp_offset)
             .rshft_bit_self_iinternal_(other);
         return *this;
@@ -681,182 +670,148 @@ class MdStaticArrayReference {
 
     inline usize get_size() const { return size; }
 
-    ~MdStaticArrayReference() { __array_reference = nullptr; }
+    ~ArraySlice() { __array_reference = nullptr; }
 
     template <typename T1, typename T2>
-    friend inline auto &operator+=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator+=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator-=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator-=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator*=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator*=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator/=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator/=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator%=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator%=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator<<=(T1 &other,
-                                    const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator<<=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator>>=(T1 &other,
-                                    const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator>>=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator&=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator&=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator|=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator|=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator^=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator^=(T1 &other, const ArraySlice<T2> &first);
 
     ///////////////////////////////////////////////////////////////////////////
 
     template <typename T1, typename T2>
-    friend inline auto operator+(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator+(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator-(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator-(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1>
-    friend inline MdStaticArray<T1> operator-(
-        const MdStaticArrayReference<T1> &first);
+    friend inline MdStaticArray<T1> operator-(const ArraySlice<T1> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator*(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator*(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator/(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator/(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator%(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator%(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator<<(const T1 &other,
-                                  const MdStaticArrayReference<T2> &first);
+    friend inline auto operator<<(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator>>(const T1 &other,
-                                  const MdStaticArrayReference<T2> &first);
+    friend inline auto operator>>(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator&(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator&(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator|(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator|(const T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto operator^(const T1 &other,
-                                 const MdStaticArrayReference<T2> &first);
+    friend inline auto operator^(const T1 &other, const ArraySlice<T2> &first);
 };
 
 template <typename T1, typename T2>
-inline auto operator+(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator+(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset) +
            other;
 }
 
 template <typename T1, typename T2>
-inline auto operator-(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator-(const T1 &other, const ArraySlice<T2> &first) {
     return -other + MdStaticArray<T2>(*first.__array_reference, first.offset,
                                       first.shp_offset);
 }
 
 template <typename T1, typename T2>
-inline auto operator*(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator*(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .mul_iinternal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator/(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator/(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray(*first.__array_reference, first.offset,
                          first.shp_offset)
         .div_iointernal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator%(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator%(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .mod_iointernal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator&(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator&(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .and_bit_iinternal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator|(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator|(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .or_bit_iinternal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator^(const T1 &other,
-                      const MdStaticArrayReference<T2> &first) {
+inline auto operator^(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .xor_bit_iinternal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator<<(const T1 &other,
-                       const MdStaticArrayReference<T2> &first) {
+inline auto operator<<(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .lshft_bit_iointernal_(other);
 }
 
 template <typename T1, typename T2>
-inline auto operator>>(const T1 &other,
-                       const MdStaticArrayReference<T2> &first) {
+inline auto operator>>(const T1 &other, const ArraySlice<T2> &first) {
     return MdStaticArray<T2>(*first.__array_reference, first.offset,
                              first.shp_offset)
         .rshft_bit_iointernal_(other);
 }
 
 template <typename T>
-inline MdStaticArray<T> operator-(const MdStaticArrayReference<T> &first) {
+inline MdStaticArray<T> operator-(const ArraySlice<T> &first) {
     return MdStaticArray<T>(*first.__array_reference, first.offset,
                             first.shp_offset)
         .ng_internal_();
 }
-
-template <typename T>
-using Reference = MdStaticArrayReference<T>;
 
 #endif

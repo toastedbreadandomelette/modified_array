@@ -6,120 +6,111 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &__first,
-                                        const Array<T2> &__other,
+Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &first,
+                                        const Array<T2> &other,
                                         const Array<arg> &...arguments) {
-    Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(__first, __other);
+    Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(first, other);
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Reference<T1> &__first,
-                                        const Reference<T2> &__other,
+Array<Tf> Linalg::matrix_chain_multiply(const ArraySlice<T1> &first,
+                                        const ArraySlice<T2> &other,
                                         const Array<arg> &...arguments) {
     Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(
-        Array<T1>(*__first.__array_reference, __first.offset,
-                  __first.shp_offset),
-        Array<T2>(*__other.__array_reference, __other.offset,
-                  __other.shp_offset));
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset));
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Reference<T1> &__first,
-                                        const Array<T2> &__other,
+Array<Tf> Linalg::matrix_chain_multiply(const ArraySlice<T1> &first,
+                                        const Array<T2> &other,
                                         const Array<arg> &...arguments) {
     Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(
-        Array<T1>(*__first.__array_reference, __first.offset,
-                  __first.shp_offset),
-        __other);
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        other);
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &__first,
-                                        const Reference<T2> &__other,
+Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &first,
+                                        const ArraySlice<T2> &other,
                                         const Array<arg> &...arguments) {
     Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(
-        __first, Array<T2>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset));
+        first,
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset));
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &__first,
-                                        const Array<T2> &__other,
-                                        const Reference<arg> &...arguments) {
-    Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(__first, __other);
+Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &first,
+                                        const Array<T2> &other,
+                                        const ArraySlice<arg> &...arguments) {
+    Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(first, other);
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Reference<T1> &__first,
-                                        const Reference<T2> &__other,
-                                        const Reference<arg> &...arguments) {
+Array<Tf> Linalg::matrix_chain_multiply(const ArraySlice<T1> &first,
+                                        const ArraySlice<T2> &other,
+                                        const ArraySlice<arg> &...arguments) {
     Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(
-        Array<T1>(*__first.__array_reference, __first.offset,
-                  __first.shp_offset),
-        Array<T2>(*__other.__array_reference, __other.offset,
-                  __other.shp_offset));
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset));
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Reference<T1> &__first,
-                                        const Array<T2> &__other,
-                                        const Reference<arg> &...arguments) {
+Array<Tf> Linalg::matrix_chain_multiply(const ArraySlice<T1> &first,
+                                        const Array<T2> &other,
+                                        const ArraySlice<arg> &...arguments) {
     Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(
-        Array<T1>(*__first.__array_reference, __first.offset,
-                  __first.shp_offset),
-        __other);
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        other);
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2, typename... arg>
-Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &__first,
-                                        const Reference<T2> &__other,
-                                        const Reference<arg> &...arguments) {
+Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &first,
+                                        const ArraySlice<T2> &other,
+                                        const ArraySlice<arg> &...arguments) {
     Array<Tf> result = Linalg::mat_multiply<Tf, T1, T2>(
-        __first, Array<T2>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset));
+        first,
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset));
     return Linalg::matrix_chain_multiply<Tf, Tf, arg...>(result, arguments...);
 }
 
 template <typename Tf, typename T1, typename T2>
-Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &__first,
-                                        const Array<T2> &__other) {
-    return Linalg::mat_multiply<Tf, T1, T2>(__first, __other);
+Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &first,
+                                        const Array<T2> &other) {
+    return Linalg::mat_multiply<Tf, T1, T2>(first, other);
 }
 
 template <typename Tf, typename T1, typename T2>
-Array<Tf> Linalg::matrix_chain_multiply(const Reference<T1> &__first,
-                                        const Reference<T2> &__other) {
+Array<Tf> Linalg::matrix_chain_multiply(const ArraySlice<T1> &first,
+                                        const ArraySlice<T2> &other) {
     return Linalg::mat_multiply<Tf, T1, T2>(
-        Array<T1>(*__first.__array_reference, __first.offset,
-                  __first.shp_offset),
-        Array<T2>(*__other.__array_reference, __other.offset,
-                  __other.shp_offset));
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset));
 }
 
 template <typename Tf, typename T1, typename T2>
-Array<Tf> Linalg::matrix_chain_multiply(const Reference<T1> &__first,
-                                        const Array<T2> &__other) {
+Array<Tf> Linalg::matrix_chain_multiply(const ArraySlice<T1> &first,
+                                        const Array<T2> &other) {
     return Linalg::mat_multiply<Tf, T1, T2>(
-        Array<T1>(*__first.__array_reference, __first.offset,
-                  __first.shp_offset),
-        __other);
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        other);
 }
 
 template <typename Tf, typename T1, typename T2>
-Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &__first,
-                                        const Reference<T2> &__other) {
+Array<Tf> Linalg::matrix_chain_multiply(const Array<T1> &first,
+                                        const ArraySlice<T2> &other) {
     return Linalg::mat_multiply<Tf, T1, T2>(
-        __first, Array<T2>(*__other.__array_reference, __other.offset,
-                           __other.shp_offset));
+        first,
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset));
 }
 
 #endif

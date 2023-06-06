@@ -30,7 +30,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static Array<c64> fft_int(const Reference<T>& other);
+    static Array<c64> fft_int(const ArraySlice<T>& other);
 
     /**
      * @note Source:
@@ -65,7 +65,7 @@ struct FFT {
      * @return values of complex numbers
      */
     static Array<c64> ifft_int(
-        const Reference<c64>& other);
+        const ArraySlice<c64>& other);
 
     /**
      * @note Source:
@@ -101,7 +101,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static Array<c64> fft(const Reference<T>& other);
+    static Array<c64> fft(const ArraySlice<T>& other);
 
     /**
      * @note Source:
@@ -125,7 +125,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static Array<T> ifft(const Reference<c64>& other);
+    static Array<T> ifft(const ArraySlice<c64>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
@@ -143,7 +143,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static Array<c64> fft2(const Reference<T>& other);
+    static Array<c64> fft2(const ArraySlice<T>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
@@ -161,7 +161,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static Array<T> ifft2(const Reference<c64>& other);
+    static Array<T> ifft2(const ArraySlice<c64>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
@@ -179,7 +179,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static Array<c64> fftn(const Reference<T>& other);
+    static Array<c64> fftn(const ArraySlice<T>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
@@ -197,7 +197,7 @@ struct FFT {
      * @return values of complex numbers in ND-array
      */
     template <typename T>
-    static Array<T> ifftn(const Reference<c64>& other);
+    static Array<T> ifftn(const ArraySlice<c64>& other);
 };
 
 #endif

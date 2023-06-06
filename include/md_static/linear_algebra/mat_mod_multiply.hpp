@@ -101,7 +101,7 @@ Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2, class T>
-Array<T3> Linalg::mat_mod_multiply(const Reference<T1> &first,
+Array<T3> Linalg::mat_mod_multiply(const ArraySlice<T1> &first,
                                    const Array<T2> &other, const usize mod,
                                    const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
@@ -111,7 +111,7 @@ Array<T3> Linalg::mat_mod_multiply(const Reference<T1> &first,
 
 template <typename T3, typename T1, typename T2, class T>
 Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
-                                   const Reference<T2> &other, const usize mod,
+                                   const ArraySlice<T2> &other, const usize mod,
                                    const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
@@ -120,8 +120,8 @@ Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2, class T>
-Array<T3> Linalg::mat_mod_multiply(const Reference<T1> &first,
-                                   const Reference<T2> &other, const usize mod,
+Array<T3> Linalg::mat_mod_multiply(const ArraySlice<T1> &first,
+                                   const ArraySlice<T2> &other, const usize mod,
                                    const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         Array<T1>(*first.__array_reference, first.offset, first.shp_offset),

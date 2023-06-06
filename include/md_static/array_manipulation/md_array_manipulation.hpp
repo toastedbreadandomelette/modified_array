@@ -73,7 +73,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static Array<T> mat_diag(const Reference<T> &rows,
+    static Array<T> mat_diag(const ArraySlice<T> &rows,
                                      const usize koffset = 0);
 
     /**
@@ -101,7 +101,7 @@ struct MdArrayManipulate {
      * @returns array of size {|array|, n}
      */
     template <typename T>
-    static Array<T> vandermonte(const Reference<T> &rows,
+    static Array<T> vandermonte(const ArraySlice<T> &rows,
                                         const i64 n = -1,
                                         const bool increasing_order = false);
 
@@ -110,7 +110,7 @@ struct MdArrayManipulate {
                                  const usize axis = -1);
 
     template <typename T>
-    static Array<T> flip(const Reference<T> &__ndarray,
+    static Array<T> flip(const ArraySlice<T> &__ndarray,
                                  const usize axis = -1);
 
     template <typename T3, typename T1, typename T2>
@@ -119,18 +119,18 @@ struct MdArrayManipulate {
                                       const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
-    static Array<T3> linspace(const Reference<T1> &first,
+    static Array<T3> linspace(const ArraySlice<T1> &first,
                                       const Array<T2> &other,
                                       const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
-    static Array<T3> linspace(const Reference<T1> &first,
-                                      const Reference<T2> &other,
+    static Array<T3> linspace(const ArraySlice<T1> &first,
+                                      const ArraySlice<T2> &other,
                                       const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static Array<T3> linspace(const Array<T1> &first,
-                                      const Reference<T2> &other,
+                                      const ArraySlice<T2> &other,
                                       const usize numbers = 50);
 };
 

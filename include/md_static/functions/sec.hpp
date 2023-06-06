@@ -7,15 +7,15 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::sec(const Array<T> &values) {
-    return MdArrayUtility::map<T>(
-        values, [](const T &value) { return 1 / ::cos(value); });
+Array<T> Utils::sec(const Array<T> &values) {
+    return Utils::map<T>(values,
+                         [](const T &value) { return 1 / ::cos(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::sec(const Reference<T> &values) {
-    return MdArrayUtility::sec<T>(Array<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+Array<T> Utils::sec(const ArraySlice<T> &values) {
+    return Utils::sec<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

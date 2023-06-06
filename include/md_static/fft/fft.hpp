@@ -118,7 +118,7 @@ Array<c64> FFT::fft(const Array<T>& other) {
 }
 
 template <typename T>
-Array<c64> FFT::fft(const Reference<T>& other) {
+Array<c64> FFT::fft(const ArraySlice<T>& other) {
     return fft<T>(
         Array<T>(*other.__array_reference, other.offset, other.shp_offset));
 }

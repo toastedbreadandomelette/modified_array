@@ -4,8 +4,8 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<double> MdArrayUtility::mean(const Array<T> &values, const T init,
-                                   const i32 axis) {
+Array<double> Utils::mean(const Array<T> &values, const T init,
+                          const i32 axis) {
     if (axis == -1) {
         return sum(values) / (values.get_size() * 1.0);
     }
@@ -13,8 +13,8 @@ Array<double> MdArrayUtility::mean(const Array<T> &values, const T init,
 }
 
 template <typename T>
-Array<double> MdArrayUtility::mean(const Reference<T> &values, const T init,
-                                   const i32 axis) {
+Array<double> Utils::mean(const ArraySlice<T> &values, const T init,
+                          const i32 axis) {
     return mean<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         init, axis);

@@ -4,18 +4,16 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::nan_cumulative_sum(const Reference<T>& values,
-                                            const usize axis,
-                                            const usize thread_count) {
-    return MdArrayUtility::nan_cumulative_sum<T>(
+Array<T> Utils::nan_cumulative_sum(const ArraySlice<T>& values,
+                                   const usize axis, const usize thread_count) {
+    return Utils::nan_cumulative_sum<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         axis, thread_count);
 }
 
 template <typename T>
-Array<T> MdArrayUtility::nan_cumulative_sum(const Array<T>& ndarray,
-                                            const usize axis,
-                                            const usize thread_count) {
+Array<T> Utils::nan_cumulative_sum(const Array<T>& ndarray, const usize axis,
+                                   const usize thread_count) {
     if (axis == -1) {
         Array<T> result(ndarray.get_size());
 

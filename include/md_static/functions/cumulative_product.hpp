@@ -4,17 +4,17 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::cumulative_product(
-    const Reference<T>& values, const usize axis,
+Array<T> Utils::cumulative_product(
+    const ArraySlice<T>& values, const usize axis,
     const usize thread_count) {
-    return MdArrayUtility::cumulative_product<T>(
+    return Utils::cumulative_product<T>(
         Array<T>(*values.__array_reference, values.offset,
                          values.shp_offset),
         axis, thread_count);
 }
 
 template <typename T>
-Array<T> MdArrayUtility::cumulative_product(
+Array<T> Utils::cumulative_product(
     const Array<T>& ndarray, const usize axis,
     const usize thread_count) {
     if (axis == -1) {

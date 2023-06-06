@@ -7,14 +7,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::abs(const Array<T> &values) {
-    return MdArrayUtility::map<T>(
-        values, [](const T &value) { return std::abs(value); });
+Array<T> Utils::abs(const Array<T> &values) {
+    return Utils::map<T>(values,
+                         [](const T &value) { return std::abs(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::abs(const Reference<T> &values) {
-    return MdArrayUtility::abs<T>(
+Array<T> Utils::abs(const ArraySlice<T> &values) {
+    return Utils::abs<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 

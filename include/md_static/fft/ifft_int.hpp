@@ -219,7 +219,7 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
 }
 
 // template <typename T>
-Array<c64> FFT::ifft_int(const Reference<c64>& values) {
+Array<c64> FFT::ifft_int(const ArraySlice<c64>& values) {
     return FFT::ifft_int(Array<c64>(*values.__array_reference, values.offset,
                                     values.shp_offset));
 }

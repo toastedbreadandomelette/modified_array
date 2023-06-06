@@ -27,7 +27,7 @@ struct MdArrayUtility {
      * @returns Array of elements
      */
     template <typename T>
-    static Array<T> map(const Reference<T> &values,
+    static Array<T> map(const ArraySlice<T> &values,
                         const fn<T(const T &)> &function_exec);
 
     /**
@@ -55,7 +55,7 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename T, typename _func>
-    static Array<T> reduce(const Reference<T> &values,
+    static Array<T> reduce(const ArraySlice<T> &values,
                            const _func &function_exec, const T init,
                            const i32 axis = -1);
 
@@ -88,7 +88,7 @@ struct MdArrayUtility {
      * @returns single value
      */
     template <typename T, typename _func, typename _merge_func>
-    static T accumulate_and_merge_fn(const Reference<T> &values,
+    static T accumulate_and_merge_fn(const ArraySlice<T> &values,
                                      const _func &function_exec,
                                      const _merge_func &merge_func,
                                      const T init);
@@ -107,7 +107,7 @@ struct MdArrayUtility {
      * @returns List of values
      */
     template <typename T>
-    static Array<T> sqrt(const Reference<T> &values);
+    static Array<T> sqrt(const ArraySlice<T> &values);
 
     /**
      * @brief absolute value of all values in list values
@@ -123,7 +123,7 @@ struct MdArrayUtility {
      * @returns List of values
      */
     template <typename T>
-    static Array<T> abs(const Reference<T> &values);
+    static Array<T> abs(const ArraySlice<T> &values);
 
     /**
      * @brief Sum of all the values in the list values
@@ -142,7 +142,7 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<T> sum(const Reference<T> &values, const T init = 0,
+    static Array<T> sum(const ArraySlice<T> &values, const T init = 0,
                         const i32 axis = -1);
 
     /**
@@ -162,7 +162,7 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<double> mean(const Reference<T> &values, const T init = 0,
+    static Array<double> mean(const ArraySlice<T> &values, const T init = 0,
                               const i32 axis = -1);
 
     /**
@@ -181,7 +181,7 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<T> amax(const Reference<T> &values, const i32 axis = -1);
+    static Array<T> amax(const ArraySlice<T> &values, const i32 axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
@@ -199,7 +199,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T = usize>
-    static Array<usize> argmax(const Reference<T> &values, const i32 axis = -1);
+    static Array<usize> argmax(const ArraySlice<T> &values,
+                               const i32 axis = -1);
 
     /**
      * @brief Minimum of all the values along given axis
@@ -217,7 +218,7 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<T> amin(const Reference<T> &values, const i32 axis = -1);
+    static Array<T> amin(const ArraySlice<T> &values, const i32 axis = -1);
 
     /**
      * @brief Minimum indexes of all the values along given axis
@@ -235,7 +236,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<usize> argmin(const Reference<T> &values, const i32 axis = -1);
+    static Array<usize> argmin(const ArraySlice<T> &values,
+                               const i32 axis = -1);
 
     /**
      * @brief GCD of all the values combined in the list values
@@ -253,7 +255,7 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<T> gcd(const Reference<T> &values, const i32 axis = -1);
+    static Array<T> gcd(const ArraySlice<T> &values, const i32 axis = -1);
 
     /**
      * @brief LCM of all the values combined in the list values
@@ -271,7 +273,7 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<T> lcm(const Reference<T> &values, const i32 axis = -1);
+    static Array<T> lcm(const ArraySlice<T> &values, const i32 axis = -1);
 
     /**
      * @brief Root Mean Square of all the values in the list values
@@ -289,7 +291,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename T>
-    static long double rms(const Reference<T> &values, const T init = 0);
+    static long double rms(const ArraySlice<T> &values, const T init = 0);
 
     /**
      * @brief Standard Deviation of all the values in the list values
@@ -307,7 +309,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename T>
-    static long double std_dev(const Reference<T> &values);
+    static long double std_dev(const ArraySlice<T> &values);
 
     /**
      * @brief compute log of values to the base 10
@@ -319,7 +321,7 @@ struct MdArrayUtility {
      * @brief compute log of values to the base 10
      */
     template <typename T>
-    static Array<T> log10(const Reference<T> &values);
+    static Array<T> log10(const ArraySlice<T> &values);
 
     /**
      * @brief compute log of values to the base 2
@@ -331,7 +333,7 @@ struct MdArrayUtility {
      * @brief compute log of values to the base 2
      */
     template <typename T>
-    static Array<T> log2(const Reference<T> &values);
+    static Array<T> log2(const ArraySlice<T> &values);
 
     /**
      * @brief compute natural logarithm of valuess
@@ -343,7 +345,7 @@ struct MdArrayUtility {
      * @brief compute natural logarithm of valuess
      */
     template <typename T>
-    static Array<T> log(const Reference<T> &values);
+    static Array<T> log(const ArraySlice<T> &values);
 
     /**
      * @brief compute mod power of integers
@@ -358,7 +360,7 @@ struct MdArrayUtility {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static Array<T> mod_pow(const Reference<T> &values, const usize power,
+    static Array<T> mod_pow(const ArraySlice<T> &values, const usize power,
                             const usize _mod);
 
     /**
@@ -384,7 +386,7 @@ struct MdArrayUtility {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static Array<T> mod_pow(const u64 n, const Reference<T> &values,
+    static Array<T> mod_pow(const u64 n, const ArraySlice<T> &values,
                             const usize _mod);
 
     /**
@@ -405,7 +407,7 @@ struct MdArrayUtility {
      * @returns new arrays with value raise to power
      */
     template <typename T>
-    static Array<T> pow(const Reference<T> &values, double power);
+    static Array<T> pow(const ArraySlice<T> &values, double power);
 
     /**
      * @brief compute sine of values, given in radian
@@ -423,7 +425,7 @@ struct MdArrayUtility {
      * @returns array of computed sine values
      */
     template <typename T>
-    static Array<T> sin(const Reference<T> &values);
+    static Array<T> sin(const ArraySlice<T> &values);
 
     /**
      * @brief compute sine of values, given in radian
@@ -441,7 +443,7 @@ struct MdArrayUtility {
      * @returns array of computed sine values
      */
     template <typename T>
-    static Array<T> cos(const Reference<T> &values);
+    static Array<T> cos(const ArraySlice<T> &values);
 
     /**
      * @brief compute cosine of values, given in radian
@@ -459,7 +461,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> tan(const Reference<T> &values);
+    static Array<T> tan(const ArraySlice<T> &values);
 
     /**
      * @brief compute cotangent of values, given in radian
@@ -477,7 +479,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> cot(const Reference<T> &values);
+    static Array<T> cot(const ArraySlice<T> &values);
 
     /**
      * @brief compute secant of values, given in radian
@@ -495,7 +497,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> sec(const Reference<T> &values);
+    static Array<T> sec(const ArraySlice<T> &values);
 
     /**
      * @brief compute cosecant of values, given in radian
@@ -513,7 +515,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> cosec(const Reference<T> &values);
+    static Array<T> cosec(const ArraySlice<T> &values);
 
     /**
      * @brief compute inverse sin of values, given in radian
@@ -531,7 +533,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> arcsin(const Reference<T> &values);
+    static Array<T> arcsin(const ArraySlice<T> &values);
 
     /**
      * @brief compute inverse cos of values, given in radian
@@ -549,7 +551,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> arccos(const Reference<T> &values);
+    static Array<T> arccos(const ArraySlice<T> &values);
 
     /**
      * @brief compute tan inverse of values, given in radian
@@ -567,7 +569,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> arctan(const Reference<T> &values);
+    static Array<T> arctan(const ArraySlice<T> &values);
 
     /**
      * @brief Generate evenly spaced values
@@ -600,7 +602,7 @@ struct MdArrayUtility {
      * @returns array of computed cosine values
      */
     template <typename T>
-    static Array<T> transpose(const Reference<T> &values);
+    static Array<T> transpose(const ArraySlice<T> &values);
 
     /**
      * @brief Cumulative sum of an array.
@@ -624,7 +626,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> cumulative_sum(const Reference<T> &__array,
+    static Array<T> cumulative_sum(const ArraySlice<T> &__array,
                                    const usize axis = -1,
                                    const usize thread_count = 16);
 
@@ -649,7 +651,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> diff(const Reference<T> &__ndarray, const usize axis = -1,
+    static Array<T> diff(const ArraySlice<T> &__ndarray, const usize axis = -1,
                          const usize thread_count = 16);
 
     /**
@@ -674,7 +676,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> cumulative_product(const Reference<T> &__array,
+    static Array<T> cumulative_product(const ArraySlice<T> &__array,
                                        const usize axis = -1,
                                        const usize thread_count = 16);
 
@@ -700,7 +702,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> nan_cumulative_sum(const Reference<T> &__array,
+    static Array<T> nan_cumulative_sum(const ArraySlice<T> &__array,
                                        const usize axis = -1,
                                        const usize thread_count = 16);
 
@@ -726,7 +728,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> nan_cumulative_product(const Reference<T> &__array,
+    static Array<T> nan_cumulative_product(const ArraySlice<T> &__array,
                                            const usize axis = -1,
                                            const usize thread_count = 16);
 
@@ -749,7 +751,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> rad_2_deg(const Reference<T> &__array);
+    static Array<T> rad_2_deg(const ArraySlice<T> &__array);
 
     /**
      * @brief Convert radian to degree of an array.
@@ -769,7 +771,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> deg_2_rad(const Reference<T> &__array);
+    static Array<T> deg_2_rad(const ArraySlice<T> &__array);
 
     /**
      * @brief Calculate floor of an array.
@@ -789,7 +791,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> floor(const Reference<T> &__array);
+    static Array<T> floor(const ArraySlice<T> &__array);
 
     /**
      * @brief Calculate ceil of an array.
@@ -809,7 +811,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> ceil(const Reference<T> &__array);
+    static Array<T> ceil(const ArraySlice<T> &__array);
 
     /**
      * @brief Check if every value satisfies the condition
@@ -830,7 +832,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static bool every(const Reference<T> &__ndarray__reference,
+    static bool every(const ArraySlice<T> &__ndarray__reference,
                       const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
@@ -852,7 +854,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static bool some(const Reference<T> &__ndarray__reference,
+    static bool some(const ArraySlice<T> &__ndarray__reference,
                      const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
@@ -873,7 +875,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> exp2(const Reference<T> &__ndarray);
+    static Array<double> exp2(const ArraySlice<T> &__ndarray);
 
     /**
      * @brief Compute reciprocal from array of values
@@ -891,7 +893,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> reciprocal(const Reference<T> &__ndarray__reference);
+    static Array<double> reciprocal(const ArraySlice<T> &__ndarray__reference);
 
     /**
      * @brief Compute sinh from array of values
@@ -909,7 +911,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> sinh(const Reference<T> &__ndarray);
+    static Array<double> sinh(const ArraySlice<T> &__ndarray);
 
     /**
      * @brief Compute cosh from array of values
@@ -927,7 +929,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> cosh(const Reference<T> &__ndarray__reference);
+    static Array<double> cosh(const ArraySlice<T> &__ndarray__reference);
 
     /**
      * @brief Compute tanh from array of values
@@ -946,7 +948,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> tanh(const Reference<T> &__ndarray);
+    static Array<double> tanh(const ArraySlice<T> &__ndarray);
 
     /**
      * @brief Compare if two arrays are equal
@@ -981,7 +983,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static void sort(
-        Reference<T> &,
+        ArraySlice<T> &,
         const fn<bool(const T first, const T second)> &comp =
             [](const T first, const T sec) { return first < sec; },
         const i32 axis = -1);

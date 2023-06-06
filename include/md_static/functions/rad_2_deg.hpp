@@ -7,14 +7,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::rad_2_deg(const Array<T> &ndarray) {
-    return MdArrayUtility::map<T>(
+Array<T> Utils::rad_2_deg(const Array<T> &ndarray) {
+    return Utils::map<T>(
         ndarray, [](const T value) -> T { return value * 180.0 / M_PI; });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::rad_2_deg(const Reference<T> &values) {
-    return MdArrayUtility::rad_2_deg<T>(
+Array<T> Utils::rad_2_deg(const ArraySlice<T> &values) {
+    return Utils::rad_2_deg<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 

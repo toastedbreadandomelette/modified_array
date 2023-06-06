@@ -17,7 +17,7 @@ static usize s_threshold_size = 100000;
 static u8 s_thread_count = 16;
 
 template <typename T>
-class MdStaticArrayReference;
+class ArraySlice;
 
 template <typename T>
 class MdStaticAxisReference;
@@ -61,7 +61,7 @@ class MdStaticArray {
     }
 
     /**
-     * @brief create a temporary reference for MdStaticArray::reference.
+     * @brief create a temporary ArraySlice for MdStaticArray::ArraySlice.
      * This will not accessible to user.
      */
     MdStaticArray(const MdStaticArray<T> &other, const usize offset,
@@ -88,7 +88,7 @@ class MdStaticArray {
 
  public:
     template <typename T1>
-    friend class MdStaticArrayReference;
+    friend class ArraySlice;
     template <typename T1>
     friend class MdStaticAxisReference;
     template <typename T1>
@@ -99,8 +99,7 @@ class MdStaticArray {
     friend struct MdArrayManipulate;
     friend struct FFT;
 
-    friend std::ostream &operator<<(std::ostream &op,
-                                    const MdStaticArrayReference<T> &ot);
+    friend std::ostream &operator<<(std::ostream &op, const ArraySlice<T> &ot);
 
     static void set_thread_count(const uint8_t value);
 
@@ -232,9 +231,9 @@ class MdStaticArray {
     }
 
     /**
-     * @brief Assigning reference to the newly created array
+     * @brief Assigning ArraySlice to the newly created array
      */
-    MdStaticArray(const MdStaticArrayReference<T> &other);
+    MdStaticArray(const ArraySlice<T> &other);
 
     /**
      * @brief Casting operator
@@ -319,9 +318,9 @@ class MdStaticArray {
     }
 
     /**
-     * @brief Assigning reference to the newly created array
+     * @brief Assigning ArraySlice to the newly created array
      */
-    MdStaticArray<T> &operator=(const MdStaticArrayReference<T> &other);
+    MdStaticArray<T> &operator=(const ArraySlice<T> &other);
 
     /**
      * @brief Destructor for array
@@ -1165,15 +1164,15 @@ class MdStaticArray {
         return comp_neq_iinternal_(other);
     }
 
-    // To do: create a reference for multi-dimensional arrays.
-    inline MdStaticArrayReference<T> operator[](const usize index) const {
+    // To do: create a ArraySlice for multi-dimensional arrays.
+    inline ArraySlice<T> operator[](const usize index) const {
         if (index >= shape[0]) {
             throw std::runtime_error(
                 "Index out of bounds while accessing index " +
                 std::to_string(index) + " ( >= " + std::to_string(shape[0]) +
                 ")");
         }
-        return MdStaticArrayReference(*this, index * skip_vec[0]);
+        return ArraySlice(*this, index * skip_vec[0]);
     }
 
     inline usize get_size() const { return size_; }
@@ -1206,51 +1205,40 @@ class MdStaticArray {
     }
 
     template <typename T1, typename T2>
-    friend inline auto &operator+=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator+=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator-=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator-=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator*=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator*=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator/=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator/=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator%=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator%=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator<<=(T1 &other,
-                                    const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator<<=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator>>=(T1 &other,
-                                    const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator>>=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator&=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator&=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator|=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator|=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1, typename T2>
-    friend inline auto &operator^=(T1 &other,
-                                   const MdStaticArrayReference<T2> &first);
+    friend inline auto &operator^=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1>
     friend inline auto operator-(const MdStaticArray<T1> __ndarray);
 
     template <typename T1>
-    friend inline MdStaticArray<T1> operator-(
-        const MdStaticArrayReference<T1> &first);
+    friend inline MdStaticArray<T1> operator-(const ArraySlice<T1> &first);
 };
 
 #include "./md_static_array_op.hpp"
@@ -1369,8 +1357,7 @@ inline MdStaticArray<T> operator-(const MdStaticArray<T> &first) {
 #include "./md_static_reference.hpp"
 
 template <typename T>
-MdStaticArray<T> &MdStaticArray<T>::operator=(
-    const MdStaticArrayReference<T> &other) {
+MdStaticArray<T> &MdStaticArray<T>::operator=(const ArraySlice<T> &other) {
     init_array(other.size);
     init_shape(&other.__array_reference->shape[other.shp_offset],
                other.__array_reference->shp_size - other.shp_offset);
@@ -1392,7 +1379,7 @@ MdStaticArray<T> &MdStaticArray<T>::operator=(
 }
 
 template <typename T>
-MdStaticArray<T>::MdStaticArray(const MdStaticArrayReference<T> &other)
+MdStaticArray<T>::MdStaticArray(const ArraySlice<T> &other)
     : shape(nullptr), skip_vec(nullptr) {
     size_ = other.size;
     init_array(size_);
@@ -1414,7 +1401,7 @@ MdStaticArray<T>::MdStaticArray(const MdStaticArrayReference<T> &other)
 }
 
 template <typename T1, typename T2>
-inline auto &operator+=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator+=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator += on single element requires size to be 1, found "
@@ -1426,7 +1413,7 @@ inline auto &operator+=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator-=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator-=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator -= on single element requires size to be 1, found "
@@ -1438,7 +1425,7 @@ inline auto &operator-=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator*=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator*=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator *= on single element requires size to be 1, found "
@@ -1450,7 +1437,7 @@ inline auto &operator*=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator/=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator/=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator /= on single element requires size to be 1, found "
@@ -1462,7 +1449,7 @@ inline auto &operator/=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator%=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator%=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator %= on single element requires size to be 1, found "
@@ -1474,7 +1461,7 @@ inline auto &operator%=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator<<=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator<<=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator <<= on single element requires size to be 1, found "
@@ -1486,7 +1473,7 @@ inline auto &operator<<=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator>>=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator>>=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator >>= on single element requires size to be 1, found "
@@ -1498,7 +1485,7 @@ inline auto &operator>>=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator&=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator&=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator &= on single element requires size to be 1, found "
@@ -1510,7 +1497,7 @@ inline auto &operator&=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator|=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator|=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator |= on single element requires size to be 1, found "
@@ -1522,7 +1509,7 @@ inline auto &operator|=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator^=(T1 &other, const MdStaticArrayReference<T2> &first) {
+inline auto &operator^=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator ^= on single element requires size to be 1, found "

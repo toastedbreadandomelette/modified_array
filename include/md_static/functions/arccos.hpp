@@ -6,16 +6,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::arccos(const Array<T> &values) {
-    return MdArrayUtility::map<T>(values,
-                                  [](const T &value) { return acos(value); });
+Array<T> Utils::arccos(const Array<T> &values) {
+    return Utils::map<T>(values, [](const T &value) { return acos(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::arccos(
-    const Reference<T> &values) {
-    return MdArrayUtility::arccos<T>(Array<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+Array<T> Utils::arccos(const ArraySlice<T> &values) {
+    return Utils::arccos<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

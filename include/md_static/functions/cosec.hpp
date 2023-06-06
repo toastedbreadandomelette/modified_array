@@ -7,16 +7,15 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::cosec(const Array<T> &values) {
-    return MdArrayUtility::map<T>(
-        values, [](const T &value) { return 1 / ::sin(value); });
+Array<T> Utils::cosec(const Array<T> &values) {
+    return Utils::map<T>(values,
+                         [](const T &value) { return 1 / ::sin(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::cosec(
-    const Reference<T> &values) {
-    return MdArrayUtility::cosec<T>(Array<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+Array<T> Utils::cosec(const ArraySlice<T> &values) {
+    return Utils::cosec<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

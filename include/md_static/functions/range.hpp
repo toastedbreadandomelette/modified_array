@@ -6,7 +6,7 @@
 
 // To do: improve and update since it does not work for all cases
 template <typename T, class _T1>
-Array<T> MdArrayUtility::range(const T start, const T end, const T spacing) {
+Array<T> Utils::range(const T start, const T end, const T spacing) {
     usize size = 0;
     usize start_value = 0;
     T increment = 1;
@@ -27,8 +27,7 @@ Array<T> MdArrayUtility::range(const T start, const T end, const T spacing) {
     } else {
         const double value = ::abs((end - start) / (spacing * 1.0));
         start_value = start;
-        size =
-            static_cast<usize>(::ceil(std::max(value, static_cast<double>(0))));
+        size = static_cast<usize>(::ceil(std::max(value, static_cast<f64>(0))));
         increment = spacing;
     }
 
@@ -37,9 +36,8 @@ Array<T> MdArrayUtility::range(const T start, const T end, const T spacing) {
 
     Array<T> result(size);
 
-    const auto __allocate_internal = [&result](const usize start, const T init,
-                                               const usize end,
-                                               const T increment) {
+    const auto range_internal_ = [&result](const usize start, const T init,
+                                           const usize end, const T increment) {
         T value = init;
         for (usize index = start; index < end; ++index, value += increment) {
             result.__array[index] = value;
@@ -47,7 +45,7 @@ Array<T> MdArrayUtility::range(const T start, const T end, const T spacing) {
     };
 
     if (::s_thread_count == 1 || size < ::s_threshold_size) {
-        __allocate_internal(0, start_value, size, increment);
+        range_internal_(0, start_value, size, increment);
         return result;
     }
 
@@ -58,11 +56,11 @@ Array<T> MdArrayUtility::range(const T start, const T end, const T spacing) {
     T b_start = start_value;
     for (usize thread_i = 0; thread_i < s_thread_count - 1;
          ++thread_i, b_start += b_increment) {
-        thread_pool.emplace_back(__allocate_internal, block * thread_i, b_start,
+        thread_pool.emplace_back(range_internal_, block * thread_i, b_start,
                                  block * (thread_i + 1), increment);
     }
 
-    thread_pool.emplace_back(__allocate_internal, block * (s_thread_count - 1),
+    thread_pool.emplace_back(range_internal_, block * (s_thread_count - 1),
                              b_start, size, increment);
 
     for (auto &thread : thread_pool) {

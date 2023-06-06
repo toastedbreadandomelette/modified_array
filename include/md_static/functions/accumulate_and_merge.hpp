@@ -6,10 +6,10 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T, typename function, typename merge_function>
-T MdArrayUtility::accumulate_and_merge_fn(const Array<T> &values,
-                                          const function &function_exec,
-                                          const merge_function &merge_func,
-                                          const T init) {
+T Utils::accumulate_and_merge_fn(const Array<T> &values,
+                                 const function &function_exec,
+                                 const merge_function &merge_func,
+                                 const T init) {
     const usize size = values.get_size();
     T result = init;
     const u8 thread_count = ::s_thread_count;
@@ -52,11 +52,11 @@ T MdArrayUtility::accumulate_and_merge_fn(const Array<T> &values,
 }
 
 template <typename T, typename function, typename merge_function>
-T MdArrayUtility::accumulate_and_merge_fn(const Reference<T> &values,
-                                          const function &function_exec,
-                                          const merge_function &merge_func,
-                                          const T init) {
-    return MdArrayUtility::accumulate_and_merge_fn<T, function, merge_function>(
+T Utils::accumulate_and_merge_fn(const ArraySlice<T> &values,
+                                 const function &function_exec,
+                                 const merge_function &merge_func,
+                                 const T init) {
+    return Utils::accumulate_and_merge_fn<T, function, merge_function>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         function_exec, merge_func, init);
 }

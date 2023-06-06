@@ -7,111 +7,104 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(const Array<T1> &__first,
-                                        const Array<T2> &__other,
-                                        const usize threads) {
-    return Linalg::dot<T3>(__first, __other, threads);
+Array<T3> Linalg::vdot(const Array<T1> &first, const Array<T2> &other,
+                       const usize threads) {
+    return Linalg::dot<T3>(first, other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Reference<T1> &__first, const Array<T2> &__other,
-    const usize threads) {
-    return Linalg::dot<T3>(__first, __other, threads);
+Array<T3> Linalg::vdot(const ArraySlice<T1> &first, const Array<T2> &other,
+                       const usize threads) {
+    return Linalg::dot<T3>(first, other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Reference<T1> &__first,
-    const Reference<T2> &__other, const usize threads) {
-    return Linalg::dot<T3>(__first, __other, threads);
+Array<T3> Linalg::vdot(const ArraySlice<T1> &first, const ArraySlice<T2> &other,
+                       const usize threads) {
+    return Linalg::dot<T3>(first, other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Array<T1> &__first, const Reference<T2> &__other,
-    const usize threads) {
-    return Linalg::dot<T3>(__first, __other, threads);
+Array<T3> Linalg::vdot(const Array<T1> &first, const ArraySlice<T2> &other,
+                       const usize threads) {
+    return Linalg::dot<T3>(first, other, threads);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Array<Complex<T1>> &__first, const Array<T2> &__other,
-    const usize threads) {
+Array<T3> Linalg::vdot(const Array<Complex<T1>> &first, const Array<T2> &other,
+                       const usize threads) {
     // Basically, compute dot product of vector:::
-    // Last axis of vector __first should be multiplied with second last
-    // axis of __other
-    if (__other.get_shape_size() >= 2 && __first.get_shape_size() >= 2) {
-        if (__other.get_shape_size() == 2 && __first.get_shape_size() == 2) {
+    // Last axis of vector first should be multiplied with second last
+    // axis of other
+    if (other.get_shape_size() >= 2 && first.get_shape_size() >= 2) {
+        if (other.get_shape_size() == 2 && first.get_shape_size() == 2) {
             return Linalg::mat_multiply<T3, Complex<T1>, T2>(
-                MdArrayUtility::map<Complex<T1>>(
-                    __first,
-                    [](const Complex<T1> &__value) {
-                        return Complex<T1>::conj(__value);
-                    }),
-                __other, threads);
+                Utils::map<Complex<T1>>(first,
+                                        [](const Complex<T1> &__value) {
+                                            return Complex<T1>::conj(__value);
+                                        }),
+                other, threads);
         }
-        if (__first.shape[__first.shp_size - 1] !=
-            __other.shape[__other.shp_size - 2]) {
+        if (first.shape[first.shp_size - 1] !=
+            other.shape[other.shp_size - 2]) {
             throw std::runtime_error(
                 "Axis size do not match for dot multiplication.");
         }
         const usize overall_size =
-            __first.get_shape_size() - 2 + __other.get_shape_size();
+            first.get_shape_size() - 2 + other.get_shape_size();
 
         std::vector<usize> overall_shape(overall_size);
         usize index = 0;
-        for (usize i = 0; i < __first.get_shape_size() - 1; ++i) {
-            overall_shape[index++] = __first.shape[i];
+        for (usize i = 0; i < first.get_shape_size() - 1; ++i) {
+            overall_shape[index++] = first.shape[i];
         }
 
-        for (usize i = 0; i < __other.get_shape_size(); ++i) {
-            if (i != __other.get_shape_size() - 2) {
-                overall_shape[index++] = __other.shape[i];
+        for (usize i = 0; i < other.get_shape_size(); ++i) {
+            if (i != other.get_shape_size() - 2) {
+                overall_shape[index++] = other.shape[i];
             }
         }
 
         Array<T3> result(overall_shape, 0);
         const usize res_base_matrix_size = (result.shape[result.shp_size - 1] *
-                                             result.shape[result.shp_size - 2]);
+                                            result.shape[result.shp_size - 2]);
 
-        const usize m = __first.shape[__first.shp_size - 2];
-        const usize n = __first.shape[__first.shp_size - 1];
-        const usize p = __other.shape[__other.shp_size - 1];
+        const usize m = first.shape[first.shp_size - 2];
+        const usize n = first.shape[first.shp_size - 1];
+        const usize p = other.shape[other.shp_size - 1];
 
         const usize other_base_matrix_size = n * p;
 
         index = 0;
-        usize skip_count = __other.get_size() / n;
+        usize skip_count = other.get_size() / n;
 
-        auto __perform_dot_parallel = [&result, &__first, &__other, m, n, p,
+        auto __perform_dot_parallel = [&result, &first, &other, m, n, p,
                                        threads, other_base_matrix_size,
                                        skip_count](const usize thread_number) {
-            // We iterate over each row of __first ndarray. Each $i^{th}$ thread
+            // We iterate over each row of first ndarray. Each $i^{th}$ thread
             // will handle alternate $i^{th}$ row.
             usize index = thread_number * skip_count;
             for (usize first_row = thread_number * n;
-                 first_row < __first.get_size(); first_row += (threads * n)) {
-                // Considering a 2D - layer of n-dimensional array $__other$, we
+                 first_row < first.get_size(); first_row += (threads * n)) {
+                // Considering a 2D - layer of n-dimensional array $other$, we
                 // iterate over every 2D-layer.
-                for (usize other_block = 0; other_block < __other.get_size();
+                for (usize other_block = 0; other_block < other.get_size();
                      other_block += other_base_matrix_size) {
-                    const auto f = __other.__array[other_block];
-                    // Iterator over second row of __first and column of __other
+                    const auto f = other.__array[other_block];
+                    // Iterator over second row of first and column of other
                     // array (note that $j$ and $other_col$ loop are swapped for
                     // performance reasons, to fulfil offset, we add $other_col$
                     // to $index$ in result array)
                     for (usize j = 0; j < n; ++j) {
                         const auto c =
-                            Complex<T1>::conj(__first.__array[first_row + j]);
-                        // Iterator over last axis of __other.
+                            Complex<T1>::conj(first.__array[first_row + j]);
+                        // Iterator over last axis of other.
                         for (usize other_col = 0; other_col < p; ++other_col) {
                             result.__array[index + other_col] +=
                                 c *
-                                __other
-                                    .__array[other_block + j * p + other_col];
+                                other.__array[other_block + j * p + other_col];
                         }
                     }
                     // Index is skipped by p, because the row is processed for
@@ -134,8 +127,8 @@ Array<T3> Linalg::vdot(
 
         return result;
     } else {
-        if (__other.get_shape_size() == 1 && __first.get_shape_size() == 1) {
-            if (__other.shape[0] != __first.shape[0]) {
+        if (other.get_shape_size() == 1 && first.get_shape_size() == 1) {
+            if (other.shape[0] != first.shape[0]) {
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
@@ -143,44 +136,41 @@ Array<T3> Linalg::vdot(
             // A single valued answer.
             return Linalg::inner<T3, Complex<T1>, T2>(
                 MdArrayUtility::map<Complex<T1>>(
-                    __first,
+                    first,
                     [](const Complex<T1> &__value) {
                         return Complex<T1>::conj(__value);
                     }),
-                __other, threads);
-        } else if (__other.get_shape_size() == 1) {
+                other, threads);
+        } else if (other.get_shape_size() == 1) {
             // Note: first does have $n$ dimensions
-            if (__other.shape[0] !=
-                __first.shape[__first.get_shape_size() - 1]) {
+            if (other.shape[0] != first.shape[first.get_shape_size() - 1]) {
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
 
-            std::vector<usize> overall_shape(__first.get_shape_size() - 1);
-            for (usize index = 0; index < __first.get_shape_size() - 1;
-                 ++index) {
-                overall_shape[index] = __first.shape[index];
+            std::vector<usize> overall_shape(first.get_shape_size() - 1);
+            for (usize index = 0; index < first.get_shape_size() - 1; ++index) {
+                overall_shape[index] = first.shape[index];
             }
             Array<T3> result(overall_shape, 0);
 
-            auto __perform_dot_parallel = [&__first, &__other, &result](
-                                              const usize start,
-                                              const usize end) {
-                usize res_index = start;
-                usize shp = __first.get_shape_size() - 1;
-                // For each last axis of __first array
-                for (usize index = start * __first.shape[shp];
-                     index < end * __first.shape[shp];
-                     index += __first.shape[shp]) {
-                    // Iterate over the last axis of array __other
-                    for (usize row = 0; row < __other.shape[0]; ++row) {
-                        result.__array[res_index] +=
-                            (Complex<T1>::conj(__first.__array[index + row]) *
-                             __other.__array[row]);
+            auto __perform_dot_parallel =
+                [&first, &other, &result](const usize start, const usize end) {
+                    usize res_index = start;
+                    usize shp = first.get_shape_size() - 1;
+                    // For each last axis of first array
+                    for (usize index = start * first.shape[shp];
+                         index < end * first.shape[shp];
+                         index += first.shape[shp]) {
+                        // Iterate over the last axis of array other
+                        for (usize row = 0; row < other.shape[0]; ++row) {
+                            result.__array[res_index] +=
+                                (Complex<T1>::conj(first.__array[index + row]) *
+                                 other.__array[row]);
+                        }
+                        ++res_index;
                     }
-                    ++res_index;
-                }
-            };
+                };
 
             const usize block = result.get_size() / threads - 1;
             std::vector<std::thread> thread_pool;
@@ -197,46 +187,42 @@ Array<T3> Linalg::vdot(
             }
             return result;
         } else {
-            if (__other.shape[__other.get_shape_size() - 2] !=
-                __first.shape[0]) {
+            if (other.shape[other.get_shape_size() - 2] != first.shape[0]) {
                 throw std::runtime_error(
                     "Axis size do not match for dot multiplication.");
             }
 
-            std::vector<usize> overall_shape(__other.get_shape_size() - 1);
+            std::vector<usize> overall_shape(other.get_shape_size() - 1);
             usize shp_index = 0;
-            for (usize index = 0; index < __other.get_shape_size(); ++index) {
-                if (index != __other.get_shape_size() - 2) {
-                    overall_shape[shp_index++] = __other.shape[index];
+            for (usize index = 0; index < other.get_shape_size(); ++index) {
+                if (index != other.get_shape_size() - 2) {
+                    overall_shape[shp_index++] = other.shape[index];
                 }
             }
             Array<T3> result(overall_shape, 0);
 
-            auto __perform_dot_parallel =
-                [&__first, &__other, &result,
-                 &threads](const usize thread_number) {
-                    usize shp = __other.get_shape_size() - 2;
-                    usize res_index = thread_number * __other.shape[shp + 1];
-                    usize rows = __first.get_size();
-                    usize other_mat_size =
-                        __other.shape[shp] * __other.shape[shp + 1];
-                    // Traversing through each layer of matrix of __other
-                    for (usize other_mat_index = 0;
-                         other_mat_index < __other.get_size();
-                         other_mat_index += (threads * other_mat_size)) {
-                        // For each layer, calculate dot-product
-                        // Each element will be
-                        for (usize element = 0; element < other_mat_size;
-                             ++element) {
-                            result.__array[res_index + (element % rows)] +=
-                                Complex<T1>::conj(
-                                    __first.__array[element /
-                                                    __other.shape[shp + 1]]) *
-                                __other.__array[other_mat_index + element];
-                        }
-                        res_index += (threads * __other.shape[shp + 1]);
+            auto __perform_dot_parallel = [&first, &other, &result, &threads](
+                                              const usize thread_number) {
+                usize shp = other.get_shape_size() - 2;
+                usize res_index = thread_number * other.shape[shp + 1];
+                usize rows = first.get_size();
+                usize other_mat_size = other.shape[shp] * other.shape[shp + 1];
+                // Traversing through each layer of matrix of other
+                for (usize other_mat_index = 0;
+                     other_mat_index < other.get_size();
+                     other_mat_index += (threads * other_mat_size)) {
+                    // For each layer, calculate dot-product
+                    // Each element will be
+                    for (usize element = 0; element < other_mat_size;
+                         ++element) {
+                        result.__array[res_index + (element % rows)] +=
+                            Complex<T1>::conj(
+                                first.__array[element / other.shape[shp + 1]]) *
+                            other.__array[other_mat_index + element];
                     }
-                };
+                    res_index += (threads * other.shape[shp + 1]);
+                }
+            };
 
             std::vector<std::thread> thread_pool;
             for (usize i = 0; i < threads; ++i) {
@@ -253,35 +239,27 @@ Array<T3> Linalg::vdot(
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Reference<Complex<T1>> &__first,
-    const Array<T2> &__other, const usize threads) {
+Array<T3> Linalg::vdot(const ArraySlice<Complex<T1>> &first,
+                       const Array<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        Array(*__first.__array_reference, __first.offset,
-                      __first.shp_offset),
-        __other, threads);
-}
-
-template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Reference<Complex<T1>> &__first,
-    const Reference<T2> &__other, const usize threads) {
-    return Linalg::vdot<T3>(
-        Array(*__first.__array_reference, __first.offset,
-                      __first.shp_offset),
-        Array(*__other.__array_reference, __other.offset,
-                      __other.shp_offset),
+        Array(*first.__array_reference, first.offset, first.shp_offset), other,
         threads);
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::vdot(
-    const Array<Complex<T1>> &__first,
-    const Reference<T2> &__other, const usize threads) {
+Array<T3> Linalg::vdot(const ArraySlice<Complex<T1>> &first,
+                       const ArraySlice<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        __first,
-        Array(*__other.__array_reference, __other.offset,
-                      __other.shp_offset),
+        Array(*first.__array_reference, first.offset, first.shp_offset),
+        Array(*other.__array_reference, other.offset, other.shp_offset),
+        threads);
+}
+
+template <typename T3, typename T1, typename T2>
+Array<T3> Linalg::vdot(const Array<Complex<T1>> &first,
+                       const ArraySlice<T2> &other, const usize threads) {
+    return Linalg::vdot<T3>(
+        first, Array(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 

@@ -7,23 +7,21 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T, class T1>
-Array<T> Linalg::matrix_power(const Array<T> &__matrix,
-                                      usize power) {
-    if (__matrix.get_shape_size() != 2) {
+Array<T> Linalg::matrix_power(const Array<T> &matrix, usize power) {
+    if (matrix.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given input should be of dimension 2. Found dimension " +
-            std::to_string(__matrix.get_shape_size()) + ".");
+            std::to_string(matrix.get_shape_size()) + ".");
     }
 
-    if (__matrix.get_shape()[0] != __matrix.get_shape()[1]) {
+    if (matrix.get_shape()[0] != matrix.get_shape()[1]) {
         throw std::runtime_error(
             "Given input matrix should be square. Found dimension (" +
-            std::to_string(__matrix.get_shape()[0]) + ", " +
-            std::to_string(__matrix.get_shape()[1]) + ").");
+            std::to_string(matrix.get_shape()[0]) + ", " +
+            std::to_string(matrix.get_shape()[1]) + ").");
     }
 
-    Array<T> result = Linalg::identity<T>(__matrix.get_shape()[0]),
-                     omat = __matrix;
+    Array<T> result = Linalg::identity<T>(matrix.get_shape()[0]), omat = matrix;
 
     while (power > 0) {
         if (power & 1) {
@@ -37,11 +35,9 @@ Array<T> Linalg::matrix_power(const Array<T> &__matrix,
 }
 
 template <typename T, class T1>
-Array<T> Linalg::matrix_power(const Reference<T> &__matrix,
-                                      usize power) {
+Array<T> Linalg::matrix_power(const ArraySlice<T> &matrix, usize power) {
     return Linalg::matrix_power<T>(
-        Array<T>(*__matrix.__array_reference, __matrix.offset,
-                         __matrix.shp_offset),
+        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset),
         power);
 }
 

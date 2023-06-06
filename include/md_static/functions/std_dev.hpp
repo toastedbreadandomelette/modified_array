@@ -7,7 +7,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-f128 MdArrayUtility::std_dev(const Array<T> &values) {
+f128 Utils::std_dev(const Array<T> &values) {
     f128 fmean = mean(values);
     f128 mean_sq_err = accumulate_and_merge_fn(
                            values,
@@ -24,7 +24,7 @@ f128 MdArrayUtility::std_dev(const Array<T> &values) {
 }
 
 template <typename T>
-f128 MdArrayUtility::std_dev(const Reference<T> &values) {
+f128 Utils::std_dev(const ArraySlice<T> &values) {
     return std_dev<T>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }

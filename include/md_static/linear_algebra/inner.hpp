@@ -6,9 +6,8 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::inner(const Array<T1> &first,
-                                const Array<T2> &other,
-                                const usize threads) {
+Array<T3> Linalg::inner(const Array<T1> &first, const Array<T2> &other,
+                        const usize threads) {
     if (first.get_shape()[first.get_shape_size() - 1] !=
         other.get_shape()[other.get_shape_size() - 1]) {
         throw std::runtime_error(
@@ -116,35 +115,28 @@ Array<T3> Linalg::inner(const Array<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::inner(const Reference<T1> &first,
-                                const Array<T2> &other,
-                                const usize threads) {
+Array<T3> Linalg::inner(const ArraySlice<T1> &first, const Array<T2> &other,
+                        const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset,
-                          first.shp_offset),
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
         other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::inner(const Reference<T1> &first,
-                                const Reference<T2> &other,
-                                const usize threads) {
+Array<T3> Linalg::inner(const ArraySlice<T1> &first,
+                        const ArraySlice<T2> &other, const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset,
-                          first.shp_offset),
-        Array<T1>(*other.__array_reference, other.offset,
-                          other.shp_offset),
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T1>(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2>
-Array<T3> Linalg::inner(const Array<T1> &first,
-                                const Reference<T2> &other,
-                                const usize threads) {
+Array<T3> Linalg::inner(const Array<T1> &first, const ArraySlice<T2> &other,
+                        const usize threads) {
     return Linalg::inner<T3, T1, T2>(
         first,
-        Array<T1>(*other.__array_reference, other.offset,
-                          other.shp_offset),
+        Array<T1>(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 

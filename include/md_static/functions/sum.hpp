@@ -5,8 +5,7 @@
 #include "./reduce.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::sum(const Array<T> &values, const T init,
-                             const i32 axis) {
+Array<T> Utils::sum(const Array<T> &values, const T init, const i32 axis) {
     return reduce(
         values,
         [](const T prev_value, const T current_value) {
@@ -16,8 +15,7 @@ Array<T> MdArrayUtility::sum(const Array<T> &values, const T init,
 }
 
 template <typename T>
-Array<T> MdArrayUtility::sum(const Reference<T> &values, const T init,
-                             const i32 axis) {
+Array<T> Utils::sum(const ArraySlice<T> &values, const T init, const i32 axis) {
     return sum(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         init, axis);

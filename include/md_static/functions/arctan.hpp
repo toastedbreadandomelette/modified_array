@@ -7,15 +7,15 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> MdArrayUtility::arctan(const Array<T> &values) {
-    return MdArrayUtility::map<T>(
+Array<T> Utils::arctan(const Array<T> &values) {
+    return Utils::map<T>(
         values, [](const T &value) -> T { return ::atan(value); });
 }
 
 template <typename T>
-Array<T> MdArrayUtility::arctan(
-    const Reference<T> &values) {
-    return MdArrayUtility::arctan<T>(Array<T>(
+Array<T> Utils::arctan(
+    const ArraySlice<T> &values) {
+    return Utils::arctan<T>(Array<T>(
         *values.__array_reference, values.offset, values.shp_offset));
 }
 
