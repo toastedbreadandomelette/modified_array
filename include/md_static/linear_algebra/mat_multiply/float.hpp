@@ -16,40 +16,40 @@
  * @param p second axis of B
  * @returns third array containing result of matmul
  */
-void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
-    int rem = (m * p) & 7;
+void mul_st_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
+    i32 rem = (m * p) & 7;
 
     // Initialize vector to zero
-    for (size_t index = 0; index < m * p - rem; index += 8) {
+    for (usize index = 0; index < m * p - rem; index += 8) {
         _mm256_store_ps(c + index, _mm256_setzero_ps());
     }
 
     // Set remainder values to zero as well
-    for (size_t index = m * p - rem; index < m * p; ++index) {
+    for (usize index = m * p - rem; index < m * p; ++index) {
         c[index] = 0;
     }
 
-    const int block_size = 256;
-    const int remainder_cols = p & 3;
-    const int remainder_rows = m & 3;
-    const int remainder_vec = n & 31;
+    const i32 block_size = 256;
+    const i32 remainder_cols = p & 3;
+    const i32 remainder_rows = m & 3;
+    const i32 remainder_vec = n & 31;
 
     // Compute block by block=
-    for (int iblock = 0; iblock < m - remainder_rows; iblock += block_size) {
+    for (i32 iblock = 0; iblock < m - remainder_rows; iblock += block_size) {
         // This will compute c tile by tile
-        int ibound = iblock + block_size > m - remainder_rows
+        i32 ibound = iblock + block_size > m - remainder_rows
                          ? m - remainder_rows
                          : iblock + block_size;
-        for (int jblock = 0; jblock < p - remainder_cols;
+        for (i32 jblock = 0; jblock < p - remainder_cols;
              jblock += block_size) {
             // now compute inner block_size x block_size matrices
-            int jbound = jblock + block_size > p - remainder_cols
+            i32 jbound = jblock + block_size > p - remainder_cols
                              ? p - remainder_cols
                              : jblock + block_size;
             // Compute
-            for (int i = iblock; i < ibound; i += 4) {
+            for (i32 i = iblock; i < ibound; i += 4) {
                 // Process 4 values at a time
-                for (int j = jblock; j < jbound; j += 4) {
+                for (i32 j = jblock; j < jbound; j += 4) {
                     // Accumulator:
                     // we compute 4x4 matrix at a time
                     __m256 acc00 = _mm256_setzero_ps();
@@ -75,7 +75,7 @@ void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
                     // Loop over second axis of A and first axis of B
                     // Processing 8 values at a time, loop unrolled by 4,
                     // we get
-                    for (int k = 0; k < n - remainder_vec; k += 32) {
+                    for (i32 k = 0; k < n - remainder_vec; k += 32) {
                         auto avec = _mm256_loadu_ps(a + (i * n + k));
 
                         auto bvec00 = _mm256_loadu_ps(tb + (j * n + k));
@@ -224,7 +224,7 @@ void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
                         acc33 = _mm256_fmadd_ps(avec, bvec30, acc33);
                     }
 
-                    for (int k = n - remainder_vec; k < n; ++k) {
+                    for (i32 k = n - remainder_vec; k < n; ++k) {
                         const auto tb0 = tb[j * n + k],
                                    tb1 = tb[(j + 1) * n + k],
                                    tb2 = tb[(j + 2) * n + k],
@@ -254,7 +254,7 @@ void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
                         c[(i + 3) * p + j + 3] += a3 * tb3;
                     }
 
-                    float ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+                    f32 ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
                     _mm256_store_ps(ans, acc00);
                     c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3] + ans[4] +
                                     ans[5] + ans[6] + ans[7];
@@ -316,12 +316,12 @@ void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
                 }
-                for (int j = p - remainder_cols; j < p; ++j) {
-                    float ans0 = 0;
-                    float ans1 = 0;
-                    float ans2 = 0;
-                    float ans3 = 0;
-                    for (int k = 0; k < n; ++k) {
+                for (i32 j = p - remainder_cols; j < p; ++j) {
+                    f32 ans0 = 0;
+                    f32 ans1 = 0;
+                    f32 ans2 = 0;
+                    f32 ans3 = 0;
+                    for (i32 k = 0; k < n; ++k) {
                         ans0 += a[i * n + k] * tb[j * n + k];
                         ans1 += a[(i + 1) * n + k] * tb[j * n + k];
                         ans2 += a[(i + 2) * n + k] * tb[j * n + k];
@@ -335,10 +335,10 @@ void mul_st_f32(float *a, float *tb, float *c, int m, int n, int p) {
             }
         }
     }
-    for (int i = m - remainder_rows; i < m; ++i) {
-        for (int j = 0; j < p; ++j) {
-            float ans = 0;
-            for (int k = 0; k < n; ++k) {
+    for (i32 i = m - remainder_rows; i < m; ++i) {
+        for (i32 j = 0; j < p; ++j) {
+            f32 ans = 0;
+            for (i32 k = 0; k < n; ++k) {
                 ans += a[i * n + k] * tb[j * n + k];
             }
             c[i * p + j] = ans;

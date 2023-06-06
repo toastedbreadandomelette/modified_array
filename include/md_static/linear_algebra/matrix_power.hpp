@@ -8,7 +8,7 @@
 
 template <typename T, class T1>
 MdStaticArray<T> Linalg::matrix_power(const MdStaticArray<T> &__matrix,
-                                      size_t power) {
+                                      usize power) {
     if (__matrix.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given input should be of dimension 2. Found dimension " +
@@ -38,7 +38,7 @@ MdStaticArray<T> Linalg::matrix_power(const MdStaticArray<T> &__matrix,
 
 template <typename T, class T1>
 MdStaticArray<T> Linalg::matrix_power(const MdStaticArrayReference<T> &__matrix,
-                                      size_t power) {
+                                      usize power) {
     return Linalg::matrix_power<T>(
         MdStaticArray<T>(*__matrix.__array_reference, __matrix.offset,
                          __matrix.shp_offset),

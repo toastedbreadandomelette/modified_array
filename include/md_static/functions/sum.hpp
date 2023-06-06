@@ -6,7 +6,7 @@
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::sum(const MdStaticArray<T> &values,
-                                     const T init, const int axis) {
+                                     const T init, const i32 axis) {
     return reduce(
         values,
         [](const T prev_value, const T current_value) {
@@ -17,7 +17,7 @@ MdStaticArray<T> MdArrayUtility::sum(const MdStaticArray<T> &values,
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::sum(const MdStaticArrayReference<T> &values,
-                                     const T init, const int axis) {
+                                     const T init, const i32 axis) {
     return sum(MdStaticArray<T>(*values.__array_reference, values.offset,
                                 values.shp_offset),
                init, axis);

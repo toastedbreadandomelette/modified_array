@@ -45,7 +45,7 @@ struct MdArrayUtility {
     template <typename T, typename _func>
     static MdStaticArray<T> reduce(const MdStaticArray<T> &values,
                                    const _func &function_exec, const T init,
-                                   const int axis = -1);
+                                   const i32 axis = -1);
 
     /**
      * @brief Reduce array of values to a single value function.
@@ -60,7 +60,7 @@ struct MdArrayUtility {
     template <typename T, typename _func>
     static MdStaticArray<T> reduce(const MdStaticArrayReference<T> &values,
                                    const _func &function_exec, const T init,
-                                   const int axis = -1);
+                                   const i32 axis = -1);
 
     /**
      * @brief Execute accumulate function, and merge these values based on
@@ -136,7 +136,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> sum(const MdStaticArray<T> &values,
-                                const T init = 0, const int axis = -1);
+                                const T init = 0, const i32 axis = -1);
 
     /**
      * @brief Sum of all the values in the list values
@@ -146,7 +146,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> sum(const MdStaticArrayReference<T> &values,
-                                const T init = 0, const int axis = -1);
+                                const T init = 0, const i32 axis = -1);
 
     /**
      * @brief Mean of all the values in the list values
@@ -156,7 +156,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<double> mean(const MdStaticArray<T> &values,
-                                      const T init = 0, const int axis = -1);
+                                      const T init = 0, const i32 axis = -1);
 
     /**
      * @brief Mean of all the values in the list values
@@ -166,7 +166,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<double> mean(const MdStaticArrayReference<T> &values,
-                                      const T init = 0, const int axis = -1);
+                                      const T init = 0, const i32 axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
@@ -176,7 +176,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> amax(const MdStaticArray<T> &values,
-                                 const int axis = -1);
+                                 const i32 axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
@@ -186,7 +186,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> amax(const MdStaticArrayReference<T> &values,
-                                 const int axis = -1);
+                                 const i32 axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
@@ -195,8 +195,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static MdStaticArray<size_t> argmax(const MdStaticArray<T> &values,
-                                        const int axis = -1);
+    static MdStaticArray<usize> argmax(const MdStaticArray<T> &values,
+                                       const i32 axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
@@ -204,9 +204,9 @@ struct MdArrayUtility {
      * @param axis Given axis along which function is checked
      * @return Single number (or ndarray depending on axis)
      */
-    template <typename T = size_t>
-    static MdStaticArray<size_t> argmax(const MdStaticArrayReference<T> &values,
-                                        const int axis = -1);
+    template <typename T = usize>
+    static MdStaticArray<usize> argmax(const MdStaticArrayReference<T> &values,
+                                       const i32 axis = -1);
 
     /**
      * @brief Minimum of all the values along given axis
@@ -216,7 +216,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> amin(const MdStaticArray<T> &values,
-                                 const int axis = -1);
+                                 const i32 axis = -1);
 
     /**
      * @brief Minimum of all the values along given axis
@@ -226,7 +226,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> amin(const MdStaticArrayReference<T> &values,
-                                 const int axis = -1);
+                                 const i32 axis = -1);
 
     /**
      * @brief Minimum indexes of all the values along given axis
@@ -235,8 +235,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static MdStaticArray<size_t> argmin(const MdStaticArray<T> &values,
-                                        const int axis = -1);
+    static MdStaticArray<usize> argmin(const MdStaticArray<T> &values,
+                                       const i32 axis = -1);
 
     /**
      * @brief Minimum indexes of all the values along given axis
@@ -245,8 +245,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static MdStaticArray<size_t> argmin(const MdStaticArrayReference<T> &values,
-                                        const int axis = -1);
+    static MdStaticArray<usize> argmin(const MdStaticArrayReference<T> &values,
+                                       const i32 axis = -1);
 
     /**
      * @brief GCD of all the values combined in the list values
@@ -256,7 +256,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> gcd(const MdStaticArray<T> &values,
-                                const int axis = -1);
+                                const i32 axis = -1);
 
     /**
      * @brief GCD of all the values combined in the list values
@@ -266,7 +266,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> gcd(const MdStaticArrayReference<T> &values,
-                                const int axis = -1);
+                                const i32 axis = -1);
 
     /**
      * @brief LCM of all the values combined in the list values
@@ -276,7 +276,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> lcm(const MdStaticArray<T> &values,
-                                const int axis = -1);
+                                const i32 axis = -1);
 
     /**
      * @brief LCM of all the values combined in the list values
@@ -286,7 +286,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> lcm(const MdStaticArrayReference<T> &values,
-                                const int axis = -1);
+                                const i32 axis = -1);
 
     /**
      * @brief Root Mean Square of all the values in the list values
@@ -367,7 +367,7 @@ struct MdArrayUtility {
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static MdStaticArray<T> mod_pow(const MdStaticArray<T> &values,
-                                    const size_t power, const size_t _mod);
+                                    const usize power, const usize _mod);
 
     /**
      * @brief compute mod power of integers
@@ -375,7 +375,7 @@ struct MdArrayUtility {
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static MdStaticArray<T> mod_pow(const MdStaticArrayReference<T> &values,
-                                    const size_t power, const size_t _mod);
+                                    const usize power, const usize _mod);
 
     /**
      * @brief compute mod power of integer raise to array of values
@@ -389,7 +389,7 @@ struct MdArrayUtility {
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static MdStaticArray<T> mod_pow(const uint64_t n,
                                     const MdStaticArray<T> &values,
-                                    const size_t _mod);
+                                    const usize _mod);
 
     /**
      * @brief compute mod power of integer raise to array of values
@@ -403,7 +403,7 @@ struct MdArrayUtility {
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static MdStaticArray<T> mod_pow(const uint64_t n,
                                     const MdStaticArrayReference<T> &values,
-                                    const size_t _mod);
+                                    const usize _mod);
 
     /**
      * @brief compute power of values
@@ -633,8 +633,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> cumulative_sum(const MdStaticArray<T> &__ndarray,
-                                           const size_t axis = -1,
-                                           const size_t thread_count = 16);
+                                           const usize axis = -1,
+                                           const usize thread_count = 16);
 
     /**
      * @brief Cumulative sum of an array.
@@ -645,8 +645,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> cumulative_sum(
-        const MdStaticArrayReference<T> &__array, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArrayReference<T> &__array, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Cumulative sum of an array.
@@ -659,8 +659,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> diff(const MdStaticArray<T> &__ndarray,
-                                 const size_t axis = -1,
-                                 const size_t thread_count = 16);
+                                 const usize axis = -1,
+                                 const usize thread_count = 16);
 
     /**
      * @brief Cumulative sum of an array.
@@ -671,8 +671,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> diff(const MdStaticArrayReference<T> &__ndarray,
-                                 const size_t axis = -1,
-                                 const size_t thread_count = 16);
+                                 const usize axis = -1,
+                                 const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -685,8 +685,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> cumulative_product(
-        const MdStaticArray<T> &__ndarray, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArray<T> &__ndarray, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -697,8 +697,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> cumulative_product(
-        const MdStaticArrayReference<T> &__array, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArrayReference<T> &__array, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -711,8 +711,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> nan_cumulative_sum(
-        const MdStaticArray<T> &__ndarray, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArray<T> &__ndarray, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -723,8 +723,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> nan_cumulative_sum(
-        const MdStaticArrayReference<T> &__array, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArrayReference<T> &__array, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -737,8 +737,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> nan_cumulative_product(
-        const MdStaticArray<T> &__ndarray, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArray<T> &__ndarray, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
@@ -749,8 +749,8 @@ struct MdArrayUtility {
      */
     template <typename T>
     static MdStaticArray<T> nan_cumulative_product(
-        const MdStaticArrayReference<T> &__array, const size_t axis = -1,
-        const size_t thread_count = 16);
+        const MdStaticArrayReference<T> &__array, const usize axis = -1,
+        const usize thread_count = 16);
 
     /**
      * @brief Convert radian to degrees of an array.
@@ -843,7 +843,7 @@ struct MdArrayUtility {
     template <typename T>
     static bool every(const MdStaticArray<T> &__ndarray,
                       const std::function<bool(const T &)> &,
-                      const size_t threads = 16);
+                      const usize threads = 16);
 
     /**
      * @brief Check if every value satisfies the condition
@@ -855,7 +855,7 @@ struct MdArrayUtility {
     template <typename T>
     static bool every(const MdStaticArrayReference<T> &__ndarray__reference,
                       const std::function<bool(const T &)> &,
-                      const size_t threads = 16);
+                      const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
@@ -867,7 +867,7 @@ struct MdArrayUtility {
     template <typename T>
     static bool some(const MdStaticArray<T> &__ndarray,
                      const std::function<bool(const T &)> &,
-                     const size_t threads = 16);
+                     const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
@@ -879,7 +879,7 @@ struct MdArrayUtility {
     template <typename T>
     static bool some(const MdStaticArrayReference<T> &__ndarray__reference,
                      const std::function<bool(const T &)> &,
-                     const size_t threads = 16);
+                     const usize threads = 16);
 
     /**
      * @brief Compute 2 raised to value from array of values
@@ -1004,7 +1004,7 @@ struct MdArrayUtility {
         MdStaticArray<T> &,
         const std::function<bool(const T first, const T second)> &comp =
             [](const T first, const T sec) { return first < sec; },
-        const int axis = -1);
+        const i32 axis = -1);
 
     /**
      * @brief Sort array in place
@@ -1018,7 +1018,7 @@ struct MdArrayUtility {
         MdStaticArrayReference<T> &,
         const std::function<bool(const T first, const T second)> &comp =
             [](const T first, const T sec) { return first < sec; },
-        const int axis = -1);
+        const i32 axis = -1);
 
     /**
      * @brief Sort array in place along the axis

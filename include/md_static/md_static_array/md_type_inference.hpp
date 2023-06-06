@@ -498,4 +498,28 @@ struct eval_resultant_t {
 
 }  // namespace MdTypeInfer
 
+typedef char i8;
+typedef unsigned char u8;
+typedef short int i16;
+typedef short unsigned int u16;
+typedef int i32;
+typedef unsigned u32;
+typedef long long int i64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef long double f128;
+typedef cdouble c64;
+typedef clongdouble c128;
+typedef cfloat c32;
+typedef cint8 ci8;
+typedef cint16 ci16;
+typedef cint32 ci32;
+typedef cint64 ci64;
+typedef cuint8 cu8;
+typedef cuint16 cu16;
+typedef cuint32 cu32;
+typedef cuint64 cu64;
+typedef size_t usize;
+
 #endif

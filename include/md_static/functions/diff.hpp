@@ -6,12 +6,12 @@
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
-                                      const size_t axis,
-                                      const size_t thread_count) {
+                                      const usize axis,
+                                      const usize thread_count) {
     if (axis == -1) {
         MdStaticArray<T> result(ndarray.get_size() - 1);
 #pragma omp parallel for
-        for (size_t index = 0; index < ndarray.get_size() - 1; ++index) {
+        for (usize index = 0; index < ndarray.get_size() - 1; ++index) {
             result.__array[index] =
                 ndarray.__array[index + 1] - ndarray.__array[index];
         }
@@ -24,29 +24,29 @@ MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
                                  " requested for diff.");
     }
 
-    std::vector<size_t> overall_shape;
+    std::vector<usize> overall_shape;
 
-    for (size_t index = 0; index < ndarray.get_shape_size(); ++index) {
+    for (usize index = 0; index < ndarray.get_shape_size(); ++index) {
         overall_shape.emplace_back(ndarray.get_shape()[index] -
                                    (index == axis));
     }
 
     MdStaticArray<T> result(overall_shape, 0);
 
-    const size_t diff_index = ndarray.skip_vec[axis];
+    const usize diff_index = ndarray.skip_vec[axis];
 
-    const size_t loop_times =
+    const usize loop_times =
         (axis - 1 <= ndarray.get_shape_size() ? ndarray.skip_vec[axis - 1]
                                               : ndarray.get_size());
 
     auto __perform_diff_parallel = [&ndarray, &result, diff_index, loop_times](
-                                       const size_t thread_number,
-                                       const size_t total_threads) {
-        const size_t start_value = loop_times * thread_number;
-        size_t breaker = thread_number * diff_index;
-        for (size_t index = start_value; index < ndarray.get_size();
+                                       const usize thread_number,
+                                       const usize total_threads) {
+        const usize start_value = loop_times * thread_number;
+        usize breaker = thread_number * diff_index;
+        for (usize index = start_value; index < ndarray.get_size();
              index += (total_threads * loop_times)) {
-            for (size_t d_index = index;
+            for (usize d_index = index;
                  d_index < index + loop_times - diff_index; ++d_index) {
                 result.__array[d_index - breaker] =
                     ndarray.__array[d_index + diff_index] -
@@ -58,7 +58,7 @@ MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
 
     std::vector<std::thread> thread_pool;
 
-    for (size_t index = 0; index < thread_count; ++index) {
+    for (usize index = 0; index < thread_count; ++index) {
         thread_pool.emplace_back(
             std::thread(__perform_diff_parallel, index, thread_count));
     }
@@ -72,8 +72,8 @@ MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::diff(const MdStaticArrayReference<T> &ndarray,
-                                      const size_t axis,
-                                      const size_t thread_count) {
+                                      const usize axis,
+                                      const usize thread_count) {
     return diff<T>(MdStaticArray<T>(*ndarray.__array_reference, ndarray.offset,
                                     ndarray.shp_offset),
                    axis, thread_count);

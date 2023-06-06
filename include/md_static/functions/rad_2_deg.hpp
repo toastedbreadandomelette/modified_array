@@ -7,9 +7,9 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::rad_2_deg(const MdStaticArray<T> &__ndarray) {
+MdStaticArray<T> MdArrayUtility::rad_2_deg(const MdStaticArray<T> &ndarray) {
     return MdArrayUtility::map<T>(
-        __ndarray, [](const T value) -> T { return value * 180.0 / M_PI; });
+        ndarray, [](const T value) -> T { return value * 180.0 / M_PI; });
 }
 
 template <typename T>

@@ -5,11 +5,11 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T>
-long double Linalg::det(const MdStaticArray<T> &matrix) {
+f128 Linalg::det(const MdStaticArray<T> &matrix) {
     const auto [L, U, P, sign] = Linalg::lu_decompose<T>(matrix);
-    size_t n = matrix.get_shape()[0];
-    long double det = 1;
-    for (size_t index = 0; index < n; ++index) {
+    usize n = matrix.get_shape()[0];
+    f128 det = 1;
+    for (usize index = 0; index < n; ++index) {
         det *= U.__array[index * n + index];
     }
 
@@ -17,7 +17,7 @@ long double Linalg::det(const MdStaticArray<T> &matrix) {
 }
 
 template <typename T>
-long double Linalg::det(const MdStaticArrayReference<T> &matrix) {
+f128 Linalg::det(const MdStaticArrayReference<T> &matrix) {
     return Linalg::det(MdStaticArray<T>(*matrix.__array_reference,
                                         matrix.offset, matrix.shp_offset));
 }

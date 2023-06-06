@@ -4,13 +4,13 @@
 
 #include "./md_array_manipulation.hpp"
 
-template <typename _T>
-MdStaticArray<_T> Manip::flip(const MdStaticArray<_T> &ndarray,
-                              const size_t axis) {
+template <typename T>
+MdStaticArray<T> Manip::flip(const MdStaticArray<T> &ndarray,
+                             const usize axis) {
     if (axis == -1) {
-        MdStaticArray<_T> result(ndarray);
+        MdStaticArray<T> result(ndarray);
 
-        for (size_t index = 0; index < result.get_size() / 2; ++index) {
+        for (usize index = 0; index < result.get_size() / 2; ++index) {
             const auto temp = result.__array[index];
             result.__array[index] =
                 result.__array[result.get_size() - 1 - index];
@@ -24,24 +24,24 @@ MdStaticArray<_T> Manip::flip(const MdStaticArray<_T> &ndarray,
                                  " requested for operation flip");
     }
 
-    MdStaticArray<_T> result(ndarray);
+    MdStaticArray<T> result(ndarray);
 
-    const size_t total_axes = result.get_axis_reference(axis).get_total_axes();
+    const usize total_axes = result.get_axis_reference(axis).get_total_axes();
 
     if (s_thread_count == 1 || s_threshold_size > ndarray.get_size()) {
-        for (size_t index = 0; index < total_axes; ++index) {
+        for (usize index = 0; index < total_axes; ++index) {
             const auto axis_ref = result.get_nth_axis_reference(axis, index);
-            for (size_t i = 0; i < axis_ref.get_size() - i; ++i) {
+            for (usize i = 0; i < axis_ref.get_size() - i; ++i) {
                 std::swap(axis_ref[i], axis_ref[axis_ref.get_size() - 1 - i]);
             }
         }
     } else {
         // Use multi-threading
-        auto __perform_flip_internal = [&result, axis](const size_t start,
-                                                       const size_t end) {
+        auto __perform_flip_internal = [&result, axis](const usize start,
+                                                       const usize end) {
             auto axis_ref = result.get_nth_axis_reference(axis, start);
-            for (size_t index = start; index < end; ++index) {
-                for (size_t i = 0; i < axis_ref.get_size() - i; ++i) {
+            for (usize index = start; index < end; ++index) {
+                for (usize i = 0; i < axis_ref.get_size() - i; ++i) {
                     std::swap(axis_ref[i],
                               axis_ref[axis_ref.get_size() - 1 - i]);
                 }
@@ -49,11 +49,11 @@ MdStaticArray<_T> Manip::flip(const MdStaticArray<_T> &ndarray,
             }
         };
 
-        const size_t total_axes_for_single_thread = total_axes / s_thread_count;
+        const usize total_axes_for_single_thread = total_axes / s_thread_count;
 
         std::vector<std::thread> thread_pool;
 
-        for (size_t index = 0; index < s_thread_count - 1; ++index) {
+        for (usize index = 0; index < s_thread_count - 1; ++index) {
             thread_pool.emplace_back(
                 __perform_flip_internal, total_axes_for_single_thread * (index),
                 total_axes_for_single_thread * (index + 1));

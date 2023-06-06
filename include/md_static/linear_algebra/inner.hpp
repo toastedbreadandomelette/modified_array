@@ -6,48 +6,47 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &__first,
-                                         const MdStaticArray<T2> &__other,
-                                         const size_t threads) {
-    if (__first.get_shape()[__first.get_shape_size() - 1] !=
-        __other.get_shape()[__other.get_shape_size() - 1]) {
+MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
+                                const MdStaticArray<T2> &other,
+                                const usize threads) {
+    if (first.get_shape()[first.get_shape_size() - 1] !=
+        other.get_shape()[other.get_shape_size() - 1]) {
         throw std::runtime_error(
             "Last axis should be of same size: found " +
-            std::to_string(__first.get_shape()[__first.get_shape_size() - 1]) +
+            std::to_string(first.get_shape()[first.get_shape_size() - 1]) +
             " != " +
-            std::to_string(__other.get_shape()[__other.get_shape_size() - 1]));
+            std::to_string(other.get_shape()[other.get_shape_size() - 1]));
     }
-    const size_t overall_shape =
-        __first.get_shape_size() + __other.get_shape_size() - 2;
-    std::vector<size_t> resultant_shape(overall_shape);
+    const usize overall_shape =
+        first.get_shape_size() + other.get_shape_size() - 2;
+    std::vector<usize> resultant_shape(overall_shape);
 
-    size_t result_shape_index = 0;
-    for (size_t index = 0; index < __first.get_shape_size() - 1; ++index) {
-        resultant_shape[result_shape_index++] = __first.shape[index];
+    usize result_shape_index = 0;
+    for (usize index = 0; index < first.get_shape_size() - 1; ++index) {
+        resultant_shape[result_shape_index++] = first.shape[index];
     }
-    size_t skip_number = 1;
-    for (size_t index = 0; index < __other.get_shape_size() - 1; ++index) {
-        resultant_shape[result_shape_index++] = __other.shape[index];
-        skip_number *= __other.shape[index];
+    usize skip_number = 1;
+    for (usize index = 0; index < other.get_shape_size() - 1; ++index) {
+        resultant_shape[result_shape_index++] = other.shape[index];
+        skip_number *= other.shape[index];
     }
 
     // do this separately.
     if (resultant_shape.size() == 0) {
-        if (s_threshold_size < __first.get_size()) {
+        if (s_threshold_size < first.get_size()) {
             std::vector<T3> value(threads, 0);
 
-            auto __perform_inner_internal = [&__first, &__other, &value](
-                                                const size_t thread_number,
-                                                const size_t start,
-                                                const size_t end) {
-                for (size_t i = start; i < end; ++i) {
-                    value[thread_number] +=
-                        __first.__array[i] * __other.__array[i];
+            auto __perform_inner_internal = [&first, &other, &value](
+                                                const usize thread_number,
+                                                const usize start,
+                                                const usize end) {
+                for (usize i = start; i < end; ++i) {
+                    value[thread_number] += first.__array[i] * other.__array[i];
                 }
             };
-            const size_t blocks = __first.get_size() / threads;
+            const usize blocks = first.get_size() / threads;
             std::vector<std::thread> thread_pool;
-            for (size_t index = 0; index < threads - 1; ++index) {
+            for (usize index = 0; index < threads - 1; ++index) {
                 thread_pool.emplace_back(std::thread(__perform_inner_internal,
                                                      index, blocks * index,
                                                      blocks * (index + 1)));
@@ -55,7 +54,7 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &__first,
 
             thread_pool.emplace_back(
                 std::thread(__perform_inner_internal, threads - 1,
-                            blocks * (threads - 1), __first.get_size()));
+                            blocks * (threads - 1), first.get_size()));
 
             for (auto &thread : thread_pool) {
                 thread.join();
@@ -70,8 +69,8 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &__first,
         } else {
             T3 value = 0;
 #pragma omp parallel for
-            for (size_t i = 0; i < __other.get_size(); ++i) {
-                value += __first.__array[i] * __other.__array[i];
+            for (usize i = 0; i < other.get_size(); ++i) {
+                value += first.__array[i] * other.__array[i];
             }
 
             return MdStaticArray<T3>(1, value);
@@ -79,22 +78,22 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &__first,
     } else {
         MdStaticArray<T3> result(resultant_shape, 0);
 
-        const size_t row = __first.shape[__first.get_shape_size() - 1];
+        const usize row = first.shape[first.get_shape_size() - 1];
 
         auto __perform_inner_internal =
-            [&result, &__first, &__other, row, skip_number](
-                const size_t thread_number, const size_t total_threads) {
-                size_t first_start = thread_number * row;
-                size_t index = thread_number * skip_number;  // result start
-                for (size_t i = first_start;
-                     i < __first.get_size() && index < result.get_size();
+            [&result, &first, &other, row, skip_number](
+                const usize thread_number, const usize total_threads) {
+                usize first_start = thread_number * row;
+                usize index = thread_number * skip_number;  // result start
+                for (usize i = first_start;
+                     i < first.get_size() && index < result.get_size();
                      i += (total_threads * row)) {
-                    for (size_t j = 0;
-                         j < __other.get_size() && index < result.get_size();
+                    for (usize j = 0;
+                         j < other.get_size() && index < result.get_size();
                          j += row) {
-                        for (size_t k = 0; k < row; ++k) {
+                        for (usize k = 0; k < row; ++k) {
                             result.__array[index] +=
-                                __first.__array[i + k] * __other.__array[j + k];
+                                first.__array[i + k] * other.__array[j + k];
                         }
                         ++index;
                     }
@@ -103,7 +102,7 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &__first,
             };
 
         std::vector<std::thread> thread_pool;
-        for (size_t index = 0; index < threads; ++index) {
+        for (usize index = 0; index < threads; ++index) {
             thread_pool.emplace_back(
                 std::thread(__perform_inner_internal, index, threads));
         }
@@ -117,35 +116,35 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &__first,
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(
-    const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
-    const size_t threads) {
+MdStaticArray<T3> Linalg::inner(const MdStaticArrayReference<T1> &first,
+                                const MdStaticArray<T2> &other,
+                                const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
-                          __first.shp_offset),
-        __other, threads);
+        MdStaticArray<T1>(*first.__array_reference, first.offset,
+                          first.shp_offset),
+        other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(
-    const MdStaticArrayReference<T1> &__first,
-    const MdStaticArrayReference<T2> &__other, const size_t threads) {
+MdStaticArray<T3> Linalg::inner(const MdStaticArrayReference<T1> &first,
+                                const MdStaticArrayReference<T2> &other,
+                                const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        MdStaticArray<T1>(*__first.__array_reference, __first.offset,
-                          __first.shp_offset),
-        MdStaticArray<T1>(*__other.__array_reference, __other.offset,
-                          __other.shp_offset),
+        MdStaticArray<T1>(*first.__array_reference, first.offset,
+                          first.shp_offset),
+        MdStaticArray<T1>(*other.__array_reference, other.offset,
+                          other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(
-    const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
-    const size_t threads) {
+MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
+                                const MdStaticArrayReference<T2> &other,
+                                const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        __first,
-        MdStaticArray<T1>(*__other.__array_reference, __other.offset,
-                          __other.shp_offset),
+        first,
+        MdStaticArray<T1>(*other.__array_reference, other.offset,
+                          other.shp_offset),
         threads);
 }
 

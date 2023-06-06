@@ -13,7 +13,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> zeros(const size_t size);
+    static MdStaticArray<T> zeros(const usize size);
 
     /**
      * @brief Create array with entries zero
@@ -22,7 +22,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> zeros(const std::vector<size_t> &shape);
+    static MdStaticArray<T> zeros(const std::vector<usize> &shape);
 
     /**
      * @brief Create array with entries one
@@ -31,7 +31,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as one
      */
     template <typename T>
-    static MdStaticArray<T> ones(const size_t size);
+    static MdStaticArray<T> ones(const usize size);
 
     /**
      * @brief Create array with entries one
@@ -40,7 +40,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as one
      */
     template <typename T>
-    static MdStaticArray<T> ones(const std::vector<size_t> &shape);
+    static MdStaticArray<T> ones(const std::vector<usize> &shape);
 
     /**
      * @brief Create an identity matrix
@@ -52,8 +52,8 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> eye(const size_t rows, const size_t cols = -1,
-                                const size_t koffset = 0);
+    static MdStaticArray<T> eye(const usize rows, const usize cols = -1,
+                                const usize koffset = 0);
 
     /**
      * @brief Return diagonal from a 2d array
@@ -64,7 +64,7 @@ struct MdArrayManipulate {
      */
     template <typename T>
     static MdStaticArray<T> mat_diag(const MdStaticArray<T> &matrix,
-                                     const size_t koffset = 0);
+                                     const usize koffset = 0);
     /**
      * @brief Return diagonal from a 2d array
      * @tparam T type of array
@@ -74,7 +74,7 @@ struct MdArrayManipulate {
      */
     template <typename T>
     static MdStaticArray<T> mat_diag(const MdStaticArrayReference<T> &rows,
-                                     const size_t koffset = 0);
+                                     const usize koffset = 0);
 
     /**
      * @brief Create array with entries as vandermonte
@@ -88,7 +88,7 @@ struct MdArrayManipulate {
      */
     template <typename T>
     static MdStaticArray<T> vandermonte(const MdStaticArray<T> &array,
-                                        const int64_t n = -1,
+                                        const i64 n = -1,
                                         const bool increasing_order = false);
     /**
      * @brief Create array with entries as vandermonte
@@ -102,36 +102,36 @@ struct MdArrayManipulate {
      */
     template <typename T>
     static MdStaticArray<T> vandermonte(const MdStaticArrayReference<T> &rows,
-                                        const int64_t n = -1,
+                                        const i64 n = -1,
                                         const bool increasing_order = false);
 
     template <typename T>
     static MdStaticArray<T> flip(const MdStaticArray<T> &__ndarray,
-                                 const size_t axis = -1);
+                                 const usize axis = -1);
 
     template <typename T>
     static MdStaticArray<T> flip(const MdStaticArrayReference<T> &__ndarray,
-                                 const size_t axis = -1);
+                                 const usize axis = -1);
 
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> linspace(const MdStaticArray<T1> &first,
                                       const MdStaticArray<T2> &other,
-                                      const size_t numbers = 50);
+                                      const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> linspace(const MdStaticArrayReference<T1> &first,
                                       const MdStaticArray<T2> &other,
-                                      const size_t numbers = 50);
+                                      const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> linspace(const MdStaticArrayReference<T1> &first,
                                       const MdStaticArrayReference<T2> &other,
-                                      const size_t numbers = 50);
+                                      const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> linspace(const MdStaticArray<T1> &first,
                                       const MdStaticArrayReference<T2> &other,
-                                      const size_t numbers = 50);
+                                      const usize numbers = 50);
 };
 
 typedef MdArrayManipulate Manip;

@@ -7,12 +7,12 @@
 template <class T>
 class MdStaticAxisReference {
     const MdStaticArray<T> *arr_ptr_;
-    size_t axis_;
-    size_t stride_;
-    size_t total_number_of_axes_;
-    size_t current_axes_;
-    size_t start_;
-    size_t axis_size_;
+    usize axis_;
+    usize stride_;
+    usize total_number_of_axes_;
+    usize current_axes_;
+    usize start_;
+    usize axis_size_;
 
  public:
     constexpr MdStaticAxisReference() {
@@ -38,7 +38,7 @@ class MdStaticAxisReference {
     }
 
     constexpr MdStaticAxisReference(const MdStaticArray<T> &new_array,
-                                    const size_t a) {
+                                    const usize a) {
         arr_ptr_ = &new_array;
         axis_ = a;
         stride_ = new_array.skip_vec[axis_];
@@ -49,20 +49,20 @@ class MdStaticAxisReference {
     }
 
     constexpr MdStaticAxisReference(const MdStaticArray<T> &new_array,
-                                    const size_t a,
-                                    const size_t current_axis_init) {
+                                    const usize a,
+                                    const usize current_axis_init) {
         arr_ptr_ = &new_array;
         axis_ = a;
         stride_ = new_array.skip_vec[axis_];
         axis_size_ = new_array.shape[axis_];
         total_number_of_axes_ = new_array.get_size() / new_array.shape[axis_];
         current_axes_ = current_axis_init;
-        const size_t dim_skip = stride_ * axis_size_;
+        const usize dim_skip = stride_ * axis_size_;
         start_ = (current_axis_init / stride_) * (dim_skip) +
                  current_axis_init % stride_;
     }
 
-    inline T &operator[](const size_t index) const {
+    inline T &operator[](const usize index) const {
         return arr_ptr_->__array[start_ + stride_ * index];
     }
 
@@ -82,7 +82,7 @@ class MdStaticAxisReference {
     friend std::ostream &operator<<(std::ostream &op,
                                     const MdStaticAxisReference &arr) {
         op << '[';
-        for (size_t index = 0; index < arr.get_size(); ++index) {
+        for (usize index = 0; index < arr.get_size(); ++index) {
             op << arr[index];
             if (index < arr.get_size() - 1) {
                 op << ", ";
@@ -92,11 +92,11 @@ class MdStaticAxisReference {
         return op;
     }
 
-    inline size_t get_size() const { return axis_size_; }
+    inline usize get_size() const { return axis_size_; }
 
-    inline size_t get_axis_index() const { return current_axes_; }
+    inline usize get_axis_index() const { return current_axes_; }
 
-    inline size_t get_total_axes() const { return total_number_of_axes_; }
+    inline usize get_total_axes() const { return total_number_of_axes_; }
 };
 
 #endif

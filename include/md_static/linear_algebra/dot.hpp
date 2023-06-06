@@ -9,7 +9,7 @@
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
                               const MdStaticArray<T2> &other,
-                              const size_t thread_count) {
+                              const usize thread_count) {
     // Basically, compute dot product of vector:::
     // Last axis of vector first should be multiplied with second last
     // axis of other
@@ -22,56 +22,56 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
             throw std::runtime_error(
                 "Axis size do not match for dot multiplication.");
         }
-        const size_t overall_size =
+        const usize overall_size =
             first.get_shape_size() - 2 + other.get_shape_size();
 
-        std::vector<size_t> overall_shape(overall_size);
-        size_t index = 0;
-        for (size_t i = 0; i < first.get_shape_size() - 1; ++i) {
+        std::vector<usize> overall_shape(overall_size);
+        usize index = 0;
+        for (usize i = 0; i < first.get_shape_size() - 1; ++i) {
             overall_shape[index++] = first.shape[i];
         }
 
-        for (size_t i = 0; i < other.get_shape_size(); ++i) {
+        for (usize i = 0; i < other.get_shape_size(); ++i) {
             if (i != other.get_shape_size() - 2) {
                 overall_shape[index++] = other.shape[i];
             }
         }
 
         MdStaticArray<T3> result(overall_shape, 0);
-        const size_t res_base_matrix_size = (result.shape[result.shp_size - 1] *
-                                             result.shape[result.shp_size - 2]);
+        const usize res_base_matrix_size = (result.shape[result.shp_size - 1] *
+                                            result.shape[result.shp_size - 2]);
 
-        const size_t m = first.shape[first.shp_size - 2];
-        const size_t n = first.shape[first.shp_size - 1];
-        const size_t p = other.shape[other.shp_size - 1];
+        const usize m = first.shape[first.shp_size - 2];
+        const usize n = first.shape[first.shp_size - 1];
+        const usize p = other.shape[other.shp_size - 1];
 
-        const size_t other_base_matrix_size = n * p;
+        const usize other_base_matrix_size = n * p;
 
         index = 0;
-        uint16_t threads = thread_count;
-        size_t skip_count = other.get_size() / n;
+        u16 threads = thread_count;
+        usize skip_count = other.get_size() / n;
 
         auto __perform_dot_parallel = [&result, &first, &other, m, n, p,
                                        threads, other_base_matrix_size,
-                                       skip_count](const size_t thread_number) {
+                                       skip_count](const usize thread_number) {
             // We iterate over each row of first ndarray. Each $i^{th}$ thread
             // will handle alternate $i^{th}$ row.
-            size_t index = thread_number * skip_count;
-            for (size_t first_row = thread_number * n;
+            usize index = thread_number * skip_count;
+            for (usize first_row = thread_number * n;
                  first_row < first.get_size(); first_row += (threads * n)) {
                 // Considering a 2D - layer of n-dimensional array $other$, we
                 // iterate over every 2D-layer.
-                for (size_t other_block = 0; other_block < other.get_size();
+                for (usize other_block = 0; other_block < other.get_size();
                      other_block += other_base_matrix_size) {
                     const auto f = other.__array[other_block];
                     // Iterator over second row of first and column of other
                     // array (note that $j$ and $other_col$ loop are swapped for
                     // performance reasons, to fulfil offset, we add $other_col$
                     // to $index$ in result array)
-                    for (size_t j = 0; j < n; ++j) {
+                    for (usize j = 0; j < n; ++j) {
                         const auto c = first.__array[first_row + j];
                         // Iterator over last axis of other.
-                        for (size_t other_col = 0; other_col < p; ++other_col) {
+                        for (usize other_col = 0; other_col < p; ++other_col) {
                             result.__array[index + other_col] +=
                                 c *
                                 other.__array[other_block + j * p + other_col];
@@ -112,24 +112,23 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
                     "Axis size do not match for dot multiplication.");
             }
 
-            std::vector<size_t> overall_shape(first.get_shape_size() - 1);
-            for (size_t index = 0; index < first.get_shape_size() - 1;
-                 ++index) {
+            std::vector<usize> overall_shape(first.get_shape_size() - 1);
+            for (usize index = 0; index < first.get_shape_size() - 1; ++index) {
                 overall_shape[index] = first.shape[index];
             }
             MdStaticArray<T3> result(overall_shape, 0);
 
             auto __perform_dot_parallel = [&first, &other, &result](
-                                              const size_t start,
-                                              const size_t end) {
-                size_t res_index = start;
-                size_t shp = first.get_shape_size() - 1;
+                                              const usize start,
+                                              const usize end) {
+                usize res_index = start;
+                usize shp = first.get_shape_size() - 1;
                 // For each last axis of first array
-                for (size_t index = start * first.shape[shp];
+                for (usize index = start * first.shape[shp];
                      index < end * first.shape[shp];
                      index += first.shape[shp]) {
                     // Iterate over the last axis of array other
-                    for (size_t row = 0; row < other.shape[0]; ++row) {
+                    for (usize row = 0; row < other.shape[0]; ++row) {
                         result.__array[res_index] +=
                             (first.__array[index + row] * other.__array[row]);
                     }
@@ -137,9 +136,9 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
                 }
             };
 
-            const size_t block = result.get_size() / thread_count - 1;
+            const usize block = result.get_size() / thread_count - 1;
             std::vector<std::thread> thread_pool;
-            for (int i = 0; i < thread_count - 1; ++i) {
+            for (i32 i = 0; i < thread_count - 1; ++i) {
                 thread_pool.emplace_back(std::thread(
                     __perform_dot_parallel, block * i, block * (i + 1)));
             }
@@ -157,9 +156,9 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
                     "Axis size do not match for dot multiplication.");
             }
 
-            std::vector<size_t> overall_shape(other.get_shape_size() - 1);
-            size_t shp_index = 0;
-            for (size_t index = 0; index < other.get_shape_size(); ++index) {
+            std::vector<usize> overall_shape(other.get_shape_size() - 1);
+            usize shp_index = 0;
+            for (usize index = 0; index < other.get_shape_size(); ++index) {
                 if (index != other.get_shape_size() - 2) {
                     overall_shape[shp_index++] = other.shape[index];
                 }
@@ -168,18 +167,18 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
 
             auto __perform_dot_parallel = [&first, &other, &result,
                                            &thread_count](
-                                              const size_t thread_number) {
-                size_t shp = other.get_shape_size() - 2;
-                size_t res_index = thread_number * other.shape[shp + 1];
-                size_t rows = first.get_size();
-                size_t other_mat_size = other.shape[shp] * other.shape[shp + 1];
+                                              const usize thread_number) {
+                usize shp = other.get_shape_size() - 2;
+                usize res_index = thread_number * other.shape[shp + 1];
+                usize rows = first.get_size();
+                usize other_mat_size = other.shape[shp] * other.shape[shp + 1];
                 // Traversing through each layer of matrix of other
-                for (size_t other_mat_index = 0;
+                for (usize other_mat_index = 0;
                      other_mat_index < other.get_size();
                      other_mat_index += (thread_count * other_mat_size)) {
                     // For each layer, calculate dot-product
                     // Each element will be
-                    for (size_t element = 0; element < other_mat_size;
+                    for (usize element = 0; element < other_mat_size;
                          ++element) {
                         result.__array[res_index + (element % rows)] +=
                             first.__array[element / other.shape[shp + 1]] *
@@ -190,7 +189,7 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
             };
 
             std::vector<std::thread> thread_pool;
-            for (size_t i = 0; i < thread_count; ++i) {
+            for (usize i = 0; i < thread_count; ++i) {
                 thread_pool.emplace_back(
                     std::thread(__perform_dot_parallel, i));
             }
@@ -206,7 +205,7 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
                               const MdStaticArrayReference<T2> &other,
-                              const size_t threads) {
+                              const usize threads) {
     return Linalg::dot<T3, T1, T2>(
         first,
         MdStaticArray(*other.__array_reference, other.offset, other.shp_offset),
@@ -216,7 +215,7 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::dot(const MdStaticArrayReference<T1> &first,
                               const MdStaticArray<T2> &other,
-                              const size_t threads) {
+                              const usize threads) {
     return Linalg::dot<T3, T1, T2>(
         MdStaticArray(*first.__array_reference, first.offset, first.shp_offset),
         other, threads);
@@ -225,7 +224,7 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArrayReference<T1> &first,
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::dot(const MdStaticArrayReference<T1> &first,
                               const MdStaticArrayReference<T2> &other,
-                              const size_t threads) {
+                              const usize threads) {
     return Linalg::dot<T3, T1, T2>(
         MdStaticArray(*first.__array_reference, first.offset, first.shp_offset),
         MdStaticArray(*other.__array_reference, other.offset, other.shp_offset),

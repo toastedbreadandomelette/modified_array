@@ -7,13 +7,13 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<double> MdArrayUtility::cosh(const MdStaticArray<T> &values) {
+MdStaticArray<f64> MdArrayUtility::cosh(const MdStaticArray<T> &values) {
     return MdArrayUtility::map<T>(values,
                                   [](const T &value) { return ::cosh(value); });
 }
 
 template <typename T>
-MdStaticArray<double> MdArrayUtility::cosh(
+MdStaticArray<f64> MdArrayUtility::cosh(
     const MdStaticArrayReference<T> &values) {
     return MdArrayUtility::cosh<T>(MdStaticArray<T>(
         *values.__array_reference, values.offset, values.shp_offset));

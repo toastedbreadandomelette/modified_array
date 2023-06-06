@@ -7,36 +7,38 @@
 #include <ostream>
 #include <vector>
 
+#include "./md_type_inference.hpp"
+
 /**
  * @brief Shape struct
  */
 struct Shape {
-    size_t* shape;        /// Actual shape array
-    size_t* skip_vec;     /// Stride vector
-    size_t shape_size;    /// Size of shape array
-    size_t overall_size;  /// Overall size of the master array
+    usize* shape;        /// Actual shape array
+    usize* skip_vec;     /// Stride vector
+    usize shape_size;    /// Size of shape array
+    usize overall_size;  /// Overall size of the master array
 
     constexpr Shape()
         : shape(nullptr), skip_vec(nullptr), shape_size(0), overall_size(0) {}
 
-    constexpr Shape(size_t size)
+    constexpr Shape(usize size)
         : shape(nullptr), skip_vec(nullptr), shape_size(1), overall_size(0) {
-        shape = static_cast<size_t*>(malloc(sizeof(size_t)));
-        skip_vec = static_cast<size_t*>(malloc(sizeof(size_t)));
+        shape = static_cast<usize*>(malloc(sizeof(usize)));
+        skip_vec = static_cast<usize*>(malloc(sizeof(usize)));
         shape[0] = size;
         skip_vec[0] = 1;
         overall_size = 1;
     }
 
-    constexpr Shape(const std::vector<size_t>& shp)
+    constexpr Shape(const std::vector<usize>& shp)
         : shape(nullptr),
           skip_vec(nullptr),
           shape_size(shp.size()),
           overall_size(0) {
-        size_t size = shp.size();
-        shape = static_cast<size_t*>(malloc(shape_size * sizeof(size_t)));
-        skip_vec = static_cast<size_t*>(malloc(shape_size * sizeof(size_t)));
-        for (const size_t axis_size : shp) {
+        usize size = shp.size();
+        shape = static_cast<usize*>(malloc(shape_size * sizeof(usize)));
+        skip_vec = static_cast<usize*>(malloc(shape_size * sizeof(usize)));
+        for (const usize axis_size : shp) {
             overall_size *= axis_size;
         }
 
@@ -48,11 +50,11 @@ struct Shape {
         }
     }
 
-    const size_t operator[](const size_t index) const { return shape[index]; }
+    const usize operator[](const usize index) const { return shape[index]; }
 
     friend std::ostream& operator<<(std::ostream& op, const Shape& shp) {
         op << '(';
-        for (size_t index = 0; index < shp.shape_size; ++index) {
+        for (usize index = 0; index < shp.shape_size; ++index) {
             op << shp.shape[index];
             if (index < shp.shape_size - 1) {
                 op << ", ";

@@ -7,22 +7,22 @@
 
 template <typename Tres, typename T>
 std::tuple<MdStaticArray<Tres>, MdStaticArray<Tres>, MdStaticArray<Tres>, int>
-Linalg::lu_decompose(const MdStaticArray<T> &__2darray) {
-    if (__2darray.get_shape_size() != 2) {
+Linalg::lu_decompose(const MdStaticArray<T> &matrix) {
+    if (matrix.get_shape_size() != 2) {
         throw std::runtime_error(
             "Given array should be of 2 dimension, found " +
-            std::to_string(__2darray.get_shape_size()));
+            std::to_string(matrix.get_shape_size()));
     }
 
-    if (__2darray.get_shape()[0] != __2darray.get_shape()[1]) {
+    if (matrix.get_shape()[0] != matrix.get_shape()[1]) {
         throw std::runtime_error("Given matrix should be square.");
     }
 
     // Credits to algorithm: Rosetta code:
     // https://rosettacode.org/wiki/LU_decomposition#C++
-    size_t n = __2darray.get_shape()[0];
+    size_t n = matrix.get_shape()[0];
     MdStaticArray<Tres> L({n, n}, 0), U({n, n}, 0), P({n, n}, 0);
-    MdStaticArray<Tres> input(__2darray);
+    MdStaticArray<Tres> input(matrix);
     int sign = 1;
     MdStaticArray<size_t> permutation = MdArrayUtility::range<size_t>(n);
 
@@ -78,11 +78,10 @@ Linalg::lu_decompose(const MdStaticArray<T> &__2darray) {
 
 template <typename Tres, typename T>
 std::tuple<MdStaticArray<Tres>, MdStaticArray<Tres>, MdStaticArray<Tres>, int>
-Linalg::lu_decompose(
-    const MdStaticArrayReference<T> &__2darray_reference) {
-    return Linalg::lu_decompose<Tres>(MdStaticArray<T>(
-        *__2darray_reference.__array_reference, __2darray_reference.offset,
-        __2darray_reference.shp_offset));
+Linalg::lu_decompose(const MdStaticArrayReference<T> &matrix_reference) {
+    return Linalg::lu_decompose<Tres>(
+        MdStaticArray<T>(*matrix_reference.__array_reference,
+                         matrix_reference.offset, matrix_reference.shp_offset));
 }
 
 #endif

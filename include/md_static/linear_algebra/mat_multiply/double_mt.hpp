@@ -10,29 +10,29 @@
 #include "../../md_static_array/md_static_array.hpp"
 #include "../../utility/alloc.hpp"
 
-void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
-                     int start_row, int end_row) {
-    const int block_size = 128;
-    const int remainder_cols = p & 3;
-    const int remainder_rows = (end_row - start_row) & 3;
-    const int remainder_vec = n & 15;
+void mul_mt_internal(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
+                     i32 start_row, i32 end_row) {
+    const i32 block_size = 128;
+    const i32 remainder_cols = p & 3;
+    const i32 remainder_rows = (end_row - start_row) & 3;
+    const i32 remainder_vec = n & 15;
     // Compute block by block
-    for (int iblock = start_row; iblock < end_row - remainder_rows;
+    for (i32 iblock = start_row; iblock < end_row - remainder_rows;
          iblock += block_size) {
         // This will compute c tile by tile
-        int ibound = iblock + block_size > end_row - remainder_rows
+        i32 ibound = iblock + block_size > end_row - remainder_rows
                          ? end_row - remainder_rows
                          : iblock + block_size;
-        for (int jblock = 0; jblock < p - remainder_cols;
+        for (i32 jblock = 0; jblock < p - remainder_cols;
              jblock += block_size) {
             // now compute inner block_size x block_size matrices
-            int jbound = jblock + block_size > p - remainder_cols
+            i32 jbound = jblock + block_size > p - remainder_cols
                              ? p - remainder_cols
                              : jblock + block_size;
             // Compute
-            for (int i = iblock; i < ibound; i += 4) {
+            for (i32 i = iblock; i < ibound; i += 4) {
                 // Process 4 values at a time
-                for (int j = jblock; j < jbound; j += 4) {
+                for (i32 j = jblock; j < jbound; j += 4) {
                     // Accumulator:
                     // we compute 4x4 matrix at a time
                     __m256d acc00 = _mm256_setzero_pd();
@@ -58,7 +58,7 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
                     // Loop over second axis of A and first axis of B
                     // Processing 4 values at a time, loop unrolled by 4,
                     // we get
-                    for (int k = 0; k < n - remainder_vec; k += 16) {
+                    for (i32 k = 0; k < n - remainder_vec; k += 16) {
                         auto avec = _mm256_loadu_pd(a + (i * n + k));
 
                         auto bvec00 = _mm256_loadu_pd(tb + (j * n + k));
@@ -207,7 +207,7 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
                         acc33 = _mm256_fmadd_pd(avec, bvec30, acc33);
                     }
 
-                    for (int k = n - remainder_vec; k < n; ++k) {
+                    for (i32 k = n - remainder_vec; k < n; ++k) {
                         const auto tb0 = tb[j * n + k],
                                    tb1 = tb[(j + 1) * n + k],
                                    tb2 = tb[(j + 2) * n + k],
@@ -237,7 +237,7 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
                         c[(i + 3) * p + j + 3] += a3 * tb3;
                     }
 
-                    double ans[4] = {0, 0, 0, 0};
+                    f64 ans[4] = {0, 0, 0, 0};
                     _mm256_store_pd(ans, acc00);
                     c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
                     _mm256_store_pd(ans, acc01);
@@ -274,12 +274,12 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
                     _mm256_store_pd(ans, acc33);
                     c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
                 }
-                for (int j = p - remainder_cols; j < p; ++j) {
-                    double ans0 = 0;
-                    double ans1 = 0;
-                    double ans2 = 0;
-                    double ans3 = 0;
-                    for (int k = 0; k < n; ++k) {
+                for (i32 j = p - remainder_cols; j < p; ++j) {
+                    f64 ans0 = 0;
+                    f64 ans1 = 0;
+                    f64 ans2 = 0;
+                    f64 ans3 = 0;
+                    for (i32 k = 0; k < n; ++k) {
                         ans0 += a[i * n + k] * tb[j * n + k];
                         ans1 += a[(i + 1) * n + k] * tb[j * n + k];
                         ans2 += a[(i + 2) * n + k] * tb[j * n + k];
@@ -293,10 +293,10 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
             }
         }
     }
-    for (int i = end_row - remainder_rows; i < end_row; ++i) {
-        for (int j = 0; j < p; ++j) {
-            double ans = 0;
-            for (int k = 0; k < n; ++k) {
+    for (i32 i = end_row - remainder_rows; i < end_row; ++i) {
+        for (i32 j = 0; j < p; ++j) {
+            f64 ans = 0;
+            for (i32 k = 0; k < n; ++k) {
                 ans += a[i * n + k] * tb[j * n + k];
             }
             c[i * p + j] = ans;
@@ -313,26 +313,26 @@ void mul_mt_internal(double *a, double *tb, double *c, int m, int n, int p,
  * @param n second axis of A | first axis of B
  * @param p second axis of B
  */
-void mul_mt(double *a, double *tb, double *c, int m, int n, int p) {
-    int rem = (m * p) & 3;
+void mul_mt(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p) {
+    i32 rem = (m * p) & 3;
 
     // Initialize vector to zero
-    for (size_t index = 0; index < m * p - rem; index += 4) {
+    for (usize index = 0; index < m * p - rem; index += 4) {
         _mm256_store_pd(c + index, _mm256_setzero_pd());
     }
 
     // Set remainder values to zero as well
-    for (size_t index = m * p - rem; index < m * p; ++index) {
+    for (usize index = m * p - rem; index < m * p; ++index) {
         c[index] = 0;
     }
 
     std::vector<std::thread> threads;
 
-    int clamped_thread_count = std::min((int)::s_thread_count, m / 128);
+    i32 clamped_thread_count = std::min((i32)::s_thread_count, m / 128);
 
-    int total_rows_per_thread = m / clamped_thread_count;
+    i32 total_rows_per_thread = m / clamped_thread_count;
 
-    for (size_t index = 0; index < clamped_thread_count - 1; ++index) {
+    for (usize index = 0; index < clamped_thread_count - 1; ++index) {
         threads.emplace_back(std::thread(mul_mt_internal, a, tb, c, m, n, p,
                                          index * total_rows_per_thread,
                                          (index + 1) * total_rows_per_thread));

@@ -10,8 +10,8 @@ MdStaticArray<T2> MdArrayUtility::transpose(const MdStaticArray<T1> &first) {
     }
     MdStaticArray<T2> result({first.shape[1], first.shape[0]}, 0);
 
-    for (size_t res_index = 0; res_index < first.shape[1]; ++res_index) {
-        for (size_t f_index = res_index, incr = 0; f_index < first.get_size();
+    for (usize res_index = 0; res_index < first.shape[1]; ++res_index) {
+        for (usize f_index = res_index, incr = 0; f_index < first.get_size();
              f_index += first.shape[1], ++incr) {
             result.__array[res_index * first.shape[0] + incr] =
                 first.__array[f_index];

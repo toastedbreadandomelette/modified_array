@@ -23,7 +23,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> dot(const MdStaticArray<T1> &first,
                                  const MdStaticArray<T2> &other,
-                                 const size_t threads = 16);
+                                 const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -42,7 +42,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> dot(const MdStaticArray<T1> &first,
                                  const MdStaticArrayReference<T2> &other,
-                                 const size_t threads = 16);
+                                 const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -61,7 +61,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> dot(const MdStaticArrayReference<T1> &first,
                                  const MdStaticArray<T2> &other,
-                                 const size_t threads = 16);
+                                 const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -80,7 +80,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> dot(const MdStaticArrayReference<T1> &first,
                                  const MdStaticArrayReference<T2> &other,
-                                 const size_t threads = 16);
+                                 const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -556,7 +556,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(const MdStaticArray<T1> &first,
                                           const MdStaticArray<T2> &other,
-                                          const int threads = -1);
+                                          const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -576,7 +576,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(
         const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
-        const int threads = -1);
+        const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -596,7 +596,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(
         const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
-        const int threads = -1);
+        const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -616,7 +616,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> mat_multiply(
         const MdStaticArrayReference<T1> &first,
-        const MdStaticArrayReference<T2> &other, const int threads = -1);
+        const MdStaticArrayReference<T2> &other, const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -640,8 +640,8 @@ struct MdLinearAlgebra {
                   std::is_integral<T3>::value>::type>
     static MdStaticArray<T3> mat_mod_multiply(const MdStaticArray<T1> &first,
                                               const MdStaticArray<T2> &other,
-                                              const size_t mod,
-                                              const size_t threads = 16);
+                                              const usize mod,
+                                              const usize threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -664,7 +664,7 @@ struct MdLinearAlgebra {
                   std::is_integral<T3>::value>::type>
     static MdStaticArray<T3> mat_mod_multiply(
         const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
-        const size_t mod, const size_t threads = 16);
+        const usize mod, const usize threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -687,7 +687,7 @@ struct MdLinearAlgebra {
                   std::is_integral<T3>::value>::type>
     static MdStaticArray<T3> mat_mod_multiply(
         const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
-        const size_t mod, const size_t threads = 16);
+        const usize mod, const usize threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -710,8 +710,8 @@ struct MdLinearAlgebra {
                   std::is_integral<T3>::value>::type>
     static MdStaticArray<T3> mat_mod_multiply(
         const MdStaticArrayReference<T1> &first,
-        const MdStaticArrayReference<T2> &other, const size_t mod,
-        const size_t threads = 16);
+        const MdStaticArrayReference<T2> &other, const usize mod,
+        const usize threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -731,7 +731,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> inner(const MdStaticArray<T1> &first,
                                    const MdStaticArray<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -751,7 +751,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> inner(const MdStaticArrayReference<T1> &first,
                                    const MdStaticArray<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -771,7 +771,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> inner(const MdStaticArray<T1> &first,
                                    const MdStaticArrayReference<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -791,7 +791,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> inner(const MdStaticArrayReference<T1> &first,
                                    const MdStaticArrayReference<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -811,7 +811,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> outer(const MdStaticArray<T1> &first,
                                    const MdStaticArray<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -831,7 +831,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> outer(const MdStaticArrayReference<T1> &first,
                                    const MdStaticArray<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -851,7 +851,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> outer(const MdStaticArray<T1> &first,
                                    const MdStaticArrayReference<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -871,7 +871,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> outer(const MdStaticArrayReference<T1> &first,
                                    const MdStaticArrayReference<T2> &other,
-                                   const size_t threads = 16);
+                                   const usize threads = 16);
 
     /**
      * @brief Create a identity matrix
@@ -880,7 +880,7 @@ struct MdLinearAlgebra {
      * @returns a n x n matrix
      */
     template <typename T>
-    static MdStaticArray<T> identity(size_t n);
+    static MdStaticArray<T> identity(usize n);
 
     /**
      * @brief Verify if matrix is boolean
@@ -913,7 +913,7 @@ struct MdLinearAlgebra {
     template <typename T1, typename T2, typename T3>
     static MdStaticArray<T3> kron(const MdStaticArray<T1> &first,
                                   const MdStaticArray<T2> &other,
-                                  const size_t total_threads = 16);
+                                  const usize total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -928,7 +928,7 @@ struct MdLinearAlgebra {
     template <typename T1, typename T2, typename T3>
     static MdStaticArray<T3> kron(const MdStaticArrayReference<T1> &first,
                                   const MdStaticArrayReference<T2> &other,
-                                  const size_t total_threads = 16);
+                                  const usize total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -943,7 +943,7 @@ struct MdLinearAlgebra {
     template <typename T1, typename T2, typename T3>
     static MdStaticArray<T3> kron(const MdStaticArrayReference<T1> &first,
                                   const MdStaticArray<T2> &other,
-                                  const size_t total_threads = 16);
+                                  const usize total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -958,7 +958,7 @@ struct MdLinearAlgebra {
     template <typename T1, typename T2, typename T3>
     static MdStaticArray<T3> kron(const MdStaticArray<T1> &first,
                                   const MdStaticArrayReference<T2> &other,
-                                  const size_t total_threads = 16);
+                                  const usize total_threads = 16);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -970,7 +970,7 @@ struct MdLinearAlgebra {
     template <typename T, class = typename std::enable_if<
                               std::is_floating_point<T>::value>::type>
     static MdStaticArray<T> matrix_power(const MdStaticArray<T> &,
-                                         const size_t power);
+                                         const usize power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -982,7 +982,7 @@ struct MdLinearAlgebra {
     template <typename T, class = typename std::enable_if<
                               std::is_floating_point<T>::value>::type>
     static MdStaticArray<T> matrix_power(const MdStaticArrayReference<T> &,
-                                         const size_t power);
+                                         const usize power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -994,8 +994,8 @@ struct MdLinearAlgebra {
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static MdStaticArray<T> matrix_mod_power(const MdStaticArray<T> &,
-                                             const size_t power,
-                                             const size_t mod);
+                                             const usize power,
+                                             const usize mod);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -1007,8 +1007,8 @@ struct MdLinearAlgebra {
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static MdStaticArray<T> matrix_mod_power(const MdStaticArrayReference<T> &,
-                                             const size_t power,
-                                             const size_t mod);
+                                             const usize power,
+                                             const usize mod);
 
     /**
      * @brief Evaluate determinant of a matrix.
@@ -1034,9 +1034,9 @@ struct MdLinearAlgebra {
      * @param first first matrix
      * @returns new matrix
      */
-    template <typename _Tres, typename T>
-    static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
-                      MdStaticArray<_Tres>, int>
+    template <typename Tout, typename T>
+    static std::tuple<MdStaticArray<Tout>, MdStaticArray<Tout>,
+                      MdStaticArray<Tout>, i32>
     lu_decompose(const MdStaticArray<T> &);
 
     /**
@@ -1045,9 +1045,9 @@ struct MdLinearAlgebra {
      * @param first first matrix
      * @returns new matrix
      */
-    template <typename _Tres, typename T>
-    static std::tuple<MdStaticArray<_Tres>, MdStaticArray<_Tres>,
-                      MdStaticArray<_Tres>, int>
+    template <typename Tout, typename T>
+    static std::tuple<MdStaticArray<Tout>, MdStaticArray<Tout>,
+                      MdStaticArray<Tout>, i32>
     lu_decompose(const MdStaticArrayReference<T> &);
 
     /**
@@ -1086,7 +1086,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(const MdStaticArray<Complex<T1>> &first,
                                   const MdStaticArray<T2> &other,
-                                  const size_t threads = 16);
+                                  const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1106,7 +1106,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(
         const MdStaticArrayReference<Complex<T1>> &first,
-        const MdStaticArray<T2> &other, const size_t threads = 16);
+        const MdStaticArray<T2> &other, const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1126,7 +1126,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(const MdStaticArray<Complex<T1>> &first,
                                   const MdStaticArrayReference<T2> &other,
-                                  const size_t threads = 16);
+                                  const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1146,7 +1146,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(
         const MdStaticArrayReference<Complex<T1>> &first,
-        const MdStaticArrayReference<T2> &other, const size_t threads = 16);
+        const MdStaticArrayReference<T2> &other, const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1166,7 +1166,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(const MdStaticArray<T1> &first,
                                   const MdStaticArray<T2> &other,
-                                  const size_t threads = 16);
+                                  const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1186,7 +1186,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(const MdStaticArrayReference<T1> &first,
                                   const MdStaticArray<T2> &other,
-                                  const size_t threads = 16);
+                                  const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1206,7 +1206,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(const MdStaticArray<T1> &first,
                                   const MdStaticArrayReference<T2> &other,
-                                  const size_t threads = 16);
+                                  const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1226,7 +1226,7 @@ struct MdLinearAlgebra {
     template <typename T3, typename T1, typename T2>
     static MdStaticArray<T3> vdot(const MdStaticArrayReference<T1> &first,
                                   const MdStaticArrayReference<T2> &other,
-                                  const size_t threads = 16);
+                                  const usize threads = 16);
 };
 
 typedef MdLinearAlgebra Linalg;

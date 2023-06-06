@@ -5,12 +5,12 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename T>
-MdStaticArray<T> Manip::eye(const size_t rows, const size_t cols,
-                            const size_t koff) {
-    const size_t r = rows, c = (cols == -1 ? rows : cols), incr = c + 1;
+MdStaticArray<T> Manip::eye(const usize rows, const usize cols,
+                            const usize koff) {
+    const usize r = rows, c = (cols == -1 ? rows : cols), incr = c + 1;
     MdStaticArray<T> result({rows, cols}, 0);
 
-    for (size_t index = koff; index < result.get_size(); index += incr) {
+    for (usize index = koff; index < result.get_size(); index += incr) {
         result.__array[index] = 1;
     }
 

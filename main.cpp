@@ -17,19 +17,19 @@ int main(int argc, const char** argv) {
     // MdStaticArray<double>::set_threshold_size(1000);
     size_t sz = 1024;
     // MdStaticArray<double>::set_thread_count(1);
-    MdStaticArray<double> c({sz, sz}, 0), d({sz, sz}, 0);
+    MdStaticArray<f64> c({sz, sz}, 0), d({sz, sz}, 0);
     for (size_t i = 0; i < sz; ++i) {
-        c[i] = MdArrayUtility::range<double>(1, sz + 1);
-        d[i] = MdArrayUtility::range<double>(1, sz + 1);
+        c[i] = MdArrayUtility::range<f64>(1, sz + 1);
+        d[i] = MdArrayUtility::range<f64>(1, sz + 1);
     }
 
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = Linalg::mat_multiply<double>(c, d, 1);
+    auto ans = Linalg::mat_multiply<f64>(c, d, 1);
     auto end = std::chrono::system_clock::now();
 
-    std::chrono::duration<double> time = end - start;
+    std::chrono::duration<f64> time = end - start;
 
     // std::cout << MdArrayUtility::compare(ans, an) << '\n' << '\n';
 

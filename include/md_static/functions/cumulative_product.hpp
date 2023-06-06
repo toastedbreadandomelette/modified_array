@@ -5,8 +5,8 @@
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::cumulative_product(
-    const MdStaticArrayReference<T>& values, const size_t axis,
-    const size_t thread_count) {
+    const MdStaticArrayReference<T>& values, const usize axis,
+    const usize thread_count) {
     return MdArrayUtility::cumulative_product<T>(
         MdStaticArray<T>(*values.__array_reference, values.offset,
                          values.shp_offset),
@@ -15,8 +15,8 @@ MdStaticArray<T> MdArrayUtility::cumulative_product(
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::cumulative_product(
-    const MdStaticArray<T>& ndarray, const size_t axis,
-    const size_t thread_count) {
+    const MdStaticArray<T>& ndarray, const usize axis,
+    const usize thread_count) {
     if (axis == -1) {
         MdStaticArray<T> result(ndarray.get_size());
 
@@ -24,7 +24,7 @@ MdStaticArray<T> MdArrayUtility::cumulative_product(
 
         // Multithreading will be inefficient for cumulative sum of array,
         // instead, use it when user provides axis.
-        for (size_t index = 0; index < ndarray.get_size(); ++index) {
+        for (usize index = 0; index < ndarray.get_size(); ++index) {
             result.__array[index] =
                 result.__array[index - 1] * ndarray.__array[index];
         }
@@ -36,15 +36,15 @@ MdStaticArray<T> MdArrayUtility::cumulative_product(
                                  " requested for cumulative sum.");
     }
 
-    const size_t skip_value = ndarray.skip_vec[axis];
+    const usize skip_value = ndarray.skip_vec[axis];
 
-    const size_t looping_value = (axis - 1 <= ndarray.get_shape_size())
-                                     ? ndarray.skip_vec[axis - 1]
-                                     : ndarray.get_size();
+    const usize looping_value = (axis - 1 <= ndarray.get_shape_size())
+                                    ? ndarray.skip_vec[axis - 1]
+                                    : ndarray.get_size();
 
-    std::vector<size_t> resultant_shape;
+    std::vector<usize> resultant_shape;
 
-    for (size_t index = 0; index < ndarray.get_shape_size(); ++index) {
+    for (usize index = 0; index < ndarray.get_shape_size(); ++index) {
         resultant_shape.emplace_back(ndarray.get_shape()[index]);
     }
 
@@ -52,16 +52,16 @@ MdStaticArray<T> MdArrayUtility::cumulative_product(
 
     auto __perform_cu_sum_internal =
         [&ndarray, &result, skip_value, looping_value](
-            const size_t thread_number, const size_t total_threads) {
-            for (size_t index = thread_number * looping_value;
+            const usize thread_number, const usize total_threads) {
+            for (usize index = thread_number * looping_value;
                  index < ndarray.get_size();
                  index += (total_threads * looping_value)) {
-                for (size_t init_index = index; init_index < index + skip_value;
+                for (usize init_index = index; init_index < index + skip_value;
                      ++init_index) {
                     result.__array[init_index] = ndarray.__array[init_index];
                 }
 
-                for (size_t cu_index = index + skip_value;
+                for (usize cu_index = index + skip_value;
                      cu_index < index + looping_value; ++cu_index) {
                     result.__array[cu_index] =
                         result.__array[cu_index - skip_value] *
@@ -73,10 +73,10 @@ MdStaticArray<T> MdArrayUtility::cumulative_product(
     if (s_threshold_size > result.get_size()) {
         __perform_cu_sum_internal(0, 1);
     } else {
-        const size_t total_threads = thread_count;
+        const usize total_threads = thread_count;
         std::vector<std::thread> thread_pool;
 
-        for (size_t index = 0; index < total_threads; ++index) {
+        for (usize index = 0; index < total_threads; ++index) {
             thread_pool.emplace_back(
                 std::thread(__perform_cu_sum_internal, index, total_threads));
         }

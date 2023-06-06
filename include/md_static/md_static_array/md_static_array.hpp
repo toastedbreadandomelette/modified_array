@@ -13,7 +13,7 @@
 #include "./md_type_inference.hpp"
 
 // Todo: Create a thread pool.
-static size_t s_threshold_size = 100000;
+static usize s_threshold_size = 100000;
 static uint8_t s_thread_count = 16;
 
 template <typename T>
@@ -24,7 +24,7 @@ class MdStaticAxisReference;
 
 template <typename T>
 class MdStaticArray {
-    void init_shape(const size_t *_shape, const size_t _shp_size) {
+    void init_shape(const usize *_shape, const usize _shp_size) {
         if (shape) {
             free(shape);
             skip_vec = nullptr;
@@ -34,8 +34,8 @@ class MdStaticArray {
             skip_vec = nullptr;
         }
         shp_size = _shp_size;
-        shape = static_cast<size_t *>(malloc(shp_size * sizeof(size_t)));
-        skip_vec = static_cast<size_t *>(malloc(shp_size * sizeof(size_t)));
+        shape = static_cast<usize *>(malloc(shp_size * sizeof(usize)));
+        skip_vec = static_cast<usize *>(malloc(shp_size * sizeof(usize)));
         shape[shp_size - 1] = _shape[shp_size - 1];
         skip_vec[shp_size - 1] = 1;
         for (int16_t i = shp_size - 2; i >= 0; --i) {
@@ -44,7 +44,7 @@ class MdStaticArray {
         }
     }
 
-    void init_shape(const size_t size) {
+    void init_shape(const usize size) {
         if (shape) {
             free(shape);
             skip_vec = nullptr;
@@ -53,8 +53,8 @@ class MdStaticArray {
             free(skip_vec);
             skip_vec = nullptr;
         }
-        shape = static_cast<size_t *>(malloc(sizeof(size_t)));
-        skip_vec = static_cast<size_t *>(malloc(sizeof(size_t)));
+        shape = static_cast<usize *>(malloc(sizeof(usize)));
+        skip_vec = static_cast<usize *>(malloc(sizeof(usize)));
         shape[0] = size;
         skip_vec[0] = 1;
         shp_size = 1;
@@ -64,7 +64,7 @@ class MdStaticArray {
      * @brief create a temporary reference for MdStaticArray::reference.
      * This will not accessible to user.
      */
-    MdStaticArray(const MdStaticArray<T> &other, const size_t offset,
+    MdStaticArray(const MdStaticArray<T> &other, const usize offset,
                   const uint16_t shp_offset)
         : shape(nullptr), skip_vec(nullptr) {
         __array = &other.__array[offset];
@@ -81,9 +81,9 @@ class MdStaticArray {
 
     bool dont_free = false;
     T *__array;
-    size_t *shape;
-    size_t *skip_vec;
-    size_t __size;
+    usize *shape;
+    usize *skip_vec;
+    usize __size;
     uint16_t shp_size;
 
  public:
@@ -104,9 +104,9 @@ class MdStaticArray {
 
     static void set_thread_count(const uint8_t value);
 
-    static void set_threshold_size(const size_t size);
+    static void set_threshold_size(const usize size);
 
-    constexpr void init_array(const size_t size) {
+    constexpr void init_array(const usize size) {
         if constexpr (MdTypeInfer::is_mallocable<T>::value) {
             __array = aligned_allocate<T>(64, size);
         } else {
@@ -115,32 +115,32 @@ class MdStaticArray {
         __size = size;
     }
 
-    explicit MdStaticArray(const size_t size)
+    explicit MdStaticArray(const usize size)
         : shape(nullptr), skip_vec(nullptr) {
         init_array(size);
         init_shape(size);
     }
 
-    MdStaticArray(const size_t size, const T &value)
+    MdStaticArray(const usize size, const T &value)
         : shape(nullptr), skip_vec(nullptr) {
         init_array(size);
         init_shape(size);
 
         if (size > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (size_t index = 0; index < size; ++index) {
+            for (usize index = 0; index < size; ++index) {
                 __array[index] = value;
             }
         } else {
-            for (size_t index = 0; index < size; ++index) {
+            for (usize index = 0; index < size; ++index) {
                 __array[index] = value;
             }
         }
     }
 
-    MdStaticArray(const std::vector<size_t> &_shape, const T &value)
+    MdStaticArray(const std::vector<usize> &_shape, const T &value)
         : shape(nullptr), skip_vec(nullptr) {
-        size_t overall_size = 1;
+        usize overall_size = 1;
         for (auto &dim : _shape) {
             overall_size *= dim;
         }
@@ -149,11 +149,11 @@ class MdStaticArray {
 
         if (__size > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = value;
             }
         } else {
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = value;
             }
         }
@@ -169,11 +169,11 @@ class MdStaticArray {
 
         if (__size > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other[index];
             }
         } else {
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other[index];
             }
         }
@@ -187,11 +187,11 @@ class MdStaticArray {
 
         if (__size > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other.__array[index];
             }
         } else {
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other.__array[index];
             }
         }
@@ -258,14 +258,14 @@ class MdStaticArray {
      */
     template <typename T1>
     operator MdStaticArray<T1>() const {
-        std::vector<size_t> shp;
-        for (size_t index = 0; index < shp_size; ++index) {
+        std::vector<usize> shp;
+        for (usize index = 0; index < shp_size; ++index) {
             shp.emplace_back(shape[index]);
         }
         MdStaticArray<T1> __result(shp, 0);
 
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
+        for (usize index = 0; index < __size; ++index) {
             __result.__array[index] = __array[index];
         }
 
@@ -284,11 +284,11 @@ class MdStaticArray {
 
         if (__size > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other[index];
             }
         } else {
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other[index];
             }
         }
@@ -307,11 +307,11 @@ class MdStaticArray {
         init_shape(shp, other.shp_size);
         if (__size > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other.__array[index];
             }
         } else {
-            for (size_t index = 0; index < __size; ++index) {
+            for (usize index = 0; index < __size; ++index) {
                 __array[index] = other.__array[index];
             }
         }
@@ -354,7 +354,7 @@ class MdStaticArray {
     /**
      * @brief Get shape of the object
      */
-    inline size_t *get_shape() const { return shape; }
+    inline usize *get_shape() const { return shape; }
 
     /**
      * @brief Get shape length
@@ -378,7 +378,7 @@ class MdStaticArray {
             return false;
         }
 
-        for (size_t index = 0; index < shp_size; ++index) {
+        for (usize index = 0; index < shp_size; ++index) {
             if (shape[index] != other.shape[index]) {
                 return false;
             }
@@ -387,10 +387,10 @@ class MdStaticArray {
         return true;
     }
 
-    MdStaticAxisReference<T> get_axis_reference(const size_t axis);
+    MdStaticAxisReference<T> get_axis_reference(const usize axis);
 
-    MdStaticAxisReference<T> get_nth_axis_reference(const size_t axis,
-                                                    const size_t n);
+    MdStaticAxisReference<T> get_nth_axis_reference(const usize axis,
+                                                    const usize n);
 
     /**
      * @brief Add function, currently using threads
@@ -1166,7 +1166,7 @@ class MdStaticArray {
     }
 
     // To do: create a reference for multi-dimensional arrays.
-    inline MdStaticArrayReference<T> operator[](const size_t index) const {
+    inline MdStaticArrayReference<T> operator[](const usize index) const {
         if (index >= shape[0]) {
             throw std::runtime_error(
                 "Index out of bounds while accessing index " +
@@ -1176,7 +1176,7 @@ class MdStaticArray {
         return MdStaticArrayReference(*this, index * skip_vec[0]);
     }
 
-    inline size_t get_size() const { return __size; }
+    inline usize get_size() const { return __size; }
 
     friend std::ostream &operator<<(std::ostream &op,
                                     const MdStaticArray<T> &ot) {
@@ -1185,7 +1185,7 @@ class MdStaticArray {
             op << ot.__array[0];
         } else if (ot.get_shape_size() == 1) {
             op << '[';
-            for (size_t index = 0; index < ot.get_size(); ++index) {
+            for (usize index = 0; index < ot.get_size(); ++index) {
                 op << ot.__array[index];
                 if (index != ot.get_size() - 1) {
                     op << ", ";
@@ -1194,7 +1194,7 @@ class MdStaticArray {
             op << ']';
         } else {
             op << '[';
-            for (size_t index = 0; index < ot.get_shape()[0]; ++index) {
+            for (usize index = 0; index < ot.get_shape()[0]; ++index) {
                 op << ot[index];
                 if (index != ot.get_shape()[0] - 1) {
                     op << ",\n";
@@ -1262,7 +1262,7 @@ void MdStaticArray<T>::set_thread_count(const uint8_t value) {
 }
 
 template <typename T>
-void MdStaticArray<T>::set_threshold_size(const size_t value) {
+void MdStaticArray<T>::set_threshold_size(const usize value) {
     s_threshold_size = value;
 }
 
@@ -1377,12 +1377,12 @@ MdStaticArray<T> &MdStaticArray<T>::operator=(
 
     if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
+        for (usize index = 0; index < __size; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
     } else {
-        for (size_t index = 0; index < __size; ++index) {
+        for (usize index = 0; index < __size; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
@@ -1401,12 +1401,12 @@ MdStaticArray<T>::MdStaticArray(const MdStaticArrayReference<T> &other)
 
     if (__size > s_threshold_size) {
 #pragma omp parallel for
-        for (size_t index = 0; index < __size; ++index) {
+        for (usize index = 0; index < __size; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
     } else {
-        for (size_t index = 0; index < __size; ++index) {
+        for (usize index = 0; index < __size; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
@@ -1535,13 +1535,13 @@ inline auto &operator^=(T1 &other, const MdStaticArrayReference<T2> &__first) {
 
 template <typename T>
 MdStaticAxisReference<T> MdStaticArray<T>::get_axis_reference(
-    const size_t axis) {
+    const usize axis) {
     return MdStaticAxisReference(*this, axis);
 }
 
 template <typename T>
 MdStaticAxisReference<T> MdStaticArray<T>::get_nth_axis_reference(
-    const size_t axis, const size_t n) {
+    const usize axis, const usize n) {
     return MdStaticAxisReference(*this, axis, n);
 }
 

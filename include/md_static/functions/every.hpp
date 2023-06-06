@@ -7,9 +7,9 @@
 template <typename T>
 bool MdArrayUtility::every(const MdStaticArray<T> &ndarray,
                            const std::function<bool(const T &)> &function,
-                           const size_t threads) {
+                           const usize threads) {
     if (ndarray.get_size() < s_threshold_size) {
-        size_t index = 0;
+        usize index = 0;
         for (; index < ndarray.get_size() && function(ndarray.__array[index]);
              ++index) {
         }
@@ -19,17 +19,17 @@ bool MdArrayUtility::every(const MdStaticArray<T> &ndarray,
         std::vector<bool> thread_results(threads);
 
         auto __perform_every_parallel = [&ndarray, &function, &thread_results](
-                                            const size_t thread_number,
-                                            const size_t start,
-                                            const size_t end) {
-            size_t index = start;
+                                            const usize thread_number,
+                                            const usize start,
+                                            const usize end) {
+            usize index = start;
             for (; index < end && function(ndarray.__array[index]); ++index) {
             }
             thread_results[thread_number] = (index == end);
         };
-        const size_t block = ndarray.get_size() / threads;
+        const usize block = ndarray.get_size() / threads;
 
-        for (size_t index = 0; index < threads - 1; ++index) {
+        for (usize index = 0; index < threads - 1; ++index) {
             thread_pool.emplace_back(std::thread(__perform_every_parallel,
                                                  index, block * index,
                                                  block * (index + 1)));
@@ -43,7 +43,7 @@ bool MdArrayUtility::every(const MdStaticArray<T> &ndarray,
             thread.join();
         }
 
-        for (size_t index = 0; index < thread_results.size(); ++index) {
+        for (usize index = 0; index < thread_results.size(); ++index) {
             if (!thread_results[index]) {
                 return false;
             }
@@ -56,7 +56,7 @@ bool MdArrayUtility::every(const MdStaticArray<T> &ndarray,
 template <typename T>
 bool MdArrayUtility::every(const MdStaticArrayReference<T> &__ndarray_reference,
                            const std::function<bool(const T &)> &function,
-                           const size_t threads) {
+                           const usize threads) {
     return every<T>(MdStaticArray<T>(*__ndarray_reference.__array_reference,
                                      __ndarray_reference.offset,
                                      __ndarray_reference.shp_offset),
