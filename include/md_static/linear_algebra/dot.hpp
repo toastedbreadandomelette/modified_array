@@ -87,7 +87,7 @@ MdStaticArray<T3> Linalg::dot(const MdStaticArray<T1> &first,
             }
         };
         std::vector<std::thread> thread_pool;
-        for (int i = 0; i < threads; ++i) {
+        for (i32 i = 0; i < threads; ++i) {
             thread_pool.emplace_back(std::thread(__perform_dot_parallel, i));
         }
 

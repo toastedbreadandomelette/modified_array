@@ -23,7 +23,7 @@ enum NumberAttr { NEGATIVE = 0x01, REAL = 0x02 };
  * integer or floating)
  * @return A variant of signed, unsigned integer or a real number
  */
-inline Cell return_number(const std::string &value, const uint8_t attr) {
+Cell return_number(const std::string &value, const uint8_t attr) {
     switch (attr) {
         case NumberAttr::REAL:
         case NumberAttr::NEGATIVE:

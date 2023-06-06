@@ -5,7 +5,7 @@
 
 template <typename T>
 MdStaticArray<double> MdArrayUtility::mean(const MdStaticArray<T> &values,
-                                           const T init, const int axis) {
+                                           const T init, const i32 axis) {
     if (axis == -1) {
         return sum(values) / (values.get_size() * 1.0);
     }
@@ -14,7 +14,7 @@ MdStaticArray<double> MdArrayUtility::mean(const MdStaticArray<T> &values,
 
 template <typename T>
 MdStaticArray<double> MdArrayUtility::mean(
-    const MdStaticArrayReference<T> &values, const T init, const int axis) {
+    const MdStaticArrayReference<T> &values, const T init, const i32 axis) {
     return mean<T>(MdStaticArray<T>(*values.__array_reference, values.offset,
                                     values.shp_offset),
                    init, axis);

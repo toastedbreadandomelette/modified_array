@@ -6,7 +6,7 @@
 
 template <typename T>
 MdStaticArray<usize> MdArrayUtility::argmax(const MdStaticArray<T> &values,
-                                            const int axis) {
+                                            const i32 axis) {
     if (axis == -1) {
         const usize size = values.get_size();
         MdStaticArray<usize> result(1, 0);
@@ -36,7 +36,7 @@ MdStaticArray<usize> MdArrayUtility::argmax(const MdStaticArray<T> &values,
 
             const usize block = size / thread_count;
             const u8 thread_but_one = thread_count - 1;
-            for (int i = 0; i < thread_but_one; ++i) {
+            for (i32 i = 0; i < thread_but_one; ++i) {
                 st.emplace_back(
                     std::thread(_add_int, i, block * i, block * (i + 1)));
             }
@@ -124,7 +124,7 @@ MdStaticArray<usize> MdArrayUtility::argmax(const MdStaticArray<T> &values,
 
 template <typename T>
 MdStaticArray<usize> MdArrayUtility::argmax(
-    const MdStaticArrayReference<T> &values, const int axis) {
+    const MdStaticArrayReference<T> &values, const i32 axis) {
     return argmax<T>(MdStaticArray<T>(*values.__array_reference, values.offset,
                                       values.shp_offset),
                      axis);

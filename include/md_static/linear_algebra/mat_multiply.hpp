@@ -83,7 +83,7 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
 
             usize blocks = first.shape[0] / threads;
             std::vector<std::thread> thread_pool;
-            for (int i = 0; i < threads - 1; ++i) {
+            for (i32 i = 0; i < threads - 1; ++i) {
                 thread_pool.emplace_back(std::thread(
                     __multiply_internal, blocks * i, blocks * (i + 1)));
             }
@@ -135,7 +135,7 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArrayReference<T1> &first,
                                        const MdStaticArray<T2> &other,
-                                       const int threads) {
+                                       const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         MdStaticArray<T1>(*first.__array_reference, first.offset,
                           first.shp_offset),
@@ -145,7 +145,7 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArrayReference<T1> &first,
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
                                        const MdStaticArrayReference<T2> &other,
-                                       const int threads) {
+                                       const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
         MdStaticArray<T2>(*other.__array_reference, other.offset,
@@ -156,7 +156,7 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
 template <typename T3, typename T1, typename T2>
 MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArrayReference<T1> &first,
                                        const MdStaticArrayReference<T2> &other,
-                                       const int threads) {
+                                       const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         MdStaticArray<T1>(*first.__array_reference, first.offset,
                           first.shp_offset),

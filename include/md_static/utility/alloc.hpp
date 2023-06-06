@@ -4,8 +4,10 @@
 
 #include <ostream>
 
+#include "../md_static_array/md_type_inference.hpp"
+
 template <typename T>
-inline T *aligned_allocate(const size_t alignment, const size_t size) {
+inline T *aligned_allocate(const usize alignment, const usize size) {
 #ifdef _WIN32
     return static_cast<T *>(_aligned_malloc(size * sizeof(T), alignment));
 #else

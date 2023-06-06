@@ -15,9 +15,8 @@ struct MdArrayUtility {
      * @returns Array of elements
      */
     template <typename T>
-    static MdStaticArray<T> map(
-        const MdStaticArray<T> &values,
-        const std::function<T(const T &)> &function_exec);
+    static MdStaticArray<T> map(const MdStaticArray<T> &values,
+                                const fn<T(const T &)> &function_exec);
 
     /**
      * @brief Execute a one-to-one mapping function of an array,
@@ -28,9 +27,8 @@ struct MdArrayUtility {
      * @returns Array of elements
      */
     template <typename T>
-    static MdStaticArray<T> map(
-        const MdStaticArrayReference<T> &values,
-        const std::function<T(const T &)> &function_exec);
+    static MdStaticArray<T> map(const MdStaticArrayReference<T> &values,
+                                const fn<T(const T &)> &function_exec);
 
     /**
      * @brief Reduce array of values to a single value function.
@@ -387,8 +385,7 @@ struct MdArrayUtility {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static MdStaticArray<T> mod_pow(const uint64_t n,
-                                    const MdStaticArray<T> &values,
+    static MdStaticArray<T> mod_pow(const u64 n, const MdStaticArray<T> &values,
                                     const usize _mod);
 
     /**
@@ -401,7 +398,7 @@ struct MdArrayUtility {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static MdStaticArray<T> mod_pow(const uint64_t n,
+    static MdStaticArray<T> mod_pow(const u64 n,
                                     const MdStaticArrayReference<T> &values,
                                     const usize _mod);
 
@@ -842,8 +839,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static bool every(const MdStaticArray<T> &__ndarray,
-                      const std::function<bool(const T &)> &,
-                      const usize threads = 16);
+                      const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
      * @brief Check if every value satisfies the condition
@@ -854,8 +850,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static bool every(const MdStaticArrayReference<T> &__ndarray__reference,
-                      const std::function<bool(const T &)> &,
-                      const usize threads = 16);
+                      const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
@@ -866,8 +861,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static bool some(const MdStaticArray<T> &__ndarray,
-                     const std::function<bool(const T &)> &,
-                     const usize threads = 16);
+                     const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
@@ -878,8 +872,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static bool some(const MdStaticArrayReference<T> &__ndarray__reference,
-                     const std::function<bool(const T &)> &,
-                     const usize threads = 16);
+                     const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
      * @brief Compute 2 raised to value from array of values
@@ -1002,7 +995,7 @@ struct MdArrayUtility {
     template <typename T>
     static void sort(
         MdStaticArray<T> &,
-        const std::function<bool(const T first, const T second)> &comp =
+        const fn<bool(const T first, const T second)> &comp =
             [](const T first, const T sec) { return first < sec; },
         const i32 axis = -1);
 
@@ -1016,7 +1009,7 @@ struct MdArrayUtility {
     template <typename T>
     static void sort(
         MdStaticArrayReference<T> &,
-        const std::function<bool(const T first, const T second)> &comp =
+        const fn<bool(const T first, const T second)> &comp =
             [](const T first, const T sec) { return first < sec; },
         const i32 axis = -1);
 
@@ -1028,9 +1021,8 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static void sort(
-        MdStaticAxisReference<T> &, MdStaticArray<T> &,
-        const std::function<bool(const T first, const T second)> &comp);
+    static void sort(MdStaticAxisReference<T> &, MdStaticArray<T> &,
+                     const fn<bool(const T first, const T second)> &comp);
 };
 
 typedef MdArrayUtility Utils;

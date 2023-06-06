@@ -5,8 +5,8 @@
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
-    const MdStaticArrayReference<T>& values, const size_t axis,
-    const size_t thread_count) {
+    const MdStaticArrayReference<T>& values, const usize axis,
+    const usize thread_count) {
     return MdArrayUtility::nan_cumulative_sum<T>(
         MdStaticArray<T>(*values.__array_reference, values.offset,
                          values.shp_offset),
@@ -15,64 +15,62 @@ MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
-    const MdStaticArray<T>& __ndarray, const size_t axis,
-    const size_t thread_count) {
+    const MdStaticArray<T>& ndarray, const usize axis,
+    const usize thread_count) {
     if (axis == -1) {
-        MdStaticArray<T> result(__ndarray.get_size());
+        MdStaticArray<T> result(ndarray.get_size());
 
-        result.__array[0] =
-            !isnan(__ndarray.__array[0]) ? __ndarray.__array[0] : 1;
+        result.__array[0] = !isnan(ndarray.__array[0]) ? ndarray.__array[0] : 1;
 
         // Multithreading will be inefficient for cumulative sum of array,
         // instead, use it when user provides axis.
-        for (size_t index = 0; index < __ndarray.get_size(); ++index) {
+        for (usize index = 0; index < ndarray.get_size(); ++index) {
             result.__array[index] =
-                result.__array[index - 1] + (!isnan(__ndarray.__array[index])
-                                                 ? __ndarray.__array[index]
-                                                 : 1);
+                result.__array[index - 1] +
+                (!isnan(ndarray.__array[index]) ? ndarray.__array[index] : 1);
         }
         return result;
     }
 
-    if (axis >= __ndarray.get_shape_size()) {
+    if (axis >= ndarray.get_shape_size()) {
         throw std::runtime_error("Unknown axis " + std::to_string(axis) +
                                  " requested for cumulative sum.");
     }
 
-    const size_t skip_value = __ndarray.skip_vec[axis];
+    const usize skip_value = ndarray.skip_vec[axis];
 
-    const size_t looping_value = (axis - 1 <= __ndarray.get_shape_size())
-                                     ? __ndarray.skip_vec[axis - 1]
-                                     : __ndarray.get_size();
+    const usize looping_value = (axis - 1 <= ndarray.get_shape_size())
+                                    ? ndarray.skip_vec[axis - 1]
+                                    : ndarray.get_size();
 
-    std::vector<size_t> resultant_shape;
+    std::vector<usize> resultant_shape;
 
-    for (size_t index = 0; index < __ndarray.get_shape_size(); ++index) {
-        resultant_shape.emplace_back(__ndarray.get_shape()[index]);
+    for (usize index = 0; index < ndarray.get_shape_size(); ++index) {
+        resultant_shape.emplace_back(ndarray.get_shape()[index]);
     }
 
     MdStaticArray<T> result(resultant_shape, 0);
 
     auto __perform_cu_sum_internal =
-        [&__ndarray, &result, skip_value, looping_value](
-            const size_t thread_number, const size_t total_threads) {
-            for (size_t index = thread_number * looping_value;
-                 index < __ndarray.get_size();
+        [&ndarray, &result, skip_value, looping_value](
+            const usize thread_number, const usize total_threads) {
+            for (usize index = thread_number * looping_value;
+                 index < ndarray.get_size();
                  index += (total_threads * looping_value)) {
-                for (size_t init_index = index; init_index < index + skip_value;
+                for (usize init_index = index; init_index < index + skip_value;
                      ++init_index) {
                     result.__array[init_index] =
-                        (!isnan(__ndarray.__array[init_index])
-                             ? __ndarray.__array[init_index]
+                        (!isnan(ndarray.__array[init_index])
+                             ? ndarray.__array[init_index]
                              : 1);
                 }
 
-                for (size_t cu_index = index + skip_value;
+                for (usize cu_index = index + skip_value;
                      cu_index < index + looping_value; ++cu_index) {
-                    result.__array[cu_index] = result.__array[index - 1] +
-                                               (!isnan(__ndarray.__array[index])
-                                                    ? __ndarray.__array[index]
-                                                    : 1);
+                    result.__array[cu_index] =
+                        result.__array[index - 1] +
+                        (!isnan(ndarray.__array[index]) ? ndarray.__array[index]
+                                                        : 1);
                 }
             }
         };
@@ -80,10 +78,10 @@ MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
     if (s_threshold_size > result.get_size()) {
         __perform_cu_sum_internal(0, 1);
     } else {
-        const size_t total_threads = thread_count;
+        const usize total_threads = thread_count;
         std::vector<std::thread> thread_pool;
 
-        for (size_t index = 0; index < total_threads; ++index) {
+        for (usize index = 0; index < total_threads; ++index) {
             thread_pool.emplace_back(
                 std::thread(__perform_cu_sum_internal, index, total_threads));
         }

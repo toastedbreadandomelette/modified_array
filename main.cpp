@@ -13,20 +13,20 @@
 #include "./include/md_static/linear_algebra.hpp"
 #include "./include/md_static/md_static_array/md_static_array.hpp"
 
-int main(int argc, const char** argv) {
+int main(i32 argc, const char** argv) {
     // MdStaticArray<double>::set_threshold_size(1000);
-    size_t sz = 1024;
+    usize sz = 1024;
     // MdStaticArray<double>::set_thread_count(1);
     MdStaticArray<f64> c({sz, sz}, 0), d({sz, sz}, 0);
-    for (size_t i = 0; i < sz; ++i) {
-        c[i] = MdArrayUtility::range<f64>(1, sz + 1);
-        d[i] = MdArrayUtility::range<f64>(1, sz + 1);
+    for (usize i = 0; i < sz; ++i) {
+        c[i] = MdArrayUtility::range<f64>(i * sz, i * sz + sz);
+        d[i] = MdArrayUtility::range<f64>(i * sz, i * sz + sz);
     }
 
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = Linalg::mat_multiply<f64>(c, d, 1);
+    auto ans = FFT::ifft2<f64>(FFT::fft2<f64>(c));
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<f64> time = end - start;

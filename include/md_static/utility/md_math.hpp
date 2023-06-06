@@ -18,9 +18,9 @@ constexpr double pi_2 = 3.14159265358979323846 * 2;
  * @param bit_size size to be reversed
  * @return reversed bit number
  */
-constexpr inline size_t reverse_bits(const size_t n,
-                                     const size_t bit_size = 64) {
-    size_t rn = (n << 32) | (n >> 32);
+constexpr inline usize reverse_bits(const usize n,
+                                     const usize bit_size = 64) {
+    usize rn = (n << 32) | (n >> 32);
     rn = ((rn << 16) & 0xFFFF0000FFFF0000) | ((rn >> 16) & 0x0000FFFF0000FFFF);
     rn = ((rn << 8) & 0xFF00FF00FF00FF00) | ((rn >> 8) & 0x00FF00FF00FF00FF);
     rn = ((rn << 4) & 0xF0F0F0F0F0F0F0F0) | ((rn >> 4) & 0x0F0F0F0F0F0F0F0F);
@@ -51,9 +51,9 @@ constexpr inline uint32_t reverse_bits_32(const uint32_t n,
  * @param bit_size size to be reversed
  * @return reversed bit number
  */
-constexpr inline size_t reverse_bits_16(const uint16_t n,
-                                        const uint16_t bit_size = 16) {
-    uint16_t rn = (rn << 8) | (rn >> 8);
+constexpr inline usize reverse_bits_16(const u16 n,
+                                        const u16 bit_size = 16) {
+    u16 rn = (rn << 8) | (rn >> 8);
     rn = ((rn << 4) & 0xF0F0) | ((rn >> 4) & 0x0F0F);
     rn = ((rn << 2) & 0xCCCC) | ((rn >> 2) & 0x3333);
     rn = ((rn << 1) & 0xAAAA) | ((rn >> 1) & 0x5555);
@@ -74,21 +74,21 @@ constexpr inline uint8_t reverse_bits_8(const uint8_t n,
     return (rn >> (8 - bit_size));
 }
 
-template <size_t...>
+template <usize...>
 struct reversed_bits {};
 
 /**
  * @brief Evaluate the reversed bits at compilation time.
  */
-template <size_t N, size_t bit_size>
+template <usize N, usize bit_size>
 struct reversed_bits<N, bit_size> {
-    static constexpr size_t value = reverse_bits(N, bit_size);
+    static constexpr usize value = reverse_bits(N, bit_size);
 };
 
 /**
  * @brief Evaluate the factorial of a number during compilation time
  */
-template <size_t N>
+template <usize N>
 struct factorial {
     static constexpr double value = N * factorial<N - 1>::value;
 };

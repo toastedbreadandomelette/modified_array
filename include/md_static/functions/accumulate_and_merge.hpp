@@ -32,7 +32,7 @@ T MdArrayUtility::accumulate_and_merge_fn(const MdStaticArray<T> &values,
 
         const usize block = size / thread_count;
         const u8 thread_but_one = thread_count - 1;
-        for (int i = 0; i < thread_but_one; ++i) {
+        for (i32 i = 0; i < thread_but_one; ++i) {
             st.emplace_back(
                 std::thread(_add_int, i, block * i, block * (i + 1)));
         }

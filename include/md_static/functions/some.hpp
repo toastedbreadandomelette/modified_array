@@ -6,7 +6,7 @@
 
 template <typename T>
 bool MdArrayUtility::some(const MdStaticArray<T> &ndarray,
-                          const std::function<bool(const T &)> &function,
+                          const fn<bool(const T &)> &function,
                           const usize threads) {
     if (ndarray.get_size() < s_threshold_size) {
         usize index = 0;
@@ -55,7 +55,7 @@ bool MdArrayUtility::some(const MdStaticArray<T> &ndarray,
 
 template <typename T>
 bool MdArrayUtility::some(const MdStaticArrayReference<T> &ndarray,
-                          const std::function<bool(const T &)> &function,
+                          const fn<bool(const T &)> &function,
                           const usize threads) {
     return some<T>(MdStaticArray<T>(*ndarray.__array_reference, ndarray.offset,
                                     ndarray.shp_offset),

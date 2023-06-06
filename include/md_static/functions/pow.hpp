@@ -8,14 +8,14 @@
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::pow(const MdStaticArray<T> &values,
-                                     double power) {
+                                     f64 power) {
     return MdArrayUtility::map<T>(
         values, [power](const T value) { return ::pow(value, power); });
 }
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::pow(const MdStaticArrayReference<T> &values,
-                                     double power) {
+                                     f64 power) {
     return MdArrayUtility::pow<T>(
         MdStaticArray<T>(*values.__array_reference, values.offset,
                          values.shp_offset),

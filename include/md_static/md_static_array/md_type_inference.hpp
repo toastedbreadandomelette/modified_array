@@ -2,8 +2,36 @@
 #ifndef _MD_TYPE_INTER_HPP_
 #define _MD_TYPE_INTER_HPP_
 #include <cassert>
+#include <functional>
 
 #include "../../md_complex/md_complex.hpp"
+
+typedef char i8;
+typedef unsigned char u8;
+typedef short int i16;
+typedef short unsigned u16;
+typedef int i32;
+typedef unsigned u32;
+typedef long long i64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef long double f128;
+typedef cdouble c64;
+typedef clongdouble c128;
+typedef cfloat c32;
+typedef cint8 ci8;
+typedef cint16 ci16;
+typedef cint32 ci32;
+typedef cint64 ci64;
+typedef cuint8 cu8;
+typedef cuint16 cu16;
+typedef cuint32 cu32;
+typedef cuint64 cu64;
+typedef size_t usize;
+
+template <typename T>
+using fn = std::function<T>;
 
 /**
  * @brief Type inference namespace to infer implicit return types
@@ -48,8 +76,8 @@ struct is_complex {
 template <typename T>
 struct is_native {
     static constexpr bool value =
-        is_any_one<T, int32_t, int64_t, int16_t, int8_t, uint8_t, uint16_t,
-                   uint32_t, uint64_t, float, double, long double>::value;
+        is_any_one<T, int32_t, int64_t, int16_t, int8_t, uint8_t, u16, uint32_t,
+                   u64, float, double, long double>::value;
 };
 
 /**
@@ -215,7 +243,7 @@ struct is_any_one_signed<T1, arg...> {
  * @tparam T2 second type
  */
 template <typename T1, typename T2, class = void>
-struct max_size_t {};
+struct max_usize {};
 
 /**
  * @brief Returns type that has max byte size per element
@@ -223,8 +251,8 @@ struct max_size_t {};
  * @tparam T2 second type
  */
 template <typename T1, typename T2>
-struct max_size_t<T1, T2,
-                  typename std::enable_if<(sizeof(T1) > sizeof(T2))>::type> {
+struct max_usize<T1, T2,
+                 typename std::enable_if<(sizeof(T1) > sizeof(T2))>::type> {
     static constexpr auto value = static_cast<T1>(0);
 };
 
@@ -234,8 +262,8 @@ struct max_size_t<T1, T2,
  * @tparam T2 second type
  */
 template <typename T1, typename T2>
-struct max_size_t<T1, T2,
-                  typename std::enable_if<(sizeof(T2) >= sizeof(T1))>::type> {
+struct max_usize<T1, T2,
+                 typename std::enable_if<(sizeof(T2) >= sizeof(T1))>::type> {
     static constexpr auto value = static_cast<T2>(0);
 };
 
@@ -379,10 +407,9 @@ struct unsigned_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
 };
 
 template <typename _Ttypeval>
-struct unsigned_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(uint16_t))>::type> {
-    using type = uint16_t;
+struct unsigned_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
+                                                      sizeof(u16))>::type> {
+    using type = u16;
 };
 
 template <typename _Ttypeval>
@@ -453,7 +480,7 @@ struct is_mallocable {
  */
 template <typename T1, typename T2, class = void>
 struct eval_complex_t {
-#define MX_SZ decltype(max_size_t<T1, T2>::value)
+#define MX_SZ decltype(max_usize<T1, T2>::value)
     static constexpr auto value = []() {
         if constexpr (is_any_one_floating_complex<T1, T2>::value) {
             return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
@@ -480,7 +507,7 @@ struct eval_complex_t {
  */
 template <typename T1, typename T2, class = void>
 struct eval_resultant_t {
-#define MX_SZ decltype(max_size_t<T1, T2>::value)
+#define MX_SZ decltype(max_usize<T1, T2>::value)
     static constexpr auto value = []() {
         if constexpr (is_any_one_complex<T1, T2>::value) {
             return eval_complex_t<T1, T2>::value;
@@ -497,29 +524,5 @@ struct eval_resultant_t {
 };
 
 }  // namespace MdTypeInfer
-
-typedef char i8;
-typedef unsigned char u8;
-typedef short int i16;
-typedef short unsigned int u16;
-typedef int i32;
-typedef unsigned u32;
-typedef long long int i64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
-typedef long double f128;
-typedef cdouble c64;
-typedef clongdouble c128;
-typedef cfloat c32;
-typedef cint8 ci8;
-typedef cint16 ci16;
-typedef cint32 ci32;
-typedef cint64 ci64;
-typedef cuint8 cu8;
-typedef cuint16 cu16;
-typedef cuint32 cu32;
-typedef cuint64 cu64;
-typedef size_t usize;
 
 #endif

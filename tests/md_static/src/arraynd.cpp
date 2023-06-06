@@ -11,9 +11,9 @@
     }
 
 int main() {
-    MdStaticArray<double> s;
+    MdStaticArray<f64> s;
     {
-        s = MdStaticArray<double>({20, 30}, 10);
+        s = MdStaticArray<f64>({20, 30}, 10);
         TEST(s.get_size() == 600);
         TEST(s.get_shape_size() == 2);
 
@@ -26,17 +26,17 @@ int main() {
 
     {
         // Create a 12-dimensional array
-        std::vector<size_t> v(12, 2);
-        s = MdStaticArray<double>(v, 123);
+        std::vector<usize> v(12, 2);
+        s = MdStaticArray<f64>(v, 123);
         TEST(s.get_size() == 4096);
         TEST(s.get_shape_size() == 12);
-        for (size_t index = 0; index < s.get_shape_size(); ++index) {
+        for (usize index = 0; index < s.get_shape_size(); ++index) {
             TEST(s.get_shape()[index] == 2);
         }
     }
     // Testing
     {
-        s = MdStaticArray<double>({20, 30, 40, 50}, 123);
+        s = MdStaticArray<f64>({20, 30, 40, 50}, 123);
         TEST(s.get_size() == 20 * 30 * 40 * 50);
         TEST(s.get_shape_size() == 4);
         TEST(s.get_shape()[0] == 20);
@@ -44,11 +44,11 @@ int main() {
         TEST(s.get_shape()[2] == 40);
         TEST(s.get_shape()[3] == 50);
 
-        size_t index = 0;
-        for (int i = 0; i < s.get_shape()[0]; ++i) {
-            for (int j = 0; j < s.get_shape()[1]; ++j) {
-                for (int k = 0; k < s.get_shape()[2]; ++k) {
-                    for (int l = 0; l < s.get_shape()[3]; ++l) {
+        usize index = 0;
+        for (i32 i = 0; i < s.get_shape()[0]; ++i) {
+            for (i32 j = 0; j < s.get_shape()[1]; ++j) {
+                for (i32 k = 0; k < s.get_shape()[2]; ++k) {
+                    for (i32 l = 0; l < s.get_shape()[3]; ++l) {
                         TEST(s[i][j][k][l] == 123);
                         ++index;
                     }

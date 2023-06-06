@@ -24,13 +24,13 @@ class MdStaticAxisReference {
     }
 
     constexpr MdStaticAxisReference(const MdStaticArray<T> &other) {
-        for (int index = 0; index < axis_size_; ++index) {
+        for (i32 index = 0; index < axis_size_; ++index) {
             (*this)[index] = other.__array[index];
         }
     }
 
     constexpr MdStaticAxisReference &operator=(const MdStaticArray<T> &other) {
-        for (int index = 0; index < axis_size_; ++index) {
+        for (i32 index = 0; index < axis_size_; ++index) {
             (*this)[index] = other.__array[index];
         }
 

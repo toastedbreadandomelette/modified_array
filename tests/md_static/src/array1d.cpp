@@ -4,9 +4,9 @@
 #include "../../tests.hpp"
 
 int main() {
-    MdStaticArray<int> s;
+    MdStaticArray<i8> s;
     {
-        s = MdStaticArray<int>(10);
+        s = MdStaticArray<i8>(10);
         TEST(s.get_size() == 10);
         TEST(s.get_shape_size() == 1);
 
@@ -18,26 +18,26 @@ int main() {
     }
 
     {
-        s = MdStaticArray<int>(20, 123);
+        s = MdStaticArray<i8>(20, 123);
         TEST(s.get_size() == 20);
         TEST(s.get_shape_size() == 1);
-        for (int i = 0; i < s.get_size(); ++i) {
+        for (i8 i = 0; i < s.get_size(); ++i) {
             TEST(s[i] == 123);
         }
     }
     // Testing
     {
-        s = MdStaticArray<int>({20, 30, 40}, 123);
+        s = MdStaticArray<i8>({20, 30, 40}, 123);
         TEST(s.get_size() == 20 * 30 * 40);
         TEST(s.get_shape_size() == 3);
         TEST(s.get_shape()[0] == 20);
         TEST(s.get_shape()[1] == 30);
         TEST(s.get_shape()[2] == 40);
 
-        size_t index = 0;
-        for (int i = 0; i < s.get_shape()[0]; ++i) {
-            for (int j = 0; j < s.get_shape()[1]; ++j) {
-                for (int k = 0; k < s.get_shape()[2]; ++k) {
+        usize index = 0;
+        for (i8 i = 0; i < s.get_shape()[0]; ++i) {
+            for (i8 j = 0; j < s.get_shape()[1]; ++j) {
+                for (i8 k = 0; k < s.get_shape()[2]; ++k) {
                     TEST(s[i][j][k] == 123);
                     ++index;
                 }

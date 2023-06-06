@@ -14,7 +14,7 @@
 
 // Todo: Create a thread pool.
 static usize s_threshold_size = 100000;
-static uint8_t s_thread_count = 16;
+static u8 s_thread_count = 16;
 
 template <typename T>
 class MdStaticArrayReference;
@@ -65,16 +65,16 @@ class MdStaticArray {
      * This will not accessible to user.
      */
     MdStaticArray(const MdStaticArray<T> &other, const usize offset,
-                  const uint16_t shp_offset)
+                  const u16 shp_offset)
         : shape(nullptr), skip_vec(nullptr) {
         __array = &other.__array[offset];
         shape = &other.shape[shp_offset];
         skip_vec = &other.skip_vec[shp_offset];
         shp_size = other.shp_size - shp_offset;
-        __size = other.__size;
-        uint16_t index = 0;
+        size_ = other.size_;
+        u16 index = 0;
         while (index < shp_offset) {
-            __size /= other.shape[index++];
+            size_ /= other.shape[index++];
         }
         dont_free = true;
     }
@@ -83,8 +83,8 @@ class MdStaticArray {
     T *__array;
     usize *shape;
     usize *skip_vec;
-    usize __size;
-    uint16_t shp_size;
+    usize size_;
+    u16 shp_size;
 
  public:
     template <typename T1>
@@ -112,7 +112,7 @@ class MdStaticArray {
         } else {
             __array = new T[size];
         }
-        __size = size;
+        size_ = size;
     }
 
     explicit MdStaticArray(const usize size)
@@ -147,13 +147,13 @@ class MdStaticArray {
         init_array(overall_size);
         init_shape(_shape.data(), _shape.size());
 
-        if (__size > s_threshold_size && ::s_thread_count > 1) {
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = value;
             }
         } else {
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = value;
             }
         }
@@ -163,17 +163,17 @@ class MdStaticArray {
 
     explicit MdStaticArray(const std::vector<T> &other)
         : shape(nullptr), skip_vec(nullptr) {
-        __size = other.size();
-        init_array(__size);
-        init_shape(__size);
+        size_ = other.size();
+        init_array(size_);
+        init_shape(size_);
 
-        if (__size > s_threshold_size && ::s_thread_count > 1) {
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other[index];
             }
         } else {
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other[index];
             }
         }
@@ -185,13 +185,13 @@ class MdStaticArray {
         const auto shp = other.get_shape();
         init_shape(shp, other.shp_size);
 
-        if (__size > s_threshold_size && ::s_thread_count > 1) {
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other.__array[index];
             }
         } else {
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other.__array[index];
             }
         }
@@ -201,7 +201,7 @@ class MdStaticArray {
         __array = other.__array;
         other.__array = nullptr;
 
-        __size = other.__size;
+        size_ = other.size_;
         shp_size = other.shp_size;
         shape = other.shape;
         other.shape = nullptr;
@@ -217,7 +217,7 @@ class MdStaticArray {
         __array = other.__array;
         other.__array = nullptr;
 
-        __size = other.__size;
+        size_ = other.size_;
         shp_size = other.shp_size;
         shape = other.shape;
         other.shape = nullptr;
@@ -245,10 +245,10 @@ class MdStaticArray {
      * @brief Casting operator
      */
     inline operator T() const {
-        if (__size > 1) {
+        if (size_ > 1) {
             throw std::runtime_error(
                 "Value casted should be a single element, found with size: " +
-                std::to_string(__size));
+                std::to_string(size_));
         }
         return __array[0];
     }
@@ -265,7 +265,7 @@ class MdStaticArray {
         MdStaticArray<T1> __result(shp, 0);
 
 #pragma omp parallel for
-        for (usize index = 0; index < __size; ++index) {
+        for (usize index = 0; index < size_; ++index) {
             __result.__array[index] = __array[index];
         }
 
@@ -278,17 +278,17 @@ class MdStaticArray {
     MdStaticArray &operator=(const std::vector<T> other) {
         skip_vec = nullptr;
         shape = nullptr;
-        __size = other.size();
-        init_array(__size);
-        init_shape(__size);
+        size_ = other.size();
+        init_array(size_);
+        init_shape(size_);
 
-        if (__size > s_threshold_size && ::s_thread_count > 1) {
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other[index];
             }
         } else {
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other[index];
             }
         }
@@ -301,17 +301,17 @@ class MdStaticArray {
     MdStaticArray &operator=(const MdStaticArray &other) {
         skip_vec = nullptr;
         shape = nullptr;
-        __size = other.get_size();
-        init_array(__size);
+        size_ = other.get_size();
+        init_array(size_);
         const auto shp = other.get_shape();
         init_shape(shp, other.shp_size);
-        if (__size > s_threshold_size && ::s_thread_count > 1) {
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
 #pragma omp parallel for
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other.__array[index];
             }
         } else {
-            for (usize index = 0; index < __size; ++index) {
+            for (usize index = 0; index < size_; ++index) {
                 __array[index] = other.__array[index];
             }
         }
@@ -359,9 +359,9 @@ class MdStaticArray {
     /**
      * @brief Get shape length
      * @param void
-     * @returns uint16_t shape of the array
+     * @returns u16 shape of the array
      */
-    inline uint16_t get_shape_size() const { return shp_size; }
+    inline u16 get_shape_size() const { return shp_size; }
 
     /**
      * @brief Check whether arrays have same structure
@@ -1176,7 +1176,7 @@ class MdStaticArray {
         return MdStaticArrayReference(*this, index * skip_vec[0]);
     }
 
-    inline usize get_size() const { return __size; }
+    inline usize get_size() const { return size_; }
 
     friend std::ostream &operator<<(std::ostream &op,
                                     const MdStaticArray<T> &ot) {
@@ -1207,56 +1207,56 @@ class MdStaticArray {
 
     template <typename T1, typename T2>
     friend inline auto &operator+=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator-=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator*=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator/=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator%=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator<<=(T1 &other,
-                                    const MdStaticArrayReference<T2> &__first);
+                                    const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator>>=(T1 &other,
-                                    const MdStaticArrayReference<T2> &__first);
+                                    const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator&=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator|=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1, typename T2>
     friend inline auto &operator^=(T1 &other,
-                                   const MdStaticArrayReference<T2> &__first);
+                                   const MdStaticArrayReference<T2> &first);
 
     template <typename T1>
     friend inline auto operator-(const MdStaticArray<T1> __ndarray);
 
     template <typename T1>
     friend inline MdStaticArray<T1> operator-(
-        const MdStaticArrayReference<T1> &__first);
+        const MdStaticArrayReference<T1> &first);
 };
 
 #include "./md_static_array_op.hpp"
 
 template <typename T>
-void MdStaticArray<T>::set_thread_count(const uint8_t value) {
+void MdStaticArray<T>::set_thread_count(const u8 value) {
     s_thread_count = value;
     omp_set_num_threads(value);
 }
@@ -1375,14 +1375,14 @@ MdStaticArray<T> &MdStaticArray<T>::operator=(
     init_shape(&other.__array_reference->shape[other.shp_offset],
                other.__array_reference->shp_size - other.shp_offset);
 
-    if (__size > s_threshold_size) {
+    if (size_ > s_threshold_size) {
 #pragma omp parallel for
-        for (usize index = 0; index < __size; ++index) {
+        for (usize index = 0; index < size_; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
     } else {
-        for (usize index = 0; index < __size; ++index) {
+        for (usize index = 0; index < size_; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
@@ -1394,19 +1394,19 @@ MdStaticArray<T> &MdStaticArray<T>::operator=(
 template <typename T>
 MdStaticArray<T>::MdStaticArray(const MdStaticArrayReference<T> &other)
     : shape(nullptr), skip_vec(nullptr) {
-    __size = other.size;
-    init_array(__size);
+    size_ = other.size;
+    init_array(size_);
     init_shape(&other.__array_reference->shape[other.shp_offset],
                other.__array_reference->shp_size - other.shp_offset);
 
-    if (__size > s_threshold_size) {
+    if (size_ > s_threshold_size) {
 #pragma omp parallel for
-        for (usize index = 0; index < __size; ++index) {
+        for (usize index = 0; index < size_; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
     } else {
-        for (usize index = 0; index < __size; ++index) {
+        for (usize index = 0; index < size_; ++index) {
             __array[index] =
                 other.__array_reference->__array[other.offset + index];
         }
@@ -1414,122 +1414,122 @@ MdStaticArray<T>::MdStaticArray(const MdStaticArrayReference<T> &other)
 }
 
 template <typename T1, typename T2>
-inline auto &operator+=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator+=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator += on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other += __first.__array_reference->__array[__first.offset];
+    other += first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator-=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator-=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator -= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other -= __first.__array_reference->__array[__first.shp_offset];
+    other -= first.__array_reference->__array[first.shp_offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator*=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator*=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator *= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other *= __first.__array_reference->__array[__first.offset];
+    other *= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator/=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator/=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator /= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other /= __first.__array_reference->__array[__first.offset];
+    other /= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator%=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator%=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator %= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other %= __first.__array_reference->__array[__first.offset];
+    other %= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator<<=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator<<=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator <<= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other <<= __first.__array_reference->__array[__first.offset];
+    other <<= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator>>=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator>>=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator >>= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other >>= __first.__array_reference->__array[__first.offset];
+    other >>= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator&=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator&=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator &= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other &= __first.__array_reference->__array[__first.offset];
+    other &= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator|=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator|=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator |= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other |= __first.__array_reference->__array[__first.offset];
+    other |= first.__array_reference->__array[first.offset];
     return other;
 }
 
 template <typename T1, typename T2>
-inline auto &operator^=(T1 &other, const MdStaticArrayReference<T2> &__first) {
-    if (__first.get_size() > 1) {
+inline auto &operator^=(T1 &other, const MdStaticArrayReference<T2> &first) {
+    if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator ^= on single element requires size to be 1, found "
             "size: " +
-            std::to_string(__first.get_size()));
+            std::to_string(first.get_size()));
     }
-    other |= __first.__array_reference->__array[__first.offset];
+    other |= first.__array_reference->__array[first.offset];
     return other;
 }
 

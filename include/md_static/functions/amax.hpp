@@ -7,7 +7,7 @@
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::amax(const MdStaticArray<T> &values,
-                                      const int axis) {
+                                      const i32 axis) {
     return reduce<T>(
         values,
         [](const T &prev_value, const T &curr_value) {
@@ -18,7 +18,7 @@ MdStaticArray<T> MdArrayUtility::amax(const MdStaticArray<T> &values,
 
 template <typename T>
 MdStaticArray<T> MdArrayUtility::amax(const MdStaticArrayReference<T> &values,
-                                      const int axis) {
+                                      const i32 axis) {
     return amax(MdStaticArray<T>(*values.__array_reference, values.offset,
                                  values.shp_offset),
                 axis);

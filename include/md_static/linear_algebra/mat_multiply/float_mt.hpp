@@ -343,12 +343,12 @@ void mul_mt_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
     i32 rem = (m * p) & 7;
 
     // Initialize vector to zero
-    for (size_t index = 0; index < m * p - rem; index += 8) {
+    for (usize index = 0; index < m * p - rem; index += 8) {
         _mm256_store_ps(c + index, _mm256_setzero_ps());
     }
 
     // Set remainder values to zero as well
-    for (size_t index = m * p - rem; index < m * p; ++index) {
+    for (usize index = m * p - rem; index < m * p; ++index) {
         c[index] = 0;
     }
 
@@ -358,7 +358,7 @@ void mul_mt_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
 
     i32 total_rows_per_thread = m / clamped_thread_count;
 
-    for (size_t index = 0; index < clamped_thread_count - 1; ++index) {
+    for (usize index = 0; index < clamped_thread_count - 1; ++index) {
         threads.emplace_back(std::thread(mul_mt_f32_internal, a, tb, c, m, n, p,
                                          index * total_rows_per_thread,
                                          (index + 1) * total_rows_per_thread));

@@ -179,10 +179,9 @@ MdStaticArray<_T> ColView::st_map(
     return value;
 }
 
-template <typename _T>
-MdStaticArray<_T> ColView::st_map_mt(
-    const std::function<_T(const Cell &, const size_t, const ColView &)>
-        &func) {
+template <typename T>
+MdStaticArray<T> ColView::st_map_mt(
+    const std::function<T(const Cell &, const size_t, const ColView &)> &func) {
     const size_t size = this->get_size();
     MdStaticArray<_T> value(size);
     std::vector<std::thread> thread_pool;

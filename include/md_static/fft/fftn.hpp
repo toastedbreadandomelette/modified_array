@@ -8,7 +8,7 @@
 #include "./md_fft.hpp"
 
 template <typename T>
-MdStaticArray<cdouble> FFT::fftn(const MdStaticArray<T>& ndarray) {
+MdStaticArray<c64> FFT::fftn(const MdStaticArray<T>& ndarray) {
     switch (ndarray.get_shape_size()) {
         case 1:
             return FFT::fft(ndarray);
@@ -18,13 +18,13 @@ MdStaticArray<cdouble> FFT::fftn(const MdStaticArray<T>& ndarray) {
             break;
     }
 
-    MdStaticArray<cdouble> result(ndarray);
+    MdStaticArray<c64> result(ndarray);
     // Perform ndarray FFT
-    for (size_t k = 0; k < ndarray.get_shape_size(); ++k) {
-        const size_t loop = result.get_axis_reference(k).get_total_axes();
+    for (usize k = 0; k < ndarray.get_shape_size(); ++k) {
+        const usize loop = result.get_axis_reference(k).get_total_axes();
 
 #pragma omp parallel for
-        for (size_t index = 0; index < loop; ++index) {
+        for (usize index = 0; index < loop; ++index) {
             auto axis_ref = result.get_nth_axis_reference(k, index);
             axis_ref = fft_int(axis_ref);
         }
@@ -34,7 +34,7 @@ MdStaticArray<cdouble> FFT::fftn(const MdStaticArray<T>& ndarray) {
 }
 
 template <typename T>
-MdStaticArray<cdouble> FFT::fftn(const MdStaticArrayReference<T>& ndarray) {
+MdStaticArray<c64> FFT::fftn(const MdStaticArrayReference<T>& ndarray) {
     return FFT::fftn(MdStaticArray<T>(*ndarray.__array_reference,
                                       ndarray.offset, ndarray.shp_offset));
 }
