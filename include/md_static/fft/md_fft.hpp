@@ -18,7 +18,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<c64> fft_int(const MdStaticArray<T>& other);
+    static Array<c64> fft_int(const Array<T>& other);
 
     /**
      * @note Source:
@@ -30,7 +30,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<c64> fft_int(const MdStaticArrayReference<T>& other);
+    static Array<c64> fft_int(const Reference<T>& other);
 
     /**
      * @note Source:
@@ -42,7 +42,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<c64> fft_int(const MdStaticAxisReference<T>& other);
+    static Array<c64> fft_int(const Axis<T>& other);
 
     /**
      * @note Source:
@@ -53,7 +53,7 @@ struct FFT {
      * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    static MdStaticArray<c64> ifft_int(const MdStaticArray<c64>& other);
+    static Array<c64> ifft_int(const Array<c64>& other);
 
     /**
      * @note Source:
@@ -64,8 +64,8 @@ struct FFT {
      * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    static MdStaticArray<c64> ifft_int(
-        const MdStaticArrayReference<c64>& other);
+    static Array<c64> ifft_int(
+        const Reference<c64>& other);
 
     /**
      * @note Source:
@@ -76,7 +76,7 @@ struct FFT {
      * @param other array for which FFT is to be computed
      * @return values of complex numbers
      */
-    static MdStaticArray<c64> ifft_int(const MdStaticAxisReference<c64>& other);
+    static Array<c64> ifft_int(const Axis<c64>& other);
 
  public:
     /**
@@ -89,7 +89,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<c64> fft(const MdStaticArray<T>& other);
+    static Array<c64> fft(const Array<T>& other);
 
     /**
      * @note Source:
@@ -101,7 +101,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<c64> fft(const MdStaticArrayReference<T>& other);
+    static Array<c64> fft(const Reference<T>& other);
 
     /**
      * @note Source:
@@ -113,7 +113,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<T> ifft(const MdStaticArray<c64>& other);
+    static Array<T> ifft(const Array<c64>& other);
 
     /**
      * @note Source:
@@ -125,7 +125,7 @@ struct FFT {
      * @return values of complex numbers
      */
     template <typename T>
-    static MdStaticArray<T> ifft(const MdStaticArrayReference<c64>& other);
+    static Array<T> ifft(const Reference<c64>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
@@ -134,7 +134,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<c64> fft2(const MdStaticArray<T>& other);
+    static Array<c64> fft2(const Array<T>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
@@ -143,7 +143,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<c64> fft2(const MdStaticArrayReference<T>& other);
+    static Array<c64> fft2(const Reference<T>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
@@ -152,7 +152,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<T> ifft2(const MdStaticArray<c64>& other);
+    static Array<T> ifft2(const Array<c64>& other);
 
     /**
      * @brief Compute 2 dimensional FFT on 2 dimensional array
@@ -161,7 +161,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<T> ifft2(const MdStaticArrayReference<c64>& other);
+    static Array<T> ifft2(const Reference<c64>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
@@ -170,7 +170,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<c64> fftn(const MdStaticArray<T>& other);
+    static Array<c64> fftn(const Array<T>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
@@ -179,7 +179,7 @@ struct FFT {
      * @return values of complex numbers in 2D-array
      */
     template <typename T>
-    static MdStaticArray<c64> fftn(const MdStaticArrayReference<T>& other);
+    static Array<c64> fftn(const Reference<T>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
@@ -188,7 +188,7 @@ struct FFT {
      * @return values of complex numbers in nD-array
      */
     template <typename T>
-    static MdStaticArray<T> ifftn(const MdStaticArray<c64>& other);
+    static Array<T> ifftn(const Array<c64>& other);
 
     /**
      * @brief Compute n dimensional FFT on n dimensional array
@@ -197,7 +197,7 @@ struct FFT {
      * @return values of complex numbers in ND-array
      */
     template <typename T>
-    static MdStaticArray<T> ifftn(const MdStaticArrayReference<c64>& other);
+    static Array<T> ifftn(const Reference<c64>& other);
 };
 
 #endif

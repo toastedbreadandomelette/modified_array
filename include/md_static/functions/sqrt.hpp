@@ -7,14 +7,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::sqrt(const MdStaticArray<T> &values) {
+Array<T> MdArrayUtility::sqrt(const Array<T> &values) {
     return MdArrayUtility::map<T>(values,
                                   [](const T &value) { return ::sqrt(value); });
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::sqrt(const MdStaticArrayReference<T> &values) {
-    return MdArrayUtility::sqrt<T>(MdStaticArray<T>(
+Array<T> MdArrayUtility::sqrt(const Reference<T> &values) {
+    return MdArrayUtility::sqrt<T>(Array<T>(
         *values.__array_reference, values.offset, values.shp_offset));
 }
 

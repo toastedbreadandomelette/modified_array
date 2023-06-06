@@ -5,11 +5,10 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
-                                      const usize axis,
-                                      const usize thread_count) {
+Array<T> MdArrayUtility::diff(const Array<T> &ndarray, const usize axis,
+                              const usize thread_count) {
     if (axis == -1) {
-        MdStaticArray<T> result(ndarray.get_size() - 1);
+        Array<T> result(ndarray.get_size() - 1);
 #pragma omp parallel for
         for (usize index = 0; index < ndarray.get_size() - 1; ++index) {
             result.__array[index] =
@@ -31,7 +30,7 @@ MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
                                    (index == axis));
     }
 
-    MdStaticArray<T> result(overall_shape, 0);
+    Array<T> result(overall_shape, 0);
 
     const usize diff_index = ndarray.skip_vec[axis];
 
@@ -71,11 +70,10 @@ MdStaticArray<T> MdArrayUtility::diff(const MdStaticArray<T> &ndarray,
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::diff(const MdStaticArrayReference<T> &ndarray,
-                                      const usize axis,
-                                      const usize thread_count) {
-    return diff<T>(MdStaticArray<T>(*ndarray.__array_reference, ndarray.offset,
-                                    ndarray.shp_offset),
+Array<T> MdArrayUtility::diff(const Reference<T> &ndarray, const usize axis,
+                              const usize thread_count) {
+    return diff<T>(Array<T>(*ndarray.__array_reference, ndarray.offset,
+                            ndarray.shp_offset),
                    axis, thread_count);
 }
 

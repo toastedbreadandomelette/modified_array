@@ -8,7 +8,7 @@
 #include "./md_fft.hpp"
 
 template <typename T>
-MdStaticArray<T> FFT::ifftn(const MdStaticArray<c64>& ndarray) {
+Array<T> FFT::ifftn(const Array<c64>& ndarray) {
     switch (ndarray.get_shape_size()) {
         case 1:
             return FFT::ifft<T>(ndarray);
@@ -18,7 +18,7 @@ MdStaticArray<T> FFT::ifftn(const MdStaticArray<c64>& ndarray) {
             break;
     }
 
-    MdStaticArray<c64> result(ndarray);
+    Array<c64> result(ndarray);
 
     for (usize k = 0; k < ndarray.get_shape_size(); ++k) {
         const usize loop = result.get_axis_reference(k).get_total_axes();
@@ -36,8 +36,8 @@ MdStaticArray<T> FFT::ifftn(const MdStaticArray<c64>& ndarray) {
 }
 
 template <typename T>
-MdStaticArray<T> FFT::ifftn(const MdStaticArrayReference<c64>& ndarray) {
-    return FFT::ifftn<T>(MdStaticArray<c64>(
+Array<T> FFT::ifftn(const Reference<c64>& ndarray) {
+    return FFT::ifftn<T>(Array<c64>(
         *ndarray.__array_reference, ndarray.offset, ndarray.shp_offset));
 }
 

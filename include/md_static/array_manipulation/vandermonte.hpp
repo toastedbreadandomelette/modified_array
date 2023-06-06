@@ -5,7 +5,7 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename T>
-MdStaticArray<T> Manip::vandermonte(const MdStaticArray<T> &rows, const i64 n,
+Array<T> Manip::vandermonte(const Array<T> &rows, const i64 n,
                                     const bool increasing_order) {
     if (rows.get_shape_size() != 1) {
         throw std::runtime_error("Given array must be 1-dimensional; found: " +
@@ -14,7 +14,7 @@ MdStaticArray<T> Manip::vandermonte(const MdStaticArray<T> &rows, const i64 n,
 
     const usize loop = (n != -1 ? n : rows.get_size());
 
-    MdStaticArray<T> result({rows.get_size(), loop}, 1);
+    Array<T> result({rows.get_size(), loop}, 1);
 
     if (::s_thread_count == 1 || ::s_threshold_size > result.get_size()) {
         if (!increasing_order) {
@@ -77,10 +77,10 @@ MdStaticArray<T> Manip::vandermonte(const MdStaticArray<T> &rows, const i64 n,
 }
 
 template <typename T>
-MdStaticArray<T> Manip::vandermonte(const MdStaticArrayReference<T> &rows,
+Array<T> Manip::vandermonte(const Reference<T> &rows,
                                     const i64 n, const bool increasing_order) {
     return vandermonte<T>(
-        MdStaticArray<T>(*rows.__array_reference, rows.offset, rows.shp_offset),
+        Array<T>(*rows.__array_reference, rows.offset, rows.shp_offset),
         n, increasing_order);
 }
 #endif

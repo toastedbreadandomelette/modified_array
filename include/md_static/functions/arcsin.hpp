@@ -7,15 +7,15 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::arcsin(const MdStaticArray<T> &values) {
+Array<T> MdArrayUtility::arcsin(const Array<T> &values) {
     return MdArrayUtility::map<T>(values,
                                   [](const T &value) { return ::asin(value); });
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::arcsin(
-    const MdStaticArrayReference<T> &values) {
-    return MdArrayUtility::arcsin<T>(MdStaticArray<T>(
+Array<T> MdArrayUtility::arcsin(
+    const Reference<T> &values) {
+    return MdArrayUtility::arcsin<T>(Array<T>(
         *values.__array_reference, values.offset, values.shp_offset));
 }
 

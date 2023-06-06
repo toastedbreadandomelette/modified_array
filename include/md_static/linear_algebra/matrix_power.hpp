@@ -7,7 +7,7 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T, class T1>
-MdStaticArray<T> Linalg::matrix_power(const MdStaticArray<T> &__matrix,
+Array<T> Linalg::matrix_power(const Array<T> &__matrix,
                                       usize power) {
     if (__matrix.get_shape_size() != 2) {
         throw std::runtime_error(
@@ -22,7 +22,7 @@ MdStaticArray<T> Linalg::matrix_power(const MdStaticArray<T> &__matrix,
             std::to_string(__matrix.get_shape()[1]) + ").");
     }
 
-    MdStaticArray<T> result = Linalg::identity<T>(__matrix.get_shape()[0]),
+    Array<T> result = Linalg::identity<T>(__matrix.get_shape()[0]),
                      omat = __matrix;
 
     while (power > 0) {
@@ -37,10 +37,10 @@ MdStaticArray<T> Linalg::matrix_power(const MdStaticArray<T> &__matrix,
 }
 
 template <typename T, class T1>
-MdStaticArray<T> Linalg::matrix_power(const MdStaticArrayReference<T> &__matrix,
+Array<T> Linalg::matrix_power(const Reference<T> &__matrix,
                                       usize power) {
     return Linalg::matrix_power<T>(
-        MdStaticArray<T>(*__matrix.__array_reference, __matrix.offset,
+        Array<T>(*__matrix.__array_reference, __matrix.offset,
                          __matrix.shp_offset),
         power);
 }

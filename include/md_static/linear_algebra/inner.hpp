@@ -6,8 +6,8 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
-                                const MdStaticArray<T2> &other,
+Array<T3> Linalg::inner(const Array<T1> &first,
+                                const Array<T2> &other,
                                 const usize threads) {
     if (first.get_shape()[first.get_shape_size() - 1] !=
         other.get_shape()[other.get_shape_size() - 1]) {
@@ -65,7 +65,7 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
                 result += res_part;
             }
 
-            return MdStaticArray<T3>(1, result);
+            return Array<T3>(1, result);
         } else {
             T3 value = 0;
 #pragma omp parallel for
@@ -73,10 +73,10 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
                 value += first.__array[i] * other.__array[i];
             }
 
-            return MdStaticArray<T3>(1, value);
+            return Array<T3>(1, value);
         }
     } else {
-        MdStaticArray<T3> result(resultant_shape, 0);
+        Array<T3> result(resultant_shape, 0);
 
         const usize row = first.shape[first.get_shape_size() - 1];
 
@@ -116,34 +116,34 @@ MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(const MdStaticArrayReference<T1> &first,
-                                const MdStaticArray<T2> &other,
+Array<T3> Linalg::inner(const Reference<T1> &first,
+                                const Array<T2> &other,
                                 const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        MdStaticArray<T1>(*first.__array_reference, first.offset,
+        Array<T1>(*first.__array_reference, first.offset,
                           first.shp_offset),
         other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(const MdStaticArrayReference<T1> &first,
-                                const MdStaticArrayReference<T2> &other,
+Array<T3> Linalg::inner(const Reference<T1> &first,
+                                const Reference<T2> &other,
                                 const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        MdStaticArray<T1>(*first.__array_reference, first.offset,
+        Array<T1>(*first.__array_reference, first.offset,
                           first.shp_offset),
-        MdStaticArray<T1>(*other.__array_reference, other.offset,
+        Array<T1>(*other.__array_reference, other.offset,
                           other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::inner(const MdStaticArray<T1> &first,
-                                const MdStaticArrayReference<T2> &other,
+Array<T3> Linalg::inner(const Array<T1> &first,
+                                const Reference<T2> &other,
                                 const usize threads) {
     return Linalg::inner<T3, T1, T2>(
         first,
-        MdStaticArray<T1>(*other.__array_reference, other.offset,
+        Array<T1>(*other.__array_reference, other.offset,
                           other.shp_offset),
         threads);
 }

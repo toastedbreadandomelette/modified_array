@@ -5,8 +5,8 @@
 #include "./reduce.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::sum(const MdStaticArray<T> &values,
-                                     const T init, const i32 axis) {
+Array<T> MdArrayUtility::sum(const Array<T> &values, const T init,
+                             const i32 axis) {
     return reduce(
         values,
         [](const T prev_value, const T current_value) {
@@ -16,11 +16,11 @@ MdStaticArray<T> MdArrayUtility::sum(const MdStaticArray<T> &values,
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::sum(const MdStaticArrayReference<T> &values,
-                                     const T init, const i32 axis) {
-    return sum(MdStaticArray<T>(*values.__array_reference, values.offset,
-                                values.shp_offset),
-               init, axis);
+Array<T> MdArrayUtility::sum(const Reference<T> &values, const T init,
+                             const i32 axis) {
+    return sum(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        init, axis);
 }
 
 #endif

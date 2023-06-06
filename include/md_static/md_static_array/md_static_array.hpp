@@ -38,7 +38,7 @@ class MdStaticArray {
         skip_vec = static_cast<usize *>(malloc(shp_size * sizeof(usize)));
         shape[shp_size - 1] = _shape[shp_size - 1];
         skip_vec[shp_size - 1] = 1;
-        for (int16_t i = shp_size - 2; i >= 0; --i) {
+        for (i16 i = shp_size - 2; i >= 0; --i) {
             shape[i] = _shape[i];
             skip_vec[i] = _shape[i + 1] * skip_vec[i + 1];
         }
@@ -1200,7 +1200,7 @@ class MdStaticArray {
                     op << ",\n";
                 }
             }
-            op << "]";
+            op << ']';
         }
         return op;
     }
@@ -1534,15 +1534,17 @@ inline auto &operator^=(T1 &other, const MdStaticArrayReference<T2> &first) {
 }
 
 template <typename T>
-MdStaticAxisReference<T> MdStaticArray<T>::get_axis_reference(
-    const usize axis) {
-    return MdStaticAxisReference(*this, axis);
+Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
+    return Axis(*this, axis);
 }
 
 template <typename T>
-MdStaticAxisReference<T> MdStaticArray<T>::get_nth_axis_reference(
-    const usize axis, const usize n) {
-    return MdStaticAxisReference(*this, axis, n);
+Axis<T> MdStaticArray<T>::get_nth_axis_reference(const usize axis,
+                                                 const usize n) {
+    return Axis(*this, axis, n);
 }
+
+template <typename T>
+using Array = MdStaticArray<T>;
 
 #endif

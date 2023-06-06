@@ -5,10 +5,10 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename T>
-MdStaticArray<T> Manip::flip(const MdStaticArray<T> &ndarray,
+Array<T> Manip::flip(const Array<T> &ndarray,
                              const usize axis) {
     if (axis == -1) {
-        MdStaticArray<T> result(ndarray);
+        Array<T> result(ndarray);
 
         for (usize index = 0; index < result.get_size() / 2; ++index) {
             const auto temp = result.__array[index];
@@ -24,7 +24,7 @@ MdStaticArray<T> Manip::flip(const MdStaticArray<T> &ndarray,
                                  " requested for operation flip");
     }
 
-    MdStaticArray<T> result(ndarray);
+    Array<T> result(ndarray);
 
     const usize total_axes = result.get_axis_reference(axis).get_total_axes();
 

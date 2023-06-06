@@ -7,29 +7,29 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(const MdStaticArray<T1> &__first,
-                                        const MdStaticArray<T2> &__other,
+Array<T3> Linalg::vdot(const Array<T1> &__first,
+                                        const Array<T2> &__other,
                                         const usize threads) {
     return Linalg::dot<T3>(__first, __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArrayReference<T1> &__first, const MdStaticArray<T2> &__other,
+Array<T3> Linalg::vdot(
+    const Reference<T1> &__first, const Array<T2> &__other,
     const usize threads) {
     return Linalg::dot<T3>(__first, __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArrayReference<T1> &__first,
-    const MdStaticArrayReference<T2> &__other, const usize threads) {
+Array<T3> Linalg::vdot(
+    const Reference<T1> &__first,
+    const Reference<T2> &__other, const usize threads) {
     return Linalg::dot<T3>(__first, __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArray<T1> &__first, const MdStaticArrayReference<T2> &__other,
+Array<T3> Linalg::vdot(
+    const Array<T1> &__first, const Reference<T2> &__other,
     const usize threads) {
     return Linalg::dot<T3>(__first, __other, threads);
 }
@@ -37,8 +37,8 @@ MdStaticArray<T3> Linalg::vdot(
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArray<Complex<T1>> &__first, const MdStaticArray<T2> &__other,
+Array<T3> Linalg::vdot(
+    const Array<Complex<T1>> &__first, const Array<T2> &__other,
     const usize threads) {
     // Basically, compute dot product of vector:::
     // Last axis of vector __first should be multiplied with second last
@@ -73,7 +73,7 @@ MdStaticArray<T3> Linalg::vdot(
             }
         }
 
-        MdStaticArray<T3> result(overall_shape, 0);
+        Array<T3> result(overall_shape, 0);
         const usize res_base_matrix_size = (result.shape[result.shp_size - 1] *
                                              result.shape[result.shp_size - 2]);
 
@@ -161,7 +161,7 @@ MdStaticArray<T3> Linalg::vdot(
                  ++index) {
                 overall_shape[index] = __first.shape[index];
             }
-            MdStaticArray<T3> result(overall_shape, 0);
+            Array<T3> result(overall_shape, 0);
 
             auto __perform_dot_parallel = [&__first, &__other, &result](
                                               const usize start,
@@ -210,7 +210,7 @@ MdStaticArray<T3> Linalg::vdot(
                     overall_shape[shp_index++] = __other.shape[index];
                 }
             }
-            MdStaticArray<T3> result(overall_shape, 0);
+            Array<T3> result(overall_shape, 0);
 
             auto __perform_dot_parallel =
                 [&__first, &__other, &result,
@@ -253,34 +253,34 @@ MdStaticArray<T3> Linalg::vdot(
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArrayReference<Complex<T1>> &__first,
-    const MdStaticArray<T2> &__other, const usize threads) {
+Array<T3> Linalg::vdot(
+    const Reference<Complex<T1>> &__first,
+    const Array<T2> &__other, const usize threads) {
     return Linalg::vdot<T3>(
-        MdStaticArray(*__first.__array_reference, __first.offset,
+        Array(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
         __other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArrayReference<Complex<T1>> &__first,
-    const MdStaticArrayReference<T2> &__other, const usize threads) {
+Array<T3> Linalg::vdot(
+    const Reference<Complex<T1>> &__first,
+    const Reference<T2> &__other, const usize threads) {
     return Linalg::vdot<T3>(
-        MdStaticArray(*__first.__array_reference, __first.offset,
+        Array(*__first.__array_reference, __first.offset,
                       __first.shp_offset),
-        MdStaticArray(*__other.__array_reference, __other.offset,
+        Array(*__other.__array_reference, __other.offset,
                       __other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::vdot(
-    const MdStaticArray<Complex<T1>> &__first,
-    const MdStaticArrayReference<T2> &__other, const usize threads) {
+Array<T3> Linalg::vdot(
+    const Array<Complex<T1>> &__first,
+    const Reference<T2> &__other, const usize threads) {
     return Linalg::vdot<T3>(
         __first,
-        MdStaticArray(*__other.__array_reference, __other.offset,
+        Array(*__other.__array_reference, __other.offset,
                       __other.shp_offset),
         threads);
 }

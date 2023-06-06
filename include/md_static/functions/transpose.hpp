@@ -4,11 +4,11 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T1, typename T2>
-MdStaticArray<T2> MdArrayUtility::transpose(const MdStaticArray<T1> &first) {
+Array<T2> MdArrayUtility::transpose(const Array<T1> &first) {
     if (first.get_shape_size() != 2) {
         throw std::runtime_error("Matrix Error: Expected dimension 2.");
     }
-    MdStaticArray<T2> result({first.shape[1], first.shape[0]}, 0);
+    Array<T2> result({first.shape[1], first.shape[0]}, 0);
 
     for (usize res_index = 0; res_index < first.shape[1]; ++res_index) {
         for (usize f_index = res_index, incr = 0; f_index < first.get_size();
@@ -22,10 +22,9 @@ MdStaticArray<T2> MdArrayUtility::transpose(const MdStaticArray<T1> &first) {
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::transpose(
-    const MdStaticArrayReference<T> &values) {
-    return MdArrayUtility::transpose<T>(MdStaticArray<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+Array<T> MdArrayUtility::transpose(const Reference<T> &values) {
+    return MdArrayUtility::transpose<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

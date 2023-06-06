@@ -99,4 +99,7 @@ class MdStaticAxisReference {
     inline usize get_total_axes() const { return total_number_of_axes_; }
 };
 
+template <typename T>
+using Axis = MdStaticAxisReference<T>;
+
 #endif

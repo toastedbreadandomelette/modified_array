@@ -5,8 +5,8 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T1, typename T2, typename T3>
-MdStaticArray<T3> Linalg::kron(const MdStaticArray<T1>& first,
-                               const MdStaticArray<T2>& other,
+Array<T3> Linalg::kron(const Array<T1>& first,
+                               const Array<T2>& other,
                                const usize total_threads) {
     std::vector<usize> overall_shape;
     for (usize findex = first.get_shape_size() - 1,
@@ -16,7 +16,7 @@ MdStaticArray<T3> Linalg::kron(const MdStaticArray<T1>& first,
                                    (oindex >= 0 ? other.shape[oindex] : 1));
     }
 
-    MdStaticArray<T3> result(overall_shape, 0);
+    Array<T3> result(overall_shape, 0);
 
     usize index = 0;
 

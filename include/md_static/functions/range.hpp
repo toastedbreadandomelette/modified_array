@@ -6,8 +6,7 @@
 
 // To do: improve and update since it does not work for all cases
 template <typename T, class _T1>
-MdStaticArray<T> MdArrayUtility::range(const T start, const T end,
-                                       const T spacing) {
+Array<T> MdArrayUtility::range(const T start, const T end, const T spacing) {
     usize size = 0;
     usize start_value = 0;
     T increment = 1;
@@ -36,7 +35,7 @@ MdStaticArray<T> MdArrayUtility::range(const T start, const T end,
     // std::cout << size << " " << start << " " << end << " " << spacing << " "
     //           << increment << '\n';
 
-    MdStaticArray<T> result(size);
+    Array<T> result(size);
 
     const auto __allocate_internal = [&result](const usize start, const T init,
                                                const usize end,

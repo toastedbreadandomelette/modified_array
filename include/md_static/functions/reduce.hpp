@@ -6,12 +6,12 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T, typename _func>
-MdStaticArray<T> MdArrayUtility::reduce(const MdStaticArray<T> &values,
+Array<T> MdArrayUtility::reduce(const Array<T> &values,
                                         const _func &function_exec,
                                         const T init, const i32 axis) {
     if (axis == -1) {
         const usize size = values.get_size();
-        MdStaticArray<T> result(1, init);
+        Array<T> result(1, init);
         const u8 thread_count = ::s_thread_count;
         const usize threshold_size = ::s_threshold_size;
         if (thread_count == 1 || size <= threshold_size) {
@@ -62,7 +62,7 @@ MdStaticArray<T> MdArrayUtility::reduce(const MdStaticArray<T> &values,
             }
         }
 
-        MdStaticArray<T> result(shp, init);
+        Array<T> result(shp, init);
 
         const usize skip_index = values.skip_vec[axis];
 
@@ -110,10 +110,10 @@ MdStaticArray<T> MdArrayUtility::reduce(const MdStaticArray<T> &values,
 }
 
 template <typename T, typename _func>
-MdStaticArray<T> MdArrayUtility::reduce(const MdStaticArrayReference<T> &values,
+Array<T> MdArrayUtility::reduce(const Reference<T> &values,
                                         const _func &function_exec,
                                         const T init, const i32 axis) {
-    return reduce<T, _func>(MdStaticArray<T>(*values.__array_reference,
+    return reduce<T, _func>(Array<T>(*values.__array_reference,
                                              values.offset, values.shp_offset),
                             function_exec, init, axis);
 }

@@ -5,10 +5,9 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> Linalg::mat_mod_multiply(const MdStaticArray<T1> &first,
-                                           const MdStaticArray<T2> &other,
-                                           const usize mod,
-                                           const usize threads) {
+Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
+                                   const Array<T2> &other, const usize mod,
+                                   const usize threads) {
     if (first.shp_size != 2 || other.shp_size != 2) {
         throw std::runtime_error("Matrix dimension do not match.");
     }
@@ -20,7 +19,7 @@ MdStaticArray<T3> Linalg::mat_mod_multiply(const MdStaticArray<T1> &first,
             "matrix.");
     }
 
-    MdStaticArray<T3> result({first.shape[0], other.shape[1]}, 0);
+    Array<T3> result({first.shape[0], other.shape[1]}, 0);
 
     /// This loop is kept outside due to performance reasons.
     /// Split i or j into blocks
@@ -102,36 +101,31 @@ MdStaticArray<T3> Linalg::mat_mod_multiply(const MdStaticArray<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> Linalg::mat_mod_multiply(
-    const MdStaticArrayReference<T1> &first, const MdStaticArray<T2> &other,
-    const usize mod, const usize threads) {
+Array<T3> Linalg::mat_mod_multiply(const Reference<T1> &first,
+                                   const Array<T2> &other, const usize mod,
+                                   const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        MdStaticArray<T1>(*first.__array_reference, first.offset,
-                          first.shp_offset),
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
         other, threads);
 }
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> Linalg::mat_mod_multiply(
-    const MdStaticArray<T1> &first, const MdStaticArrayReference<T2> &other,
-    const usize mod, const usize threads) {
+Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
+                                   const Reference<T2> &other, const usize mod,
+                                   const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
-        MdStaticArray<T2>(*other.__array_reference, other.offset,
-                          other.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2, class T>
-MdStaticArray<T3> Linalg::mat_mod_multiply(
-    const MdStaticArrayReference<T1> &first,
-    const MdStaticArrayReference<T2> &other, const usize mod,
-    const usize threads) {
+Array<T3> Linalg::mat_mod_multiply(const Reference<T1> &first,
+                                   const Reference<T2> &other, const usize mod,
+                                   const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        MdStaticArray<T1>(*first.__array_reference, first.offset,
-                          first.shp_offset),
-        MdStaticArray<T2>(*other.__array_reference, other.offset,
-                          other.shp_offset),
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 

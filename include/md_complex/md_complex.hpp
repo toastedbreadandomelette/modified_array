@@ -5,139 +5,137 @@
 #include <cmath>
 #include <ostream>
 
-template <typename _T,
-          class = typename std::enable_if<std::is_arithmetic<_T>::value>::type>
+template <typename T,
+          class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
 struct Complex {
-    _T real{}, img{};
+    T real{}, img{};
 
     constexpr Complex() = default;
 
-    constexpr Complex(const _T __other) : real(__other) {}
+    constexpr Complex(const T other) : real(other) {}
 
-    constexpr Complex(const _T r, const _T i) : real(r), img(i) {}
+    constexpr Complex(const T r, const T i) : real(r), img(i) {}
 
-    template <typename _T1>
-    constexpr Complex(const Complex<_T1>& __other)
-        : real(__other.real), img(__other.img) {}
+    template <typename T1>
+    constexpr Complex(const Complex<T1>& other)
+        : real(other.real), img(other.img) {}
 
-    template <typename _T1>
-    inline constexpr Complex<_T>& operator=(const Complex<_T1>& __other) {
-        real = __other.real;
-        img = __other.img;
+    template <typename T1>
+    inline constexpr Complex<T>& operator=(const Complex<T1>& other) {
+        real = other.real;
+        img = other.img;
         return *this;
     }
 
-    inline constexpr operator _T() const { return real; }
+    inline constexpr operator T() const { return real; }
 
-    template <typename _T1>
+    template <typename T1>
     inline constexpr operator Complex() const {
-        return Complex<_T>(real, img);
+        return Complex<T>(real, img);
     }
 
-    template <typename _T1>
-    inline Complex<_T>& operator=(const _T1& __other) {
-        real = __other;
+    template <typename T1>
+    inline Complex<T>& operator=(const T1& other) {
+        real = other;
         img = 0;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr auto operator+(const Complex<_T1>& __other) const {
-        return Complex(real + __other.real, img + __other.img);
+    template <typename T1>
+    inline constexpr auto operator+(const Complex<T1>& other) const {
+        return Complex(real + other.real, img + other.img);
     }
 
-    template <typename _T1, class>
-    inline constexpr auto operator+(const _T1& __other) const {
-        return Complex(real + __other, img);
+    template <typename T1, class>
+    inline constexpr auto operator+(const T1& other) const {
+        return Complex(real + other, img);
     }
 
-    template <typename _T1>
-    inline Complex& operator+=(const Complex<_T1>& __other) {
-        real += __other.real;
-        img += __other.img;
+    template <typename T1>
+    inline Complex& operator+=(const Complex<T1>& other) {
+        real += other.real;
+        img += other.img;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr Complex& operator+=(const _T1& __other) {
-        real += __other;
+    template <typename T1>
+    inline constexpr Complex& operator+=(const T1& other) {
+        real += other;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr auto operator-(const Complex<_T1>& __other) const {
-        return Complex(real - __other.real, img - __other.img);
+    template <typename T1>
+    inline constexpr auto operator-(const Complex<T1>& other) const {
+        return Complex(real - other.real, img - other.img);
     }
 
-    template <typename _T1>
+    template <typename T1>
     inline constexpr auto operator-() const {
         return Complex(-real, -img);
     }
 
-    template <typename _T1>
-    inline constexpr auto operator-(const _T1& __other) const {
-        return Complex(real - __other, img);
+    template <typename T1>
+    inline constexpr auto operator-(const T1& other) const {
+        return Complex(real - other, img);
     }
 
-    template <typename _T1>
-    inline constexpr Complex& operator-=(const Complex<_T1>& __other) {
-        real -= __other.real;
-        img -= __other.img;
+    template <typename T1>
+    inline constexpr Complex& operator-=(const Complex<T1>& other) {
+        real -= other.real;
+        img -= other.img;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr Complex& operator-=(const _T1& __other) {
-        real -= __other;
+    template <typename T1>
+    inline constexpr Complex& operator-=(const T1& other) {
+        real -= other;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr auto operator*(const Complex<_T1>& __other) const {
-        return Complex(real * __other.real - img * __other.img,
-                       real * __other.img + img * __other.real);
+    template <typename T1>
+    inline constexpr auto operator*(const Complex<T1>& other) const {
+        return Complex(real * other.real - img * other.img,
+                       real * other.img + img * other.real);
     }
 
-    template <typename _T1>
-    inline constexpr auto operator*(const _T1& __other) const {
-        return Complex<_T>(real * __other, img * __other);
+    template <typename T1>
+    inline constexpr auto operator*(const T1& other) const {
+        return Complex<T>(real * other, img * other);
     }
 
-    template <typename _T1>
-    inline constexpr Complex& operator*=(const Complex<_T1>& __other) {
-        const auto temp = real * __other.real - img * __other.img;
-        img = img * __other.real + real * __other.img;
+    template <typename T1>
+    inline constexpr Complex& operator*=(const Complex<T1>& other) {
+        const auto temp = real * other.real - img * other.img;
+        img = img * other.real + real * other.img;
         real = temp;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr Complex& operator*=(const _T1& __other) {
-        real *= __other;
-        img *= __other;
+    template <typename T1>
+    inline constexpr Complex& operator*=(const T1& other) {
+        real *= other;
+        img *= other;
         return *this;
     }
 
-    template <typename _T1>
-    inline auto operator/(const Complex<_T1>& __other) const {
-        const auto sq_abs =
-            (__other.real * __other.real + __other.img * __other.img);
-        return Complex<_T>((real * __other.real + img * __other.img) / sq_abs,
-                           (real * __other.img - img * __other.real) / sq_abs);
+    template <typename T1>
+    inline auto operator/(const Complex<T1>& other) const {
+        const auto sq_abs = (other.real * other.real + other.img * other.img);
+        return Complex<T>((real * other.real + img * other.img) / sq_abs,
+                          (real * other.img - img * other.real) / sq_abs);
     }
 
-    template <typename _T1>
-    inline auto operator/(const _T1& __other) const {
-        return Complex<_T>(real / __other, img / __other);
+    template <typename T1>
+    inline auto operator/(const T1& other) const {
+        return Complex<T>(real / other, img / other);
     }
 
-    template <typename _T1>
-    inline Complex& operator/=(const Complex<_T1>& __other) {
-        const auto sq_abs =
-            (__other.real * __other.real + __other.img * __other.img);
-        const auto temp = real * __other.real + img * __other.img;
-        img *= __other.real;
-        img += real * __other.img;
+    template <typename T1>
+    inline Complex& operator/=(const Complex<T1>& other) {
+        const auto sq_abs = (other.real * other.real + other.img * other.img);
+        const auto temp = real * other.real + img * other.img;
+        img *= other.real;
+        img += real * other.img;
         img /= sq_abs;
         real = temp / sq_abs;
         return *this;
@@ -152,9 +150,9 @@ struct Complex {
         return {__R * ::cos(__A), __R * ::sin(__A)};
     }
 
-    template <typename _T1>
-    static inline constexpr Complex<_T1> conj(const Complex<_T1>& __other) {
-        return Complex<_T1>(__other.real, -__other.img);
+    template <typename T1>
+    static inline constexpr Complex<T1> conj(const Complex<T1>& other) {
+        return Complex<T1>(other.real, -other.img);
     }
 
     inline constexpr double sq_abs() const { return real * real + img * img; }
@@ -163,16 +161,16 @@ struct Complex {
         return ::sqrt(real * real + img * img);
     }
 
-    template <typename _T1>
-    inline Complex& operator/=(const _T1& __other) {
-        real /= __other;
-        img /= __other;
+    template <typename T1>
+    inline Complex& operator/=(const T1& other) {
+        real /= other;
+        img /= other;
         return *this;
     }
 
-    template <typename _T1>
-    inline constexpr bool operator==(const Complex<_T1>& __other) {
-        return __other.real == real && __other.img == img;
+    template <typename T1>
+    inline constexpr bool operator==(const Complex<T1>& other) {
+        return other.real == real && other.img == img;
     }
 
     template <typename T1>
@@ -180,14 +178,14 @@ struct Complex {
         return other == real && img == 0;
     }
 
-    template <typename _T1>
-    inline constexpr bool operator!=(const Complex<_T1>& __other) {
-        return __other.real != real || __other.img != img;
+    template <typename T1>
+    inline constexpr bool operator!=(const Complex<T1>& other) {
+        return other.real != real || other.img != img;
     }
 
-    template <typename _T1>
-    inline constexpr bool operator!=(const _T1& __other) {
-        return __other != real || img != 0;
+    template <typename T1>
+    inline constexpr bool operator!=(const T1& other) {
+        return other != real || img != 0;
     }
 
     friend std::ostream& operator<<(std::ostream& op, const Complex& c) {
@@ -203,51 +201,48 @@ struct Complex {
 namespace std {
 
 template <typename T>
-inline constexpr Complex<T> sqrt(const Complex<T>& __other) {
-    const auto polar = __other.to_polar();
+inline constexpr Complex<T> sqrt(const Complex<T>& other) {
+    const auto polar = other.to_polar();
     return Complex<T>::from_polar(std::sqrt(polar.first), polar.second / 2);
 }
 
 template <typename T>
-inline constexpr Complex<T> pow(const Complex<T>& __other, double value) {
-    const auto [__R, __A] = __other.to_polar();
+inline constexpr Complex<T> pow(const Complex<T>& other, double value) {
+    const auto [__R, __A] = other.to_polar();
     return Complex<T>::from_polar(std::pow(__R, value), __A * value);
 }
 
 template <typename T>
-inline constexpr Complex<T> abs(const Complex<T>& __other) {
-    return __other.abs();
+inline constexpr Complex<T> abs(const Complex<T>& other) {
+    return other.abs();
 }
 }  // namespace std
 
-template <typename _T, typename _T1,
-          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
-inline constexpr auto operator+(const _T1& __other,
-                                const Complex<_T>& __first) {
-    return Complex<_T>(__other + __first.real, __first.img);
+template <typename T, typename T1,
+          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
+inline constexpr auto operator+(const T1& other, const Complex<T>& first) {
+    return Complex<T>(other + first.real, first.img);
 }
 
-template <typename _T, typename _T1,
-          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
-inline constexpr Complex<_T> operator-(const _T1& __other,
-                                       const Complex<_T>& __first) {
-    return Complex<_T>(__other - __first.real, -__first.img);
+template <typename T, typename T1,
+          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
+inline constexpr Complex<T> operator-(const T1& other,
+                                      const Complex<T>& first) {
+    return Complex<T>(other - first.real, -first.img);
 }
 
-template <typename _T, typename _T1,
-          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
-inline constexpr auto operator*(const _T1& __other,
-                                const Complex<_T>& __first) {
-    return Complex<_T>(__first.real * __other, __first.img * __other);
+template <typename T, typename T1,
+          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
+inline constexpr auto operator*(const T1& other, const Complex<T>& first) {
+    return Complex<T>(first.real * other, first.img * other);
 }
 
-template <typename _T, typename _T1,
-          class = typename std::enable_if<std::is_arithmetic<_T1>::value>::type>
-inline constexpr auto operator/(const _T1& __other,
-                                const Complex<_T>& __first) {
-    const auto sq_abs = __first.real * __first.real + __first.img * __first.img;
-    return Complex<_T>((__other * __first.real) / sq_abs,
-                       -((__other * __first.img) / sq_abs));
+template <typename T, typename T1,
+          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
+inline constexpr auto operator/(const T1& other, const Complex<T>& first) {
+    const auto sq_abs = first.real * first.real + first.img * first.img;
+    return Complex<T>((other * first.real) / sq_abs,
+                      -((other * first.img) / sq_abs));
 }
 
 inline constexpr Complex<long double> operator"" _i(long double img) {

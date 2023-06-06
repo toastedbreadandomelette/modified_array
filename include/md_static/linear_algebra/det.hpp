@@ -5,7 +5,7 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T>
-f128 Linalg::det(const MdStaticArray<T> &matrix) {
+f128 Linalg::det(const Array<T> &matrix) {
     const auto [L, U, P, sign] = Linalg::lu_decompose<T>(matrix);
     usize n = matrix.get_shape()[0];
     f128 det = 1;
@@ -17,9 +17,9 @@ f128 Linalg::det(const MdStaticArray<T> &matrix) {
 }
 
 template <typename T>
-f128 Linalg::det(const MdStaticArrayReference<T> &matrix) {
-    return Linalg::det(MdStaticArray<T>(*matrix.__array_reference,
-                                        matrix.offset, matrix.shp_offset));
+f128 Linalg::det(const Reference<T> &matrix) {
+    return Linalg::det(
+        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset));
 }
 
 #endif

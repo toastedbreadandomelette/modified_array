@@ -5,11 +5,11 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<usize> MdArrayUtility::argmax(const MdStaticArray<T> &values,
+Array<usize> MdArrayUtility::argmax(const Array<T> &values,
                                             const i32 axis) {
     if (axis == -1) {
         const usize size = values.get_size();
-        MdStaticArray<usize> result(1, 0);
+        Array<usize> result(1, 0);
         const u8 thread_count = ::s_thread_count;
         const usize threshold_size = ::s_threshold_size;
         if (thread_count == 1 || size <= threshold_size) {
@@ -68,7 +68,7 @@ MdStaticArray<usize> MdArrayUtility::argmax(const MdStaticArray<T> &values,
             }
         }
 
-        MdStaticArray<usize> result(shp, 0);
+        Array<usize> result(shp, 0);
 
         const usize skip_index = values.skip_vec[axis];
 
@@ -123,9 +123,9 @@ MdStaticArray<usize> MdArrayUtility::argmax(const MdStaticArray<T> &values,
 }
 
 template <typename T>
-MdStaticArray<usize> MdArrayUtility::argmax(
-    const MdStaticArrayReference<T> &values, const i32 axis) {
-    return argmax<T>(MdStaticArray<T>(*values.__array_reference, values.offset,
+Array<usize> MdArrayUtility::argmax(
+    const Reference<T> &values, const i32 axis) {
+    return argmax<T>(Array<T>(*values.__array_reference, values.offset,
                                       values.shp_offset),
                      axis);
 }

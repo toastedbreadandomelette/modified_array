@@ -4,21 +4,21 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::cumulative_product(
-    const MdStaticArrayReference<T>& values, const usize axis,
+Array<T> MdArrayUtility::cumulative_product(
+    const Reference<T>& values, const usize axis,
     const usize thread_count) {
     return MdArrayUtility::cumulative_product<T>(
-        MdStaticArray<T>(*values.__array_reference, values.offset,
+        Array<T>(*values.__array_reference, values.offset,
                          values.shp_offset),
         axis, thread_count);
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::cumulative_product(
-    const MdStaticArray<T>& ndarray, const usize axis,
+Array<T> MdArrayUtility::cumulative_product(
+    const Array<T>& ndarray, const usize axis,
     const usize thread_count) {
     if (axis == -1) {
-        MdStaticArray<T> result(ndarray.get_size());
+        Array<T> result(ndarray.get_size());
 
         result.__array[0] = ndarray.__array[0];
 
@@ -48,7 +48,7 @@ MdStaticArray<T> MdArrayUtility::cumulative_product(
         resultant_shape.emplace_back(ndarray.get_shape()[index]);
     }
 
-    MdStaticArray<T> result(resultant_shape, 0);
+    Array<T> result(resultant_shape, 0);
 
     auto __perform_cu_sum_internal =
         [&ndarray, &result, skip_value, looping_value](

@@ -11,12 +11,11 @@
  * https://e-maxx.ru/algo/fft_multiply
  */
 template <typename T>
-MdStaticArray<T> FFT::ifft(const MdStaticArray<c64>& other) {
-    auto __idft_internal = [](MdStaticArray<c64>& array, const usize start,
-                              const usize end) {
-        MdStaticArray<c64> result(end - start, 0);
+Array<T> FFT::ifft(const Array<c64>& other) {
+    auto __idft_internal = [](Array<c64>& array, usize start, usize end) {
+        Array<c64> result(end - start, 0);
         const usize n = end - start;
-        double angle = MdMath::pi_2 / n;
+        f64 angle = MdMath::pi_2 / n;
         const c64 wlen = {::cos(angle), ::sin(angle)};
         c64 wstart = wlen;
 
@@ -39,19 +38,19 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<c64>& other) {
 
     usize n = other.get_size();
     usize i = 0;
-    MdStaticArray<c64> input(n, 0);
+    Array<c64> input(n, 0);
     if ((n & 1) || n < 64) {
         for (usize index = 0; index < other.get_size(); ++index) {
             input.__array[index] = other.__array[index];
         }
         __idft_internal(input, 0, input.get_size());
         input /= input.get_size();
-        return MdStaticArray<T>(input);
+        return Array<T>(input);
     } else {
         // Get last zero numbers
         const usize ls = ((n ^ (n - 1)) + 1) >> 1;
 
-        MdStaticArray<usize> indexes(n, 0);
+        Array<usize> indexes(n, 0);
 
         i = n;
         usize j = 1;
@@ -88,13 +87,12 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<c64>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](MdStaticArray<c64>& array,
-                                     const usize start) {
+    auto __perform_fft_in_place = [](Array<c64>& array, const usize start) {
         usize n = array.get_size();
 
         for (usize operate_length = (start << 1); operate_length <= n;
              operate_length <<= 1) {
-            double angle = MdMath::pi_2 / operate_length;
+            f64 angle = MdMath::pi_2 / operate_length;
             const c64 init = {::cos(angle), ::sin(angle)};
 #pragma omp parallel for
             for (usize i = 0; i < n; i += operate_length) {
@@ -113,13 +111,13 @@ MdStaticArray<T> FFT::ifft(const MdStaticArray<c64>& other) {
 
     __perform_fft_in_place(input, i);
 
-    return MdStaticArray<T>(input);
+    return Array<T>(input);
 }
 
 template <typename T>
-MdStaticArray<T> FFT::ifft(const MdStaticArrayReference<c64>& values) {
-    return ifft<T>(MdStaticArray<T>(*values.__array_reference, values.offset,
-                                    values.shp_offset));
+Array<T> FFT::ifft(const Reference<c64>& values) {
+    return ifft<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

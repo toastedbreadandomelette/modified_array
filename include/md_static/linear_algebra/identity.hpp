@@ -4,8 +4,8 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename _T>
-MdStaticArray<_T> Linalg::identity(const usize n) {
-    MdStaticArray<_T> result({n, n}, 0);
+Array<_T> Linalg::identity(const usize n) {
+    Array<_T> result({n, n}, 0);
     for (usize index = 0; index < result.get_size(); index += (n + 1)) {
         result.__array[index] = 1;
     }
@@ -14,7 +14,7 @@ MdStaticArray<_T> Linalg::identity(const usize n) {
 }
 
 template <typename _T>
-bool Linalg::is_identity(const MdStaticArray<_T> &other) {
+bool Linalg::is_identity(const Array<_T> &other) {
     if (other.shp_size != 2 || other.shape[0] != other.shape[1]) {
         return false;
     }
@@ -36,8 +36,8 @@ bool Linalg::is_identity(const MdStaticArray<_T> &other) {
 }
 
 template <typename _T>
-bool Linalg::is_identity(const MdStaticArrayReference<_T> &other) {
-    return Linalg::is_identity(MdStaticArray<_T>(
+bool Linalg::is_identity(const Reference<_T> &other) {
+    return Linalg::is_identity(Array<_T>(
         *other.array_reference, other.offset, other.shp_offset));
 }
 

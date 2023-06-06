@@ -12,9 +12,8 @@
  * @note this is not as fast as MKL libraries but still better
  */
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
-                                       const MdStaticArray<T2> &other,
-                                       const i32 threads) {
+Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
+                               const i32 threads) {
     if (first.shp_size != 2 || other.shp_size != 2) {
         throw std::runtime_error(
             "Matrix dimension do not match for matrix multiplication.");
@@ -31,8 +30,8 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
 
     usize k_bound = 0, i_bound = 0, j_bound = 0;
 
-    MdStaticArray<T3> result({fshape0, oshape1}, 0);
-    MdStaticArray<T2> other_t({oshape1, oshape0}, 0);
+    Array<T3> result({fshape0, oshape1}, 0);
+    Array<T2> other_t({oshape1, oshape0}, 0);
 
     for (usize i = 0; i < oshape1; ++i) {
         for (usize j = 0; j < oshape0; ++j) {
@@ -133,35 +132,28 @@ MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArrayReference<T1> &first,
-                                       const MdStaticArray<T2> &other,
-                                       const i32 threads) {
+Array<T3> Linalg::mat_multiply(const Reference<T1> &first,
+                               const Array<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        MdStaticArray<T1>(*first.__array_reference, first.offset,
-                          first.shp_offset),
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
         other, threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArray<T1> &first,
-                                       const MdStaticArrayReference<T2> &other,
-                                       const i32 threads) {
+Array<T3> Linalg::mat_multiply(const Array<T1> &first,
+                               const Reference<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
-        MdStaticArray<T2>(*other.__array_reference, other.offset,
-                          other.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 
 template <typename T3, typename T1, typename T2>
-MdStaticArray<T3> Linalg::mat_multiply(const MdStaticArrayReference<T1> &first,
-                                       const MdStaticArrayReference<T2> &other,
-                                       const i32 threads) {
+Array<T3> Linalg::mat_multiply(const Reference<T1> &first,
+                               const Reference<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        MdStaticArray<T1>(*first.__array_reference, first.offset,
-                          first.shp_offset),
-        MdStaticArray<T2>(*other.__array_reference, other.offset,
-                          other.shp_offset),
+        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
         threads);
 }
 

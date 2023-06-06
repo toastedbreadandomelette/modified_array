@@ -4,8 +4,8 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::map(const MdStaticArray<T> &values,
-                                     const fn<T(const T &)> &function_exec) {
+Array<T> MdArrayUtility::map(const Array<T> &values,
+                             const fn<T(const T &)> &function_exec) {
     const usize size = values.get_size();
 
     std::vector<usize> shp;
@@ -13,7 +13,7 @@ MdStaticArray<T> MdArrayUtility::map(const MdStaticArray<T> &values,
         shp.emplace_back(values.shape[index]);
     }
 
-    MdStaticArray<T> result(shp, 0);
+    Array<T> result(shp, 0);
 
     const uint8_t thread_count = ::s_thread_count;
     const usize threshold_size = ::s_threshold_size;
@@ -49,11 +49,11 @@ MdStaticArray<T> MdArrayUtility::map(const MdStaticArray<T> &values,
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::map(const MdStaticArrayReference<T> &values,
-                                     const fn<T(const T &)> &function_exec) {
-    return map<T>(MdStaticArray(*values.__array_reference, values.offset,
-                                values.shp_offset),
-                  function_exec);
+Array<T> MdArrayUtility::map(const Reference<T> &values,
+                             const fn<T(const T &)> &function_exec) {
+    return map<T>(
+        Array(*values.__array_reference, values.offset, values.shp_offset),
+        function_exec);
 }
 
 #endif

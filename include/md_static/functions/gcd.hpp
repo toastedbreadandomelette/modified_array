@@ -11,7 +11,7 @@ T __gcd(T a, T b) {
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::gcd(const MdStaticArray<T> &values,
+Array<T> MdArrayUtility::gcd(const Array<T> &values,
                                      const i32 axis) {
     return reduce<T>(
         values,
@@ -22,9 +22,9 @@ MdStaticArray<T> MdArrayUtility::gcd(const MdStaticArray<T> &values,
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::gcd(const MdStaticArrayReference<T> &values,
+Array<T> MdArrayUtility::gcd(const Reference<T> &values,
                                      const i32 axis) {
-    return gcd(MdStaticArray<T>(*values.__array_reference, values.offset,
+    return gcd(Array<T>(*values.__array_reference, values.offset,
                                 values.shp_offset),
                axis);
 }

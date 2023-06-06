@@ -6,7 +6,7 @@
 #include "./reduce.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::amin(const MdStaticArray<T> &values,
+Array<T> MdArrayUtility::amin(const Array<T> &values,
                                       const i32 axis) {
     return reduce<T>(
         values,
@@ -17,9 +17,9 @@ MdStaticArray<T> MdArrayUtility::amin(const MdStaticArray<T> &values,
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::amin(const MdStaticArrayReference<T> &values,
+Array<T> MdArrayUtility::amin(const Reference<T> &values,
                                       const i32 axis) {
-    return amin(MdStaticArray<T>(*values.__array_reference, values.offset,
+    return amin(Array<T>(*values.__array_reference, values.offset,
                                  values.shp_offset),
                 axis);
 }

@@ -5,7 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-bool MdArrayUtility::some(const MdStaticArray<T> &ndarray,
+bool MdArrayUtility::some(const Array<T> &ndarray,
                           const fn<bool(const T &)> &function,
                           const usize threads) {
     if (ndarray.get_size() < s_threshold_size) {
@@ -54,11 +54,11 @@ bool MdArrayUtility::some(const MdStaticArray<T> &ndarray,
 }
 
 template <typename T>
-bool MdArrayUtility::some(const MdStaticArrayReference<T> &ndarray,
+bool MdArrayUtility::some(const Reference<T> &ndarray,
                           const fn<bool(const T &)> &function,
                           const usize threads) {
-    return some<T>(MdStaticArray<T>(*ndarray.__array_reference, ndarray.offset,
-                                    ndarray.shp_offset),
+    return some<T>(Array<T>(*ndarray.__array_reference, ndarray.offset,
+                            ndarray.shp_offset),
                    function, threads);
 }
 #endif

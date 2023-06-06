@@ -65,7 +65,7 @@ class MdStaticArrayReference {
         if (value.get_size() != size) {
             throw std::runtime_error(
                 "Assignment error between reference of size " +
-                std::to_string(size) + " and array of size " +
+                std::to_string(size) + " and MdStaticArray of size " +
                 std::to_string(value.get_size()));
         }
         // assert shape sizes are equal too
@@ -177,7 +177,7 @@ class MdStaticArrayReference {
     }
 
     /**
-     * @brief Return array value
+     * @brief Return MdStaticArray value
      */
     template <typename T1>
     inline operator MdStaticArray<T1>() const {
@@ -855,5 +855,8 @@ inline MdStaticArray<T> operator-(const MdStaticArrayReference<T> &first) {
                             first.shp_offset)
         .ng_internal_();
 }
+
+template <typename T>
+using Reference = MdStaticArrayReference<T>;
 
 #endif

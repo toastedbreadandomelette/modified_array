@@ -6,11 +6,11 @@
 
 namespace MdMath {
 
-constexpr double e = 2.71828182845904523536028747135266249775724709369995;
+constexpr f64 e = 2.71828182845904523536028747135266249775724709369995;
 
-constexpr double pi = 3.14159265358979323846;
+constexpr f64 pi = 3.14159265358979323846;
 
-constexpr double pi_2 = 3.14159265358979323846 * 2;
+constexpr f64 pi_2 = 3.14159265358979323846 * 2;
 
 /**
  * @brief Reverse at max 64-bits of a 64 bit number
@@ -18,8 +18,7 @@ constexpr double pi_2 = 3.14159265358979323846 * 2;
  * @param bit_size size to be reversed
  * @return reversed bit number
  */
-constexpr inline usize reverse_bits(const usize n,
-                                     const usize bit_size = 64) {
+constexpr inline usize reverse_bits(const usize n, const usize bit_size = 64) {
     usize rn = (n << 32) | (n >> 32);
     rn = ((rn << 16) & 0xFFFF0000FFFF0000) | ((rn >> 16) & 0x0000FFFF0000FFFF);
     rn = ((rn << 8) & 0xFF00FF00FF00FF00) | ((rn >> 8) & 0x00FF00FF00FF00FF);
@@ -35,9 +34,8 @@ constexpr inline usize reverse_bits(const usize n,
  * @param bit_size size to be reversed
  * @return reversed bit number
  */
-constexpr inline uint32_t reverse_bits_32(const uint32_t n,
-                                          const uint32_t bit_size = 32) {
-    uint32_t rn = (n << 16) | (n >> 16);
+constexpr inline u32 reverse_bits_32(const u32 n, const u32 bit_size = 32) {
+    u32 rn = (n << 16) | (n >> 16);
     rn = ((rn << 8) & 0xFF00FF00) | ((rn >> 8) & 0x00FF00FF);
     rn = ((rn << 4) & 0xF0F0F0F0) | ((rn >> 4) & 0x0F0F0F0F);
     rn = ((rn << 2) & 0xCCCCCCCC) | ((rn >> 2) & 0x33333333);
@@ -51,8 +49,7 @@ constexpr inline uint32_t reverse_bits_32(const uint32_t n,
  * @param bit_size size to be reversed
  * @return reversed bit number
  */
-constexpr inline usize reverse_bits_16(const u16 n,
-                                        const u16 bit_size = 16) {
+constexpr inline usize reverse_bits_16(const u16 n, const u16 bit_size = 16) {
     u16 rn = (rn << 8) | (rn >> 8);
     rn = ((rn << 4) & 0xF0F0) | ((rn >> 4) & 0x0F0F);
     rn = ((rn << 2) & 0xCCCC) | ((rn >> 2) & 0x3333);
@@ -66,9 +63,8 @@ constexpr inline usize reverse_bits_16(const u16 n,
  * @param bit_size size to be reversed
  * @return reversed bit number
  */
-constexpr inline uint8_t reverse_bits_8(const uint8_t n,
-                                        const uint8_t bit_size = 8) {
-    uint8_t rn = (rn << 4) | (rn >> 4);
+constexpr inline u8 reverse_bits_8(const u8 n, const u8 bit_size = 8) {
+    u8 rn = (rn << 4) | (rn >> 4);
     rn = ((rn << 2) & 0xCC) | ((rn >> 2) & 0x33);
     rn = ((rn << 1) & 0xAA) | ((rn >> 1) & 0x55);
     return (rn >> (8 - bit_size));
@@ -90,7 +86,7 @@ struct reversed_bits<N, bit_size> {
  */
 template <usize N>
 struct factorial {
-    static constexpr double value = N * factorial<N - 1>::value;
+    static constexpr f64 value = N * factorial<N - 1>::value;
 };
 
 /**
@@ -98,7 +94,7 @@ struct factorial {
  */
 template <>
 struct factorial<0> {
-    static constexpr double value = 1;
+    static constexpr f64 value = 1;
 };
 
 };  // namespace MdMath

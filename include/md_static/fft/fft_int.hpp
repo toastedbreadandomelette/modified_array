@@ -6,10 +6,10 @@
 #include "./md_fft.hpp"
 
 template <typename T>
-MdStaticArray<c64> FFT::fft_int(const MdStaticArray<T>& other) {
-    auto __dft_internal = [](MdStaticArray<c64>& array, const usize start,
+Array<c64> FFT::fft_int(const Array<T>& other) {
+    auto __dft_internal = [](Array<c64>& array, const usize start,
                              const usize end) {
-        MdStaticArray<c64> result(end - start, 0);
+        Array<c64> result(end - start, 0);
         const usize n = end - start;
         f64 angle = MdMath::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
@@ -33,9 +33,9 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticArray<T>& other) {
         }
     };
 
-    auto __dft_ret_internal = [](MdStaticArray<c64>& array, const usize start,
+    auto __dft_ret_internal = [](Array<c64>& array, const usize start,
                                  const usize end) {
-        MdStaticArray<c64> result(end - start, 0);
+        Array<c64> result(end - start, 0);
         const usize n = end - start;
         f64 angle = MdMath::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
@@ -59,7 +59,7 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticArray<T>& other) {
 
     usize n = other.get_size();
     usize i = 0;
-    MdStaticArray<c64> input(n);
+    Array<c64> input(n);
     if ((n & 1)) {
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other.__array[index];
@@ -69,7 +69,7 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticArray<T>& other) {
         // Get last zero numbers
         const usize ls = ((n ^ (n - 1)) + 1) >> 1;
 
-        MdStaticArray<usize> indexes(n, 0);
+        Array<usize> indexes(n, 0);
 
         usize j = 1;
         i = n;
@@ -105,8 +105,7 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticArray<T>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](MdStaticArray<c64>& array,
-                                     const usize start) {
+    auto __perform_fft_in_place = [](Array<c64>& array, const usize start) {
         usize n = array.get_size();
 
         for (usize operate_length = (start << 1); operate_length <= n;
@@ -133,10 +132,10 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticArray<T>& other) {
 }
 
 template <typename T>
-MdStaticArray<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
-    auto __dft_internal = [](MdStaticArray<c64>& array, const usize start,
+Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
+    auto __dft_internal = [](Array<c64>& array, const usize start,
                              const usize end) {
-        MdStaticArray<c64> result(end - start, 0);
+        Array<c64> result(end - start, 0);
         const usize n = end - start;
         f64 angle = MdMath::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
@@ -160,9 +159,9 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         }
     };
 
-    auto __dft_ret_internal = [](MdStaticArray<c64>& array, const usize start,
+    auto __dft_ret_internal = [](Array<c64>& array, const usize start,
                                  const usize end) {
-        MdStaticArray<c64> result(end - start, 0);
+        Array<c64> result(end - start, 0);
         const usize n = end - start;
         f64 angle = MdMath::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
@@ -186,7 +185,7 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
 
     usize n = other.get_size();
     usize i = 0;
-    MdStaticArray<c64> input(n);
+    Array<c64> input(n);
 
     if ((n & 1) || n < 16) {
         for (usize index = 0; index < n; ++index) {
@@ -197,7 +196,7 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         // Get last zero numbers
         const usize ls = ((n ^ (n - 1)) + 1) >> 1;
 
-        MdStaticArray<usize> indexes(n, 0);
+        Array<usize> indexes(n, 0);
 
         usize j = 1;
         i = n;
@@ -237,8 +236,7 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](MdStaticArray<c64>& array,
-                                     const usize start) {
+    auto __perform_fft_in_place = [](Array<c64>& array, const usize start) {
         usize n = array.get_size();
         for (usize operate_length = (start << 1); operate_length <= n;
              operate_length <<= 1) {
@@ -264,9 +262,9 @@ MdStaticArray<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
 }
 
 template <typename T>
-MdStaticArray<c64> FFT::fft_int(const MdStaticArrayReference<T>& other) {
-    return fft_int<T>(MdStaticArray<T>(*other.__array_reference, other.offset,
-                                       other.shp_offset));
+Array<c64> FFT::fft_int(const Reference<T>& other) {
+    return fft_int<T>(
+        Array<T>(*other.__array_reference, other.offset, other.shp_offset));
 }
 
 #endif

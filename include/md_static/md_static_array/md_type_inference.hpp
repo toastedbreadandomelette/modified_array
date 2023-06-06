@@ -65,8 +65,8 @@ struct is_any_one<T1, T2, args...> {
 template <typename T>
 struct is_complex {
     static constexpr bool value =
-        is_any_one<T, cdouble, clongdouble, cfloat, cuint8, cuint16, cuint32,
-                   cuint64, cint8, cint16, cint32, cint64>::value;
+        is_any_one<T, c64, c128, c32, cu8, cu16, cu32, cu64, ci8, ci16, ci32,
+                   ci64>::value;
 };
 
 /**
@@ -75,9 +75,8 @@ struct is_complex {
  */
 template <typename T>
 struct is_native {
-    static constexpr bool value =
-        is_any_one<T, int32_t, int64_t, int16_t, int8_t, uint8_t, u16, uint32_t,
-                   u64, float, double, long double>::value;
+    static constexpr bool value = is_any_one<T, i32, i64, i16, i8, u8, u16, u32,
+                                             u64, f32, f64, f128>::value;
 };
 
 /**
@@ -95,8 +94,7 @@ struct is_arith {
  */
 template <typename T>
 struct is_floating_complex {
-    static constexpr bool value =
-        is_any_one<T, cdouble, clongdouble, cfloat>::value;
+    static constexpr bool value = is_any_one<T, c64, c128, c32>::value;
 };
 
 /**
@@ -105,8 +103,7 @@ struct is_floating_complex {
  */
 template <typename T>
 struct is_signed_complex {
-    static constexpr bool value =
-        is_any_one<T, cint8, cint16, cint32, cint64>::value;
+    static constexpr bool value = is_any_one<T, ci8, ci16, ci32, ci64>::value;
 };
 
 /**
@@ -115,8 +112,7 @@ struct is_signed_complex {
  */
 template <typename T>
 struct is_unsigned_complex {
-    static constexpr bool value =
-        is_any_one<T, cuint8, cuint16, cuint32, cuint64>::value;
+    static constexpr bool value = is_any_one<T, cu8, cu16, cu32, cu64>::value;
 };
 
 /**
@@ -276,190 +272,183 @@ struct floating_t;
 
 /**
  * @brief Wrapper for returning appropriate floating number
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
-template <typename _Ttypeval>
-struct floating_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                      sizeof(float))>::type> {
-    using type = float;
+template <typename Ttypeval>
+struct floating_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                     sizeof(f32))>::type> {
+    using type = f32;
 };
 
-template <typename _Ttypeval>
-struct floating_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                      sizeof(double))>::type> {
-    using type = double;
+template <typename Ttypeval>
+struct floating_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                     sizeof(f64))>::type> {
+    using type = f64;
 };
 
-template <typename _Ttypeval>
-struct floating_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(long double))>::type> {
-    using type = long double;
+template <typename Ttypeval>
+struct floating_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) >=
+                                                     sizeof(f128))>::type> {
+    using type = f128;
 };
 
 /**
  * @brief Wrapper for returning appropriate complex floating number
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
 template <typename t, class = void>
 struct complex_floating_t;
 
-template <typename _Ttypeval>
+template <typename Ttypeval>
 struct complex_floating_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cfloat))>::type> {
-    using type = cfloat;
+    Ttypeval,
+    typename std::enable_if<(sizeof(Ttypeval) == sizeof(c32))>::type> {
+    using type = c32;
 };
 
-template <typename _Ttypeval>
+template <typename Ttypeval>
 struct complex_floating_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cdouble))>::type> {
-    using type = cdouble;
+    Ttypeval,
+    typename std::enable_if<(sizeof(Ttypeval) == sizeof(c64))>::type> {
+    using type = c64;
 };
 
-template <typename _Ttypeval>
+template <typename Ttypeval>
 struct complex_floating_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(clongdouble))>::type> {
-    using type = clongdouble;
+    Ttypeval,
+    typename std::enable_if<(sizeof(Ttypeval) >= sizeof(c128))>::type> {
+    using type = c128;
 };
 
 /**
  * @brief Wrapper for returning appropriate complex signed integer
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
-template <typename _Ttypeval, typename...>
+template <typename Ttypeval, typename...>
 struct complex_signed_t {
-    using type = _Ttypeval;
+    using type = Ttypeval;
 };
 
-template <typename _Ttypeval>
-struct complex_signed_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cint8))>::type> {
-    using type = cint8;
+template <typename Ttypeval>
+struct complex_signed_t<Ttypeval, typename std::enable_if<(
+                                      sizeof(Ttypeval) == sizeof(ci8))>::type> {
+    using type = ci8;
 };
 
-template <typename _Ttypeval>
+template <typename Ttypeval>
 struct complex_signed_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cint16))>::type> {
-    using type = cint16;
+    Ttypeval,
+    typename std::enable_if<(sizeof(Ttypeval) == sizeof(ci16))>::type> {
+    using type = ci16;
 };
 
-template <typename _Ttypeval>
+template <typename Ttypeval>
 struct complex_signed_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cint32))>::type> {
-    using type = cint32;
+    Ttypeval,
+    typename std::enable_if<(sizeof(Ttypeval) == sizeof(ci32))>::type> {
+    using type = ci32;
 };
 
-template <typename _Ttypeval>
+template <typename Ttypeval>
 struct complex_signed_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(cint64))>::type> {
-    using type = cint64;
+    Ttypeval,
+    typename std::enable_if<(sizeof(Ttypeval) >= sizeof(ci64))>::type> {
+    using type = ci64;
 };
 
 /**
  * @brief Wrapper for returning appropriate signed integer
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
-template <typename _Ttypeval, class = void>
+template <typename Ttypeval, class = void>
 struct signed_t;
 
-template <typename _Ttypeval>
-struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                    sizeof(int8_t))>::type> {
-    using type = int8_t;
+template <typename Ttypeval>
+struct signed_t<
+    Ttypeval, typename std::enable_if<(sizeof(Ttypeval) == sizeof(i8))>::type> {
+    using type = i8;
 };
 
-template <typename _Ttypeval>
-struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                    sizeof(int16_t))>::type> {
-    using type = int16_t;
+template <typename Ttypeval>
+struct signed_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                   sizeof(i16))>::type> {
+    using type = i16;
 };
 
-template <typename _Ttypeval>
-struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                    sizeof(int32_t))>::type> {
-    using type = int32_t;
+template <typename Ttypeval>
+struct signed_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                   sizeof(i32))>::type> {
+    using type = i32;
 };
 
-template <typename _Ttypeval>
-struct signed_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) >=
-                                                    sizeof(int64_t))>::type> {
-    using type = int64_t;
+template <typename Ttypeval>
+struct signed_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) >=
+                                                   sizeof(i64))>::type> {
+    using type = i64;
 };
 
 /**
  * @brief Wrapper for returning appropriate unsigned integer
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
-template <typename _Ttypeval, class = void>
+template <typename Ttypeval, class = void>
 struct unsigned_t;
 
-template <typename _Ttypeval>
-struct unsigned_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                      sizeof(uint8_t))>::type> {
-    using type = uint8_t;
+template <typename Ttypeval>
+struct unsigned_t<
+    Ttypeval, typename std::enable_if<(sizeof(Ttypeval) == sizeof(u8))>::type> {
+    using type = u8;
 };
 
-template <typename _Ttypeval>
-struct unsigned_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                      sizeof(u16))>::type> {
+template <typename Ttypeval>
+struct unsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                     sizeof(u16))>::type> {
     using type = u16;
 };
 
-template <typename _Ttypeval>
-struct unsigned_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(uint32_t))>::type> {
-    using type = uint32_t;
+template <typename Ttypeval>
+struct unsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                     sizeof(u32))>::type> {
+    using type = u32;
 };
 
-template <typename _Ttypeval>
-struct unsigned_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(uint64_t))>::type> {
-    using type = uint64_t;
+template <typename Ttypeval>
+struct unsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) >=
+                                                     sizeof(u64))>::type> {
+    using type = u64;
 };
 
 /**
  * @brief Wrapper for returning appropriate complex unsigned integer
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
-template <typename _Ttypeval, class...>
+template <typename Ttypeval, class...>
 struct cunsigned_t {
-    using type = _Ttypeval;
+    using type = Ttypeval;
 };
 
-template <typename _Ttypeval>
-struct cunsigned_t<_Ttypeval, typename std::enable_if<(sizeof(_Ttypeval) ==
-                                                       sizeof(cuint8))>::type> {
-    using type = cuint8;
+template <typename Ttypeval>
+struct cunsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                      sizeof(cu8))>::type> {
+    using type = cu8;
 };
 
-template <typename _Ttypeval>
-struct cunsigned_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cuint16))>::type> {
-    using type = cuint16;
+template <typename Ttypeval>
+struct cunsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                      sizeof(cu16))>::type> {
+    using type = cu16;
 };
 
-template <typename _Ttypeval>
-struct cunsigned_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) == sizeof(cuint32))>::type> {
-    using type = cuint32;
+template <typename Ttypeval>
+struct cunsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+                                                      sizeof(cu32))>::type> {
+    using type = cu32;
 };
 
-template <typename _Ttypeval>
-struct cunsigned_t<
-    _Ttypeval,
-    typename std::enable_if<(sizeof(_Ttypeval) >= sizeof(cuint64))>::type> {
-    using type = cuint64;
+template <typename Ttypeval>
+struct cunsigned_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) >=
+                                                      sizeof(cu64))>::type> {
+    using type = cu64;
 };
 
 template <typename>
@@ -476,7 +465,7 @@ struct is_mallocable {
 
 /**
  * @brief Wrapper for evaluating appropriate complex type
- * @tparam _Ttypeval generic type
+ * @tparam Ttypeval generic type
  */
 template <typename T1, typename T2, class = void>
 struct eval_complex_t {

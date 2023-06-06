@@ -6,7 +6,7 @@
 #include "./reduce.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::amax(const MdStaticArray<T> &values,
+Array<T> MdArrayUtility::amax(const Array<T> &values,
                                       const i32 axis) {
     return reduce<T>(
         values,
@@ -17,9 +17,9 @@ MdStaticArray<T> MdArrayUtility::amax(const MdStaticArray<T> &values,
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::amax(const MdStaticArrayReference<T> &values,
+Array<T> MdArrayUtility::amax(const Reference<T> &values,
                                       const i32 axis) {
-    return amax(MdStaticArray<T>(*values.__array_reference, values.offset,
+    return amax(Array<T>(*values.__array_reference, values.offset,
                                  values.shp_offset),
                 axis);
 }

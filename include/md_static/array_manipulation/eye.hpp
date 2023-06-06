@@ -5,10 +5,10 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename T>
-MdStaticArray<T> Manip::eye(const usize rows, const usize cols,
+Array<T> Manip::eye(const usize rows, const usize cols,
                             const usize koff) {
     const usize r = rows, c = (cols == -1 ? rows : cols), incr = c + 1;
-    MdStaticArray<T> result({rows, cols}, 0);
+    Array<T> result({rows, cols}, 0);
 
     for (usize index = koff; index < result.get_size(); index += incr) {
         result.__array[index] = 1;

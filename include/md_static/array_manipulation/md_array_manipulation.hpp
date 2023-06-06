@@ -13,7 +13,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> zeros(const usize size);
+    static Array<T> zeros(const usize size);
 
     /**
      * @brief Create array with entries zero
@@ -22,7 +22,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> zeros(const std::vector<usize> &shape);
+    static Array<T> zeros(const std::vector<usize> &shape);
 
     /**
      * @brief Create array with entries one
@@ -31,7 +31,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as one
      */
     template <typename T>
-    static MdStaticArray<T> ones(const usize size);
+    static Array<T> ones(const usize size);
 
     /**
      * @brief Create array with entries one
@@ -40,7 +40,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as one
      */
     template <typename T>
-    static MdStaticArray<T> ones(const std::vector<usize> &shape);
+    static Array<T> ones(const std::vector<usize> &shape);
 
     /**
      * @brief Create an identity matrix
@@ -52,7 +52,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> eye(const usize rows, const usize cols = -1,
+    static Array<T> eye(const usize rows, const usize cols = -1,
                                 const usize koffset = 0);
 
     /**
@@ -63,7 +63,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> mat_diag(const MdStaticArray<T> &matrix,
+    static Array<T> mat_diag(const Array<T> &matrix,
                                      const usize koffset = 0);
     /**
      * @brief Return diagonal from a 2d array
@@ -73,7 +73,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static MdStaticArray<T> mat_diag(const MdStaticArrayReference<T> &rows,
+    static Array<T> mat_diag(const Reference<T> &rows,
                                      const usize koffset = 0);
 
     /**
@@ -87,7 +87,7 @@ struct MdArrayManipulate {
      * @returns array of size {|array|, n}
      */
     template <typename T>
-    static MdStaticArray<T> vandermonte(const MdStaticArray<T> &array,
+    static Array<T> vandermonte(const Array<T> &array,
                                         const i64 n = -1,
                                         const bool increasing_order = false);
     /**
@@ -101,36 +101,36 @@ struct MdArrayManipulate {
      * @returns array of size {|array|, n}
      */
     template <typename T>
-    static MdStaticArray<T> vandermonte(const MdStaticArrayReference<T> &rows,
+    static Array<T> vandermonte(const Reference<T> &rows,
                                         const i64 n = -1,
                                         const bool increasing_order = false);
 
     template <typename T>
-    static MdStaticArray<T> flip(const MdStaticArray<T> &__ndarray,
+    static Array<T> flip(const Array<T> &__ndarray,
                                  const usize axis = -1);
 
     template <typename T>
-    static MdStaticArray<T> flip(const MdStaticArrayReference<T> &__ndarray,
+    static Array<T> flip(const Reference<T> &__ndarray,
                                  const usize axis = -1);
 
     template <typename T3, typename T1, typename T2>
-    static MdStaticArray<T3> linspace(const MdStaticArray<T1> &first,
-                                      const MdStaticArray<T2> &other,
+    static Array<T3> linspace(const Array<T1> &first,
+                                      const Array<T2> &other,
                                       const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
-    static MdStaticArray<T3> linspace(const MdStaticArrayReference<T1> &first,
-                                      const MdStaticArray<T2> &other,
+    static Array<T3> linspace(const Reference<T1> &first,
+                                      const Array<T2> &other,
                                       const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
-    static MdStaticArray<T3> linspace(const MdStaticArrayReference<T1> &first,
-                                      const MdStaticArrayReference<T2> &other,
+    static Array<T3> linspace(const Reference<T1> &first,
+                                      const Reference<T2> &other,
                                       const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
-    static MdStaticArray<T3> linspace(const MdStaticArray<T1> &first,
-                                      const MdStaticArrayReference<T2> &other,
+    static Array<T3> linspace(const Array<T1> &first,
+                                      const Reference<T2> &other,
                                       const usize numbers = 50);
 };
 

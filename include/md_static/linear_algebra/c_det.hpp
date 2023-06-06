@@ -6,7 +6,7 @@
 #include "./md_linear_algebra.hpp"
 
 template <typename T>
-c128 Linalg::c_det(const MdStaticArray<T> &mat) {
+c128 Linalg::c_det(const Array<T> &mat) {
     auto [L, U, P, sign] = Linalg::lu_decompose<T>(mat);
     const usize n = mat.get_shape()[0];
     c128 det = 1;
@@ -18,9 +18,9 @@ c128 Linalg::c_det(const MdStaticArray<T> &mat) {
 }
 
 template <typename T>
-c128 Linalg::c_det(const MdStaticArrayReference<T> &mat) {
+c128 Linalg::c_det(const Reference<T> &mat) {
     return Linalg::det(
-        MdStaticArray<T>(*mat.__array_reference, mat.offset, mat.shp_offset));
+        Array<T>(*mat.__array_reference, mat.offset, mat.shp_offset));
 }
 
 #endif

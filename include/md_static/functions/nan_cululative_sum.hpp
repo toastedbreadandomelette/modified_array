@@ -4,21 +4,20 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
-    const MdStaticArrayReference<T>& values, const usize axis,
-    const usize thread_count) {
+Array<T> MdArrayUtility::nan_cumulative_sum(const Reference<T>& values,
+                                            const usize axis,
+                                            const usize thread_count) {
     return MdArrayUtility::nan_cumulative_sum<T>(
-        MdStaticArray<T>(*values.__array_reference, values.offset,
-                         values.shp_offset),
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         axis, thread_count);
 }
 
 template <typename T>
-MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
-    const MdStaticArray<T>& ndarray, const usize axis,
-    const usize thread_count) {
+Array<T> MdArrayUtility::nan_cumulative_sum(const Array<T>& ndarray,
+                                            const usize axis,
+                                            const usize thread_count) {
     if (axis == -1) {
-        MdStaticArray<T> result(ndarray.get_size());
+        Array<T> result(ndarray.get_size());
 
         result.__array[0] = !isnan(ndarray.__array[0]) ? ndarray.__array[0] : 1;
 
@@ -49,7 +48,7 @@ MdStaticArray<T> MdArrayUtility::nan_cumulative_sum(
         resultant_shape.emplace_back(ndarray.get_shape()[index]);
     }
 
-    MdStaticArray<T> result(resultant_shape, 0);
+    Array<T> result(resultant_shape, 0);
 
     auto __perform_cu_sum_internal =
         [&ndarray, &result, skip_value, looping_value](

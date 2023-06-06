@@ -5,7 +5,7 @@
 #include "./md_array_manipulation.hpp"
 
 template <typename T>
-MdStaticArray<T> Manip::mat_diag(const MdStaticArray<T>& matrix,
+Array<T> Manip::mat_diag(const Array<T>& matrix,
                                  const usize offset) {
     if (matrix.get_shape_size() != 2) {
         throw std::runtime_error(
@@ -20,7 +20,7 @@ MdStaticArray<T> Manip::mat_diag(const MdStaticArray<T>& matrix,
                                                ? std::min(rows, cols) - offset
                                                : 0;
 
-    MdStaticArray<T> result(min_row_col);
+    Array<T> result(min_row_col);
 
     for (usize index = offset, res_index = 0; res_index < result.get_size();
          index += (cols + 1), ++res_index) {
@@ -31,9 +31,9 @@ MdStaticArray<T> Manip::mat_diag(const MdStaticArray<T>& matrix,
 }
 
 template <typename T>
-MdStaticArray<T> Manip::mat_diag(const MdStaticArrayReference<T>& matrix,
+Array<T> Manip::mat_diag(const Reference<T>& matrix,
                                  const usize offset) {
-    return mat_diag<T>(MdStaticArray<T>(*matrix.__array_reference,
+    return mat_diag<T>(Array<T>(*matrix.__array_reference,
                                         matrix.offset, matrix.shp_offset),
                        offset);
 }
