@@ -13,8 +13,8 @@ Array<_T> Linalg::identity(const usize n) {
     return result;
 }
 
-template <typename _T>
-bool Linalg::is_identity(const Array<_T> &other) {
+template <typename T>
+bool Linalg::is_identity(const Array<T> &other) {
     if (other.shp_size != 2 || other.shape[0] != other.shape[1]) {
         return false;
     }
@@ -35,10 +35,10 @@ bool Linalg::is_identity(const Array<_T> &other) {
     return true;
 }
 
-template <typename _T>
-bool Linalg::is_identity(const ArraySlice<_T> &other) {
+template <typename T>
+bool Linalg::is_identity(const ArraySlice<T> &other) {
     return Linalg::is_identity(
-        Array<_T>(*other.array_reference, other.offset, other.shp_offset));
+        Array<T>(*other.array_reference, other.offset, other.shp_offset));
 }
 
 #endif

@@ -35,176 +35,176 @@ void mul_mt_f32_internal(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p,
                 for (i32 j = jblock; j < jbound; j += 4) {
                     // Accumulator:
                     // we compute 4x4 matrix at a time
-                    __m256 acc00 = _mm256_setzero_ps();
-                    __m256 acc01 = _mm256_setzero_ps();
-                    __m256 acc02 = _mm256_setzero_ps();
-                    __m256 acc03 = _mm256_setzero_ps();
+                    f32x8 acc00 = F32x8::zero();
+                    f32x8 acc01 = F32x8::zero();
+                    f32x8 acc02 = F32x8::zero();
+                    f32x8 acc03 = F32x8::zero();
 
-                    __m256 acc10 = _mm256_setzero_ps();
-                    __m256 acc11 = _mm256_setzero_ps();
-                    __m256 acc12 = _mm256_setzero_ps();
-                    __m256 acc13 = _mm256_setzero_ps();
+                    f32x8 acc10 = F32x8::zero();
+                    f32x8 acc11 = F32x8::zero();
+                    f32x8 acc12 = F32x8::zero();
+                    f32x8 acc13 = F32x8::zero();
 
-                    __m256 acc20 = _mm256_setzero_ps();
-                    __m256 acc21 = _mm256_setzero_ps();
-                    __m256 acc22 = _mm256_setzero_ps();
-                    __m256 acc23 = _mm256_setzero_ps();
+                    f32x8 acc20 = F32x8::zero();
+                    f32x8 acc21 = F32x8::zero();
+                    f32x8 acc22 = F32x8::zero();
+                    f32x8 acc23 = F32x8::zero();
 
-                    __m256 acc30 = _mm256_setzero_ps();
-                    __m256 acc31 = _mm256_setzero_ps();
-                    __m256 acc32 = _mm256_setzero_ps();
-                    __m256 acc33 = _mm256_setzero_ps();
+                    f32x8 acc30 = F32x8::zero();
+                    f32x8 acc31 = F32x8::zero();
+                    f32x8 acc32 = F32x8::zero();
+                    f32x8 acc33 = F32x8::zero();
 
                     // Loop over second axis of A and first axis of B
                     // Processing 4 values at a time, loop unrolled by 4,
                     // we get
                     for (i32 k = 0; k < n - remainder_vec; k += 32) {
-                        auto avec = _mm256_loadu_ps(a + (i * n + k));
+                        auto avec = F32x8::fromptr(a + (i * n + k));
 
-                        auto bvec00 = _mm256_loadu_ps(tb + (j * n + k));
-                        auto bvec01 = _mm256_loadu_ps(tb + (j * n + k + 4));
-                        auto bvec02 = _mm256_loadu_ps(tb + (j * n + k + 8));
-                        auto bvec03 = _mm256_loadu_ps(tb + (j * n + k + 12));
+                        auto bvec00 = F32x8::fromptr(tb + (j * n + k));
+                        auto bvec01 = F32x8::fromptr(tb + (j * n + k + 4));
+                        auto bvec02 = F32x8::fromptr(tb + (j * n + k + 8));
+                        auto bvec03 = F32x8::fromptr(tb + (j * n + k + 12));
 
-                        auto bvec10 = _mm256_loadu_ps(tb + ((j + 1) * n + k));
+                        auto bvec10 = F32x8::fromptr(tb + ((j + 1) * n + k));
                         auto bvec11 =
-                            _mm256_loadu_ps(tb + ((j + 1) * n + k + 4));
+                            F32x8::fromptr(tb + ((j + 1) * n + k + 4));
                         auto bvec12 =
-                            _mm256_loadu_ps(tb + ((j + 1) * n + k + 8));
+                            F32x8::fromptr(tb + ((j + 1) * n + k + 8));
                         auto bvec13 =
-                            _mm256_loadu_ps(tb + ((j + 1) * n + k + 12));
+                            F32x8::fromptr(tb + ((j + 1) * n + k + 12));
 
-                        auto bvec20 = _mm256_loadu_ps(tb + ((j + 2) * n + k));
+                        auto bvec20 = F32x8::fromptr(tb + ((j + 2) * n + k));
                         auto bvec21 =
-                            _mm256_loadu_ps(tb + ((j + 2) * n + k + 8));
+                            F32x8::fromptr(tb + ((j + 2) * n + k + 8));
                         auto bvec22 =
-                            _mm256_loadu_ps(tb + ((j + 2) * n + k + 4));
+                            F32x8::fromptr(tb + ((j + 2) * n + k + 4));
                         auto bvec23 =
-                            _mm256_loadu_ps(tb + ((j + 2) * n + k + 12));
+                            F32x8::fromptr(tb + ((j + 2) * n + k + 12));
 
-                        auto bvec30 = _mm256_loadu_ps(tb + ((j + 3) * n + k));
+                        auto bvec30 = F32x8::fromptr(tb + ((j + 3) * n + k));
                         auto bvec31 =
-                            _mm256_loadu_ps(tb + ((j + 3) * n + k + 4));
+                            F32x8::fromptr(tb + ((j + 3) * n + k + 4));
                         auto bvec32 =
-                            _mm256_loadu_ps(tb + ((j + 3) * n + k + 8));
+                            F32x8::fromptr(tb + ((j + 3) * n + k + 8));
                         auto bvec33 =
-                            _mm256_loadu_ps(tb + ((j + 3) * n + k + 12));
+                            F32x8::fromptr(tb + ((j + 3) * n + k + 12));
 
-                        acc00 = _mm256_fmadd_ps(avec, bvec00, acc00);
-                        acc01 = _mm256_fmadd_ps(avec, bvec10, acc01);
-                        acc02 = _mm256_fmadd_ps(avec, bvec20, acc02);
-                        acc03 = _mm256_fmadd_ps(avec, bvec30, acc03);
+                        acc00 = F32x8::fmadd(avec, bvec00, acc00);
+                        acc01 = F32x8::fmadd(avec, bvec10, acc01);
+                        acc02 = F32x8::fmadd(avec, bvec20, acc02);
+                        acc03 = F32x8::fmadd(avec, bvec30, acc03);
 
-                        avec = _mm256_loadu_ps(a + (i * n + k + 4));
+                        avec = F32x8::fromptr(a + (i * n + k + 4));
 
-                        acc00 = _mm256_fmadd_ps(avec, bvec01, acc00);
-                        acc01 = _mm256_fmadd_ps(avec, bvec11, acc01);
-                        acc02 = _mm256_fmadd_ps(avec, bvec21, acc02);
-                        acc03 = _mm256_fmadd_ps(avec, bvec31, acc03);
+                        acc00 = F32x8::fmadd(avec, bvec01, acc00);
+                        acc01 = F32x8::fmadd(avec, bvec11, acc01);
+                        acc02 = F32x8::fmadd(avec, bvec21, acc02);
+                        acc03 = F32x8::fmadd(avec, bvec31, acc03);
 
-                        avec = _mm256_loadu_ps(a + (i * n + k + 8));
+                        avec = F32x8::fromptr(a + (i * n + k + 8));
 
-                        acc00 = _mm256_fmadd_ps(avec, bvec02, acc00);
-                        acc01 = _mm256_fmadd_ps(avec, bvec12, acc01);
-                        acc02 = _mm256_fmadd_ps(avec, bvec22, acc02);
-                        acc03 = _mm256_fmadd_ps(avec, bvec32, acc03);
+                        acc00 = F32x8::fmadd(avec, bvec02, acc00);
+                        acc01 = F32x8::fmadd(avec, bvec12, acc01);
+                        acc02 = F32x8::fmadd(avec, bvec22, acc02);
+                        acc03 = F32x8::fmadd(avec, bvec32, acc03);
 
-                        avec = _mm256_loadu_ps(a + (i * n + k + 12));
+                        avec = F32x8::fromptr(a + (i * n + k + 12));
 
-                        acc00 = _mm256_fmadd_ps(avec, bvec03, acc00);
-                        acc01 = _mm256_fmadd_ps(avec, bvec13, acc01);
-                        acc02 = _mm256_fmadd_ps(avec, bvec23, acc02);
-                        acc03 = _mm256_fmadd_ps(avec, bvec33, acc03);
+                        acc00 = F32x8::fmadd(avec, bvec03, acc00);
+                        acc01 = F32x8::fmadd(avec, bvec13, acc01);
+                        acc02 = F32x8::fmadd(avec, bvec23, acc02);
+                        acc03 = F32x8::fmadd(avec, bvec33, acc03);
 
                         /////////////////////////////////////////////////////////////////
 
-                        avec = _mm256_loadu_ps(a + ((i + 1) * n + k + 12));
+                        avec = F32x8::fromptr(a + ((i + 1) * n + k + 12));
 
-                        acc10 = _mm256_fmadd_ps(avec, bvec03, acc10);
-                        acc11 = _mm256_fmadd_ps(avec, bvec13, acc11);
-                        acc12 = _mm256_fmadd_ps(avec, bvec23, acc12);
-                        acc13 = _mm256_fmadd_ps(avec, bvec33, acc13);
+                        acc10 = F32x8::fmadd(avec, bvec03, acc10);
+                        acc11 = F32x8::fmadd(avec, bvec13, acc11);
+                        acc12 = F32x8::fmadd(avec, bvec23, acc12);
+                        acc13 = F32x8::fmadd(avec, bvec33, acc13);
 
-                        avec = _mm256_loadu_ps(a + ((i + 1) * n + k));
+                        avec = F32x8::fromptr(a + ((i + 1) * n + k));
 
-                        acc10 = _mm256_fmadd_ps(avec, bvec00, acc10);
-                        acc11 = _mm256_fmadd_ps(avec, bvec10, acc11);
-                        acc12 = _mm256_fmadd_ps(avec, bvec20, acc12);
-                        acc13 = _mm256_fmadd_ps(avec, bvec30, acc13);
+                        acc10 = F32x8::fmadd(avec, bvec00, acc10);
+                        acc11 = F32x8::fmadd(avec, bvec10, acc11);
+                        acc12 = F32x8::fmadd(avec, bvec20, acc12);
+                        acc13 = F32x8::fmadd(avec, bvec30, acc13);
 
-                        avec = _mm256_loadu_ps(a + ((i + 1) * n + k + 4));
+                        avec = F32x8::fromptr(a + ((i + 1) * n + k + 4));
 
-                        acc10 = _mm256_fmadd_ps(avec, bvec01, acc10);
-                        acc11 = _mm256_fmadd_ps(avec, bvec11, acc11);
-                        acc12 = _mm256_fmadd_ps(avec, bvec21, acc12);
-                        acc13 = _mm256_fmadd_ps(avec, bvec31, acc13);
+                        acc10 = F32x8::fmadd(avec, bvec01, acc10);
+                        acc11 = F32x8::fmadd(avec, bvec11, acc11);
+                        acc12 = F32x8::fmadd(avec, bvec21, acc12);
+                        acc13 = F32x8::fmadd(avec, bvec31, acc13);
 
-                        avec = _mm256_loadu_ps(a + ((i + 1) * n + k + 8));
+                        avec = F32x8::fromptr(a + ((i + 1) * n + k + 8));
 
-                        acc10 = _mm256_fmadd_ps(avec, bvec02, acc10);
-                        acc11 = _mm256_fmadd_ps(avec, bvec12, acc11);
-                        acc12 = _mm256_fmadd_ps(avec, bvec22, acc12);
-                        acc13 = _mm256_fmadd_ps(avec, bvec32, acc13);
+                        acc10 = F32x8::fmadd(avec, bvec02, acc10);
+                        acc11 = F32x8::fmadd(avec, bvec12, acc11);
+                        acc12 = F32x8::fmadd(avec, bvec22, acc12);
+                        acc13 = F32x8::fmadd(avec, bvec32, acc13);
 
                         ///////////////////////////////////////////////////////////////////
 
-                        avec = _mm256_loadu_ps(a + ((i + 2) * n + k + 8));
+                        avec = F32x8::fromptr(a + ((i + 2) * n + k + 8));
 
-                        acc20 = _mm256_fmadd_ps(avec, bvec02, acc20);
-                        acc21 = _mm256_fmadd_ps(avec, bvec12, acc21);
-                        acc22 = _mm256_fmadd_ps(avec, bvec22, acc22);
-                        acc23 = _mm256_fmadd_ps(avec, bvec32, acc23);
+                        acc20 = F32x8::fmadd(avec, bvec02, acc20);
+                        acc21 = F32x8::fmadd(avec, bvec12, acc21);
+                        acc22 = F32x8::fmadd(avec, bvec22, acc22);
+                        acc23 = F32x8::fmadd(avec, bvec32, acc23);
 
-                        avec = _mm256_loadu_ps(a + ((i + 2) * n + k + 12));
+                        avec = F32x8::fromptr(a + ((i + 2) * n + k + 12));
 
-                        acc20 = _mm256_fmadd_ps(avec, bvec03, acc20);
-                        acc21 = _mm256_fmadd_ps(avec, bvec13, acc21);
-                        acc22 = _mm256_fmadd_ps(avec, bvec23, acc22);
-                        acc23 = _mm256_fmadd_ps(avec, bvec33, acc23);
+                        acc20 = F32x8::fmadd(avec, bvec03, acc20);
+                        acc21 = F32x8::fmadd(avec, bvec13, acc21);
+                        acc22 = F32x8::fmadd(avec, bvec23, acc22);
+                        acc23 = F32x8::fmadd(avec, bvec33, acc23);
 
-                        avec = _mm256_loadu_ps(a + ((i + 2) * n + k));
+                        avec = F32x8::fromptr(a + ((i + 2) * n + k));
 
-                        acc20 = _mm256_fmadd_ps(avec, bvec00, acc20);
-                        acc21 = _mm256_fmadd_ps(avec, bvec10, acc21);
-                        acc22 = _mm256_fmadd_ps(avec, bvec20, acc22);
-                        acc23 = _mm256_fmadd_ps(avec, bvec30, acc23);
+                        acc20 = F32x8::fmadd(avec, bvec00, acc20);
+                        acc21 = F32x8::fmadd(avec, bvec10, acc21);
+                        acc22 = F32x8::fmadd(avec, bvec20, acc22);
+                        acc23 = F32x8::fmadd(avec, bvec30, acc23);
 
-                        avec = _mm256_loadu_ps(a + ((i + 2) * n + k + 4));
+                        avec = F32x8::fromptr(a + ((i + 2) * n + k + 4));
 
-                        acc20 = _mm256_fmadd_ps(avec, bvec01, acc20);
-                        acc21 = _mm256_fmadd_ps(avec, bvec11, acc21);
-                        acc22 = _mm256_fmadd_ps(avec, bvec21, acc22);
-                        acc23 = _mm256_fmadd_ps(avec, bvec31, acc23);
+                        acc20 = F32x8::fmadd(avec, bvec01, acc20);
+                        acc21 = F32x8::fmadd(avec, bvec11, acc21);
+                        acc22 = F32x8::fmadd(avec, bvec21, acc22);
+                        acc23 = F32x8::fmadd(avec, bvec31, acc23);
 
                         /////////////////////////////////////////////////////////////
 
-                        avec = _mm256_loadu_ps(a + ((i + 3) * n + k + 4));
+                        avec = F32x8::fromptr(a + ((i + 3) * n + k + 4));
 
-                        acc30 = _mm256_fmadd_ps(avec, bvec01, acc30);
-                        acc31 = _mm256_fmadd_ps(avec, bvec11, acc31);
-                        acc32 = _mm256_fmadd_ps(avec, bvec21, acc32);
-                        acc33 = _mm256_fmadd_ps(avec, bvec31, acc33);
+                        acc30 = F32x8::fmadd(avec, bvec01, acc30);
+                        acc31 = F32x8::fmadd(avec, bvec11, acc31);
+                        acc32 = F32x8::fmadd(avec, bvec21, acc32);
+                        acc33 = F32x8::fmadd(avec, bvec31, acc33);
 
-                        avec = _mm256_loadu_ps(a + ((i + 3) * n + k + 8));
+                        avec = F32x8::fromptr(a + ((i + 3) * n + k + 8));
 
-                        acc30 = _mm256_fmadd_ps(avec, bvec02, acc30);
-                        acc31 = _mm256_fmadd_ps(avec, bvec12, acc31);
-                        acc32 = _mm256_fmadd_ps(avec, bvec22, acc32);
-                        acc33 = _mm256_fmadd_ps(avec, bvec32, acc33);
+                        acc30 = F32x8::fmadd(avec, bvec02, acc30);
+                        acc31 = F32x8::fmadd(avec, bvec12, acc31);
+                        acc32 = F32x8::fmadd(avec, bvec22, acc32);
+                        acc33 = F32x8::fmadd(avec, bvec32, acc33);
 
-                        avec = _mm256_loadu_ps(a + ((i + 3) * n + k + 12));
+                        avec = F32x8::fromptr(a + ((i + 3) * n + k + 12));
 
-                        acc30 = _mm256_fmadd_ps(avec, bvec03, acc30);
-                        acc31 = _mm256_fmadd_ps(avec, bvec13, acc31);
-                        acc32 = _mm256_fmadd_ps(avec, bvec23, acc32);
-                        acc33 = _mm256_fmadd_ps(avec, bvec33, acc33);
+                        acc30 = F32x8::fmadd(avec, bvec03, acc30);
+                        acc31 = F32x8::fmadd(avec, bvec13, acc31);
+                        acc32 = F32x8::fmadd(avec, bvec23, acc32);
+                        acc33 = F32x8::fmadd(avec, bvec33, acc33);
 
-                        avec = _mm256_loadu_ps(a + ((i + 3) * n + k));
+                        avec = F32x8::fromptr(a + ((i + 3) * n + k));
 
-                        acc30 = _mm256_fmadd_ps(avec, bvec00, acc30);
-                        acc31 = _mm256_fmadd_ps(avec, bvec10, acc31);
-                        acc32 = _mm256_fmadd_ps(avec, bvec20, acc32);
-                        acc33 = _mm256_fmadd_ps(avec, bvec30, acc33);
+                        acc30 = F32x8::fmadd(avec, bvec00, acc30);
+                        acc31 = F32x8::fmadd(avec, bvec10, acc31);
+                        acc32 = F32x8::fmadd(avec, bvec20, acc32);
+                        acc33 = F32x8::fmadd(avec, bvec30, acc33);
                     }
 
                     for (i32 k = n - remainder_vec; k < n; ++k) {
@@ -238,63 +238,63 @@ void mul_mt_f32_internal(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p,
                     }
 
                     f32 ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-                    _mm256_store_ps(ans, acc00);
+                    F32x8::storeptr(ans, acc00);
                     c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3] + ans[4] +
                                     ans[5] + ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc01);
+                    F32x8::storeptr(ans, acc01);
                     c[i * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3] +
                                         ans[4] + ans[5] + ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc02);
+                    F32x8::storeptr(ans, acc02);
                     c[i * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3] +
                                         ans[4] + ans[5] + ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc03);
+                    F32x8::storeptr(ans, acc03);
                     c[i * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3] +
                                         ans[4] + ans[5] + ans[6] + ans[7];
 
-                    _mm256_store_ps(ans, acc10);
+                    F32x8::storeptr(ans, acc10);
                     c[(i + 1) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
                                           ans[4] + ans[5] + ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc11);
+                    F32x8::storeptr(ans, acc11);
                     c[(i + 1) * p + j + 1] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc12);
+                    F32x8::storeptr(ans, acc12);
                     c[(i + 1) * p + j + 2] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc13);
+                    F32x8::storeptr(ans, acc13);
                     c[(i + 1) * p + j + 3] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
 
-                    _mm256_store_ps(ans, acc20);
+                    F32x8::storeptr(ans, acc20);
                     c[(i + 2) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
                                           ans[4] + ans[5] + ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc21);
+                    F32x8::storeptr(ans, acc21);
                     c[(i + 2) * p + j + 1] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc22);
+                    F32x8::storeptr(ans, acc22);
                     c[(i + 2) * p + j + 2] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc23);
+                    F32x8::storeptr(ans, acc23);
                     c[(i + 2) * p + j + 3] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
 
-                    _mm256_store_ps(ans, acc30);
+                    F32x8::storeptr(ans, acc30);
                     c[(i + 3) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
                                           ans[4] + ans[5] + ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc31);
+                    F32x8::storeptr(ans, acc31);
                     c[(i + 3) * p + j + 1] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc32);
+                    F32x8::storeptr(ans, acc32);
                     c[(i + 3) * p + j + 2] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
-                    _mm256_store_ps(ans, acc33);
+                    F32x8::storeptr(ans, acc33);
                     c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] +
                                               ans[3] + ans[4] + ans[5] +
                                               ans[6] + ans[7];
@@ -344,7 +344,7 @@ void mul_mt_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
 
     // Initialize vector to zero
     for (usize index = 0; index < m * p - rem; index += 8) {
-        _mm256_store_ps(c + index, _mm256_setzero_ps());
+        F32x8::storeptr(c + index, F32x8::zero());
     }
 
     // Set remainder values to zero as well

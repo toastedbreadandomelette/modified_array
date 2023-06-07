@@ -9,6 +9,7 @@
 
 #include "../../md_static_array/md_static_array.hpp"
 #include "../../utility/alloc.hpp"
+#include "../../utility/simd.hpp"
 
 void mul_mt_internal(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
                      i32 start_row, i32 end_row) {
@@ -35,176 +36,176 @@ void mul_mt_internal(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
                 for (i32 j = jblock; j < jbound; j += 4) {
                     // Accumulator:
                     // we compute 4x4 matrix at a time
-                    __m256d acc00 = _mm256_setzero_pd();
-                    __m256d acc01 = _mm256_setzero_pd();
-                    __m256d acc02 = _mm256_setzero_pd();
-                    __m256d acc03 = _mm256_setzero_pd();
+                    f64x4 acc00 = F64x4::zero();
+                    f64x4 acc01 = F64x4::zero();
+                    f64x4 acc02 = F64x4::zero();
+                    f64x4 acc03 = F64x4::zero();
 
-                    __m256d acc10 = _mm256_setzero_pd();
-                    __m256d acc11 = _mm256_setzero_pd();
-                    __m256d acc12 = _mm256_setzero_pd();
-                    __m256d acc13 = _mm256_setzero_pd();
+                    f64x4 acc10 = F64x4::zero();
+                    f64x4 acc11 = F64x4::zero();
+                    f64x4 acc12 = F64x4::zero();
+                    f64x4 acc13 = F64x4::zero();
 
-                    __m256d acc20 = _mm256_setzero_pd();
-                    __m256d acc21 = _mm256_setzero_pd();
-                    __m256d acc22 = _mm256_setzero_pd();
-                    __m256d acc23 = _mm256_setzero_pd();
+                    f64x4 acc20 = F64x4::zero();
+                    f64x4 acc21 = F64x4::zero();
+                    f64x4 acc22 = F64x4::zero();
+                    f64x4 acc23 = F64x4::zero();
 
-                    __m256d acc30 = _mm256_setzero_pd();
-                    __m256d acc31 = _mm256_setzero_pd();
-                    __m256d acc32 = _mm256_setzero_pd();
-                    __m256d acc33 = _mm256_setzero_pd();
+                    f64x4 acc30 = F64x4::zero();
+                    f64x4 acc31 = F64x4::zero();
+                    f64x4 acc32 = F64x4::zero();
+                    f64x4 acc33 = F64x4::zero();
 
                     // Loop over second axis of A and first axis of B
                     // Processing 4 values at a time, loop unrolled by 4,
                     // we get
                     for (i32 k = 0; k < n - remainder_vec; k += 16) {
-                        auto avec = _mm256_loadu_pd(a + (i * n + k));
+                        auto avec = F64x4::fromptr(a + (i * n + k));
 
-                        auto bvec00 = _mm256_loadu_pd(tb + (j * n + k));
-                        auto bvec01 = _mm256_loadu_pd(tb + (j * n + k + 4));
-                        auto bvec02 = _mm256_loadu_pd(tb + (j * n + k + 8));
-                        auto bvec03 = _mm256_loadu_pd(tb + (j * n + k + 12));
+                        auto bvec00 = F64x4::fromptr(tb + (j * n + k));
+                        auto bvec01 = F64x4::fromptr(tb + (j * n + k + 4));
+                        auto bvec02 = F64x4::fromptr(tb + (j * n + k + 8));
+                        auto bvec03 = F64x4::fromptr(tb + (j * n + k + 12));
 
-                        auto bvec10 = _mm256_loadu_pd(tb + ((j + 1) * n + k));
+                        auto bvec10 = F64x4::fromptr(tb + ((j + 1) * n + k));
                         auto bvec11 =
-                            _mm256_loadu_pd(tb + ((j + 1) * n + k + 4));
+                            F64x4::fromptr(tb + ((j + 1) * n + k + 4));
                         auto bvec12 =
-                            _mm256_loadu_pd(tb + ((j + 1) * n + k + 8));
+                            F64x4::fromptr(tb + ((j + 1) * n + k + 8));
                         auto bvec13 =
-                            _mm256_loadu_pd(tb + ((j + 1) * n + k + 12));
+                            F64x4::fromptr(tb + ((j + 1) * n + k + 12));
 
-                        auto bvec20 = _mm256_loadu_pd(tb + ((j + 2) * n + k));
+                        auto bvec20 = F64x4::fromptr(tb + ((j + 2) * n + k));
                         auto bvec21 =
-                            _mm256_loadu_pd(tb + ((j + 2) * n + k + 8));
+                            F64x4::fromptr(tb + ((j + 2) * n + k + 8));
                         auto bvec22 =
-                            _mm256_loadu_pd(tb + ((j + 2) * n + k + 4));
+                            F64x4::fromptr(tb + ((j + 2) * n + k + 4));
                         auto bvec23 =
-                            _mm256_loadu_pd(tb + ((j + 2) * n + k + 12));
+                            F64x4::fromptr(tb + ((j + 2) * n + k + 12));
 
-                        auto bvec30 = _mm256_loadu_pd(tb + ((j + 3) * n + k));
+                        auto bvec30 = F64x4::fromptr(tb + ((j + 3) * n + k));
                         auto bvec31 =
-                            _mm256_loadu_pd(tb + ((j + 3) * n + k + 4));
+                            F64x4::fromptr(tb + ((j + 3) * n + k + 4));
                         auto bvec32 =
-                            _mm256_loadu_pd(tb + ((j + 3) * n + k + 8));
+                            F64x4::fromptr(tb + ((j + 3) * n + k + 8));
                         auto bvec33 =
-                            _mm256_loadu_pd(tb + ((j + 3) * n + k + 12));
+                            F64x4::fromptr(tb + ((j + 3) * n + k + 12));
 
-                        acc00 = _mm256_fmadd_pd(avec, bvec00, acc00);
-                        acc01 = _mm256_fmadd_pd(avec, bvec10, acc01);
-                        acc02 = _mm256_fmadd_pd(avec, bvec20, acc02);
-                        acc03 = _mm256_fmadd_pd(avec, bvec30, acc03);
+                        acc00 = F64x4::fmadd(avec, bvec00, acc00);
+                        acc01 = F64x4::fmadd(avec, bvec10, acc01);
+                        acc02 = F64x4::fmadd(avec, bvec20, acc02);
+                        acc03 = F64x4::fmadd(avec, bvec30, acc03);
 
-                        avec = _mm256_loadu_pd(a + (i * n + k + 4));
+                        avec = F64x4::fromptr(a + (i * n + k + 4));
 
-                        acc00 = _mm256_fmadd_pd(avec, bvec01, acc00);
-                        acc01 = _mm256_fmadd_pd(avec, bvec11, acc01);
-                        acc02 = _mm256_fmadd_pd(avec, bvec21, acc02);
-                        acc03 = _mm256_fmadd_pd(avec, bvec31, acc03);
+                        acc00 = F64x4::fmadd(avec, bvec01, acc00);
+                        acc01 = F64x4::fmadd(avec, bvec11, acc01);
+                        acc02 = F64x4::fmadd(avec, bvec21, acc02);
+                        acc03 = F64x4::fmadd(avec, bvec31, acc03);
 
-                        avec = _mm256_loadu_pd(a + (i * n + k + 8));
+                        avec = F64x4::fromptr(a + (i * n + k + 8));
 
-                        acc00 = _mm256_fmadd_pd(avec, bvec02, acc00);
-                        acc01 = _mm256_fmadd_pd(avec, bvec12, acc01);
-                        acc02 = _mm256_fmadd_pd(avec, bvec22, acc02);
-                        acc03 = _mm256_fmadd_pd(avec, bvec32, acc03);
+                        acc00 = F64x4::fmadd(avec, bvec02, acc00);
+                        acc01 = F64x4::fmadd(avec, bvec12, acc01);
+                        acc02 = F64x4::fmadd(avec, bvec22, acc02);
+                        acc03 = F64x4::fmadd(avec, bvec32, acc03);
 
-                        avec = _mm256_loadu_pd(a + (i * n + k + 12));
+                        avec = F64x4::fromptr(a + (i * n + k + 12));
 
-                        acc00 = _mm256_fmadd_pd(avec, bvec03, acc00);
-                        acc01 = _mm256_fmadd_pd(avec, bvec13, acc01);
-                        acc02 = _mm256_fmadd_pd(avec, bvec23, acc02);
-                        acc03 = _mm256_fmadd_pd(avec, bvec33, acc03);
+                        acc00 = F64x4::fmadd(avec, bvec03, acc00);
+                        acc01 = F64x4::fmadd(avec, bvec13, acc01);
+                        acc02 = F64x4::fmadd(avec, bvec23, acc02);
+                        acc03 = F64x4::fmadd(avec, bvec33, acc03);
 
                         /////////////////////////////////////////////////////////////////
 
-                        avec = _mm256_loadu_pd(a + ((i + 1) * n + k + 12));
+                        avec = F64x4::fromptr(a + ((i + 1) * n + k + 12));
 
-                        acc10 = _mm256_fmadd_pd(avec, bvec03, acc10);
-                        acc11 = _mm256_fmadd_pd(avec, bvec13, acc11);
-                        acc12 = _mm256_fmadd_pd(avec, bvec23, acc12);
-                        acc13 = _mm256_fmadd_pd(avec, bvec33, acc13);
+                        acc10 = F64x4::fmadd(avec, bvec03, acc10);
+                        acc11 = F64x4::fmadd(avec, bvec13, acc11);
+                        acc12 = F64x4::fmadd(avec, bvec23, acc12);
+                        acc13 = F64x4::fmadd(avec, bvec33, acc13);
 
-                        avec = _mm256_loadu_pd(a + ((i + 1) * n + k));
+                        avec = F64x4::fromptr(a + ((i + 1) * n + k));
 
-                        acc10 = _mm256_fmadd_pd(avec, bvec00, acc10);
-                        acc11 = _mm256_fmadd_pd(avec, bvec10, acc11);
-                        acc12 = _mm256_fmadd_pd(avec, bvec20, acc12);
-                        acc13 = _mm256_fmadd_pd(avec, bvec30, acc13);
+                        acc10 = F64x4::fmadd(avec, bvec00, acc10);
+                        acc11 = F64x4::fmadd(avec, bvec10, acc11);
+                        acc12 = F64x4::fmadd(avec, bvec20, acc12);
+                        acc13 = F64x4::fmadd(avec, bvec30, acc13);
 
-                        avec = _mm256_loadu_pd(a + ((i + 1) * n + k + 4));
+                        avec = F64x4::fromptr(a + ((i + 1) * n + k + 4));
 
-                        acc10 = _mm256_fmadd_pd(avec, bvec01, acc10);
-                        acc11 = _mm256_fmadd_pd(avec, bvec11, acc11);
-                        acc12 = _mm256_fmadd_pd(avec, bvec21, acc12);
-                        acc13 = _mm256_fmadd_pd(avec, bvec31, acc13);
+                        acc10 = F64x4::fmadd(avec, bvec01, acc10);
+                        acc11 = F64x4::fmadd(avec, bvec11, acc11);
+                        acc12 = F64x4::fmadd(avec, bvec21, acc12);
+                        acc13 = F64x4::fmadd(avec, bvec31, acc13);
 
-                        avec = _mm256_loadu_pd(a + ((i + 1) * n + k + 8));
+                        avec = F64x4::fromptr(a + ((i + 1) * n + k + 8));
 
-                        acc10 = _mm256_fmadd_pd(avec, bvec02, acc10);
-                        acc11 = _mm256_fmadd_pd(avec, bvec12, acc11);
-                        acc12 = _mm256_fmadd_pd(avec, bvec22, acc12);
-                        acc13 = _mm256_fmadd_pd(avec, bvec32, acc13);
+                        acc10 = F64x4::fmadd(avec, bvec02, acc10);
+                        acc11 = F64x4::fmadd(avec, bvec12, acc11);
+                        acc12 = F64x4::fmadd(avec, bvec22, acc12);
+                        acc13 = F64x4::fmadd(avec, bvec32, acc13);
 
                         ///////////////////////////////////////////////////////////////////
 
-                        avec = _mm256_loadu_pd(a + ((i + 2) * n + k + 8));
+                        avec = F64x4::fromptr(a + ((i + 2) * n + k + 8));
 
-                        acc20 = _mm256_fmadd_pd(avec, bvec02, acc20);
-                        acc21 = _mm256_fmadd_pd(avec, bvec12, acc21);
-                        acc22 = _mm256_fmadd_pd(avec, bvec22, acc22);
-                        acc23 = _mm256_fmadd_pd(avec, bvec32, acc23);
+                        acc20 = F64x4::fmadd(avec, bvec02, acc20);
+                        acc21 = F64x4::fmadd(avec, bvec12, acc21);
+                        acc22 = F64x4::fmadd(avec, bvec22, acc22);
+                        acc23 = F64x4::fmadd(avec, bvec32, acc23);
 
-                        avec = _mm256_loadu_pd(a + ((i + 2) * n + k + 12));
+                        avec = F64x4::fromptr(a + ((i + 2) * n + k + 12));
 
-                        acc20 = _mm256_fmadd_pd(avec, bvec03, acc20);
-                        acc21 = _mm256_fmadd_pd(avec, bvec13, acc21);
-                        acc22 = _mm256_fmadd_pd(avec, bvec23, acc22);
-                        acc23 = _mm256_fmadd_pd(avec, bvec33, acc23);
+                        acc20 = F64x4::fmadd(avec, bvec03, acc20);
+                        acc21 = F64x4::fmadd(avec, bvec13, acc21);
+                        acc22 = F64x4::fmadd(avec, bvec23, acc22);
+                        acc23 = F64x4::fmadd(avec, bvec33, acc23);
 
-                        avec = _mm256_loadu_pd(a + ((i + 2) * n + k));
+                        avec = F64x4::fromptr(a + ((i + 2) * n + k));
 
-                        acc20 = _mm256_fmadd_pd(avec, bvec00, acc20);
-                        acc21 = _mm256_fmadd_pd(avec, bvec10, acc21);
-                        acc22 = _mm256_fmadd_pd(avec, bvec20, acc22);
-                        acc23 = _mm256_fmadd_pd(avec, bvec30, acc23);
+                        acc20 = F64x4::fmadd(avec, bvec00, acc20);
+                        acc21 = F64x4::fmadd(avec, bvec10, acc21);
+                        acc22 = F64x4::fmadd(avec, bvec20, acc22);
+                        acc23 = F64x4::fmadd(avec, bvec30, acc23);
 
-                        avec = _mm256_loadu_pd(a + ((i + 2) * n + k + 4));
+                        avec = F64x4::fromptr(a + ((i + 2) * n + k + 4));
 
-                        acc20 = _mm256_fmadd_pd(avec, bvec01, acc20);
-                        acc21 = _mm256_fmadd_pd(avec, bvec11, acc21);
-                        acc22 = _mm256_fmadd_pd(avec, bvec21, acc22);
-                        acc23 = _mm256_fmadd_pd(avec, bvec31, acc23);
+                        acc20 = F64x4::fmadd(avec, bvec01, acc20);
+                        acc21 = F64x4::fmadd(avec, bvec11, acc21);
+                        acc22 = F64x4::fmadd(avec, bvec21, acc22);
+                        acc23 = F64x4::fmadd(avec, bvec31, acc23);
 
                         /////////////////////////////////////////////////////////////
 
-                        avec = _mm256_loadu_pd(a + ((i + 3) * n + k + 4));
+                        avec = F64x4::fromptr(a + ((i + 3) * n + k + 4));
 
-                        acc30 = _mm256_fmadd_pd(avec, bvec01, acc30);
-                        acc31 = _mm256_fmadd_pd(avec, bvec11, acc31);
-                        acc32 = _mm256_fmadd_pd(avec, bvec21, acc32);
-                        acc33 = _mm256_fmadd_pd(avec, bvec31, acc33);
+                        acc30 = F64x4::fmadd(avec, bvec01, acc30);
+                        acc31 = F64x4::fmadd(avec, bvec11, acc31);
+                        acc32 = F64x4::fmadd(avec, bvec21, acc32);
+                        acc33 = F64x4::fmadd(avec, bvec31, acc33);
 
-                        avec = _mm256_loadu_pd(a + ((i + 3) * n + k + 8));
+                        avec = F64x4::fromptr(a + ((i + 3) * n + k + 8));
 
-                        acc30 = _mm256_fmadd_pd(avec, bvec02, acc30);
-                        acc31 = _mm256_fmadd_pd(avec, bvec12, acc31);
-                        acc32 = _mm256_fmadd_pd(avec, bvec22, acc32);
-                        acc33 = _mm256_fmadd_pd(avec, bvec32, acc33);
+                        acc30 = F64x4::fmadd(avec, bvec02, acc30);
+                        acc31 = F64x4::fmadd(avec, bvec12, acc31);
+                        acc32 = F64x4::fmadd(avec, bvec22, acc32);
+                        acc33 = F64x4::fmadd(avec, bvec32, acc33);
 
-                        avec = _mm256_loadu_pd(a + ((i + 3) * n + k + 12));
+                        avec = F64x4::fromptr(a + ((i + 3) * n + k + 12));
 
-                        acc30 = _mm256_fmadd_pd(avec, bvec03, acc30);
-                        acc31 = _mm256_fmadd_pd(avec, bvec13, acc31);
-                        acc32 = _mm256_fmadd_pd(avec, bvec23, acc32);
-                        acc33 = _mm256_fmadd_pd(avec, bvec33, acc33);
+                        acc30 = F64x4::fmadd(avec, bvec03, acc30);
+                        acc31 = F64x4::fmadd(avec, bvec13, acc31);
+                        acc32 = F64x4::fmadd(avec, bvec23, acc32);
+                        acc33 = F64x4::fmadd(avec, bvec33, acc33);
 
-                        avec = _mm256_loadu_pd(a + ((i + 3) * n + k));
+                        avec = F64x4::fromptr(a + ((i + 3) * n + k));
 
-                        acc30 = _mm256_fmadd_pd(avec, bvec00, acc30);
-                        acc31 = _mm256_fmadd_pd(avec, bvec10, acc31);
-                        acc32 = _mm256_fmadd_pd(avec, bvec20, acc32);
-                        acc33 = _mm256_fmadd_pd(avec, bvec30, acc33);
+                        acc30 = F64x4::fmadd(avec, bvec00, acc30);
+                        acc31 = F64x4::fmadd(avec, bvec10, acc31);
+                        acc32 = F64x4::fmadd(avec, bvec20, acc32);
+                        acc33 = F64x4::fmadd(avec, bvec30, acc33);
                     }
 
                     for (i32 k = n - remainder_vec; k < n; ++k) {
@@ -238,47 +239,40 @@ void mul_mt_internal(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
                     }
 
                     f64 ans[4] = {0, 0, 0, 0};
-                    _mm256_store_pd(ans, acc00);
-                    c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc01);
-                    c[i * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc02);
-                    c[i * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc03);
-                    c[i * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
+                    c[i * p + j] += F64x4::reduce_sum(acc00);
+                    c[i * p + j + 1] += F64x4::reduce_sum(acc01);
+                    c[i * p + j + 2] += F64x4::reduce_sum(acc02);
+                    c[i * p + j + 3] += F64x4::reduce_sum(acc03);
 
-                    _mm256_store_pd(ans, acc10);
+                    F64x4::storeptr(ans, acc10);
                     c[(i + 1) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc11);
+                    F64x4::storeptr(ans, acc11);
                     c[(i + 1) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc12);
+                    F64x4::storeptr(ans, acc12);
                     c[(i + 1) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc13);
+                    F64x4::storeptr(ans, acc13);
                     c[(i + 1) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
 
-                    _mm256_store_pd(ans, acc20);
+                    F64x4::storeptr(ans, acc20);
                     c[(i + 2) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc21);
+                    F64x4::storeptr(ans, acc21);
                     c[(i + 2) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc22);
+                    F64x4::storeptr(ans, acc22);
                     c[(i + 2) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc23);
+                    F64x4::storeptr(ans, acc23);
                     c[(i + 2) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
 
-                    _mm256_store_pd(ans, acc30);
+                    F64x4::storeptr(ans, acc30);
                     c[(i + 3) * p + j] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc31);
+                    F64x4::storeptr(ans, acc31);
                     c[(i + 3) * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc32);
+                    F64x4::storeptr(ans, acc32);
                     c[(i + 3) * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3];
-                    _mm256_store_pd(ans, acc33);
+                    F64x4::storeptr(ans, acc33);
                     c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3];
                 }
                 for (i32 j = p - remainder_cols; j < p; ++j) {
-                    f64 ans0 = 0;
-                    f64 ans1 = 0;
-                    f64 ans2 = 0;
-                    f64 ans3 = 0;
+                    f64 ans0 = 0, ans1 = 0, ans2 = 0, ans3 = 0;
                     for (i32 k = 0; k < n; ++k) {
                         ans0 += a[i * n + k] * tb[j * n + k];
                         ans1 += a[(i + 1) * n + k] * tb[j * n + k];
@@ -318,7 +312,7 @@ void mul_mt(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p) {
 
     // Initialize vector to zero
     for (usize index = 0; index < m * p - rem; index += 4) {
-        _mm256_store_pd(c + index, _mm256_setzero_pd());
+        F64x4::storeptr(c + index, F64x4::zero());
     }
 
     // Set remainder values to zero as well

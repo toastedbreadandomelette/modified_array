@@ -20,13 +20,13 @@ Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
             }
         } else {
             std::vector<std::thread> st;
-            std::vector<T> __res_total(thread_count, init);
-            auto _add_int = [&__res_total, &values, &function_exec](
+            std::vector<T> accumulator(thread_count, init);
+            auto _add_int = [&accumulator, &values, &function_exec](
                                 const u8 thread_number, const usize start,
                                 const usize end) {
                 for (usize index = start; index < end; ++index) {
-                    __res_total[thread_number] = function_exec(
-                        __res_total[thread_number], values.__array[index]);
+                    accumulator[thread_number] = function_exec(
+                        accumulator[thread_number], values.__array[index]);
                 }
             };
 
@@ -44,7 +44,7 @@ Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
                 th.join();
             }
 
-            for (auto &result_th : __res_total) {
+            for (auto &result_th : accumulator) {
                 result.__array[0] = function_exec(result.__array[0], result_th);
             }
         }
