@@ -17,14 +17,14 @@ Array<c64> FFT::fft2(const Array<T>& mat) {
 
 #pragma omp parallel for
     for (usize index = 0; index < result.shape[0]; ++index) {
-        auto axis_reference = result.get_nth_axis_reference(1, index);
-        axis_reference = fft_int(axis_reference);
+        Axis<c64> axis_ = result.get_nth_axis_reference(1, index);
+        axis_ = fft_int(axis_);
     }
 
 #pragma omp parallel for
     for (usize index = 0; index < result.shape[1]; ++index) {
-        auto axis_reference = result.get_nth_axis_reference(0, index);
-        axis_reference = fft_int(axis_reference);
+        Axis<c64> axis_ = result.get_nth_axis_reference(0, index);
+        axis_ = fft_int(axis_);
     }
 
     return result;

@@ -40,9 +40,9 @@ struct MdArrayUtility {
      * @param init, value to initialize before accumulate.
      * @returns single value
      */
-    template <typename T, typename _func>
-    static Array<T> reduce(const Array<T> &values, const _func &function_exec,
-                           const T init, const i32 axis = -1);
+    template <typename T, typename fn_>
+    static Array<T> reduce(const Array<T> &values, const fn_ &function_exec,
+                           const T init = 0, const i32 axis = -1);
 
     /**
      * @brief Reduce array of values to a single value function.
@@ -54,9 +54,9 @@ struct MdArrayUtility {
      * @param init, value to initialize before accumulate.
      * @returns single value
      */
-    template <typename T, typename _func>
+    template <typename T, typename fn_>
     static Array<T> reduce(const ArraySlice<T> &values,
-                           const _func &function_exec, const T init,
+                           const fn_ &function_exec, const T init = 0,
                            const i32 axis = -1);
 
     /**

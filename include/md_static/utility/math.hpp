@@ -19,14 +19,77 @@ typedef double f64;
 typedef long double f128;
 typedef size_t usize;
 
+namespace Usize {
+constexpr usize min = 0;
+constexpr usize max = ~0;
+}  // namespace Usize
+
+namespace I8 {
+constexpr i8 min = -128;
+constexpr i8 max = 127;
+}  // namespace I8
+
+namespace I16 {
+constexpr i16 min = -32768;
+constexpr i16 max = 32767;
+}  // namespace I16
+
+namespace I32 {
+constexpr i32 min = -2147483648;
+constexpr i32 max = 2147483647;
+}  // namespace I32
+
+namespace I64 {
+constexpr i64 min = -9223372036854775807L - 1;
+constexpr i64 max = 9223372036854775807L;
+}  // namespace I64
+
+namespace U8 {
+constexpr u8 min = 0U;
+constexpr u8 max = 255U;
+}  // namespace U8
+
+namespace U16 {
+constexpr u16 min = 0U;
+constexpr u16 max = 65535U;
+}  // namespace U16
+
+namespace U32 {
+constexpr u32 min = 0U;
+constexpr u32 max = 4294967295U;
+}  // namespace U32
+
+namespace U64 {
+constexpr u64 min = 0U;
+constexpr u64 max = 18446744073709551615ULL;
+}  // namespace U64
+
+namespace F32 {
+constexpr bool isnan(f32 v) { return isnanf(v); };
+constexpr f32 nan = std::numeric_limits<f32>::quiet_NaN();
+constexpr f32 inf = std::numeric_limits<f32>::infinity();
+constexpr f32 ninf = inf * -1;
+}  // namespace F32
+
+namespace F64 {
+constexpr bool isnan(f64 v) { return std::isnan(v); };
+constexpr f64 nan = std::numeric_limits<f64>::quiet_NaN();
+constexpr f64 inf = std::numeric_limits<f64>::infinity();
+constexpr f64 ninf = inf * -1;
+}  // namespace F64
+
+namespace F128 {
+constexpr bool isnan(f128 v) { return std::isnan(v); };
+constexpr f128 nan = std::numeric_limits<f128>::quiet_NaN();
+constexpr f128 inf = std::numeric_limits<f128>::infinity();
+constexpr f128 ninf = inf * -1;
+}  // namespace F128
+
 namespace Math {
 
 constexpr f64 e = 2.71828182845904523536028747135266249775724709369995;
-
 constexpr f64 pi = M_PI;
-
 constexpr f64 pi_by_2 = M_PI_2;
-
 constexpr f64 pi_2 = M_PI * 2;
 
 /**

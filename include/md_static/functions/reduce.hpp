@@ -5,8 +5,8 @@
 
 #include "./md_static_array_utility.hpp"
 
-template <typename T, typename _func>
-Array<T> Utils::reduce(const Array<T> &values, const _func &function_exec,
+template <typename T, typename fn_>
+Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
                        const T init, const i32 axis) {
     if (axis == -1) {
         const usize size = values.get_size();
@@ -108,10 +108,10 @@ Array<T> Utils::reduce(const Array<T> &values, const _func &function_exec,
     }
 }
 
-template <typename T, typename _func>
-Array<T> Utils::reduce(const ArraySlice<T> &values, const _func &function_exec,
+template <typename T, typename fn_>
+Array<T> Utils::reduce(const ArraySlice<T> &values, const fn_ &function_exec,
                        const T init, const i32 axis) {
-    return reduce<T, _func>(
+    return reduce<T, fn_>(
         Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         function_exec, init, axis);
 }

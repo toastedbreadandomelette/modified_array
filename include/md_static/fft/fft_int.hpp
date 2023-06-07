@@ -263,8 +263,8 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
 
 template <typename T>
 Array<c64> FFT::fft_int(const ArraySlice<T>& other) {
-    return fft_int<T>(
-        Array<T>(*other.__array_reference, other.offset, other.shp_offset));
+    return fft_int(
+        Array(*other.__array_reference, other.offset, other.shp_offset));
 }
 
 #endif
