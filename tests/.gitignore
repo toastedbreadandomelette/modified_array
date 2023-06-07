@@ -1,3 +1,4 @@
-md_static/array_op
-md_static/arraynd
-md_static/array1d
+*/*
+!*/*CMakeLists.txt
+!*/src/
+!*/*/*.cpp

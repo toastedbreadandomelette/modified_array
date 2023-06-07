@@ -2,7 +2,7 @@
 #ifndef _FFT_INT_HPP_
 #define _FFT_INT_HPP_
 
-#include "../utility/md_math.hpp"
+#include "../utility/math.hpp"
 #include "./md_fft.hpp"
 
 template <typename T>
@@ -11,7 +11,7 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
                              const usize end) {
         Array<c64> result(end - start, 0);
         const usize n = end - start;
-        f64 angle = MdMath::pi_2 / n;
+        f64 angle = Math::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
         c64 wstart = wlen;
 
@@ -37,7 +37,7 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
                                  const usize end) {
         Array<c64> result(end - start, 0);
         const usize n = end - start;
-        f64 angle = MdMath::pi_2 / n;
+        f64 angle = Math::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
         c64 wstart = wlen;
 
@@ -110,7 +110,7 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
 
         for (usize operate_length = (start << 1); operate_length <= n;
              operate_length <<= 1) {
-            f64 angle = MdMath::pi_2 / operate_length;
+            f64 angle = Math::pi_2 / operate_length;
             const c64 init = {::cos(angle), -::sin(angle)};
             // #pragma omp parallel for
             for (usize i = 0; i < n; i += operate_length) {
@@ -137,7 +137,7 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
                              const usize end) {
         Array<c64> result(end - start, 0);
         const usize n = end - start;
-        f64 angle = MdMath::pi_2 / n;
+        f64 angle = Math::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
         c64 wstart = wlen;
 
@@ -163,7 +163,7 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
                                  const usize end) {
         Array<c64> result(end - start, 0);
         const usize n = end - start;
-        f64 angle = MdMath::pi_2 / n;
+        f64 angle = Math::pi_2 / n;
         const c64 wlen = {::cos(angle), -::sin(angle)};
         c64 wstart = wlen;
 
@@ -240,7 +240,7 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         usize n = array.get_size();
         for (usize operate_length = (start << 1); operate_length <= n;
              operate_length <<= 1) {
-            f64 angle = MdMath::pi_2 / operate_length;
+            f64 angle = Math::pi_2 / operate_length;
             const c64 init = {::cos(angle), -::sin(angle)};
             // #pragma omp parallel for
             for (usize i = 0; i < n; i += operate_length) {

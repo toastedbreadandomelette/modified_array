@@ -4,19 +4,16 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> Utils::cumulative_product(
-    const ArraySlice<T>& values, const usize axis,
-    const usize thread_count) {
+Array<T> Utils::cumulative_product(const ArraySlice<T>& values,
+                                   const usize axis, const usize thread_count) {
     return Utils::cumulative_product<T>(
-        Array<T>(*values.__array_reference, values.offset,
-                         values.shp_offset),
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
         axis, thread_count);
 }
 
 template <typename T>
-Array<T> Utils::cumulative_product(
-    const Array<T>& ndarray, const usize axis,
-    const usize thread_count) {
+Array<T> Utils::cumulative_product(const Array<T>& ndarray, const usize axis,
+                                   const usize thread_count) {
     if (axis == -1) {
         Array<T> result(ndarray.get_size());
 

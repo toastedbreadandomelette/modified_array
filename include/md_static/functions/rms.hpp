@@ -20,11 +20,10 @@ f128 Utils::rms(const Array<T> &values, const T init) {
 }
 
 template <typename T>
-f128 Utils::rms(const ArraySlice<T> &values,
-                         const T init) {
-    return rms(Array<T>(*values.__array_reference, values.offset,
-                                values.shp_offset),
-               init);
+f128 Utils::rms(const ArraySlice<T> &values, const T init) {
+    return rms(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        init);
 }
 
 #endif

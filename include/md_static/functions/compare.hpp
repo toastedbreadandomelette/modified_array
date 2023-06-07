@@ -5,8 +5,7 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T1, typename T2>
-bool Utils::compare(const Array<T1> &first,
-                             const Array<T2> &other) {
+bool Utils::compare(const Array<T1> &first, const Array<T2> &other) {
     if (first.get_shape_size() != other.get_shape_size()) {
         return false;
     }
@@ -18,7 +17,8 @@ bool Utils::compare(const Array<T1> &first,
 
     if constexpr (MdTypeInfer::is_any_one_floating<T1, T2>::value) {
         for (usize i = 0; i < first.get_size(); ++i) {
-            if (std::abs(first.__array[i] - other.__array[i]) > 1e-5) {
+            if (std::abs(first.__array[i] - other.__array[i]) >
+                1e-8 + 1e-6 * std::abs(other.__array[i])) {
                 return false;
             }
         }

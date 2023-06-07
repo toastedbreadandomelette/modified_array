@@ -8,14 +8,13 @@
 
 template <typename T>
 Array<T> Utils::log2(const Array<T> &values) {
-    return Utils::map<T>(values,
-                                  [](const T &value) { return ::log2(value); });
+    return Utils::map<T>(values, [](const T &value) { return ::log2(value); });
 }
 
 template <typename T>
 Array<T> Utils::log2(const ArraySlice<T> &values) {
-    return Utils::log2<T>(Array<T>(
-        *values.__array_reference, values.offset, values.shp_offset));
+    return Utils::log2<T>(
+        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
 }
 
 #endif

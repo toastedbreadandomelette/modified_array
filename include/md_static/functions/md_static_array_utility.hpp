@@ -579,9 +579,11 @@ struct MdArrayUtility {
      * @param end upper limit of the array
      *
      */
-    template <typename T, class = typename std::enable_if<
-                              std::is_arithmetic<T>::value>::type>
-    static Array<T> range(const T start, const T end = -1, const T spacing = 0);
+    template <
+        typename T, typename Ts = T,
+        class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+    static Array<T> range(const T start, const T end = -1,
+                          const Ts spacing = 0);
 
     /**
      * @brief Transpose of matrix: creates a new transposed array

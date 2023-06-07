@@ -4,13 +4,30 @@
 
 #include <stdint.h>
 
-namespace MdMath {
+#include <cmath>
+
+typedef char i8;
+typedef unsigned char u8;
+typedef short int i16;
+typedef short unsigned u16;
+typedef int i32;
+typedef unsigned u32;
+typedef long long i64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef long double f128;
+typedef size_t usize;
+
+namespace Math {
 
 constexpr f64 e = 2.71828182845904523536028747135266249775724709369995;
 
-constexpr f64 pi = 3.14159265358979323846;
+constexpr f64 pi = M_PI;
 
-constexpr f64 pi_2 = 3.14159265358979323846 * 2;
+constexpr f64 pi_by_2 = M_PI_2;
+
+constexpr f64 pi_2 = M_PI * 2;
 
 /**
  * @brief Reverse at max 64-bits of a 64 bit number
@@ -97,6 +114,6 @@ struct factorial<0> {
     static constexpr f64 value = 1;
 };
 
-};  // namespace MdMath
+};  // namespace Math
 
 #endif

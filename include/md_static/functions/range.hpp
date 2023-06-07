@@ -5,11 +5,11 @@
 #include "./md_static_array_utility.hpp"
 
 // To do: improve and update since it does not work for all cases
-template <typename T, class _T1>
-Array<T> Utils::range(const T start, const T end, const T spacing) {
+template <typename T, typename Ts, class T1>
+Array<T> Utils::range(const T start, const T end, const Ts spacing) {
     usize size = 0;
     usize start_value = 0;
-    T increment = 1;
+    Ts increment = 1;
     if (end < start && spacing > 0) {
         throw std::runtime_error(
             "Spacing given should be negative for ranges: [end (" +
@@ -50,7 +50,7 @@ Array<T> Utils::range(const T start, const T end, const T spacing) {
     }
 
     const usize block = size / s_thread_count;
-    const T b_increment = increment * block;
+    const Ts b_increment = increment * block;
 
     std::vector<std::thread> thread_pool;
     T b_start = start_value;

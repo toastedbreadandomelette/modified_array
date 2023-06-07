@@ -5,6 +5,8 @@
 #include <cmath>
 #include <ostream>
 
+#include "../md_static/utility/math.hpp"
+
 template <typename T,
           class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
 struct Complex {
@@ -141,13 +143,12 @@ struct Complex {
         return *this;
     }
 
-    inline constexpr std::pair<double, double> to_polar() const {
+    inline constexpr std::pair<f64, f64> to_polar() const {
         return {abs(), ::atan(img / real)};
     }
 
-    static inline constexpr Complex from_polar(const double __R,
-                                               const double __A) {
-        return {__R * ::cos(__A), __R * ::sin(__A)};
+    static inline constexpr Complex from_polar(const f64 rad, const f64 ang) {
+        return {rad * ::cos(ang), rad * ::sin(ang)};
     }
 
     template <typename T1>
@@ -155,11 +156,9 @@ struct Complex {
         return Complex<T1>(other.real, -other.img);
     }
 
-    inline constexpr double sq_abs() const { return real * real + img * img; }
+    inline constexpr f64 sq_abs() const { return real * real + img * img; }
 
-    inline constexpr double abs() const {
-        return ::sqrt(real * real + img * img);
-    }
+    inline constexpr f64 abs() const { return ::sqrt(real * real + img * img); }
 
     template <typename T1>
     inline Complex& operator/=(const T1& other) {
@@ -207,7 +206,7 @@ inline constexpr Complex<T> sqrt(const Complex<T>& other) {
 }
 
 template <typename T>
-inline constexpr Complex<T> pow(const Complex<T>& other, double value) {
+inline constexpr Complex<T> pow(const Complex<T>& other, f64 value) {
     const auto [__R, __A] = other.to_polar();
     return Complex<T>::from_polar(std::pow(__R, value), __A * value);
 }
@@ -245,38 +244,49 @@ inline constexpr auto operator/(const T1& other, const Complex<T>& first) {
                       -((other * first.img) / sq_abs));
 }
 
-inline constexpr Complex<long double> operator"" _i(long double img) {
-    Complex<long double> c;
+inline constexpr Complex<f128> operator"" _i(f128 img) {
+    Complex<f128> c;
     c.real = 0;
     c.img = img;
     return c;
 }
 
-inline constexpr Complex<unsigned long long> operator"" _i(
-    unsigned long long img) {
-    Complex<unsigned long long> c;
+inline constexpr Complex<u64> operator"" _i(u64 img) {
+    Complex<u64> c;
     c.real = 0;
     c.img = img;
     return c;
 }
 
-using cdouble = Complex<double>;
-using clongdouble = Complex<long double>;
-using cfloat = Complex<float>;
+using cdouble = Complex<f64>;
+using clongdouble = Complex<f128>;
+using cfloat = Complex<f32>;
 
-using cuint64 = Complex<uint64_t>;
-using cuint32 = Complex<uint32_t>;
-using cuint16 = Complex<uint16_t>;
-using cuint8 = Complex<uint8_t>;
+using cuint64 = Complex<u64>;
+using cuint32 = Complex<u32>;
+using cuint16 = Complex<u16>;
+using cuint8 = Complex<u8>;
 
-using cint64 = Complex<int64_t>;
-using cint32 = Complex<int32_t>;
-using cint16 = Complex<int16_t>;
-using cint8 = Complex<int8_t>;
+using cint64 = Complex<i64>;
+using cint32 = Complex<i32>;
+using cint16 = Complex<i16>;
+using cint8 = Complex<i8>;
 
 template <>
 struct std::is_fundamental<cdouble> : std::true_type {};
 template <>
 struct std::is_fundamental<clongdouble> : std::true_type {};
+
+typedef cdouble c64;
+typedef clongdouble c128;
+typedef cfloat c32;
+typedef cint8 ci8;
+typedef cint16 ci16;
+typedef cint32 ci32;
+typedef cint64 ci64;
+typedef cuint8 cu8;
+typedef cuint16 cu16;
+typedef cuint32 cu32;
+typedef cuint64 cu64;
 
 #endif

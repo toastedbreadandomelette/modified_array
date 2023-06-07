@@ -89,7 +89,8 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "numbers": "cpp",
-        "semaphore": "cpp"
+        "semaphore": "cpp",
+        "cassert": "cpp"
     },
     "typescript.format.placeOpenBraceOnNewLineForFunctions": false,
     "C_Cpp.vcFormat.newLine.scopeBracesOnSeparateLines": false,
