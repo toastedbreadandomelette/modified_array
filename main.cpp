@@ -31,8 +31,6 @@ int main(i32 argc, const char** argv) {
 
     std::chrono::duration<f64> time = end - start;
 
-    // std::cout << MdArrayUtility::compare(ans, an) << '\n' << '\n';
-
     std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;
 

@@ -16,8 +16,8 @@ Array<T3> Linalg::dot(const Array<T1> &first, const Array<T2> &other,
         if (other.get_shape_size() == 2 && first.get_shape_size() == 2) {
             return Linalg::mat_multiply<T1, T2, T3>(first, other, thread_count);
         }
-        if (first.shape[first.shp_size - 1] !=
-            other.shape[other.shp_size - 2]) {
+        if (first.shape[first.get_shape_size() - 1] !=
+            other.shape[other.get_shape_size() - 2]) {
             throw std::runtime_error(
                 "Axis size do not match for dot multiplication.");
         }
@@ -37,12 +37,13 @@ Array<T3> Linalg::dot(const Array<T1> &first, const Array<T2> &other,
         }
 
         Array<T3> result(overall_shape, 0);
-        const usize res_base_matrix_size = (result.shape[result.shp_size - 1] *
-                                            result.shape[result.shp_size - 2]);
+        const usize res_base_matrix_size =
+            (result.shape[result.get_shape_size() - 1] *
+             result.shape[result.get_shape_size() - 2]);
 
-        const usize m = first.shape[first.shp_size - 2];
-        const usize n = first.shape[first.shp_size - 1];
-        const usize p = other.shape[other.shp_size - 1];
+        const usize m = first.shape[first.get_shape_size() - 2];
+        const usize n = first.shape[first.get_shape_size() - 1];
+        const usize p = other.shape[other.get_shape_size() - 1];
 
         const usize other_base_matrix_size = n * p;
 

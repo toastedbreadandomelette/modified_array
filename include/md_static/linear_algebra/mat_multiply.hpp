@@ -19,7 +19,7 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
             "Matrix dimension do not match for matrix multiplication.");
     }
 
-    if (first.shape[1] != other.shape[0]) {
+    if (first.get_shape()[1] != other.get_shape()[0]) {
         throw std::runtime_error(
             "Total column of first matrix are not same as total rows in "
             "second "
@@ -41,6 +41,7 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
 
     const usize block_size = 32;
 
+    // Todo: For complex numbers?
     if (result.get_size() > s_threshold_size && threads > 1) {
         if constexpr (std::is_same<T1, f64>::value &&
                       std::is_same<T2, f64>::value &&
@@ -95,6 +96,7 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
             }
         }
     } else {
+        // Todo: For complex numbers?
         if constexpr (std::is_same<T1, f64>::value &&
                       std::is_same<T2, f64>::value &&
                       std::is_same<T3, f64>::value) {

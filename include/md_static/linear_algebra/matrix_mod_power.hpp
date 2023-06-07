@@ -26,9 +26,9 @@ Array<T> Linalg::matrix_mod_power(const Array<T> &matrix, const usize pow,
 
     while (power > 0) {
         if (power & 1) {
-            result = Linalg::mat_mod_multiply<T, T, T>(result, omat, mod);
+            result = Linalg::mat_mod_multiply(result, omat, mod);
         }
-        omat = Linalg::mat_mod_multiply<T, T, T>(omat, omat, mod);
+        omat = Linalg::mat_mod_multiply(omat, omat, mod);
         power >>= 1;
     }
 

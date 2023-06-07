@@ -3,9 +3,9 @@
 #define _IDENTITY_HPP_
 #include "./md_linear_algebra.hpp"
 
-template <typename _T>
-Array<_T> Linalg::identity(const usize n) {
-    Array<_T> result({n, n}, 0);
+template <typename T>
+Array<T> Linalg::identity(const usize n) {
+    Array<T> result({n, n}, 0);
     for (usize index = 0; index < result.get_size(); index += (n + 1)) {
         result.__array[index] = 1;
     }

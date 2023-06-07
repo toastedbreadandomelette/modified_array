@@ -237,78 +237,34 @@ void mul_mt_f32_internal(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p,
                         c[(i + 3) * p + j + 3] += a3 * tb3;
                     }
 
-                    f32 ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-                    F32x8::storeptr(ans, acc00);
-                    c[i * p + j] += ans[0] + ans[1] + ans[2] + ans[3] + ans[4] +
-                                    ans[5] + ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc01);
-                    c[i * p + j + 1] += ans[0] + ans[1] + ans[2] + ans[3] +
-                                        ans[4] + ans[5] + ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc02);
-                    c[i * p + j + 2] += ans[0] + ans[1] + ans[2] + ans[3] +
-                                        ans[4] + ans[5] + ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc03);
-                    c[i * p + j + 3] += ans[0] + ans[1] + ans[2] + ans[3] +
-                                        ans[4] + ans[5] + ans[6] + ans[7];
+                    c[i * p + j] += F32x8::reduce_sum(acc00);
+                    c[i * p + j + 1] += F32x8::reduce_sum(acc01);
+                    c[i * p + j + 2] += F32x8::reduce_sum(acc02);
+                    c[i * p + j + 3] += F32x8::reduce_sum(acc03);
 
-                    F32x8::storeptr(ans, acc10);
-                    c[(i + 1) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
-                                          ans[4] + ans[5] + ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc11);
-                    c[(i + 1) * p + j + 1] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc12);
-                    c[(i + 1) * p + j + 2] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc13);
-                    c[(i + 1) * p + j + 3] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
+                    c[(i + 1) * p + j] += F32x8::reduce_sum(acc10);
+                    c[(i + 1) * p + j + 1] += F32x8::reduce_sum(acc11);
+                    c[(i + 1) * p + j + 2] += F32x8::reduce_sum(acc12);
+                    c[(i + 1) * p + j + 3] += F32x8::reduce_sum(acc13);
 
-                    F32x8::storeptr(ans, acc20);
-                    c[(i + 2) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
-                                          ans[4] + ans[5] + ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc21);
-                    c[(i + 2) * p + j + 1] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc22);
-                    c[(i + 2) * p + j + 2] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc23);
-                    c[(i + 2) * p + j + 3] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
+                    c[(i + 2) * p + j] += F32x8::reduce_sum(acc20);
+                    c[(i + 2) * p + j + 1] += F32x8::reduce_sum(acc21);
+                    c[(i + 2) * p + j + 2] += F32x8::reduce_sum(acc22);
+                    c[(i + 2) * p + j + 3] += F32x8::reduce_sum(acc23);
 
-                    F32x8::storeptr(ans, acc30);
-                    c[(i + 3) * p + j] += ans[0] + ans[1] + ans[2] + ans[3] +
-                                          ans[4] + ans[5] + ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc31);
-                    c[(i + 3) * p + j + 1] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc32);
-                    c[(i + 3) * p + j + 2] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
-                    F32x8::storeptr(ans, acc33);
-                    c[(i + 3) * p + j + 3] += ans[0] + ans[1] + ans[2] +
-                                              ans[3] + ans[4] + ans[5] +
-                                              ans[6] + ans[7];
+                    c[(i + 3) * p + j] += F32x8::reduce_sum(acc30);
+                    c[(i + 3) * p + j + 1] += F32x8::reduce_sum(acc31);
+                    c[(i + 3) * p + j + 2] += F32x8::reduce_sum(acc32);
+                    c[(i + 3) * p + j + 3] += F32x8::reduce_sum(acc33);
                 }
                 for (i32 j = p - remainder_cols; j < p; ++j) {
-                    f32 ans0 = 0;
-                    f32 ans1 = 0;
-                    f32 ans2 = 0;
-                    f32 ans3 = 0;
+                    f32 ans0 = 0, ans1 = 0, ans2 = 0, ans3 = 0;
                     for (i32 k = 0; k < n; ++k) {
-                        ans0 += a[i * n + k] * tb[j * n + k];
-                        ans1 += a[(i + 1) * n + k] * tb[j * n + k];
-                        ans2 += a[(i + 2) * n + k] * tb[j * n + k];
-                        ans3 += a[(i + 3) * n + k] * tb[j * n + k];
+                        f32 tbv = tb[j * n + k];
+                        ans0 += a[i * n + k] * tbv;
+                        ans1 += a[(i + 1) * n + k] * tbv;
+                        ans2 += a[(i + 2) * n + k] * tbv;
+                        ans3 += a[(i + 3) * n + k] * tbv;
                     }
                     c[i * p + j] = ans0;
                     c[(i + 1) * p + j] = ans1;

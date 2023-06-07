@@ -52,6 +52,14 @@ __always_inline f32x8 fromptr(f32 *val) { return _mm256_loadu_ps(val); }
 __always_inline void storeptr(f32 *val, f32x8 vec) {
     _mm256_storeu_ps(val, vec);
 }
+
+__always_inline f32 reduce_sum(f32x8 val) {
+    f32 ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1] + ans[2] + ans[3] + ans[4] + ans[5] + ans[6] +
+           ans[7];
+}
+
 }  // namespace F32x8
 
 namespace F64x4 {
@@ -128,6 +136,12 @@ __always_inline f32x4 zero() { return _mm_setzero_ps(); }
 __always_inline f32x4 fromptr(f32 *val) { return _mm_loadu_ps(val); }
 
 __always_inline void storeptr(f32 *val, f32x4 vec) { _mm_storeu_ps(val, vec); }
+
+__always_inline f32 reduce_sum(f32x4 val) {
+    f32 ans[4] = {0, 0, 0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1] + ans[2] + ans[3];
+}
 }  // namespace F32x4
 
 namespace F64x2 {
@@ -160,6 +174,12 @@ __always_inline f64x2 zero() { return _mm_setzero_pd(); }
 __always_inline f64x2 fromptr(f64 *val) { return _mm_loadu_pd(val); }
 
 __always_inline void storeptr(f64 *val, f64x2 vec) { _mm_storeu_pd(val, vec); }
+
+__always_inline f64 reduce_sum(f64x2 val) {
+    f64 ans[2] = {0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1];
+}
 }  // namespace F64x2
 
 #endif
