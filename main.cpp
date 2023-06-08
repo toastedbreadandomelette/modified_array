@@ -1,5 +1,3 @@
-#include <omp.h>
-
 #include <chrono>
 #include <cmath>
 #include <iomanip>
@@ -36,4 +34,3 @@ int main(i32 argc, const char **argv) {
 
     return 0;
 }
-// -160.65+0j -160.65+66.98j -144.33+133.96j -144.33+200.94j
