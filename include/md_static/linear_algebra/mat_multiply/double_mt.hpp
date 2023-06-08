@@ -11,8 +11,8 @@
 #include "../../utility/alloc.hpp"
 #include "../../utility/simd.hpp"
 
-void mul_mt_internal(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
-                     i32 start_row, i32 end_row) {
+void mul_mt_internal_f64(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
+                         i32 start_row, i32 end_row) {
     const i32 block_size = 128;
     const i32 remainder_cols = p & 3;
     const i32 remainder_rows = (end_row - start_row) & 3;
@@ -315,13 +315,13 @@ void mul_mt(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p) {
     i32 total_rows_per_thread = m / clamped_thread_count;
 
     for (usize index = 0; index < clamped_thread_count - 1; ++index) {
-        threads.emplace_back(std::thread(mul_mt_internal, a, tb, c, m, n, p,
+        threads.emplace_back(std::thread(mul_mt_internal_f64, a, tb, c, m, n, p,
                                          index * total_rows_per_thread,
                                          (index + 1) * total_rows_per_thread));
     }
 
     threads.emplace_back(
-        std::thread(mul_mt_internal, a, tb, c, m, n, p,
+        std::thread(mul_mt_internal_f64, a, tb, c, m, n, p,
                     (clamped_thread_count - 1) * total_rows_per_thread, m));
 
     for (auto &thread : threads) {

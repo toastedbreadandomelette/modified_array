@@ -2,6 +2,10 @@
 #ifndef _MAT_MULTIPLY_HPP_
 #define _MAT_MULTIPLY_HPP_
 
+#include "./mat_multiply/c32.hpp"
+#include "./mat_multiply/c32_mt.hpp"
+#include "./mat_multiply/c64.hpp"
+#include "./mat_multiply/c64_mt.hpp"
 #include "./mat_multiply/double.hpp"
 #include "./mat_multiply/double_mt.hpp"
 #include "./mat_multiply/float.hpp"
@@ -52,6 +56,16 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
                              std::is_same<T2, f32>::value &&
                              std::is_same<T3, f32>::value) {
             mul_mt_f32(first.__array, other_t.__array, result.__array, fshape0,
+                       fshape1, oshape1);
+        } else if constexpr (std::is_same<T1, c32>::value &&
+                             std::is_same<T2, c32>::value &&
+                             std::is_same<T3, c32>::value) {
+            mul_mt_c32(first.__array, other_t.__array, result.__array, fshape0,
+                       fshape1, oshape1);
+        } else if constexpr (std::is_same<T1, c64>::value &&
+                             std::is_same<T2, c64>::value &&
+                             std::is_same<T3, c64>::value) {
+            mul_mt_c64(first.__array, other_t.__array, result.__array, fshape0,
                        fshape1, oshape1);
         } else {
             auto mul_internal_ = [&first, &other_t, block_size, &result,
@@ -106,6 +120,16 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
                              std::is_same<T2, f32>::value &&
                              std::is_same<T3, f32>::value) {
             mul_st_f32(first.__array, other_t.__array, result.__array, fshape0,
+                       fshape1, oshape1);
+        } else if constexpr (std::is_same<T1, c32>::value &&
+                             std::is_same<T2, c32>::value &&
+                             std::is_same<T3, c32>::value) {
+            mul_st_c32(first.__array, other_t.__array, result.__array, fshape0,
+                       fshape1, oshape1);
+        } else if constexpr (std::is_same<T1, c64>::value &&
+                             std::is_same<T2, c64>::value &&
+                             std::is_same<T3, c64>::value) {
+            mul_st_c64(first.__array, other_t.__array, result.__array, fshape0,
                        fshape1, oshape1);
         } else {
             for (usize i_block = 0; i_block < fshape0; i_block += block_size) {

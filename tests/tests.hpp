@@ -2,19 +2,23 @@
 #ifndef _TEST_HPP_MAIN_
 #define _TEST_HPP_MAIN_
 
-#define TEST(condition)                                    \
-    if (!(condition)) {                                    \
-        std::cout << "Error for condition: " << #condition \
-                  << " at line: " << __LINE__ << '\n';     \
-        return 1;                                          \
+#define assert(expr)                                   \
+    if (!(expr)) {                                     \
+        std::cout << "Expression failed: " << #expr    \
+                  << " at line: " << __LINE__ << '\n'; \
+        return 1;                                      \
     }
 
-#define TEST_EQ(value, test)                                            \
-    if ((value) != (test)) {                                                \
-        std::cout << "Equal error: " << #value << " (" << value << ") " \
-                  << " != " << #test << " (" << test << ")\n";          \
-        std::cout << " at line: " << __LINE__ << '\n';                  \
-        return 1;                                                       \
+#define assert_eq(expr, val_test)                                       \
+    {                                                                   \
+        auto val = expr;                                                \
+        if ((val) != (val_test)) {                                      \
+            std::cout << "Equality failed: " << #expr                   \
+                      << " at line: " << __LINE__                       \
+                      << "\nExpected: " << val_test << ", Found" << val \
+                      << '\n';                                          \
+            return 1;                                                   \
+        }                                                               \
     }
 
 #endif

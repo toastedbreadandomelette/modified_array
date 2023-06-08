@@ -10,12 +10,21 @@
 
 typedef __m256 f32x8;
 typedef __m256d f64x4;
+
 typedef __m256i i32x8;
 typedef __m256i i64x4;
+
+typedef __m256d c64x2;
+typedef __m256 c32x4;
+
 typedef __m128 f32x4;
 typedef __m128d f64x2;
+
 typedef __m128i i32x4;
 typedef __m128i i64x2;
+
+typedef __m128d c64x1;
+typedef __m128 c32x2;
 
 namespace F32x8 {
 __always_inline f32x8 add(f32x8 first, f32x8 second) {
@@ -181,5 +190,104 @@ __always_inline f64 reduce_sum(f64x2 val) {
     return ans[0] + ans[1];
 }
 }  // namespace F64x2
+
+namespace C32x4 {
+__always_inline c32x4 add(c32x4 first, c32x4 second) {
+    return _mm256_add_ps(first, second);
+}
+
+__always_inline c32x4 sub(c32x4 first, c32x4 second) {
+    return _mm256_sub_ps(first, second);
+}
+
+__always_inline c32x4 mul(c32x4 first, c32x4 second) {
+    c32x4 real = _mm256_mul_ps(first, second);
+    c32x4 img = _mm256_mul_ps(first, _mm256_permute_ps(second, 0b10110001));
+    c32x4 realf = _mm256_hsub_ps(real, real);
+    c32x4 imgf = _mm256_hadd_ps(img, img);
+    return _mm256_blend_ps(_mm256_permute_ps(realf, 0b01010000),
+                           _mm256_permute_ps(imgf, 0b01010000), 0b10101010);
+}
+
+__always_inline c32x4 div(c32x4 first, c32x4 second) {
+    return _mm256_div_ps(first, second);
+}
+
+__always_inline c32x4 fmadd(c32x4 a, c32x4 b, c32x4 c) {
+    return add(mul(a, b), c);
+}
+
+__always_inline c32x4 uni(c32 val) {
+    return _mm256_set_ps(val.real, val.img, val.real, val.img, val.real,
+                         val.img, val.real, val.img);
+}
+
+__always_inline c32x4 set(c32 a, c32 b, c32 c, c32 d) {
+    return _mm256_set_ps(a.real, a.img, b.real, b.img, c.real, c.img, d.real,
+                         d.img);
+}
+
+__always_inline c32x4 zero() { return _mm256_setzero_ps(); }
+
+__always_inline c32x4 fromptr(c32 *val) { return _mm256_loadu_ps((f32 *)val); }
+
+__always_inline void storeptr(c32 *val, c32x4 vec) {
+    _mm256_storeu_ps((f32 *)val, vec);
+}
+
+__always_inline c32 reduce_sum(c32x4 val) {
+    c32 ans[4] = {0, 0, 0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1];
+}
+}  // namespace C32x4
+
+namespace C64x2 {
+__always_inline c64x2 add(c64x2 first, c64x2 second) {
+    return _mm256_add_pd(first, second);
+}
+
+__always_inline c64x2 sub(f64x4 first, c64x2 second) {
+    return _mm256_sub_pd(first, second);
+}
+
+__always_inline c64x2 mul(c64x2 first, c64x2 second) {
+    c64x2 real = _mm256_mul_pd(first, second);
+    c64x2 img = _mm256_mul_pd(first, _mm256_permute_pd(second, 0b0101));
+    c64x2 realf = _mm256_hsub_pd(real, real);
+    c64x2 imgf = _mm256_hadd_pd(img, img);
+    return _mm256_blend_pd(realf, imgf, 0b1010);
+}
+
+__always_inline c64x2 div(c64x2 first, c64x2 second) {
+    return _mm256_div_pd(first, second);
+}
+
+__always_inline c64x2 fmadd(c64x2 a, c64x2 b, c64x2 c) {
+    return _mm256_add_pd(mul(a, b), c);
+}
+
+__always_inline c64x2 uni(c64 val) {
+    return _mm256_set_pd(val.real, val.img, val.real, val.img);
+}
+
+__always_inline c64x2 set(c64 a, c64 b) {
+    return _mm256_set_pd(a.real, a.img, b.real, b.img);
+}
+
+__always_inline c64x2 zero() { return _mm256_setzero_pd(); }
+
+__always_inline c64x2 fromptr(c64 *val) { return _mm256_loadu_pd((f64 *)val); }
+
+__always_inline void storeptr(c64 *val, c64x2 vec) {
+    _mm256_storeu_pd((f64 *)val, vec);
+}
+
+__always_inline c64 reduce_sum(c64x2 val) {
+    c64 ans[2] = {0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1];
+}
+}  // namespace C64x2
 
 #endif
