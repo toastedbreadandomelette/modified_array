@@ -453,14 +453,12 @@ struct eval_complex_t {
         } else if constexpr (is_any_one_unsigned_complex<T1, T2>::value) {
             if constexpr (is_any_one_floating<T1, T2>::value) {
                 return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
+            } else {
+                return static_cast<typename cunsigned_t<MX_SZ>::type>(0);
             }
-
-            return static_cast<typename cunsigned_t<MX_SZ>::type>(0);
+        } else {
+            return static_cast<typename complex_signed_t<MX_SZ>::type>(0);
         }
-        if constexpr (is_any_one_floating<T1, T2>::value) {
-            return static_cast<typename complex_floating_t<MX_SZ>::type>(0);
-        }
-        return static_cast<typename complex_signed_t<MX_SZ>::type>(0);
     }();
 #undef MX_SZ
 };

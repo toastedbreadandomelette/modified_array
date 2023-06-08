@@ -17,8 +17,8 @@ int main(i32 argc, const char **argv) {
     // MdStaticArray<double>::set_thread_count(1);
     Array<c32> c({sz, sz}, 0), d({sz, sz}, 0);
     for (usize i = 0; i < sz; ++i) {
-        c[i] = Utils::range<f64>(i * sz, i * sz + sz);
-        d[i] = Utils::range<f64>(i * sz, i * sz + sz);
+        c[i] = Utils::range<f64>(i * sz, i * sz + sz) + 12_i;
+        d[i] = Utils::range<f64>(i * sz, i * sz + sz) + 32.3_i;
     }
 
     std::cout << c.get_size() << '\n';
@@ -28,6 +28,8 @@ int main(i32 argc, const char **argv) {
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<f64> time = end - start;
+
+    // std::cout << ans << '\n';
 
     std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;

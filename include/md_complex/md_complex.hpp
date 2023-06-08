@@ -32,8 +32,8 @@ struct Complex {
     inline constexpr operator T() const { return real; }
 
     template <typename T1>
-    inline constexpr operator Complex() const {
-        return Complex<T>(real, img);
+    inline constexpr operator Complex<T1>() const {
+        return Complex<T1>(real, img);
     }
 
     template <typename T1>
