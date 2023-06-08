@@ -7,8 +7,8 @@
 #include <thread>
 #include <vector>
 
+#include "../../../utility/alloc.hpp"
 #include "../../md_static_array/md_static_array.hpp"
-#include "../../utility/alloc.hpp"
 
 void mul_mt_f32_internal(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p,
                          i32 start_row, i32 end_row) {

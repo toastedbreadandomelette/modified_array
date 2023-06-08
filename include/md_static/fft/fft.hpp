@@ -4,8 +4,8 @@
 
 #include <bitset>
 
+#include "../../utility/math.hpp"
 #include "../functions/range.hpp"
-#include "../utility/math.hpp"
 #include "./md_fft.hpp"
 
 /**

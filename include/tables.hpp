@@ -16,17 +16,17 @@ struct Table {
     // Actual table
     std::vector<Cell *> table;
     // Column type marking
-    std::vector<uint8_t> type;
+    std::vector<u8> type;
     // Table size
-    uint16_t col_size;
+    u16 col_size;
     // Display info
-    uint8_t first_last_display = 5;
+    u8 first_last_display = 5;
 
     // Get size
-    inline size_t get_size() const { return table.size(); }
+    inline usize get_size() const { return table.size(); }
 
     // get col size
-    inline size_t get_col_size() const { return col_size; }
+    inline usize get_col_size() const { return col_size; }
 
     /**
      * @brief Get header column
@@ -55,21 +55,21 @@ struct Table {
         }
         op << "\n";
         if (table.table.size() > table.first_last_display * 2) {
-            for (int i = 0; i < table.first_last_display; ++i) {
+            for (i32 i = 0; i < table.first_last_display; ++i) {
                 for (auto j = 0; j < table.col_size; ++j) {
                     op << std::setw(15) << table.table[i][j];
                 }
                 op << '\n';
             }
             op << '\n';
-            for (int i = 0; i < 3; ++i) {
+            for (i32 i = 0; i < 3; ++i) {
                 for (auto j = 0; j < table.col_size; ++j) {
                     op << std::setw(15) << "....";
                 }
                 op << '\n';
             }
             op << '\n';
-            for (int i = table.table.size() - table.first_last_display;
+            for (i32 i = table.table.size() - table.first_last_display;
                  i < table.table.size(); ++i) {
                 for (auto j = 0; j < table.col_size; ++j) {
                     op << std::setw(15) << table.table[i][j];
@@ -78,7 +78,7 @@ struct Table {
             }
             op << '\n';
         } else {
-            for (int i = 0; i < table.table.size(); ++i) {
+            for (i32 i = 0; i < table.table.size(); ++i) {
                 for (auto j = 0; j < table.col_size; ++j) {
                     op << std::setw(15) << table.table[i][j];
                 }

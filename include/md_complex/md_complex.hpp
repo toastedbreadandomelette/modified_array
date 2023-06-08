@@ -5,7 +5,7 @@
 #include <cmath>
 #include <ostream>
 
-#include "../md_static/utility/math.hpp"
+#include "../utility/math.hpp"
 
 template <typename T,
           class = typename std::enable_if<std::is_arithmetic<T>::value>::type>

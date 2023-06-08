@@ -5,7 +5,7 @@
 #include <functional>
 
 #include "../../md_complex/md_complex.hpp"
-#include "../utility/math.hpp"
+#include "../../utility/math.hpp"
 
 template <typename T>
 using fn = std::function<T>;

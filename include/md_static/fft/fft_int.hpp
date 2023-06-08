@@ -2,7 +2,7 @@
 #ifndef _FFT_INT_HPP_
 #define _FFT_INT_HPP_
 
-#include "../utility/math.hpp"
+#include "../../utility/math.hpp"
 #include "./md_fft.hpp"
 
 template <typename T>

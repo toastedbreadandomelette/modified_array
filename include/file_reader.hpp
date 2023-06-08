@@ -13,8 +13,8 @@
 
 struct FileReader {
     char *buffer;
-    size_t size;
-    size_t pointer = 0;
+    usize size;
+    usize pointer = 0;
     FILE *iptr;
 #ifdef _WIN32
     HANDLE file;
@@ -22,7 +22,7 @@ struct FileReader {
 #endif
 
 #ifdef __linux__
-    int file_descriptor;
+    i32 file_descriptor;
 #endif
 
     /**

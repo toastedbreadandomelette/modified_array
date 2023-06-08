@@ -23,7 +23,7 @@ enum NumberAttr { NEGATIVE = 0x01, REAL = 0x02 };
  * integer or floating)
  * @return A variant of signed, unsigned integer or a real number
  */
-Cell return_number(const std::string &value, const uint8_t attr) {
+Cell return_number(const std::string &value, const u8 attr) {
     switch (attr) {
         case NumberAttr::REAL:
         case NumberAttr::NEGATIVE:
@@ -32,8 +32,8 @@ Cell return_number(const std::string &value, const uint8_t attr) {
 
         default:
             bool is_neg = value[0] == '-';
-            uint8_t i = value[0] == '+' || is_neg;
-            uint64_t res = 0;
+            u8 i = value[0] == '+' || is_neg;
+            u64 res = 0;
             while (i < value.size()) {
                 res = ((res << 3) + (res << 1));
                 res += (value[i++]);
@@ -85,7 +85,7 @@ std::pair<std::string, bool> read_string_without_quotes(FileReader &fr,
  * line is encountered or not.
  */
 std::pair<std::string, bool> read_string_without_quotes_mt(
-    FileReader &fr, const char prev_value, size_t &__offset) {
+    FileReader &fr, const char prev_value, usize &__offset) {
     bool end_of_string = false;
     char c;
     std::string value;
@@ -175,7 +175,7 @@ std::pair<std::string, bool> read_string_with_quotes(FileReader &fr,
  */
 std::pair<std::string, bool> read_string_with_quotes_mt(FileReader &fr,
                                                         const char quotes,
-                                                        size_t &__offset) {
+                                                        usize &__offset) {
     bool end_of_string = false, end_of_scan = false, eol = false;
     char c;
     std::string value;
@@ -235,7 +235,7 @@ std::pair<Cell, bool> read_number(FileReader &fr, const char p) {
          is_signed = p == '+' || p == '-', is_exp_signed = false,
          end_of_number = false, is_new_line = false;
 
-    uint8_t number_attributes = 0;
+    u8 number_attributes = 0;
     is_neg && (number_attributes |= NumberAttr::NEGATIVE);
     is_dec && (number_attributes |= NumberAttr::REAL);
 
@@ -309,7 +309,7 @@ std::pair<Cell, bool> read_number(FileReader &fr, const char p) {
  * @return scanned number or a string misinterpreted as a number
  */
 std::pair<Cell, bool> read_number_mt(FileReader &fr, const char p,
-                                     size_t &__offset) {
+                                     usize &__offset) {
     std::string value;
     value.push_back(p);
     bool is_neg = p == '-', is_dec = p == '.', is_exp = false,
@@ -317,7 +317,7 @@ std::pair<Cell, bool> read_number_mt(FileReader &fr, const char p,
          is_signed = p == '+' || p == '-', is_exp_signed = false,
          end_of_number = false, is_new_line = false;
 
-    uint8_t number_attributes = 0;
+    u8 number_attributes = 0;
     is_neg && (number_attributes |= NumberAttr::NEGATIVE);
     is_dec && (number_attributes |= NumberAttr::REAL);
 
@@ -402,15 +402,14 @@ std::pair<Cell, bool> read_number_mt(FileReader &fr, const char p,
  * @param total_thrd Total threads that runs the same function
  * @return void
  */
-void read_csv_multi_thread(FileReader &fr, const size_t start,
-                           const uint16_t col_size, std::vector<Cell *> &table,
-                           const uint16_t thrd_number,
-                           const uint16_t total_thrd) {
+void read_csv_multi_thread(FileReader &fr, const usize start,
+                           const u16 col_size, std::vector<Cell *> &table,
+                           const u16 thrd_number, const u16 total_thrd) {
     bool eof = false, is_n = false;
     char c = '\0';
     std::string value;
-    size_t st = start;
-    uint16_t index = 0, rot = 0;
+    usize st = start;
+    u16 index = 0, rot = 0;
     Cell *row = new Cell[col_size], cell;
 
     while (!eof) {
@@ -509,17 +508,17 @@ void read_csv_multi_thread(FileReader &fr, const size_t start,
  * @param thrd_count thread initialized for reading a file
  * @returns Table
  */
-Table read_csv(const char *filepath, const uint8_t thrd_count = 16) {
+Table read_csv(const char *filepath, const u8 thrd_count = 16) {
     FileReader fr;
     // Loads Memory mapped file
     fr.load_file(filepath);
 
     // Get file size
-    size_t file_size = fr.size;
+    usize file_size = fr.size;
     // Calculate column size
     char c;
     Table table;
-    size_t start_ptr = 0, col_size = 1;
+    usize start_ptr = 0, col_size = 1;
     bool is_n = false, is_eof = false;
     std::string str_values;
     // Read header (make it user decision, default is true)
@@ -551,14 +550,14 @@ Table read_csv(const char *filepath, const uint8_t thrd_count = 16) {
         }
     }
     table.col_size = col_size = table.header.size();
-    table.type = std::vector<uint8_t>(col_size);
+    table.type = std::vector<u8>(col_size);
 
     /// Initialize the start points for each threads (except for start thread
     /// which starts from zero)
-    size_t points[thrd_count];
+    usize points[thrd_count];
     points[0] = start_ptr;
-    for (int i = 1; i < thrd_count; ++i) {
-        size_t start = points[i - 1] + 1;  // Next character will start from + 1
+    for (i32 i = 1; i < thrd_count; ++i) {
+        usize start = points[i - 1] + 1;  // Next character will start from + 1
         while (fr.buffer[start] != '\n') ++start;
         points[i] = start + 1;
     }
@@ -569,24 +568,24 @@ Table read_csv(const char *filepath, const uint8_t thrd_count = 16) {
     std::vector<std::thread> st;
 
     // Push all the threads to array
-    for (int i = 0; i < thrd_count; ++i) {
+    for (i32 i = 0; i < thrd_count; ++i) {
         st.emplace_back(std::thread(read_csv_multi_thread, std::ref(fr),
                                     points[i], col_size, std::ref(tables[i]),
                                     i + 1, thrd_count));
     }
 
     // wait for all the threads to finish
-    for (int i = 0; i < thrd_count; ++i) {
+    for (i32 i = 0; i < thrd_count; ++i) {
         st[i].join();
     }
-    size_t total_size = 0;
+    usize total_size = 0;
     for (auto &x : tables) {
         total_size += x.size();
     }
     table.table = std::vector<Cell *>(total_size);
     // Merge all the tables.
     // Here we are not considering the order in which they were inserted
-    for (size_t i = 0; i < total_size; ++i) {
+    for (usize i = 0; i < total_size; ++i) {
         table.table[i] = tables[i % thrd_count][i / thrd_count];
     }
 

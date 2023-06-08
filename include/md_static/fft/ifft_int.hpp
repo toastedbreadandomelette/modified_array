@@ -2,7 +2,7 @@
 #ifndef _IFFT_INT_HPP_
 #define _IFFT_INT_HPP_
 
-#include "../utility/math.hpp"
+#include "../../utility/math.hpp"
 #include "./md_fft.hpp"
 
 /**

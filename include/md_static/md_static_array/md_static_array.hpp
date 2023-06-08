@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 
-#include "../utility/alloc.hpp"
+#include "../../utility/alloc.hpp"
 #include "./md_type_inference.hpp"
 
 // Todo: Create a thread pool.
@@ -101,7 +101,7 @@ class MdStaticArray {
 
     friend std::ostream &operator<<(std::ostream &op, const ArraySlice<T> &ot);
 
-    static void set_thread_count(const uint8_t value);
+    static void set_thread_count(const u8 value);
 
     static void set_threshold_size(const usize size);
 

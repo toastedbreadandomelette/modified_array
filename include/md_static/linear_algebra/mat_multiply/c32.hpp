@@ -4,8 +4,8 @@
 
 #include <immintrin.h>
 
-#include "../../utility/alloc.hpp"
-#include "../../utility/simd.hpp"
+#include "../../../utility/alloc.hpp"
+#include "../../../utility/simd.hpp"
 
 /**
  * @brief Multiply two matrices A and transposed B matrix

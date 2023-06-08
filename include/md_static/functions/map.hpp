@@ -15,7 +15,7 @@ Array<T> Utils::map(const Array<T> &values,
 
     Array<T> result(shp, 0);
 
-    const uint8_t thread_count = ::s_thread_count;
+    const u8 thread_count = ::s_thread_count;
     const usize threshold_size = ::s_threshold_size;
 
     if (thread_count == 1 || size <= threshold_size) {
@@ -34,7 +34,7 @@ Array<T> Utils::map(const Array<T> &values,
         };
 
         const usize block = size / thread_count;
-        const uint8_t thread_but_one = thread_count - 1;
+        const u8 thread_but_one = thread_count - 1;
         for (i32 i = 0; i < thread_but_one; ++i) {
             st.emplace_back(std::thread(_add_int, block * i, block * (i + 1)));
         }

@@ -4,7 +4,7 @@
 
 #include <ostream>
 
-#include "../md_static_array/md_type_inference.hpp"
+#include "../md_static/md_static_array/md_type_inference.hpp"
 
 template <typename T>
 inline T *aligned_allocate(const usize alignment, const usize size) {

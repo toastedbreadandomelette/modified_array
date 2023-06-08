@@ -4,7 +4,7 @@
 
 #include "../../../include/md_static/functions.hpp"
 #include "../../../include/md_static/md_static_array/md_static_array.hpp"
-#include "../../../include/md_static/utility/math.hpp"
+#include "../../../include/utility/math.hpp"
 #include "../../tests.hpp"
 
 int main() {
