@@ -13,7 +13,7 @@
 
 void mul_mt_internal(c64 *a, c64 *tb, c64 *c, i32 m, i32 n, i32 p,
                      i32 start_row, i32 end_row) {
-    const i32 block_size = 128;
+    const i32 block_size = 64;
     const i32 remainder_cols = p & 3;
     const i32 remainder_rows = (end_row - start_row) & 3;
     const i32 remainder_vec = n & 7;
@@ -310,7 +310,7 @@ void mul_mt_c64(c64 *a, c64 *tb, c64 *c, i32 m, i32 n, i32 p) {
 
     std::vector<std::thread> threads;
 
-    i32 clamped_thread_count = std::min((i32)::s_thread_count, m / 128);
+    i32 clamped_thread_count = std::min((i32)::s_thread_count, m / 64);
 
     i32 total_rows_per_thread = m / clamped_thread_count;
 

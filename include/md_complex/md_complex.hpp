@@ -37,7 +37,7 @@ struct Complex {
     }
 
     template <typename T1>
-    inline Complex<T>& operator=(const T1& other) {
+    inline constexpr Complex<T>& operator=(const T1& other) {
         real = other;
         img = 0;
         return *this;
@@ -54,7 +54,7 @@ struct Complex {
     }
 
     template <typename T1>
-    inline Complex& operator+=(const Complex<T1>& other) {
+    inline constexpr Complex& operator+=(const Complex<T1>& other) {
         real += other.real;
         img += other.img;
         return *this;
