@@ -8,23 +8,23 @@
 
 #include "./math.hpp"
 
-typedef __m256 f32x8;
-typedef __m256d f64x4;
+using f32x8 = __m256;
+using f64x4 = __m256d;
 
-typedef __m256i i32x8;
-typedef __m256i i64x4;
+using i32x8 = __m256i;
+using i64x4 = __m256i;
 
-typedef __m256d c64x2;
-typedef __m256 c32x4;
+using c64x2 = __m256d;
+using c32x4 = __m256;
 
-typedef __m128 f32x4;
-typedef __m128d f64x2;
+using f32x4 = __m128;
+using f64x2 = __m128d;
 
-typedef __m128i i32x4;
-typedef __m128i i64x2;
+using i32x4 = __m128i;
+using i64x2 = __m128i;
 
-typedef __m128d c64x1;
-typedef __m128 c32x2;
+using c64x1 = __m128d;
+using c32x2 = __m128;
 
 namespace F32x8 {
 __always_inline f32x8 add(f32x8 first, f32x8 second) {
@@ -259,25 +259,33 @@ __always_inline c64x2 mul(c64x2 first, c64x2 second) {
     return _mm256_blend_pd(realf, imgf, 0b1010);
 }
 
+__always_inline c64x2 scal_mul(c64x2 first, f64x4 second) {
+    return _mm256_mul_pd(first, second);
+}
+
 __always_inline c64x2 div(c64x2 first, c64x2 second) {
     return _mm256_div_pd(first, second);
 }
 
 __always_inline c64x2 fmadd(c64x2 a, c64x2 b, c64x2 c) {
-    return _mm256_add_pd(mul(a, b), c);
+    return add(mul(a, b), c);
 }
 
 __always_inline c64x2 uni(c64 val) {
-    return _mm256_set_pd(val.real, val.img, val.real, val.img);
+    return _mm256_set_pd(val.img, val.real, val.img, val.real);
 }
 
 __always_inline c64x2 set(c64 a, c64 b) {
-    return _mm256_set_pd(a.real, a.img, b.real, b.img);
+    return _mm256_set_pd(b.img, b.real, a.img, a.real);
 }
 
 __always_inline c64x2 zero() { return _mm256_setzero_pd(); }
 
 __always_inline c64x2 fromptr(c64 *val) { return _mm256_loadu_pd((f64 *)val); }
+
+__always_inline c64x2 perm2x128(c64x2 a, c64x2 b, i8 ctrl) {
+    return _mm256_permute2f128_pd(a, b, ctrl);
+}
 
 __always_inline void storeptr(c64 *val, c64x2 vec) {
     _mm256_storeu_pd((f64 *)val, vec);

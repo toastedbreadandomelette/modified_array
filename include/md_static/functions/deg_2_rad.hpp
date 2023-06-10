@@ -8,8 +8,8 @@
 
 template <typename T>
 Array<T> Utils::deg_2_rad(const Array<T> &ndarray) {
-    return Utils::map<T>(
-        ndarray, [](const T value) -> T { return value * M_PI / 180.0; });
+    return Utils::map<T>(ndarray,
+                         [](const T value) { return value * M_PI / 180.0; });
 }
 
 template <typename T>

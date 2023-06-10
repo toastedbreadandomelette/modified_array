@@ -152,8 +152,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<double> mean(const Array<T> &values, const T init = 0,
-                              const i32 axis = -1);
+    static Array<f64> mean(const Array<T> &values, const T init = 0,
+                           const i32 axis = -1);
 
     /**
      * @brief Mean of all the values in the list values
@@ -162,8 +162,8 @@ struct MdArrayUtility {
      * @return Single number (or ndarray depending on axis)
      */
     template <typename T>
-    static Array<double> mean(const ArraySlice<T> &values, const T init = 0,
-                              const i32 axis = -1);
+    static Array<f64> mean(const ArraySlice<T> &values, const T init = 0,
+                           const i32 axis = -1);
 
     /**
      * @brief Maximum of all the values along given axis
@@ -282,7 +282,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename T>
-    static long double rms(const Array<T> &values, const T init = 0);
+    static f128 rms(const Array<T> &values, const T init = 0);
 
     /**
      * @brief Root Mean Square of all the values in the list values
@@ -291,7 +291,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename T>
-    static long double rms(const ArraySlice<T> &values, const T init = 0);
+    static f128 rms(const ArraySlice<T> &values, const T init = 0);
 
     /**
      * @brief Standard Deviation of all the values in the list values
@@ -300,7 +300,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename T>
-    static long double std_dev(const Array<T> &values);
+    static f128 std_dev(const Array<T> &values);
 
     /**
      * @brief Standard Deviation of all the values in the list values
@@ -309,7 +309,7 @@ struct MdArrayUtility {
      * @return single number
      */
     template <typename T>
-    static long double std_dev(const ArraySlice<T> &values);
+    static f128 std_dev(const ArraySlice<T> &values);
 
     /**
      * @brief compute log of values to the base 10
@@ -353,7 +353,7 @@ struct MdArrayUtility {
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static Array<T> mod_pow(const Array<T> &values, const usize power,
-                            const usize _mod);
+                            const usize mod);
 
     /**
      * @brief compute mod power of integers
@@ -361,33 +361,33 @@ struct MdArrayUtility {
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static Array<T> mod_pow(const ArraySlice<T> &values, const usize power,
-                            const usize _mod);
+                            const usize mod);
 
     /**
      * @brief compute mod power of integer raise to array of values
      * @tparam T type of integer values in array
      * @param n a number value
      * @param values list of exponents
-     * @param _mod value to perform mod_power
+     * @param mod value to perform mod_power
      * @returns list of values
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static Array<T> mod_pow(const u64 n, const Array<T> &values,
-                            const usize _mod);
+                            const usize mod);
 
     /**
      * @brief compute mod power of integer raise to array of values
      * @tparam T type of integer values in array
      * @param n a number value
      * @param values list of exponents
-     * @param _mod value to perform mod_power
+     * @param mod value to perform mod_power
      * @returns list of values
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
     static Array<T> mod_pow(const u64 n, const ArraySlice<T> &values,
-                            const usize _mod);
+                            const usize mod);
 
     /**
      * @brief compute power of values
@@ -397,7 +397,7 @@ struct MdArrayUtility {
      * @returns new arrays with value raise to power
      */
     template <typename T>
-    static Array<T> pow(const Array<T> &values, double power);
+    static Array<T> pow(const Array<T> &values, f64 power);
 
     /**
      * @brief compute power of values
@@ -407,7 +407,7 @@ struct MdArrayUtility {
      * @returns new arrays with value raise to power
      */
     template <typename T>
-    static Array<T> pow(const ArraySlice<T> &values, double power);
+    static Array<T> pow(const ArraySlice<T> &values, f64 power);
 
     /**
      * @brief compute sine of values, given in radian
@@ -616,7 +616,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> cumulative_sum(const Array<T> &__ndarray,
+    static Array<T> cumulative_sum(const Array<T> &ndarray,
                                    const usize axis = -1,
                                    const usize thread_count = 16);
 
@@ -642,7 +642,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> diff(const Array<T> &__ndarray, const usize axis = -1,
+    static Array<T> diff(const Array<T> &ndarray, const usize axis = -1,
                          const usize thread_count = 16);
 
     /**
@@ -653,7 +653,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> diff(const ArraySlice<T> &__ndarray, const usize axis = -1,
+    static Array<T> diff(const ArraySlice<T> &ndarray, const usize axis = -1,
                          const usize thread_count = 16);
 
     /**
@@ -666,7 +666,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> cumulative_product(const Array<T> &__ndarray,
+    static Array<T> cumulative_product(const Array<T> &ndarray,
                                        const usize axis = -1,
                                        const usize thread_count = 16);
 
@@ -692,7 +692,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> nan_cumulative_sum(const Array<T> &__ndarray,
+    static Array<T> nan_cumulative_sum(const Array<T> &ndarray,
                                        const usize axis = -1,
                                        const usize thread_count = 16);
 
@@ -718,7 +718,7 @@ struct MdArrayUtility {
      * __array
      */
     template <typename T>
-    static Array<T> nan_cumulative_product(const Array<T> &__ndarray,
+    static Array<T> nan_cumulative_product(const Array<T> &ndarray,
                                            const usize axis = -1,
                                            const usize thread_count = 16);
 
@@ -818,139 +818,139 @@ struct MdArrayUtility {
     /**
      * @brief Check if every value satisfies the condition
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
-    static bool every(const Array<T> &__ndarray, const fn<bool(const T &)> &,
+    static bool every(const Array<T> &ndarray, const fn<bool(const T &)> &,
                       const usize threads = 16);
 
     /**
      * @brief Check if every value satisfies the condition
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
-    static bool every(const ArraySlice<T> &__ndarray__reference,
+    static bool every(const ArraySlice<T> &arr_reference,
                       const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
-    static bool some(const Array<T> &__ndarray, const fn<bool(const T &)> &,
+    static bool some(const Array<T> &ndarray, const fn<bool(const T &)> &,
                      const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @param _func function that test for every element
      * @returns boolean value
      */
     template <typename T>
-    static bool some(const ArraySlice<T> &__ndarray__reference,
+    static bool some(const ArraySlice<T> &arr_reference,
                      const fn<bool(const T &)> &, const usize threads = 16);
 
     /**
      * @brief Compute 2 raised to value from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
 
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> exp2(const Array<T> &__ndarray);
+    static Array<f64> exp2(const Array<T> &ndarray);
 
     /**
      * @brief Compute 2 raised to value from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
 
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> exp2(const ArraySlice<T> &__ndarray);
+    static Array<f64> exp2(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Compute reciprocal from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> reciprocal(const Array<T> &__ndarray__reference);
+    static Array<f64> reciprocal(const Array<T> &arr_reference);
 
     /**
      * @brief Compute reciprocal from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> reciprocal(const ArraySlice<T> &__ndarray__reference);
+    static Array<f64> reciprocal(const ArraySlice<T> &arr_reference);
 
     /**
      * @brief Compute sinh from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> sinh(const Array<T> &__ndarray);
+    static Array<f64> sinh(const Array<T> &ndarray);
 
     /**
      * @brief Compute sinh from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> sinh(const ArraySlice<T> &__ndarray);
+    static Array<f64> sinh(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Compute cosh from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> cosh(const Array<T> &__ndarray__reference);
+    static Array<f64> cosh(const Array<T> &arr_reference);
 
     /**
      * @brief Compute cosh from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> cosh(const ArraySlice<T> &__ndarray__reference);
+    static Array<f64> cosh(const ArraySlice<T> &arr_reference);
 
     /**
      * @brief Compute tanh from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> tanh(const Array<T> &__ndarray);
+    static Array<f64> tanh(const Array<T> &ndarray);
 
     /**
      * @brief Compute tanh from array of values
      * @tparam T array type
-     * @param __ndarray n-dimensional array
+     * @param ndarray n-dimensional array
 
      * @returns boolean value
      */
     template <typename T>
-    static Array<double> tanh(const ArraySlice<T> &__ndarray);
+    static Array<f64> tanh(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Compare if two arrays are equal
@@ -977,7 +977,8 @@ struct MdArrayUtility {
         const i32 axis = -1);
 
     /**
-     * @brief Sort array in place
+     * @brief Sort array in place along the axis - To Do
+     * @todo implementation
      * @tparam T array type
      * @param ndarray n-dimensional array
      * @param comp function that test for every element
@@ -991,7 +992,8 @@ struct MdArrayUtility {
         const i32 axis = -1);
 
     /**
-     * @brief Sort array in place along the axis
+     * @brief Sort array in place along the axis - To Do
+     * @todo implementation
      * @tparam T array type
      * @param ndarray n-dimensional array
      * @param comp function that test for every element

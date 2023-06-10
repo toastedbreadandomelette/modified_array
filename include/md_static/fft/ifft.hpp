@@ -3,6 +3,7 @@
 #define _IFFT_HPP_
 
 #include "../../utility/math.hpp"
+#include "./ifft/c64.hpp"
 #include "./md_fft.hpp"
 
 /**
@@ -39,12 +40,12 @@ Array<T> FFT::ifft(const Array<c64>& other) {
     usize n = other.get_size();
     usize i = 0;
     Array<c64> input(n, 0);
-    if ((n & 1) || n < 64) {
-        for (usize index = 0; index < other.get_size(); ++index) {
+    if ((n & 1) || n <= 64) {
+        for (usize index = 0; index < n; ++index) {
             input.__array[index] = other.__array[index];
         }
-        __idft_internal(input, 0, input.get_size());
-        input /= input.get_size();
+        // __idft_internal(input, 0, n);
+        idft_subarray_inplace(input.__array, 0, n);
         return Array<T>(input);
     } else {
         // Get last zero numbers
@@ -74,15 +75,15 @@ Array<T> FFT::ifft(const Array<c64>& other) {
             }
         }
 
-#pragma omp parallel for
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other.__array[indexes.__array[index]];
         }
 
         if (i > 1) {
-#pragma omp parallel for
             for (usize index = 0; index < n; index += i) {
-                __idft_internal(input, index, index + i);
+                // __idft_internal(input, index, index + i);
+                idft_subarray_inplace_without_div(input.__array, index,
+                                                  index + i);
             }
         }
     }
@@ -94,7 +95,7 @@ Array<T> FFT::ifft(const Array<c64>& other) {
              operate_length <<= 1) {
             f64 angle = Math::pi_2 / operate_length;
             const c64 init = {::cos(angle), ::sin(angle)};
-#pragma omp parallel for
+
             for (usize i = 0; i < n; i += operate_length) {
                 c64 w = {1, 0};
                 for (usize j = 0; j < operate_length / 2; ++j) {
@@ -109,7 +110,8 @@ Array<T> FFT::ifft(const Array<c64>& other) {
         array /= array.get_size();
     };
 
-    __perform_fft_in_place(input, i);
+    // __perform_fft_in_place(input, i);
+    ifft_inplace(input.__array, n, i);
 
     return Array<T>(input);
 }

@@ -7,8 +7,7 @@
 
 template <typename T>
 Array<T> Utils::ceil(const Array<T> &ndarray) {
-    return Utils::map<T>(ndarray,
-                         [](const T value) -> T { return ::ceil(value); });
+    return Utils::map<T>(ndarray, [](const T value) { return ::ceil(value); });
 }
 
 template <typename T>

@@ -7,8 +7,7 @@
 
 template <typename T>
 Array<T> Utils::floor(const Array<T> &array) {
-    return Utils::map<T>(array,
-                         [](const T value) -> T { return ::floor(value); });
+    return Utils::map<T>(array, [](const T value) { return ::floor(value); });
 }
 
 template <typename T>

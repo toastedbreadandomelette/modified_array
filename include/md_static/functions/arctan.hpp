@@ -8,8 +8,7 @@
 
 template <typename T>
 Array<T> Utils::arctan(const Array<T> &values) {
-    return Utils::map<T>(values,
-                         [](const T &value) -> T { return ::atan(value); });
+    return Utils::map<T>(values, [](const T &value) { return ::atan(value); });
 }
 
 template <typename T>

@@ -6,6 +6,8 @@
 
 #include "../../utility/math.hpp"
 #include "../functions/range.hpp"
+#include "./fft/c64.hpp"
+#include "./fft/double.hpp"
 #include "./md_fft.hpp"
 
 /**
@@ -36,7 +38,6 @@ Array<c64> FFT::fft(const Array<T>& other) {
             }
             wstart *= wlen;
         }
-
         for (usize index = start; index < end; ++index) {
             array.__array[index] = result.__array[index - start];
         }
@@ -44,11 +45,12 @@ Array<c64> FFT::fft(const Array<T>& other) {
 
     usize n = other.get_size(), i = 0;
     Array<c64> input(n, 0);
-    if ((n & 1) || n < 64) {
-        for (usize index = 0; index < other.get_size(); ++index) {
+    if ((n & 1) || n <= 64) {
+        for (usize index = 0; index < n; ++index) {
             input.__array[index] = other.__array[index];
         }
-        __dft_internal(input, 0, input.get_size());
+        // __dft_internal(input, 0, n);
+        dft_subarray_inplace(input.__array, 0, n);
         return input;
     } else {
         // Get last zero numbers
@@ -78,15 +80,14 @@ Array<c64> FFT::fft(const Array<T>& other) {
             }
         }
 
-#pragma omp parallel for
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other.__array[indexes.__array[index]];
         }
 
         if (i > 1) {
-            // #pragma omp parallel for
             for (usize index = 0; index < n; index += i) {
-                __dft_internal(input, index, index + i);
+                // __dft_internal(input, index, index + i);
+                dft_subarray_inplace(input.__array, index, index + i);
             }
         }
     }
@@ -98,7 +99,7 @@ Array<c64> FFT::fft(const Array<T>& other) {
              operate_length <<= 1) {
             f64 angle = 2.0 * Math::pi / operate_length;
             const c64 init = {::cos(angle), -::sin(angle)};
-#pragma omp parallel for
+
             for (usize i = 0; i < n; i += operate_length) {
                 c64 w = {1, 0};
                 for (usize j = 0; j < operate_length / 2; ++j) {
@@ -112,7 +113,8 @@ Array<c64> FFT::fft(const Array<T>& other) {
         }
     };
 
-    __perform_fft_in_place(input, i);
+    // __perform_fft_in_place(input, i);
+    fft_inplace(input.__array, n, i);
 
     return input;
 }

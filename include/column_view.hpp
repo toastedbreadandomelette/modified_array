@@ -15,7 +15,7 @@ struct ColView {
     // Pointer of the header name
     const char *name;
     // Index of the string (easy to identify from the table)
-    uint16_t col_index;
+    u16 col_index;
     // Reference of the table ()
     Table *table;
 
@@ -48,7 +48,7 @@ struct ColView {
      * @param init initalizing value before combining
      * @returns Result
      */
-    Cell aggregate(const std::function<Cell(const Cell &, const Cell &)> &func,
+    Cell aggregate(const fn<Cell(const Cell &, const Cell &)> &func,
                    const Cell &init);
 
     /**
@@ -58,55 +58,53 @@ struct ColView {
      * @param init initalizing value before combining
      * @returns Result
      */
-    Cell aggregate_mt(
-        const std::function<Cell(const Cell &, const Cell &)> &func,
-        const Cell &init);
+    Cell aggregate_mt(const fn<Cell(const Cell &, const Cell &)> &func,
+                      const Cell &init);
 
     /**
      * @brief Maps the values and returns the new array.
      */
-    template <typename _T>
-    MdStaticArray<_T> st_map(const std::function<_T(const Cell &, const usize,
-                                                    const ColView &)> &func);
+    template <typename T>
+    MdStaticArray<T> st_map(
+        const fn<T(const Cell &, const usize, const ColView &)> &func);
 
     /**
      * @brief Maps the values and returns the new array.
      * Uses multi-threading
      */
-    template <typename _T>
-    MdStaticArray<_T> st_map_mt(
-        const std::function<_T(const Cell &, const usize, const ColView &)>
-            &func);
+    template <typename T>
+    MdStaticArray<T> st_map_mt(
+        const fn<T(const Cell &, const usize, const ColView &)> &func);
 
     /**
      * @brief get values of a cell
      */
-    template <typename _T>
-    friend _T get_values(const Cell &);
+    template <typename T>
+    friend T get_values(const Cell &);
 
     /**
      * @brief Maps the values and returns the new array.
      */
-    template <typename _T>
-    MdStaticArray<_T> st_map();
+    template <typename T>
+    MdStaticArray<T> st_map();
 
     /**
      * @brief Maps the values and returns the new array.
      */
-    template <typename _T>
-    MdStaticArray<_T> st_map_mt();
+    template <typename T>
+    MdStaticArray<T> st_map_mt();
 };
 
-template <typename _T,
-          class = typename std::enable_if<std::is_arithmetic<_T>::value>::type>
-_T get_values(const Cell &value) {
+template <typename T,
+          class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
+T get_values(const Cell &value) {
     switch (value.index()) {
         case 0:
-            return std::get<int64_t>(value);
+            return std::get<i64>(value);
         case 1:
-            return std::get<uint64_t>(value);
+            return std::get<u64>(value);
         case 2:
-            return std::get<double>(value);
+            return std::get<f64>(value);
         default:
             return 0;
     }
@@ -123,9 +121,8 @@ std::string get_values(const Cell &value) {
     }
 }
 
-Cell ColView::aggregate(
-    const std::function<Cell(const Cell &, const Cell &)> &func,
-    const Cell &init) {
+Cell ColView::aggregate(const fn<Cell(const Cell &, const Cell &)> &func,
+                        const Cell &init) {
     Cell start = init;
     for (auto &Table : table->table) {
         start = func(start, Table[col_index]);
@@ -134,9 +131,8 @@ Cell ColView::aggregate(
     return start;
 }
 
-Cell ColView::aggregate_mt(
-    const std::function<Cell(const Cell &, const Cell &)> &func,
-    const Cell &init) {
+Cell ColView::aggregate_mt(const fn<Cell(const Cell &, const Cell &)> &func,
+                           const Cell &init) {
     std::vector<Cell> init_array(ColView::total_threads, init);
     std::vector<std::thread> thread_pool;
 
@@ -165,14 +161,14 @@ Cell ColView::aggregate_mt(
     return final;
 }
 
-template <typename _T>
-MdStaticArray<_T> ColView::st_map(
-    const std::function<_T(const Cell &, const usize, const ColView &)> &func) {
+template <typename T>
+MdStaticArray<T> ColView::st_map(
+    const fn<T(const Cell &, const usize, const ColView &)> &func) {
     const usize size = this->get_size();
     MdStaticArray<_T> value(size);
-    const ColView &__ptr = *this;
-    for (usize ptr = 0; ptr < size; ++ptr) {
-        value[ptr] = func(this->operator[](ptr), ptr, __ptr);
+    const ColView &ptr = *this;
+    for (usize index = 0; index < size; ++index) {
+        value[index] = func((*this)[index], index, ptr);
     }
 
     return value;
@@ -180,16 +176,16 @@ MdStaticArray<_T> ColView::st_map(
 
 template <typename T>
 MdStaticArray<T> ColView::st_map_mt(
-    const std::function<T(const Cell &, const usize, const ColView &)> &func) {
+    const fn<T(const Cell &, const usize, const ColView &)> &func) {
     const usize size = this->get_size();
-    MdStaticArray<_T> value(size);
+    MdStaticArray<T> value(size);
     std::vector<std::thread> thread_pool;
 
     auto mp_internal = [&func, this, &value](const usize start,
                                              const usize end) {
-        const ColView &__ptr = *this;
-        for (usize ptr = start; ptr < end; ++ptr) {
-            value[ptr] = func(this->operator[](ptr), ptr, __ptr);
+        const ColView &ptr = *this;
+        for (usize index = start; index < end; ++index) {
+            value[index] = func(this->operator[](index), index, ptr);
         }
     };
 
@@ -210,10 +206,10 @@ MdStaticArray<T> ColView::st_map_mt(
     return value;
 }
 
-template <typename _T>
-MdStaticArray<_T> ColView::st_map() {
+template <typename T>
+Array<T> ColView::st_map() {
     const usize size = this->get_size();
-    MdStaticArray<_T> value(size);
+    Array<T> value(size);
     for (usize ptr = 0; ptr < size; ++ptr) {
         value[ptr] = get_values<_T>(this->operator[](ptr));
     }
@@ -221,20 +217,20 @@ MdStaticArray<_T> ColView::st_map() {
     return value;
 }
 
-template <typename _T>
-MdStaticArray<_T> ColView::st_map_mt() {
+template <typename T>
+Array<T> ColView::st_map_mt() {
     const usize size = this->get_size();
-    MdStaticArray<_T> value(size);
+    Array<T> value(size);
     std::vector<std::thread> thread_pool;
 
     auto mp_internal = [this, &value](const usize start, const usize end) {
         for (usize ptr = start; ptr < end; ++ptr) {
-            value[ptr] = get_values<_T>(this->operator[](ptr));
+            value[ptr] = get_values<T>((*this)[ptr]);
         }
     };
 
     const usize block = size / ColView::total_threads;
-    const uint8_t t_but_one = ColView::total_threads - 1;
+    const u8 t_but_one = ColView::total_threads - 1;
 
     for (i32 i = 0; i < t_but_one; ++i) {
         thread_pool.emplace_back(

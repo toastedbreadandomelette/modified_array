@@ -10,7 +10,8 @@
 template <typename T,
           class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
 struct Complex {
-    T real{}, img{};
+    T real{};
+    T img{};
 
     constexpr Complex() = default;
 

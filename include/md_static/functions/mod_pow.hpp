@@ -13,7 +13,7 @@ Array<T> Utils::mod_pow(const Array<T> &values, const usize power,
         case 1:
             return Array<T>(values);
         default: {
-            return Utils::map<T>(values, [power, mod](const T &value) -> T {
+            return Utils::map<T>(values, [power, mod](const T &value) {
                 u64 result = 1ULL, val = value, pow = power;
                 while (pow > 0) {
                     if (pow & 1) {
@@ -32,7 +32,7 @@ Array<T> Utils::mod_pow(const Array<T> &values, const usize power,
 
 template <typename T, typename T1>
 Array<T> Utils::mod_pow(const u64 n, const Array<T> &values, const usize mod) {
-    return Utils::map<T>(values, [n, mod](const T &value) -> T {
+    return Utils::map<T>(values, [n, mod](const T &value) {
         switch (value) {
             case 0:
                 return static_cast<T>(1);

@@ -6,18 +6,18 @@
 
 #include <cmath>
 
-typedef char i8;
-typedef unsigned char u8;
-typedef short int i16;
-typedef short unsigned u16;
-typedef int i32;
-typedef unsigned u32;
-typedef long long i64;
-typedef unsigned long long u64;
-typedef float f32;
-typedef double f64;
-typedef long double f128;
-typedef size_t usize;
+using i8 = char;
+using u8 = unsigned char;
+using i16 = short int;
+using u16 = short unsigned;
+using i32 = int;
+using u32 = unsigned;
+using i64 = long long;
+using u64 = unsigned long long;
+using f32 = float;
+using f64 = double;
+using f128 = long double;
+using usize = size_t;
 
 namespace Usize {
 constexpr usize min = 0;
