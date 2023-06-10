@@ -397,6 +397,7 @@ void fft_inplace(c64 *array, i32 n, i32 block_size) {
                 break;
             default:
                 fft_odd(array, n, operate_length);
+
                 // f64 angle = 2.0 * Math::pi / operate_length;
                 // const c64 init = {::cos(angle), -::sin(angle)};
 
