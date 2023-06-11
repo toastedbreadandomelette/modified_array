@@ -43,8 +43,8 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
         for (usize index = 0; index < other.get_size(); ++index) {
             input.__array[index] = other.__array[index];
         }
-        __idft_internal(input, 0, input.get_size());
-
+        // __idft_internal(input, 0, input.get_size());
+        idft_subarray_inplace_without_div(input.__array, 0, n);
         return input;
     } else {
         // Get last zero numbers
@@ -80,7 +80,9 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
 
         if (i > 1) {
             for (usize index = 0; index < n; index += i) {
-                __idft_internal(input, index, index + i);
+                // __idft_internal(input, index, index + i);
+                idft_subarray_inplace_without_div(input.__array, index,
+                                                  index + i);
             }
         }
     }
@@ -106,7 +108,8 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
         }
     };
 
-    __perform_fft_in_place(input, i);
+    // __perform_fft_in_place(input, i);
+    ifft_inplace(input.__array, n, i);
 
     return input;
 }
@@ -140,12 +143,12 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
     usize n = other.get_size();
     usize i = 0;
     Array<c64> input(n, 0);
-    if ((n & 1) || n < 16) {
+    if ((n & 1) || n <= 64) {
         for (usize index = 0; index < other.get_size(); ++index) {
             input.__array[index] = other[index];
         }
-        __idft_internal(input, 0, input.get_size());
-
+        // __idft_internal(input, 0, input.get_size());
+        idft_subarray_inplace_without_div(input.__array, 0, n);
         return input;
     } else {
         // Get last zero numbers
@@ -180,11 +183,10 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
         }
 
         if (i > 1) {
-            while (i < 8 && (i << 1 < n)) {
-                i <<= 1;
-            }
             for (usize index = 0; index < n; index += i) {
-                __idft_internal(input, index, index + i);
+                // __idft_internal(input, index, index + i);
+                idft_subarray_inplace_without_div(input.__array, index,
+                                                  index + i);
             }
         }
     }
@@ -210,7 +212,8 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
         }
     };
 
-    __perform_fft_in_place(input, i);
+    // __perform_fft_in_place(input, i);
+    ifft_inplace_without_div(input.__array, n, i);
 
     // for (usize index = 1; index < n - index; ++index) {
     //     std::swap(input.__array[index], input.__array[n - index]);

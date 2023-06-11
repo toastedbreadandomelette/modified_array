@@ -135,7 +135,7 @@ void dft_subarray(c64 *array, i32 start, i32 end, c64 *dest) {
 
 void dft_subarray_inplace(c64 *array, i32 start, i32 end) {
     const usize n = end - start;
-    c64 *dest = aligned_allocate<c64>(64, n);
+    c64 dest[n];
     c64x2 accumulator = C64x2::zero();
 
     i32 rem = (end - start) & 7;
@@ -168,19 +168,19 @@ void dft_subarray_inplace(c64 *array, i32 start, i32 end) {
     c64 wstart = wlen;
     rem = (end - start) & 7;
     c64 buffer[2];
-    c64 nrem = (n - 1) & 3;
+    i32 nrem = (n - 1) & 3;
     c64 wstart1, wstart2, wstart3, wstart4;
-    c64 w0, w1, w2, w3;
-    for (usize index = 1; index < (n - nrem); index += 4) {
+    c64 unit = c64(1, 0);
+    for (i32 index = 1; index < (n - nrem); index += 4) {
         wstart1 = wstart;
         wstart2 = wstart1 * wlen;
         wstart3 = wstart2 * wlen;
         wstart4 = wstart3 * wlen;
 
-        c64x2 ws0 = C64x2::set(c64(1, 0), wstart1);
-        c64x2 ws1 = C64x2::set(c64(1, 0), wstart2);
-        c64x2 ws2 = C64x2::set(c64(1, 0), wstart3);
-        c64x2 ws3 = C64x2::set(c64(1, 0), wstart4);
+        c64x2 ws0 = C64x2::set(unit, wstart1);
+        c64x2 ws1 = C64x2::set(unit, wstart2);
+        c64x2 ws2 = C64x2::set(unit, wstart3);
+        c64x2 ws3 = C64x2::set(unit, wstart4);
 
         c64x2 wsstart0 = C64x2::uni(wstart1 * wstart1);
         c64x2 wsstart1 = C64x2::uni(wstart2 * wstart2);
@@ -192,7 +192,7 @@ void dft_subarray_inplace(c64 *array, i32 start, i32 end) {
         c64x2 accumulator2 = C64x2::zero();
         c64x2 accumulator3 = C64x2::zero();
 
-        for (usize i = start; i < (end - rem); i += 8) {
+        for (i32 i = start; i < (end - rem); i += 8) {
             c64x2 acc = C64x2::set(array[i], array[i + 1]);
             accumulator0 = C64x2::add(accumulator0, C64x2::mul(acc, ws0));
             accumulator1 = C64x2::add(accumulator1, C64x2::mul(acc, ws1));
@@ -275,7 +275,7 @@ void dft_subarray_inplace(c64 *array, i32 start, i32 end) {
         array[i] = dest[i - start];
     }
 
-    aligned_free(dest);
+    // aligned_free(dest);
 }
 
 void fft_b2(c64 *array, i32 n) {
@@ -397,20 +397,6 @@ void fft_inplace(c64 *array, i32 n, i32 block_size) {
                 break;
             default:
                 fft_odd(array, n, operate_length);
-
-                // f64 angle = 2.0 * Math::pi / operate_length;
-                // const c64 init = {::cos(angle), -::sin(angle)};
-
-                // for (usize i = 0; i < n; i += operate_length) {
-                //     c64 w = {1, 0};
-                //     for (usize j = 0; j < operate_length / 2; ++j) {
-                //         c64 u = array[i + j];
-                //         c64 v = array[i + j + operate_length / 2] * w;
-                //         array[i + j] = u + v;
-                //         array[i + j + operate_length / 2] = u - v;
-                //         w *= init;
-                //     }
-                // }
                 break;
         }
     }

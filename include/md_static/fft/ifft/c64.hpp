@@ -168,7 +168,7 @@ void idft_subarray_inplace_without_div(c64 *array, i32 start, i32 end) {
     c64 wstart = wlen;
     rem = (end - start) & 7;
     c64 buffer[2];
-    c64 nrem = (n - 1) & 3;
+    i32 nrem = (n - 1) & 3;
     c64 wstart1, wstart2, wstart3, wstart4;
     for (usize index = 1; index < (n - nrem); index += 4) {
         wstart1 = wstart;
@@ -181,10 +181,10 @@ void idft_subarray_inplace_without_div(c64 *array, i32 start, i32 end) {
         c64x2 ws2 = C64x2::set(c64(1, 0), wstart3);
         c64x2 ws3 = C64x2::set(c64(1, 0), wstart4);
 
-        c64x2 wsstart0 = C64x2::set(wstart1 * wstart1, wstart1 * wstart1);
-        c64x2 wsstart1 = C64x2::set(wstart2 * wstart2, wstart2 * wstart2);
-        c64x2 wsstart2 = C64x2::set(wstart3 * wstart3, wstart3 * wstart3);
-        c64x2 wsstart3 = C64x2::set(wstart4 * wstart4, wstart4 * wstart4);
+        c64x2 wsstart0 = C64x2::uni(wstart1 * wstart1);
+        c64x2 wsstart1 = C64x2::uni(wstart2 * wstart2);
+        c64x2 wsstart2 = C64x2::uni(wstart3 * wstart3);
+        c64x2 wsstart3 = C64x2::uni(wstart4 * wstart4);
 
         c64x2 accumulator0 = C64x2::zero();
         c64x2 accumulator1 = C64x2::zero();
@@ -274,6 +274,9 @@ void idft_subarray_inplace_without_div(c64 *array, i32 start, i32 end) {
     for (i32 i = start; i < end; ++i) {
         array[i] = dest[i - start];
     }
+
+    // aligned_free(dest);
+    // dest = nullptr;
 }
 
 void idft_subarray_inplace(c64 *array, i32 start, i32 end) {
@@ -393,7 +396,7 @@ void ifft_odd(c64 *array, i32 n, i32 block_size) {
     }
 }
 
-void ifft_inplace(c64 *array, i32 n, i32 block_size) {
+void ifft_inplace_without_div(c64 *array, i32 n, i32 block_size) {
     for (i32 operate_length = (block_size << 1); operate_length <= n;
          operate_length <<= 1) {
         switch (operate_length) {
@@ -405,23 +408,13 @@ void ifft_inplace(c64 *array, i32 n, i32 block_size) {
                 break;
             default:
                 ifft_odd(array, n, operate_length);
-                // f64 angle = 2.0 * Math::pi / operate_length;
-                // const c64 init = {::cos(angle), ::sin(angle)};
-
-                // for (usize i = 0; i < n; i += operate_length) {
-                //     c64 w = {1, 0};
-                //     for (usize j = 0; j < operate_length / 2; ++j) {
-                //         c64 u = array[i + j];
-                //         c64 v = array[i + j + operate_length / 2] * w;
-                //         array[i + j] = u + v;
-                //         array[i + j + operate_length / 2] = u - v;
-                //         w *= init;
-                //     }
-                // }
                 break;
         }
     }
+}
 
+void ifft_inplace(c64 *array, i32 n, i32 block_size) {
+    ifft_inplace_without_div(array, n, block_size);
     for (i32 i = 0; i < n; ++i) {
         array[i] /= n;
     }

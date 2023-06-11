@@ -13,6 +13,13 @@ using f64x4 = __m256d;
 
 using i32x8 = __m256i;
 using i64x4 = __m256i;
+using i16x16 = __m256i;
+using i8x32 = __m256i;
+
+using u32x8 = __m256i;
+using u64x4 = __m256i;
+using u16x16 = __m256i;
+using u8x32 = __m256i;
 
 using c64x2 = __m256d;
 using c32x4 = __m256;
@@ -22,6 +29,13 @@ using f64x2 = __m128d;
 
 using i32x4 = __m128i;
 using i64x2 = __m128i;
+using i16x8 = __m128i;
+using i8x16 = __m128i;
+
+using u32x4 = __m128i;
+using u64x2 = __m128i;
+using u16x8 = __m128i;
+using u8x16 = __m128i;
 
 using c64x1 = __m128d;
 using c32x2 = __m128;
@@ -297,5 +311,75 @@ __always_inline c64 reduce_sum(c64x2 val) {
     return ans[0] + ans[1];
 }
 }  // namespace C64x2
+
+namespace I64x4 {
+__always_inline i64x4 add(i64x4 first, i64x4 second) {
+    return _mm256_add_epi64(first, second);
+}
+
+__always_inline i64x4 sub(i64x4 first, i64x4 second) {
+    return _mm256_sub_epi64(first, second);
+}
+
+__always_inline i64x4 uni(i64 val) { return _mm256_set1_epi64x(val); }
+
+__always_inline i64x4 set(i64 a, i64 b, i64 c, i64 d) {
+    return _mm256_set_epi64x(a, b, c, d);
+}
+
+__always_inline i64x4 zero() { return _mm256_setzero_si256(); }
+
+__always_inline i64x4 fromptr(i64 *val) { return _mm256_loadu_epi64(val); }
+
+__always_inline void storeptr(i64 *val, i64x4 vec) {
+    _mm256_storeu_epi64(val, vec);
+}
+
+__always_inline i64 reduce_sum(i64x4 val) {
+    i64 ans[8] = {0, 0, 0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1] + ans[2] + ans[3];
+}
+}  // namespace I64x4
+
+namespace I32x8 {
+__always_inline i32x8 add(i32x8 first, i32x8 second) {
+    return _mm256_add_epi32(first, second);
+}
+
+__always_inline i32x8 sub(i32x8 first, i32x8 second) {
+    return _mm256_sub_epi32(first, second);
+}
+
+__always_inline i64x4 mul(i32x8 first, i32x8 second) {
+    return _mm256_mul_epi32(first, second);
+}
+
+__always_inline i32x8 fmadd(i32x8 a, i32x8 b, i32x8 c) {
+    return _mm256_add_epi32(mul(a, b), c);
+}
+
+__always_inline i32x8 uni(i32 val) { return _mm256_set1_epi32(val); }
+
+__always_inline i32x8 set(i32 a, i32 b, i32 c, i32 d, i32 e, i32 f, i32 g,
+                          i32 h) {
+    return _mm256_set_epi32(a, b, c, d, e, f, g, h);
+}
+
+__always_inline i32x8 zero() { return _mm256_setzero_si256(); }
+
+__always_inline i32x8 fromptr(i32 *val) { return _mm256_loadu_epi32(val); }
+
+__always_inline void storeptr(i32 *val, i32x8 vec) {
+    _mm256_storeu_epi32(val, vec);
+}
+
+__always_inline i32 reduce_sum(i32x8 val) {
+    i32 ans[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    storeptr(ans, val);
+    return ans[0] + ans[1] + ans[2] + ans[3] + ans[4] + ans[5] + ans[6] +
+           ans[7];
+}
+}  // namespace I32x8
 
 #endif

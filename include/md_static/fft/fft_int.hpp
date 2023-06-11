@@ -3,6 +3,7 @@
 #define _FFT_INT_HPP_
 
 #include "../../utility/math.hpp"
+#include "./fft/c64.hpp"
 #include "./md_fft.hpp"
 
 template <typename T>
@@ -33,30 +34,6 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
         }
     };
 
-    auto __dft_ret_internal = [](Array<c64>& array, const usize start,
-                                 const usize end) {
-        Array<c64> result(end - start, 0);
-        const usize n = end - start;
-        f64 angle = Math::pi_2 / n;
-        const c64 wlen = {::cos(angle), -::sin(angle)};
-        c64 wstart = wlen;
-
-        for (usize i = start; i < end; ++i) {
-            result.__array[0] += array.__array[i];
-        }
-
-        for (usize index = 1; index < n; ++index) {
-            c64 w = {1, 0};
-            for (usize i = start; i < end; ++i) {
-                result.__array[index] += array.__array[i] * w;
-                w *= wstart;
-            }
-            wstart *= wlen;
-        }
-
-        return result;
-    };
-
     usize n = other.get_size();
     usize i = 0;
     Array<c64> input(n);
@@ -64,7 +41,9 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other.__array[index];
         }
-        return __dft_ret_internal(input, 0, n);
+        // __dft_internal(input, 0, n);
+        dft_subarray_inplace(input.__array, 0, n);
+        return input;
     } else {
         // Get last zero numbers
         const usize ls = ((n ^ (n - 1)) + 1) >> 1;
@@ -100,7 +79,8 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
 
         if (i > 1) {
             for (usize index = 0; index < n; index += i) {
-                __dft_internal(input, index, index + i);
+                // __dft_internal(input, index, index + i);
+                dft_subarray_inplace(input.__array, index, index + i);
             }
         }
     }
@@ -126,7 +106,8 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
         }
     };
 
-    __perform_fft_in_place(input, i);
+    // __perform_fft_in_place(input, i);
+    fft_inplace(input.__array, n, i);
 
     return input;
 }
@@ -187,11 +168,13 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
     usize i = 0;
     Array<c64> input(n);
 
-    if ((n & 1) || n < 16) {
+    if ((n & 1) || n <= 64) {
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other[index];
         }
-        return __dft_ret_internal(input, 0, n);
+        // return __dft_ret_internal(input, 0, n);
+        dft_subarray_inplace(input.__array, 0, n);
+        return input;
     } else {
         // Get last zero numbers
         const usize ls = ((n ^ (n - 1)) + 1) >> 1;
@@ -226,12 +209,9 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         }
 
         if (i > 1) {
-            while (i < 8 && (i << 1 < n)) {
-                i <<= 1;
-            }
-
             for (usize index = 0; index < n; index += i) {
-                __dft_internal(input, index, index + i);
+                // __dft_internal(input, index, index + i);
+                dft_subarray_inplace(input.__array, index, index + i);
             }
         }
     }
@@ -256,7 +236,8 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
         }
     };
 
-    __perform_fft_in_place(input, i);
+    // __perform_fft_in_place(input, i);
+    fft_inplace(input.__array, n, i);
 
     return input;
 }
