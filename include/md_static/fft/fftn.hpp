@@ -23,7 +23,7 @@ Array<c64> FFT::fftn(const Array<T>& ndarray) {
     for (usize k = 0; k < ndarray.get_shape_size(); ++k) {
         const usize loop = result.get_axis_reference(k).get_total_axes();
 
-#pragma omp parallel for
+        // #pragma omp parallel for
         for (usize index = 0; index < loop; ++index) {
             auto axis_ref = result.get_nth_axis_reference(k, index);
             axis_ref = fft_int(axis_ref);

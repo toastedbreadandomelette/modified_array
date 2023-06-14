@@ -18,31 +18,6 @@
  */
 template <class T>
 Array<c64> FFT::fft(const Array<T>& other) {
-    auto __dft_internal = [](Array<c64>& array, const usize start,
-                             const usize end) {
-        Array<c64> result(end - start, 0);
-        const usize n = end - start;
-        f64 angle = Math::pi_2 / n;
-        const c64 wlen = {::cos(angle), -::sin(angle)};
-        c64 wstart = wlen;
-
-        for (usize i = start; i < end; ++i) {
-            result.__array[0] += array.__array[i];
-        }
-        // #pragma omp parallel for
-        for (usize index = 1; index < n; ++index) {
-            c64 w = {1, 0};
-            for (usize i = start; i < end; ++i) {
-                result.__array[index] += array.__array[i] * w;
-                w *= wstart;
-            }
-            wstart *= wlen;
-        }
-        for (usize index = start; index < end; ++index) {
-            array.__array[index] = result.__array[index - start];
-        }
-    };
-
     usize n = other.get_size(), i = 0;
     Array<c64> input(n, 0);
     if ((n & 1) || n <= 64) {
@@ -91,27 +66,6 @@ Array<c64> FFT::fft(const Array<T>& other) {
             }
         }
     }
-
-    auto __perform_fft_in_place = [](Array<c64>& array, const usize start) {
-        usize n = array.get_size();
-
-        for (usize operate_length = (start << 1); operate_length <= n;
-             operate_length <<= 1) {
-            f64 angle = 2.0 * Math::pi / operate_length;
-            const c64 init = {::cos(angle), -::sin(angle)};
-
-            for (usize i = 0; i < n; i += operate_length) {
-                c64 w = {1, 0};
-                for (usize j = 0; j < operate_length / 2; ++j) {
-                    c64 u = array.__array[i + j];
-                    c64 v = array.__array[i + j + operate_length / 2] * w;
-                    array.__array[i + j] = u + v;
-                    array.__array[i + j + operate_length / 2] = u - v;
-                    w *= init;
-                }
-            }
-        }
-    };
 
     // __perform_fft_in_place(input, i);
     fft_inplace(input.__array, n, i);

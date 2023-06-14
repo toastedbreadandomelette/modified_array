@@ -11,31 +11,6 @@
  * https://e-maxx.ru/algo/fft_multiply
  */
 Array<c64> FFT::ifft_int(const Array<c64>& other) {
-    auto __idft_internal = [](Array<c64>& array, const usize start,
-                              const usize end) {
-        Array<c64> result(end - start, 0);
-        const usize n = end - start;
-        f64 angle = Math::pi_2 / n;
-        const c64 wlen = {::cos(angle), ::sin(angle)};
-        c64 wstart = wlen;
-
-        for (usize i = start; i < end; ++i) {
-            result.__array[0] += array.__array[i];
-        }
-        for (usize index = 1; index < n; ++index) {
-            c64 w = {1, 0};
-            for (usize i = start; i < end; ++i) {
-                result.__array[index] += array.__array[i] * w;
-                w *= wstart;
-            }
-            wstart *= wlen;
-        }
-
-        for (usize index = start; index < end; ++index) {
-            array.__array[index] = result.__array[index - start];
-        }
-    };
-
     usize n = other.get_size();
     usize i = 0;
     Array<c64> input(n, 0);
@@ -43,7 +18,6 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
         for (usize index = 0; index < other.get_size(); ++index) {
             input.__array[index] = other.__array[index];
         }
-        // __idft_internal(input, 0, input.get_size());
         idft_subarray_inplace_without_div(input.__array, 0, n);
         return input;
     } else {
@@ -87,27 +61,6 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](Array<c64>& __1darray, const usize start) {
-        usize n = __1darray.get_size();
-
-        for (usize operate_length = (start << 1); operate_length <= n;
-             operate_length <<= 1) {
-            f64 angle = Math::pi_2 / operate_length;
-            const c64 init = {::cos(angle), ::sin(angle)};
-
-            for (usize i = 0; i < n; i += operate_length) {
-                c64 w = {1, 0};
-                for (usize j = 0; j < operate_length / 2; ++j) {
-                    c64 u = __1darray.__array[i + j];
-                    c64 v = __1darray.__array[i + j + operate_length / 2] * w;
-                    __1darray.__array[i + j] = u + v;
-                    __1darray.__array[i + j + operate_length / 2] = u - v;
-                    w *= init;
-                }
-            }
-        }
-    };
-
     // __perform_fft_in_place(input, i);
     ifft_inplace(input.__array, n, i);
 
@@ -115,31 +68,6 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
 }
 
 Array<c64> FFT::ifft_int(const Axis<c64>& other) {
-    auto __idft_internal = [](Array<c64>& array, const usize start,
-                              const usize end) {
-        Array<c64> result(end - start, 0);
-        const usize n = end - start;
-        f64 angle = Math::pi_2 / n;
-        const c64 wlen = {::cos(angle), ::sin(angle)};
-        c64 wstart = wlen;
-
-        for (usize i = start; i < end; ++i) {
-            result.__array[0] += array.__array[i];
-        }
-        for (usize index = 1; index < n; ++index) {
-            c64 w = {1, 0};
-            for (usize i = start; i < end; ++i) {
-                result.__array[index] += array.__array[i] * w;
-                w *= wstart;
-            }
-            wstart *= wlen;
-        }
-
-        for (usize index = start; index < end; ++index) {
-            array.__array[index] = result.__array[index - start];
-        }
-    };
-
     usize n = other.get_size();
     usize i = 0;
     Array<c64> input(n, 0);
@@ -147,7 +75,6 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
         for (usize index = 0; index < other.get_size(); ++index) {
             input.__array[index] = other[index];
         }
-        // __idft_internal(input, 0, input.get_size());
         idft_subarray_inplace_without_div(input.__array, 0, n);
         return input;
     } else {
@@ -191,33 +118,8 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
         }
     }
 
-    auto __perform_fft_in_place = [](Array<c64>& array, const usize start) {
-        usize n = array.get_size();
-
-        for (usize operate_length = (start << 1); operate_length <= n;
-             operate_length <<= 1) {
-            f64 angle = Math::pi_2 / operate_length;
-            const c64 init = {::cos(angle), ::sin(angle)};
-
-            for (usize i = 0; i < n; i += operate_length) {
-                c64 w = {1, 0};
-                for (usize j = 0; j < operate_length / 2; ++j) {
-                    c64 u = array.__array[i + j];
-                    c64 v = array.__array[i + j + operate_length / 2] * w;
-                    array.__array[i + j] = u + v;
-                    array.__array[i + j + operate_length / 2] = u - v;
-                    w *= init;
-                }
-            }
-        }
-    };
-
-    // __perform_fft_in_place(input, i);
     ifft_inplace_without_div(input.__array, n, i);
 
-    // for (usize index = 1; index < n - index; ++index) {
-    //     std::swap(input.__array[index], input.__array[n - index]);
-    // }
     return input;
 }
 

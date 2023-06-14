@@ -23,7 +23,7 @@ Array<T> FFT::ifftn(const Array<c64>& ndarray) {
     for (usize k = 0; k < ndarray.get_shape_size(); ++k) {
         const usize loop = result.get_axis_reference(k).get_total_axes();
 
-#pragma omp parallel for
+        // #pragma omp parallel for
         for (usize index = 0; index < loop; ++index) {
             auto axis_ref = result.get_nth_axis_reference(k, index);
             axis_ref = ifft_int(axis_ref);
@@ -37,8 +37,8 @@ Array<T> FFT::ifftn(const Array<c64>& ndarray) {
 
 template <typename T>
 Array<T> FFT::ifftn(const ArraySlice<c64>& ndarray) {
-    return FFT::ifftn<T>(Array<c64>(
-        *ndarray.__array_reference, ndarray.offset, ndarray.shp_offset));
+    return FFT::ifftn<T>(Array<c64>(*ndarray.__array_reference, ndarray.offset,
+                                    ndarray.shp_offset));
 }
 
 #endif
