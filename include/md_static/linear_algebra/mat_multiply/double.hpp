@@ -292,10 +292,10 @@ void mul_st(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p) {
                         ans2 += a[(i + 2) * n + k] * tbv;
                         ans3 += a[(i + 3) * n + k] * tbv;
                     }
-                    c[i * p + j] = ans0;
-                    c[(i + 1) * p + j] = ans1;
-                    c[(i + 2) * p + j] = ans2;
-                    c[(i + 3) * p + j] = ans3;
+                    c[i * p + j] += ans0;
+                    c[(i + 1) * p + j] += ans1;
+                    c[(i + 2) * p + j] += ans2;
+                    c[(i + 3) * p + j] += ans3;
                 }
             }
         }

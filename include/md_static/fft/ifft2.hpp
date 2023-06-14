@@ -14,13 +14,13 @@ Array<T> FFT::ifft2(const Array<c64>& mat) {
 
     Array<c64> result(mat);
 
-#pragma omp parallel for
+    // #pragma omp parallel for
     for (usize index = 0; index < result.shape[0]; ++index) {
         auto axis_reference = result.get_nth_axis_reference(1, index);
         axis_reference = ifft_int(axis_reference);
     }
 
-#pragma omp parallel for
+    // #pragma omp parallel for
     for (usize index = 0; index < result.shape[1]; ++index) {
         auto axis_reference = result.get_nth_axis_reference(0, index);
         axis_reference = ifft_int(axis_reference);
@@ -33,8 +33,8 @@ Array<T> FFT::ifft2(const Array<c64>& mat) {
 
 template <typename T>
 Array<T> FFT::ifft2(const ArraySlice<c64>& array_ref) {
-    return FFT::ifft2(Array<T>(*array_ref.__array_reference,
-                                       array_ref.offset, array_ref.shp_offset));
+    return FFT::ifft2(Array<T>(*array_ref.__array_reference, array_ref.offset,
+                               array_ref.shp_offset));
 }
 
 #endif

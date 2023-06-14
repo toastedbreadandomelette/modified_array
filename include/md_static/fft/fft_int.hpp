@@ -62,7 +62,7 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
 }
 
 template <typename T>
-Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
+Array<c64> FFT::fft_int(const Axis<T>& other) {
     usize n = other.get_size();
     usize i = 0;
     Array<c64> input(n);
@@ -109,13 +109,11 @@ Array<c64> FFT::fft_int(const MdStaticAxisReference<T>& other) {
 
         if (i > 1) {
             for (usize index = 0; index < n; index += i) {
-                // __dft_internal(input, index, index + i);
                 dft_subarray_inplace(input.__array, index, index + i);
             }
         }
     }
 
-    // __perform_fft_in_place(input, i);
     fft_inplace(input.__array, n, i);
 
     return input;

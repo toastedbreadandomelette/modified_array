@@ -54,14 +54,12 @@ Array<c64> FFT::ifft_int(const Array<c64>& other) {
 
         if (i > 1) {
             for (usize index = 0; index < n; index += i) {
-                // __idft_internal(input, index, index + i);
                 idft_subarray_inplace_without_div(input.__array, index,
                                                   index + i);
             }
         }
     }
 
-    // __perform_fft_in_place(input, i);
     ifft_inplace(input.__array, n, i);
 
     return input;
@@ -111,7 +109,6 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
 
         if (i > 1) {
             for (usize index = 0; index < n; index += i) {
-                // __idft_internal(input, index, index + i);
                 idft_subarray_inplace_without_div(input.__array, index,
                                                   index + i);
             }
