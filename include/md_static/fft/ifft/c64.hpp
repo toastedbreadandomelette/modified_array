@@ -345,45 +345,53 @@ void ifft_odd(c64 *array, i32 n, i32 block_size) {
     f64 angle = Math::pi_2 / block_size;
     c64 init = {::cos(angle), ::sin(angle)};
     c64 wmul = init * init;
+    c64 wmul2 = wmul * wmul;
+    c64 wmul4 = wmul2 * wmul2;
     c64x2 wsmul = C64x2::uni(wmul);
+    c64x2 wsmul4 = C64x2::uni(wmul4);
 
     i32 loop_len = block_size >> 1;
     i32 rem = loop_len & 7;
     for (i32 i = 0; i < n; i += block_size) {
-        c64x2 ws = C64x2::set({1, 0}, init);
+        c64x2 ws0 = C64x2::set({1, 0}, init);
+        c64x2 ws1 = C64x2::mul(ws0, wsmul);
+        c64x2 ws2 = C64x2::mul(ws1, wsmul);
+        c64x2 ws3 = C64x2::mul(ws2, wsmul);
 
         for (i32 j = 0; j < loop_len - rem; j += 8) {
-            c64x2 u2 = C64x2::fromptr(array + i + j);
-            c64x2 v2 = C64x2::fromptr(array + i + j + loop_len);
-            c64x2 tm = C64x2::mul(v2, ws);
-            C64x2::storeptr(array + i + j, C64x2::add(u2, tm));
-            C64x2::storeptr(array + i + j + loop_len, C64x2::sub(u2, tm));
-            ws = C64x2::mul(ws, wsmul);
+            c64x2 u0 = C64x2::fromptr(array + i + j);
+            c64x2 u1 = C64x2::fromptr(array + i + j + 2);
+            c64x2 u2 = C64x2::fromptr(array + i + j + 4);
+            c64x2 u3 = C64x2::fromptr(array + i + j + 6);
 
-            u2 = C64x2::fromptr(array + i + j + 2);
-            v2 = C64x2::fromptr(array + i + j + 2 + loop_len);
-            tm = C64x2::mul(v2, ws);
-            C64x2::storeptr(array + i + j + 2, C64x2::add(u2, tm));
-            C64x2::storeptr(array + i + j + 2 + loop_len, C64x2::sub(u2, tm));
-            ws = C64x2::mul(ws, wsmul);
+            c64x2 v0 = C64x2::fromptr(array + i + j + loop_len);
+            c64x2 v1 = C64x2::fromptr(array + i + j + loop_len + 2);
+            c64x2 v2 = C64x2::fromptr(array + i + j + loop_len + 4);
+            c64x2 v3 = C64x2::fromptr(array + i + j + loop_len + 6);
 
-            u2 = C64x2::fromptr(array + i + j + 4);
-            v2 = C64x2::fromptr(array + i + j + 4 + loop_len);
-            tm = C64x2::mul(v2, ws);
-            C64x2::storeptr(array + i + j + 4, C64x2::add(u2, tm));
-            C64x2::storeptr(array + i + j + 4 + loop_len, C64x2::sub(u2, tm));
-            ws = C64x2::mul(ws, wsmul);
+            c64x2 tm0 = C64x2::mul(v0, ws0);
+            c64x2 tm1 = C64x2::mul(v1, ws1);
+            c64x2 tm2 = C64x2::mul(v2, ws2);
+            c64x2 tm3 = C64x2::mul(v3, ws3);
 
-            u2 = C64x2::fromptr(array + i + j + 6);
-            v2 = C64x2::fromptr(array + i + j + 6 + loop_len);
-            tm = C64x2::mul(v2, ws);
-            C64x2::storeptr(array + i + j + 6, C64x2::add(u2, tm));
-            C64x2::storeptr(array + i + j + 6 + loop_len, C64x2::sub(u2, tm));
-            ws = C64x2::mul(ws, wsmul);
+            C64x2::storeptr(array + i + j, C64x2::add(u0, tm0));
+            C64x2::storeptr(array + i + j + 2, C64x2::add(u1, tm1));
+            C64x2::storeptr(array + i + j + 4, C64x2::add(u2, tm2));
+            C64x2::storeptr(array + i + j + 6, C64x2::add(u3, tm3));
+
+            C64x2::storeptr(array + i + j + loop_len, C64x2::sub(u0, tm0));
+            C64x2::storeptr(array + i + j + 2 + loop_len, C64x2::sub(u1, tm1));
+            C64x2::storeptr(array + i + j + 4 + loop_len, C64x2::sub(u2, tm2));
+            C64x2::storeptr(array + i + j + 6 + loop_len, C64x2::sub(u3, tm3));
+
+            ws0 = C64x2::mul(ws0, wsmul4);
+            ws1 = C64x2::mul(ws1, wsmul4);
+            ws2 = C64x2::mul(ws2, wsmul4);
+            ws3 = C64x2::mul(ws3, wsmul4);
         }
 
         c64 buff[2];
-        C64x2::storeptr(buff, ws);
+        C64x2::storeptr(buff, ws0);
         c64 w = buff[0];
 
         for (i32 j = loop_len - rem; j < loop_len; ++j) {

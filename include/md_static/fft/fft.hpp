@@ -7,7 +7,6 @@
 #include "../../utility/math.hpp"
 #include "../functions/range.hpp"
 #include "./fft/c64.hpp"
-#include "./fft/double.hpp"
 #include "./md_fft.hpp"
 
 /**
