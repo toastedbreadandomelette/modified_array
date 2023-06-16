@@ -76,8 +76,6 @@ void mul_st_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
                     // Processing 8 values at a time, loop unrolled by 4,
                     // we get
                     for (i32 k = 0; k < n - remainder_vec; k += 32) {
-                        auto avec = F32x8::fromptr(a + (i * n + k));
-
                         auto bvec00 = F32x8::fromptr(tb + (j * n + k));
                         auto bvec01 = F32x8::fromptr(tb + (j * n + k + 8));
                         auto bvec02 = F32x8::fromptr(tb + (j * n + k + 16));
@@ -93,9 +91,9 @@ void mul_st_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
 
                         auto bvec20 = F32x8::fromptr(tb + ((j + 2) * n + k));
                         auto bvec21 =
-                            F32x8::fromptr(tb + ((j + 2) * n + k + 16));
-                        auto bvec22 =
                             F32x8::fromptr(tb + ((j + 2) * n + k + 8));
+                        auto bvec22 =
+                            F32x8::fromptr(tb + ((j + 2) * n + k + 16));
                         auto bvec23 =
                             F32x8::fromptr(tb + ((j + 2) * n + k + 24));
 
@@ -107,121 +105,111 @@ void mul_st_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
                         auto bvec33 =
                             F32x8::fromptr(tb + ((j + 3) * n + k + 24));
 
-                        acc00 = F32x8::fmadd(avec, bvec00, acc00);
-                        acc01 = F32x8::fmadd(avec, bvec10, acc01);
-                        acc02 = F32x8::fmadd(avec, bvec20, acc02);
-                        acc03 = F32x8::fmadd(avec, bvec30, acc03);
+                        auto avec0 = F32x8::fromptr(a + (i * n + k));
+                        auto avec1 = F32x8::fromptr(a + (i * n + k + 8));
+                        auto avec2 = F32x8::fromptr(a + (i * n + k + 16));
+                        auto avec3 = F32x8::fromptr(a + (i * n + k + 24));
 
-                        avec = F32x8::fromptr(a + (i * n + k + 8));
+                        acc00 = F32x8::fmadd(avec0, bvec00, acc00);
+                        acc01 = F32x8::fmadd(avec0, bvec10, acc01);
+                        acc02 = F32x8::fmadd(avec0, bvec20, acc02);
+                        acc03 = F32x8::fmadd(avec0, bvec30, acc03);
 
-                        acc00 = F32x8::fmadd(avec, bvec01, acc00);
-                        acc01 = F32x8::fmadd(avec, bvec11, acc01);
-                        acc02 = F32x8::fmadd(avec, bvec21, acc02);
-                        acc03 = F32x8::fmadd(avec, bvec31, acc03);
+                        acc00 = F32x8::fmadd(avec1, bvec01, acc00);
+                        acc01 = F32x8::fmadd(avec1, bvec11, acc01);
+                        acc02 = F32x8::fmadd(avec1, bvec21, acc02);
+                        acc03 = F32x8::fmadd(avec1, bvec31, acc03);
 
-                        avec = F32x8::fromptr(a + (i * n + k + 16));
+                        acc00 = F32x8::fmadd(avec2, bvec02, acc00);
+                        acc01 = F32x8::fmadd(avec2, bvec12, acc01);
+                        acc02 = F32x8::fmadd(avec2, bvec22, acc02);
+                        acc03 = F32x8::fmadd(avec2, bvec32, acc03);
 
-                        acc00 = F32x8::fmadd(avec, bvec02, acc00);
-                        acc01 = F32x8::fmadd(avec, bvec12, acc01);
-                        acc02 = F32x8::fmadd(avec, bvec22, acc02);
-                        acc03 = F32x8::fmadd(avec, bvec32, acc03);
-
-                        avec = F32x8::fromptr(a + (i * n + k + 24));
-
-                        acc00 = F32x8::fmadd(avec, bvec03, acc00);
-                        acc01 = F32x8::fmadd(avec, bvec13, acc01);
-                        acc02 = F32x8::fmadd(avec, bvec23, acc02);
-                        acc03 = F32x8::fmadd(avec, bvec33, acc03);
+                        acc00 = F32x8::fmadd(avec3, bvec03, acc00);
+                        acc01 = F32x8::fmadd(avec3, bvec13, acc01);
+                        acc02 = F32x8::fmadd(avec3, bvec23, acc02);
+                        acc03 = F32x8::fmadd(avec3, bvec33, acc03);
 
                         /////////////////////////////////////////////////////////////////
 
-                        avec = F32x8::fromptr(a + ((i + 1) * n + k + 24));
+                        avec0 = F32x8::fromptr(a + ((i + 1) * n + k));
+                        avec1 = F32x8::fromptr(a + ((i + 1) * n + k + 8));
+                        avec2 = F32x8::fromptr(a + ((i + 1) * n + k + 16));
+                        avec3 = F32x8::fromptr(a + ((i + 1) * n + k + 24));
 
-                        acc10 = F32x8::fmadd(avec, bvec03, acc10);
-                        acc11 = F32x8::fmadd(avec, bvec13, acc11);
-                        acc12 = F32x8::fmadd(avec, bvec23, acc12);
-                        acc13 = F32x8::fmadd(avec, bvec33, acc13);
+                        acc10 = F32x8::fmadd(avec0, bvec00, acc10);
+                        acc11 = F32x8::fmadd(avec0, bvec10, acc11);
+                        acc12 = F32x8::fmadd(avec0, bvec20, acc12);
+                        acc13 = F32x8::fmadd(avec0, bvec30, acc13);
 
-                        avec = F32x8::fromptr(a + ((i + 1) * n + k));
+                        acc10 = F32x8::fmadd(avec1, bvec01, acc10);
+                        acc11 = F32x8::fmadd(avec1, bvec11, acc11);
+                        acc12 = F32x8::fmadd(avec1, bvec21, acc12);
+                        acc13 = F32x8::fmadd(avec1, bvec31, acc13);
 
-                        acc10 = F32x8::fmadd(avec, bvec00, acc10);
-                        acc11 = F32x8::fmadd(avec, bvec10, acc11);
-                        acc12 = F32x8::fmadd(avec, bvec20, acc12);
-                        acc13 = F32x8::fmadd(avec, bvec30, acc13);
+                        acc10 = F32x8::fmadd(avec2, bvec02, acc10);
+                        acc11 = F32x8::fmadd(avec2, bvec12, acc11);
+                        acc12 = F32x8::fmadd(avec2, bvec22, acc12);
+                        acc13 = F32x8::fmadd(avec2, bvec32, acc13);
 
-                        avec = F32x8::fromptr(a + ((i + 1) * n + k + 8));
-
-                        acc10 = F32x8::fmadd(avec, bvec01, acc10);
-                        acc11 = F32x8::fmadd(avec, bvec11, acc11);
-                        acc12 = F32x8::fmadd(avec, bvec21, acc12);
-                        acc13 = F32x8::fmadd(avec, bvec31, acc13);
-
-                        avec = F32x8::fromptr(a + ((i + 1) * n + k + 16));
-
-                        acc10 = F32x8::fmadd(avec, bvec02, acc10);
-                        acc11 = F32x8::fmadd(avec, bvec12, acc11);
-                        acc12 = F32x8::fmadd(avec, bvec22, acc12);
-                        acc13 = F32x8::fmadd(avec, bvec32, acc13);
+                        acc10 = F32x8::fmadd(avec3, bvec03, acc10);
+                        acc11 = F32x8::fmadd(avec3, bvec13, acc11);
+                        acc12 = F32x8::fmadd(avec3, bvec23, acc12);
+                        acc13 = F32x8::fmadd(avec3, bvec33, acc13);
 
                         ///////////////////////////////////////////////////////////////////
 
-                        avec = F32x8::fromptr(a + ((i + 2) * n + k + 16));
+                        avec0 = F32x8::fromptr(a + ((i + 2) * n + k));
+                        avec1 = F32x8::fromptr(a + ((i + 2) * n + k + 8));
+                        avec2 = F32x8::fromptr(a + ((i + 2) * n + k + 16));
+                        avec3 = F32x8::fromptr(a + ((i + 2) * n + k + 24));
 
-                        acc20 = F32x8::fmadd(avec, bvec02, acc20);
-                        acc21 = F32x8::fmadd(avec, bvec12, acc21);
-                        acc22 = F32x8::fmadd(avec, bvec22, acc22);
-                        acc23 = F32x8::fmadd(avec, bvec32, acc23);
+                        acc20 = F32x8::fmadd(avec0, bvec00, acc20);
+                        acc21 = F32x8::fmadd(avec0, bvec10, acc21);
+                        acc22 = F32x8::fmadd(avec0, bvec20, acc22);
+                        acc23 = F32x8::fmadd(avec0, bvec30, acc23);
 
-                        avec = F32x8::fromptr(a + ((i + 2) * n + k + 24));
+                        acc20 = F32x8::fmadd(avec1, bvec01, acc20);
+                        acc21 = F32x8::fmadd(avec1, bvec11, acc21);
+                        acc22 = F32x8::fmadd(avec1, bvec21, acc22);
+                        acc23 = F32x8::fmadd(avec1, bvec31, acc23);
 
-                        acc20 = F32x8::fmadd(avec, bvec03, acc20);
-                        acc21 = F32x8::fmadd(avec, bvec13, acc21);
-                        acc22 = F32x8::fmadd(avec, bvec23, acc22);
-                        acc23 = F32x8::fmadd(avec, bvec33, acc23);
+                        acc20 = F32x8::fmadd(avec2, bvec02, acc20);
+                        acc21 = F32x8::fmadd(avec2, bvec12, acc21);
+                        acc22 = F32x8::fmadd(avec2, bvec22, acc22);
+                        acc23 = F32x8::fmadd(avec2, bvec32, acc23);
 
-                        avec = F32x8::fromptr(a + ((i + 2) * n + k));
-
-                        acc20 = F32x8::fmadd(avec, bvec00, acc20);
-                        acc21 = F32x8::fmadd(avec, bvec10, acc21);
-                        acc22 = F32x8::fmadd(avec, bvec20, acc22);
-                        acc23 = F32x8::fmadd(avec, bvec30, acc23);
-
-                        avec = F32x8::fromptr(a + ((i + 2) * n + k + 8));
-
-                        acc20 = F32x8::fmadd(avec, bvec01, acc20);
-                        acc21 = F32x8::fmadd(avec, bvec11, acc21);
-                        acc22 = F32x8::fmadd(avec, bvec21, acc22);
-                        acc23 = F32x8::fmadd(avec, bvec31, acc23);
+                        acc20 = F32x8::fmadd(avec3, bvec03, acc20);
+                        acc21 = F32x8::fmadd(avec3, bvec13, acc21);
+                        acc22 = F32x8::fmadd(avec3, bvec23, acc22);
+                        acc23 = F32x8::fmadd(avec3, bvec33, acc23);
 
                         /////////////////////////////////////////////////////////////
 
-                        avec = F32x8::fromptr(a + ((i + 3) * n + k + 8));
+                        avec0 = F32x8::fromptr(a + ((i + 3) * n + k));
+                        avec1 = F32x8::fromptr(a + ((i + 3) * n + k + 8));
+                        avec2 = F32x8::fromptr(a + ((i + 3) * n + k + 16));
+                        avec3 = F32x8::fromptr(a + ((i + 3) * n + k + 24));
 
-                        acc30 = F32x8::fmadd(avec, bvec01, acc30);
-                        acc31 = F32x8::fmadd(avec, bvec11, acc31);
-                        acc32 = F32x8::fmadd(avec, bvec21, acc32);
-                        acc33 = F32x8::fmadd(avec, bvec31, acc33);
+                        acc30 = F32x8::fmadd(avec0, bvec00, acc30);
+                        acc31 = F32x8::fmadd(avec0, bvec10, acc31);
+                        acc32 = F32x8::fmadd(avec0, bvec20, acc32);
+                        acc33 = F32x8::fmadd(avec0, bvec30, acc33);
 
-                        avec = F32x8::fromptr(a + ((i + 3) * n + k + 16));
+                        acc30 = F32x8::fmadd(avec1, bvec01, acc30);
+                        acc31 = F32x8::fmadd(avec1, bvec11, acc31);
+                        acc32 = F32x8::fmadd(avec1, bvec21, acc32);
+                        acc33 = F32x8::fmadd(avec1, bvec31, acc33);
 
-                        acc30 = F32x8::fmadd(avec, bvec02, acc30);
-                        acc31 = F32x8::fmadd(avec, bvec12, acc31);
-                        acc32 = F32x8::fmadd(avec, bvec22, acc32);
-                        acc33 = F32x8::fmadd(avec, bvec32, acc33);
+                        acc30 = F32x8::fmadd(avec2, bvec02, acc30);
+                        acc31 = F32x8::fmadd(avec2, bvec12, acc31);
+                        acc32 = F32x8::fmadd(avec2, bvec22, acc32);
+                        acc33 = F32x8::fmadd(avec2, bvec32, acc33);
 
-                        avec = F32x8::fromptr(a + ((i + 3) * n + k + 24));
-
-                        acc30 = F32x8::fmadd(avec, bvec03, acc30);
-                        acc31 = F32x8::fmadd(avec, bvec13, acc31);
-                        acc32 = F32x8::fmadd(avec, bvec23, acc32);
-                        acc33 = F32x8::fmadd(avec, bvec33, acc33);
-
-                        avec = F32x8::fromptr(a + ((i + 3) * n + k));
-
-                        acc30 = F32x8::fmadd(avec, bvec00, acc30);
-                        acc31 = F32x8::fmadd(avec, bvec10, acc31);
-                        acc32 = F32x8::fmadd(avec, bvec20, acc32);
-                        acc33 = F32x8::fmadd(avec, bvec30, acc33);
+                        acc30 = F32x8::fmadd(avec3, bvec03, acc30);
+                        acc31 = F32x8::fmadd(avec3, bvec13, acc31);
+                        acc32 = F32x8::fmadd(avec3, bvec23, acc32);
+                        acc33 = F32x8::fmadd(avec3, bvec33, acc33);
                     }
 
                     for (i32 k = n - remainder_vec; k < n; ++k) {
