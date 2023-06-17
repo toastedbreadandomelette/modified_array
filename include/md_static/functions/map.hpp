@@ -19,7 +19,6 @@ Array<T> Utils::map(const Array<T> &values,
     const usize threshold_size = ::s_threshold_size;
 
     if (thread_count == 1 || size <= threshold_size) {
-#pragma omp parallel for
         for (usize index = 0; index < size; ++index) {
             result.__array[index] = function_exec(values.__array[index]);
         }

@@ -12,7 +12,7 @@
 
 void mul_mt_f32_internal(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p,
                          i32 start_row, i32 end_row) {
-    const i32 block_size = 128;
+    constexpr i32 block_size = 128;
     const i32 remainder_cols = p & 3;
     const i32 remainder_rows = (end_row - start_row) & 3;
     const i32 remainder_vec = n & 31;
@@ -285,13 +285,6 @@ void mul_mt_f32_internal(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p,
  */
 void mul_mt_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
     i32 rem = (m * p) & 7;
-
-    // Initialize vector to zero
-
-    // Set remainder values to zero as well
-    for (usize index = m * p - rem; index < m * p; ++index) {
-        c[index] = 0;
-    }
 
     std::vector<std::thread> threads;
 

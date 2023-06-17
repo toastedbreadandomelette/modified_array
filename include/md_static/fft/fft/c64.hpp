@@ -170,7 +170,7 @@ void dft_subarray_inplace(c64 *array, i32 start, i32 end) {
     c64 buffer[2];
     i32 nrem = (n - 1) & 3;
     c64 wstart1, wstart2, wstart3, wstart4;
-    c64 unit = c64(1, 0);
+    constexpr c64 unit = c64(1, 0);
     for (i32 index = 1; index < (n - nrem); index += 4) {
         wstart1 = wstart;
         wstart2 = wstart1 * wlen;

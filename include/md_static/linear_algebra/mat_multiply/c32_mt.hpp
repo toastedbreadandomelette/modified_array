@@ -13,10 +13,10 @@
 
 void mul_mt_internal_c32(c32 *a, c32 *tb, c32 *c, i32 m, i32 n, i32 p,
                          i32 start_row, i32 end_row) {
-    const i32 block_size = 64;
-    const i32 remainder_cols = p & 3;
-    const i32 remainder_rows = (end_row - start_row) & 3;
-    const i32 remainder_vec = n & 15;
+    constexpr i32 block_size = 64;
+    i32 remainder_cols = p & 3;
+    i32 remainder_rows = (end_row - start_row) & 3;
+    i32 remainder_vec = n & 15;
     // Compute block by block
     for (i32 iblock = start_row; iblock < end_row - remainder_rows;
          iblock += block_size) {

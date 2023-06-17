@@ -609,11 +609,11 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative sum of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @param axis Axis to perform cumulative sum on
      * @param thread_count
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
     static Array<T> cumulative_sum(const Array<T> &ndarray,
@@ -623,23 +623,23 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative sum of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> cumulative_sum(const ArraySlice<T> &__array,
+    static Array<T> cumulative_sum(const ArraySlice<T> &ndarray,
                                    const usize axis = -1,
                                    const usize thread_count = 16);
 
     /**
      * @brief Cumulative sum of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @param axis Axis to perform cumulative sum on
      * @param thread_count
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
     static Array<T> diff(const Array<T> &ndarray, const usize axis = -1,
@@ -648,9 +648,9 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative sum of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
     static Array<T> diff(const ArraySlice<T> &ndarray, const usize axis = -1,
@@ -659,11 +659,11 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative product of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @param axis Axis to perform cumulative sum on
      * @param thread_count
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
     static Array<T> cumulative_product(const Array<T> &ndarray,
@@ -673,23 +673,23 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative product of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> cumulative_product(const ArraySlice<T> &__array,
+    static Array<T> cumulative_product(const ArraySlice<T> &ndarray,
                                        const usize axis = -1,
                                        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @param axis Axis to perform cumulative sum on
      * @param thread_count
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
     static Array<T> nan_cumulative_sum(const Array<T> &ndarray,
@@ -699,23 +699,23 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative product of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> nan_cumulative_sum(const ArraySlice<T> &__array,
+    static Array<T> nan_cumulative_sum(const ArraySlice<T> &ndarray,
                                        const usize axis = -1,
                                        const usize thread_count = 16);
 
     /**
      * @brief Cumulative product of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @param axis Axis to perform cumulative sum on
      * @param thread_count
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
     static Array<T> nan_cumulative_product(const Array<T> &ndarray,
@@ -725,95 +725,95 @@ struct MdArrayUtility {
     /**
      * @brief Cumulative product of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> nan_cumulative_product(const ArraySlice<T> &__array,
+    static Array<T> nan_cumulative_product(const ArraySlice<T> &ndarray,
                                            const usize axis = -1,
                                            const usize thread_count = 16);
 
     /**
      * @brief Convert radian to degrees of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values
      * in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> rad_2_deg(const Array<T> &__array);
+    static Array<T> rad_2_deg(const Array<T> &ndarray);
 
     /**
      * @brief Convert radian to degrees of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> rad_2_deg(const ArraySlice<T> &__array);
+    static Array<T> rad_2_deg(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Convert radian to degree of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> deg_2_rad(const Array<T> &__array);
+    static Array<T> deg_2_rad(const Array<T> &ndarray);
 
     /**
      * @brief Convert radian to degree of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> deg_2_rad(const ArraySlice<T> &__array);
+    static Array<T> deg_2_rad(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Calculate floor of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> floor(const Array<T> &__array);
+    static Array<T> floor(const Array<T> &ndarray);
 
     /**
      * @brief Calculate floor of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> floor(const ArraySlice<T> &__array);
+    static Array<T> floor(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Calculate ceil of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> ceil(const Array<T> &__array);
+    static Array<T> ceil(const Array<T> &ndarray);
 
     /**
      * @brief Calculate ceil of an array.
      * @tparam T matrix type,
-     * @param __array input array
+     * @param ndarray input array
      * @returns new array where each element is sum of all previous values in
-     * __array
+     * ndarray
      */
     template <typename T>
-    static Array<T> ceil(const ArraySlice<T> &__array);
+    static Array<T> ceil(const ArraySlice<T> &ndarray);
 
     /**
      * @brief Check if every value satisfies the condition
@@ -834,8 +834,8 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static bool every(const ArraySlice<T> &arr_reference,
-                      const fn<bool(const T &)> &, const usize threads = 16);
+    static bool every(const ArraySlice<T> &slice, const fn<bool(const T &)> &,
+                      const usize threads = 16);
 
     /**
      * @brief Check if at least one value satisfies the condition
@@ -856,8 +856,8 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static bool some(const ArraySlice<T> &arr_reference,
-                     const fn<bool(const T &)> &, const usize threads = 16);
+    static bool some(const ArraySlice<T> &slice, const fn<bool(const T &)> &,
+                     const usize threads = 16);
 
     /**
      * @brief Compute 2 raised to value from array of values
@@ -886,7 +886,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<f64> reciprocal(const Array<T> &arr_reference);
+    static Array<f64> reciprocal(const Array<T> &slice);
 
     /**
      * @brief Compute reciprocal from array of values
@@ -895,7 +895,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<f64> reciprocal(const ArraySlice<T> &arr_reference);
+    static Array<f64> reciprocal(const ArraySlice<T> &slice);
 
     /**
      * @brief Compute sinh from array of values
@@ -922,7 +922,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<f64> cosh(const Array<T> &arr_reference);
+    static Array<f64> cosh(const Array<T> &slice);
 
     /**
      * @brief Compute cosh from array of values
@@ -931,7 +931,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static Array<f64> cosh(const ArraySlice<T> &arr_reference);
+    static Array<f64> cosh(const ArraySlice<T> &slice);
 
     /**
      * @brief Compute tanh from array of values
@@ -1000,7 +1000,7 @@ struct MdArrayUtility {
      * @returns boolean value
      */
     template <typename T>
-    static void sort(MdStaticAxisReference<T> &, Array<T> &,
+    static void sort(Axis<T> &, Array<T> &,
                      const fn<bool(const T first, const T second)> &comp);
 };
 

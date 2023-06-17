@@ -9,7 +9,6 @@
 
 void idft_subarray(c64 *array, i32 start, i32 end, c64 *dest) {
     const usize n = end - start;
-    std::cout << "here\n";
     c64x2 accumulator = C64x2::zero();
 
     i32 rem = (end - start) & 7;

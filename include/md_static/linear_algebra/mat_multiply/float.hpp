@@ -19,17 +19,7 @@
 void mul_st_f32(f32 *a, f32 *tb, f32 *c, i32 m, i32 n, i32 p) {
     i32 rem = (m * p) & 7;
 
-    // Initialize vector to zero
-    for (usize index = 0; index < m * p - rem; index += 8) {
-        F32x8::storeptr(c + index, F32x8::zero());
-    }
-
-    // Set remainder values to zero as well
-    for (usize index = m * p - rem; index < m * p; ++index) {
-        c[index] = 0;
-    }
-
-    const i32 block_size = 256;
+    constexpr i32 block_size = 128;
     const i32 remainder_cols = p & 3;
     const i32 remainder_rows = m & 3;
     const i32 remainder_vec = n & 31;

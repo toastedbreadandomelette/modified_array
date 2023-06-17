@@ -18,7 +18,7 @@
 template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
                                const i32 threads) {
-    if (first.shp_size != 2 || other.shp_size != 2) {
+    if (first.get_shape_size() != 2 || other.get_shape_size() != 2) {
         throw std::runtime_error(
             "Matrix dimension do not match for matrix multiplication.");
     }
@@ -43,10 +43,9 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
         }
     }
 
-    const usize block_size = 32;
+    constexpr usize block_size = 32;
 
-    // Todo: For complex numbers?
-    if (result.get_size() > s_threshold_size && threads > 1) {
+    if (threads > 1) {
         if constexpr (std::is_same<T1, f64>::value &&
                       std::is_same<T2, f64>::value &&
                       std::is_same<T3, f64>::value) {

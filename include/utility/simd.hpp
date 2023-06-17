@@ -121,9 +121,10 @@ __always_inline void storeptr(f64 *val, f64x4 vec) {
 }
 
 __always_inline f64 reduce_sum(f64x4 val) {
+    val = _mm256_hadd_pd(val, val);
     f64 ans[4] = {0, 0, 0, 0};
     storeptr(ans, val);
-    return ans[0] + ans[1] + ans[2] + ans[3];
+    return ans[0] + ans[2];
 }
 }  // namespace F64x4
 

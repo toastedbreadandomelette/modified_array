@@ -20,7 +20,7 @@
 void mul_st_c64(c64 *a, c64 *tb, c64 *c, i32 m, i32 n, i32 p) {
     i32 rem = (m * p) & 3;
 
-    const i32 block_size = 64;
+    constexpr i32 block_size = 64;
     const i32 remainder_cols = p & 3;
     const i32 remainder_rows = m & 3;
     const i32 remainder_vec = n & 7;

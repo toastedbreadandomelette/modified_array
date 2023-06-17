@@ -13,7 +13,7 @@
 
 void mul_mt_internal(c64 *a, c64 *tb, c64 *c, i32 m, i32 n, i32 p,
                      i32 start_row, i32 end_row) {
-    const i32 block_size = 32;
+    constexpr i32 block_size = 32;
     const i32 remainder_cols = p & 3;
     const i32 remainder_rows = (end_row - start_row) & 3;
     const i32 remainder_vec = n & 7;
