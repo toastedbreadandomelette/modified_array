@@ -42,12 +42,12 @@ Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
 
                     for (usize i = i_block; i < i_bound; ++i) {
                         for (usize k = k_block; k < k_bound; ++k) {
-                            const auto c = first.__array[i * fshape1 + k] % mod;
+                            const auto c = first.array_[i * fshape1 + k] % mod;
 
                             for (usize j = 0; j < fshape1; ++j) {
-                                result.__array[i * oshape1 + j] =
-                                    (result.__array[i * oshape1 + j] +
-                                     c * (other.__array[k * oshape1 + j] %
+                                result.array_[i * oshape1 + j] =
+                                    (result.array_[i * oshape1 + j] +
+                                     c * (other.array_[k * oshape1 + j] %
                                           mod)) %
                                     mod;
                             }
@@ -84,12 +84,12 @@ Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
 
                 for (usize i = i_block; i < i_bound; ++i) {
                     for (usize k = k_block; k < k_bound; ++k) {
-                        const auto c = (first.__array[i * fshape1 + k] % mod);
+                        const auto c = (first.array_[i * fshape1 + k] % mod);
 
                         for (usize j = 0; j < fshape1; ++j) {
-                            result.__array[i * oshape1 + j] +=
-                                c * (other.__array[k * oshape1 + j] % mod);
-                            result.__array[i * oshape1 + j] %= mod;
+                            result.array_[i * oshape1 + j] +=
+                                c * (other.array_[k * oshape1 + j] % mod);
+                            result.array_[i * oshape1 + j] %= mod;
                         }
                     }
                 }
@@ -105,7 +105,7 @@ Array<T3> Linalg::mat_mod_multiply(const ArraySlice<T1> &first,
                                    const Array<T2> &other, const usize mod,
                                    const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
         other, threads);
 }
 
@@ -115,7 +115,7 @@ Array<T3> Linalg::mat_mod_multiply(const Array<T1> &first,
                                    const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
-        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -124,8 +124,8 @@ Array<T3> Linalg::mat_mod_multiply(const ArraySlice<T1> &first,
                                    const ArraySlice<T2> &other, const usize mod,
                                    const usize threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
-        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
+        Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

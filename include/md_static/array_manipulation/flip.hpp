@@ -6,15 +6,14 @@
 
 template <typename T>
 Array<T> Manip::flip(const Array<T> &ndarray,
-                             const usize axis) {
+                             const i32 axis) {
     if (axis == -1) {
         Array<T> result(ndarray);
 
         for (usize index = 0; index < result.get_size() / 2; ++index) {
-            const auto temp = result.__array[index];
-            result.__array[index] =
-                result.__array[result.get_size() - 1 - index];
-            result.__array[result.get_size() - 1 - index] = temp;
+            const auto temp = result.array_[index];
+            result.array_[index] = result.array_[result.get_size() - 1 - index];
+            result.array_[result.get_size() - 1 - index] = temp;
         }
 
         return result;

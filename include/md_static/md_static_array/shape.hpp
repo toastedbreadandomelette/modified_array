@@ -38,7 +38,7 @@ struct Shape {
         usize size = shp.size();
         shape = static_cast<usize*>(malloc(shape_size * sizeof(usize)));
         skip_vec = static_cast<usize*>(malloc(shape_size * sizeof(usize)));
-        for (const usize axis_size : shp) {
+        for (const i32 axis_size : shp) {
             overall_size *= axis_size;
         }
 

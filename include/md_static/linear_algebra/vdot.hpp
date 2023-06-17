@@ -92,19 +92,19 @@ Array<T3> Linalg::vdot(const Array<Complex<T1>> &first, const Array<T2> &other,
                 // iterate over every 2D-layer.
                 for (usize other_block = 0; other_block < other.get_size();
                      other_block += other_base_matrix_size) {
-                    const auto f = other.__array[other_block];
+                    const auto f = other.array_[other_block];
                     // Iterator over second row of first and column of other
                     // array (note that $j$ and $other_col$ loop are swapped for
                     // performance reasons, to fulfil offset, we add $other_col$
                     // to $index$ in result array)
                     for (usize j = 0; j < n; ++j) {
                         const auto c =
-                            Complex<T1>::conj(first.__array[first_row + j]);
+                            Complex<T1>::conj(first.array_[first_row + j]);
                         // Iterator over last axis of other.
                         for (usize other_col = 0; other_col < p; ++other_col) {
-                            result.__array[index + other_col] +=
+                            result.array_[index + other_col] +=
                                 c *
-                                other.__array[other_block + j * p + other_col];
+                                other.array_[other_block + j * p + other_col];
                         }
                     }
                     // Index is skipped by p, because the row is processed for
@@ -164,9 +164,9 @@ Array<T3> Linalg::vdot(const Array<Complex<T1>> &first, const Array<T2> &other,
                          index += first.shape[shp]) {
                         // Iterate over the last axis of array other
                         for (usize row = 0; row < other.shape[0]; ++row) {
-                            result.__array[res_index] +=
-                                (Complex<T1>::conj(first.__array[index + row]) *
-                                 other.__array[row]);
+                            result.array_[res_index] +=
+                                (Complex<T1>::conj(first.array_[index + row]) *
+                                 other.array_[row]);
                         }
                         ++res_index;
                     }
@@ -215,10 +215,10 @@ Array<T3> Linalg::vdot(const Array<Complex<T1>> &first, const Array<T2> &other,
                     // Each element will be
                     for (usize element = 0; element < other_mat_size;
                          ++element) {
-                        result.__array[res_index + (element % rows)] +=
+                        result.array_[res_index + (element % rows)] +=
                             Complex<T1>::conj(
-                                first.__array[element / other.shape[shp + 1]]) *
-                            other.__array[other_mat_index + element];
+                                first.array_[element / other.shape[shp + 1]]) *
+                            other.array_[other_mat_index + element];
                     }
                     res_index += (threads * other.shape[shp + 1]);
                 }
@@ -242,7 +242,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::vdot(const ArraySlice<Complex<T1>> &first,
                        const Array<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        Array(*first.__array_reference, first.offset, first.shp_offset), other,
+        Array(*first.array_reference_, first.offset, first.shp_offset), other,
         threads);
 }
 
@@ -250,8 +250,8 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::vdot(const ArraySlice<Complex<T1>> &first,
                        const ArraySlice<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        Array(*first.__array_reference, first.offset, first.shp_offset),
-        Array(*other.__array_reference, other.offset, other.shp_offset),
+        Array(*first.array_reference_, first.offset, first.shp_offset),
+        Array(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -259,7 +259,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::vdot(const Array<Complex<T1>> &first,
                        const ArraySlice<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        first, Array(*other.__array_reference, other.offset, other.shp_offset),
+        first, Array(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

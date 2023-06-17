@@ -15,7 +15,7 @@ Array<T> Utils::abs(const Array<T> &values) {
 template <typename T>
 Array<T> Utils::abs(const ArraySlice<T> &values) {
     return Utils::abs<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

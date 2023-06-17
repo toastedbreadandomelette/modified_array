@@ -29,10 +29,10 @@ std::tuple<Array<Tres>, Array<Tres>, Array<Tres>, i32> Linalg::lu_decompose(
     for (usize j = 0; j < n; ++j) {
         usize max_index = j;
         Tres max_value =
-            std::abs(input.__array[n * permutation.__array[j] + j]);
+            std::abs(input.array_[n * permutation.array_[j] + j]);
         for (usize i = j + 1; i < n; ++i) {
             const Tres value =
-                std::abs(input.__array[n * permutation.__array[i] + j]);
+                std::abs(input.array_[n * permutation.array_[i] + j]);
             if (value > max_value) {
                 max_value = value;
                 max_index = i;
@@ -40,37 +40,37 @@ std::tuple<Array<Tres>, Array<Tres>, Array<Tres>, i32> Linalg::lu_decompose(
         }
         if (j != max_index) {
             sign = -sign;
-            std::swap(permutation.__array[j], permutation.__array[max_index]);
+            std::swap(permutation.array_[j], permutation.array_[max_index]);
         }
 
-        usize jmax = permutation.__array[j];
+        usize jmax = permutation.array_[j];
 
 #pragma omp parallel for
         for (usize i = j + 1; i < n; ++i) {
-            usize imax = permutation.__array[i];
-            input.__array[imax * n + j] /= input.__array[jmax * n + j];
+            usize imax = permutation.array_[i];
+            input.array_[imax * n + j] /= input.array_[jmax * n + j];
             for (usize k = j + 1; k < n; ++k) {
-                input.__array[imax * n + k] -=
-                    input.__array[imax * n + j] * input.__array[jmax * n + k];
+                input.array_[imax * n + k] -=
+                    input.array_[imax * n + j] * input.array_[jmax * n + k];
             }
         }
     }
 
 #pragma omp parallel for
     for (usize j = 0; j < n; ++j) {
-        L.__array[j * n + j] = 1;
+        L.array_[j * n + j] = 1;
         for (usize i = j + 1; i < n; ++i) {
-            L.__array[i * n + j] =
-                input.__array[permutation.__array[i] * n + j];
+            L.array_[i * n + j] =
+                input.array_[permutation.array_[i] * n + j];
         }
         for (usize i = 0; i <= j; ++i) {
-            U.__array[i * n + j] =
-                input.__array[permutation.__array[i] * n + j];
+            U.array_[i * n + j] =
+                input.array_[permutation.array_[i] * n + j];
         }
     }
 
     for (usize index = 0; index < n; ++index) {
-        P.__array[index * n + permutation.__array[index]] = 1;
+        P.array_[index * n + permutation.array_[index]] = 1;
     }
 
     return {L, U, P, sign};
@@ -80,7 +80,7 @@ template <typename Tres, typename T>
 std::tuple<Array<Tres>, Array<Tres>, Array<Tres>, i32> Linalg::lu_decompose(
     const ArraySlice<T> &matrix) {
     return Linalg::lu_decompose<Tres>(
-        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset));
+        Array<T>(*matrix.array_reference_, matrix.offset, matrix.shp_offset));
 }
 
 #endif

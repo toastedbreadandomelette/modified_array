@@ -13,10 +13,10 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
     Array<c64> input(n);
     if ((n & 1)) {
         for (usize index = 0; index < n; ++index) {
-            input.__array[index] = other.__array[index];
+            input.array_[index] = other.array_[index];
         }
         // __dft_internal(input, 0, n);
-        dft_subarray_inplace(input.__array, 0, n);
+        dft_subarray_inplace(input.array_, 0, n);
         return input;
     } else {
         // Get last zero numbers
@@ -26,37 +26,37 @@ Array<c64> FFT::fft_int(const Array<T>& other) {
         i = n;
         while ((i & 1) == 0) {
             for (usize k = (i >> 1); k < i; ++k) {
-                indexes.__array[k] = j;
+                indexes.array_[k] = j;
             }
             i >>= 1;
             j <<= 1;
         }
 
         for (usize k = 1; k < i; ++k) {
-            indexes.__array[k] = indexes.__array[k - 1] + ls;
-            indexes.__array[k + (n >> 1)] = indexes.__array[k] + 1;
+            indexes.array_[k] = indexes.array_[k - 1] + ls;
+            indexes.array_[k + (n >> 1)] = indexes.array_[k] + 1;
         }
         for (usize index = i; index < (n >> 1); index <<= 1) {
             for (usize k = 0; k < index; ++k) {
-                indexes.__array[k + index] += indexes.__array[k];
-                indexes.__array[k + index + (n >> 1)] =
-                    indexes.__array[k + index] + 1;
+                indexes.array_[k + index] += indexes.array_[k];
+                indexes.array_[k + index + (n >> 1)] =
+                    indexes.array_[k + index] + 1;
             }
         }
 
         // #pragma omp parallel for
         for (usize index = 0; index < n; ++index) {
-            input.__array[index] = other.__array[indexes.__array[index]];
+            input.array_[index] = other.array_[indexes.array_[index]];
         }
 
         if (i > 1) {
             for (usize index = 0; index < n; index += i) {
-                dft_subarray_inplace(input.__array, index, index + i);
+                dft_subarray_inplace(input.array_, index, index + i);
             }
         }
     }
 
-    fft_inplace(input.__array, n, i);
+    fft_inplace(input.array_, n, i);
 
     return input;
 }
@@ -69,10 +69,10 @@ Array<c64> FFT::fft_int(const Axis<T>& other) {
 
     if ((n & 1) || n <= 64) {
         for (usize index = 0; index < n; ++index) {
-            input.__array[index] = other[index];
+            input.array_[index] = other[index];
         }
         // return __dft_ret_internal(input, 0, n);
-        dft_subarray_inplace(input.__array, 0, n);
+        dft_subarray_inplace(input.array_, 0, n);
         return input;
     } else {
         // Get last zero numbers
@@ -84,37 +84,37 @@ Array<c64> FFT::fft_int(const Axis<T>& other) {
         i = n;
         while ((i & 1) == 0) {
             for (usize k = (i >> 1); k < i; ++k) {
-                indexes.__array[k] = j;
+                indexes.array_[k] = j;
             }
             i >>= 1;
             j <<= 1;
         }
 
         for (usize k = 1; k < i; ++k) {
-            indexes.__array[k] = indexes.__array[k - 1] + ls;
-            indexes.__array[k + (n >> 1)] = indexes.__array[k] + 1;
+            indexes.array_[k] = indexes.array_[k - 1] + ls;
+            indexes.array_[k + (n >> 1)] = indexes.array_[k] + 1;
         }
         for (usize index = i; index < (n >> 1); index <<= 1) {
             for (usize k = 0; k < index; ++k) {
-                indexes.__array[k + index] += indexes.__array[k];
-                indexes.__array[k + index + (n >> 1)] =
-                    indexes.__array[k + index] + 1;
+                indexes.array_[k + index] += indexes.array_[k];
+                indexes.array_[k + index + (n >> 1)] =
+                    indexes.array_[k + index] + 1;
             }
         }
 
         // #pragma omp parallel for
         for (usize index = 0; index < n; ++index) {
-            input.__array[index] = other[indexes.__array[index]];
+            input.array_[index] = other[indexes.array_[index]];
         }
     }
 
     if (i > 1) {
         for (usize index = 0; index < n; index += i) {
-            dft_subarray_inplace(input.__array, index, index + i);
+            dft_subarray_inplace(input.array_, index, index + i);
         }
-        fft_inplace(input.__array, n, i);
+        fft_inplace(input.array_, n, i);
     } else {
-        fft_inplace(input.__array, n, i);
+        fft_inplace(input.array_, n, i);
     }
 
     return input;
@@ -123,7 +123,7 @@ Array<c64> FFT::fft_int(const Axis<T>& other) {
 template <typename T>
 Array<c64> FFT::fft_int(const ArraySlice<T>& other) {
     return fft_int(
-        Array(*other.__array_reference, other.offset, other.shp_offset));
+        Array(*other.array_reference_, other.offset, other.shp_offset));
 }
 
 #endif

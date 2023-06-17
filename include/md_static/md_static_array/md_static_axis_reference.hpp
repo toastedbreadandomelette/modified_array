@@ -7,12 +7,12 @@
 template <class T>
 class MdStaticAxisReference {
     const MdStaticArray<T> *arr_ptr_;
-    usize axis_;
+    i32 axis_;
     usize stride_;
     usize total_number_of_axes_;
     usize current_axes_;
     usize start_;
-    usize axis_size_;
+    i32 axis_size_;
 
  public:
     constexpr MdStaticAxisReference() {
@@ -25,13 +25,13 @@ class MdStaticAxisReference {
 
     constexpr MdStaticAxisReference(const MdStaticArray<T> &other) {
         for (i32 index = 0; index < axis_size_; ++index) {
-            (*this)[index] = other.__array[index];
+            (*this)[index] = other.array_[index];
         }
     }
 
     constexpr MdStaticAxisReference &operator=(const MdStaticArray<T> &other) {
         for (i32 index = 0; index < axis_size_; ++index) {
-            (*this)[index] = other.__array[index];
+            (*this)[index] = other.array_[index];
         }
 
         return *this;
@@ -63,7 +63,7 @@ class MdStaticAxisReference {
     }
 
     inline T &operator[](const usize index) const {
-        return arr_ptr_->__array[start_ + stride_ * index];
+        return arr_ptr_->array_[start_ + stride_ * index];
     }
 
     inline bool switch_to_next_axis_index() {
@@ -92,11 +92,13 @@ class MdStaticAxisReference {
         return op;
     }
 
-    inline usize get_size() const { return axis_size_; }
+    constexpr inline usize get_size() const { return axis_size_; }
 
-    inline usize get_axis_index() const { return current_axes_; }
+    constexpr inline usize get_axis_index() const { return current_axes_; }
 
-    inline usize get_total_axes() const { return total_number_of_axes_; }
+    constexpr inline usize get_total_axes() const {
+        return total_number_of_axes_;
+    }
 };
 
 template <typename T>

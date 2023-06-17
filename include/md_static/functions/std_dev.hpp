@@ -26,7 +26,7 @@ f128 Utils::std_dev(const Array<T> &values) {
 template <typename T>
 f128 Utils::std_dev(const ArraySlice<T> &values) {
     return std_dev<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

@@ -32,7 +32,7 @@ Array<c64> FFT::fft2(const Array<T>& mat) {
 
 template <typename T>
 Array<c64> FFT::fft2(const ArraySlice<T>& array_ref) {
-    return FFT::fft2(Array<T>(*array_ref.__array_reference, array_ref.offset,
+    return FFT::fft2(Array<T>(*array_ref.array_reference_, array_ref.offset,
                               array_ref.shp_offset));
 }
 

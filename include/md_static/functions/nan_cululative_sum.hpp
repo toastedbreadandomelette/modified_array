@@ -5,26 +5,26 @@
 
 template <typename T>
 Array<T> Utils::nan_cumulative_sum(const ArraySlice<T>& values,
-                                   const usize axis, const usize thread_count) {
+                                   const i32 axis, const usize thread_count) {
     return Utils::nan_cumulative_sum<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         axis, thread_count);
 }
 
 template <typename T>
-Array<T> Utils::nan_cumulative_sum(const Array<T>& ndarray, const usize axis,
+Array<T> Utils::nan_cumulative_sum(const Array<T>& ndarray, const i32 axis,
                                    const usize thread_count) {
     if (axis == -1) {
         Array<T> result(ndarray.get_size());
 
-        result.__array[0] = !isnan(ndarray.__array[0]) ? ndarray.__array[0] : 1;
+        result.array_[0] = !isnan(ndarray.array_[0]) ? ndarray.array_[0] : 1;
 
         // Multithreading will be inefficient for cumulative sum of array,
         // instead, use it when user provides axis.
         for (usize index = 0; index < ndarray.get_size(); ++index) {
-            result.__array[index] =
-                result.__array[index - 1] +
-                (!isnan(ndarray.__array[index]) ? ndarray.__array[index] : 1);
+            result.array_[index] =
+                result.array_[index - 1] +
+                (!isnan(ndarray.array_[index]) ? ndarray.array_[index] : 1);
         }
         return result;
     }
@@ -56,17 +56,17 @@ Array<T> Utils::nan_cumulative_sum(const Array<T>& ndarray, const usize axis,
                  index += (total_threads * looping_value)) {
                 for (usize init_index = index; init_index < index + skip_value;
                      ++init_index) {
-                    result.__array[init_index] =
-                        (!isnan(ndarray.__array[init_index])
-                             ? ndarray.__array[init_index]
+                    result.array_[init_index] =
+                        (!isnan(ndarray.array_[init_index])
+                             ? ndarray.array_[init_index]
                              : 1);
                 }
 
                 for (usize cu_index = index + skip_value;
                      cu_index < index + looping_value; ++cu_index) {
-                    result.__array[cu_index] =
-                        result.__array[index - 1] +
-                        (!isnan(ndarray.__array[index]) ? ndarray.__array[index]
+                    result.array_[cu_index] =
+                        result.array_[index - 1] +
+                        (!isnan(ndarray.array_[index]) ? ndarray.array_[index]
                                                         : 1);
                 }
             }

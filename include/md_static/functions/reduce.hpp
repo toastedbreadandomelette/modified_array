@@ -15,8 +15,8 @@ Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
         const usize threshold_size = ::s_threshold_size;
         if (thread_count == 1 || size <= threshold_size) {
             for (usize index = 0; index < size; ++index) {
-                result.__array[0] =
-                    function_exec(result.__array[0], values.__array[index]);
+                result.array_[0] =
+                    function_exec(result.array_[0], values.array_[index]);
             }
         } else {
             std::vector<std::thread> st;
@@ -26,7 +26,7 @@ Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
                                 const usize end) {
                 for (usize index = start; index < end; ++index) {
                     accumulator[thread_number] = function_exec(
-                        accumulator[thread_number], values.__array[index]);
+                        accumulator[thread_number], values.array_[index]);
                 }
             };
 
@@ -45,7 +45,7 @@ Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
             }
 
             for (auto &result_th : accumulator) {
-                result.__array[0] = function_exec(result.__array[0], result_th);
+                result.array_[0] = function_exec(result.array_[0], result_th);
             }
         }
         return result;
@@ -82,9 +82,9 @@ Array<T> Utils::reduce(const Array<T> &values, const fn_ &function_exec,
                          loop_time += skip_index) {
                         for (usize block_index = 0; block_index < skip_index;
                              ++block_index) {
-                            result.__array[index + block_index] = function_exec(
-                                result.__array[index + block_index],
-                                values.__array[value_index + loop_time +
+                            result.array_[index + block_index] = function_exec(
+                                result.array_[index + block_index],
+                                values.array_[value_index + loop_time +
                                                block_index]);
                         }
                     }
@@ -112,7 +112,7 @@ template <typename T, typename fn_>
 Array<T> Utils::reduce(const ArraySlice<T> &values, const fn_ &function_exec,
                        const T init, const i32 axis) {
     return reduce<T, fn_>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         function_exec, init, axis);
 }
 

@@ -17,13 +17,13 @@ Array<T> Utils::gcd(const Array<T> &values, const i32 axis) {
         [](const T &prev_value, const T &curr_value) {
             return __gcd(prev_value, curr_value);
         },
-        values.get_size() > 0 ? values.__array[0] : 1, axis);
+        values.get_size() > 0 ? values.array_[0] : 1, axis);
 }
 
 template <typename T>
 Array<T> Utils::gcd(const ArraySlice<T> &values, const i32 axis) {
     return gcd(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         axis);
 }
 

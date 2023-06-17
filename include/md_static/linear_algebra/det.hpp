@@ -10,7 +10,7 @@ f128 Linalg::det(const Array<T> &matrix) {
     usize n = matrix.get_shape()[0];
     f128 det = 1;
     for (usize index = 0; index < n; ++index) {
-        det *= U.__array[index * n + index];
+        det *= U.array_[index * n + index];
     }
 
     return sign * det;
@@ -19,7 +19,7 @@ f128 Linalg::det(const Array<T> &matrix) {
 template <typename T>
 f128 Linalg::det(const ArraySlice<T> &matrix) {
     return Linalg::det(
-        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset));
+        Array<T>(*matrix.array_reference_, matrix.offset, matrix.shp_offset));
 }
 
 #endif

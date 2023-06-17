@@ -37,7 +37,7 @@ Array<T> Linalg::matrix_power(const Array<T> &matrix, usize power) {
 template <typename T, class T1>
 Array<T> Linalg::matrix_power(const ArraySlice<T> &matrix, usize power) {
     return Linalg::matrix_power<T>(
-        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset),
+        Array<T>(*matrix.array_reference_, matrix.offset, matrix.shp_offset),
         power);
 }
 

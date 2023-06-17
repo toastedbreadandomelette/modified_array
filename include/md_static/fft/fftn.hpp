@@ -35,7 +35,7 @@ Array<c64> FFT::fftn(const Array<T>& ndarray) {
 
 template <typename T>
 Array<c64> FFT::fftn(const ArraySlice<T>& ndarray) {
-    return FFT::fftn(Array<T>(*ndarray.__array_reference, ndarray.offset,
+    return FFT::fftn(Array<T>(*ndarray.array_reference_, ndarray.offset,
                               ndarray.shp_offset));
 }
 

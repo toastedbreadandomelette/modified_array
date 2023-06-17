@@ -26,7 +26,7 @@ Array<T> Utils::lcm(const Array<T> &values, const i32 axis) {
 template <typename T>
 Array<T> Utils::lcm(const ArraySlice<T> &values, const i32 axis) {
     return lcm(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         axis);
 }
 

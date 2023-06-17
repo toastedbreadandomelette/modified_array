@@ -13,7 +13,7 @@ Array<T> Utils::floor(const Array<T> &array) {
 template <typename T>
 Array<T> Utils::floor(const ArraySlice<T> &values) {
     return Utils::floor<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

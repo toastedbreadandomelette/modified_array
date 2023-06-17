@@ -15,7 +15,7 @@ Array<double> Utils::exp2(const Array<T> &values) {
 template <typename T>
 Array<double> Utils::exp2(const ArraySlice<T> &values) {
     return Utils::exp2<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

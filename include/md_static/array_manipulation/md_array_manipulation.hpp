@@ -53,7 +53,7 @@ struct MdArrayManipulate {
      */
     template <typename T>
     static Array<T> eye(const usize rows, const usize cols = -1,
-                                const usize koffset = 0);
+                        const usize koffset = 0);
 
     /**
      * @brief Return diagonal from a 2d array
@@ -63,8 +63,7 @@ struct MdArrayManipulate {
      * @returns array of size size with all entries as zeros
      */
     template <typename T>
-    static Array<T> mat_diag(const Array<T> &matrix,
-                                     const usize koffset = 0);
+    static Array<T> mat_diag(const Array<T> &matrix, const usize koffset = 0);
     /**
      * @brief Return diagonal from a 2d array
      * @tparam T type of array
@@ -74,7 +73,7 @@ struct MdArrayManipulate {
      */
     template <typename T>
     static Array<T> mat_diag(const ArraySlice<T> &rows,
-                                     const usize koffset = 0);
+                             const usize koffset = 0);
 
     /**
      * @brief Create array with entries as vandermonte
@@ -87,9 +86,8 @@ struct MdArrayManipulate {
      * @returns array of size {|array|, n}
      */
     template <typename T>
-    static Array<T> vandermonte(const Array<T> &array,
-                                        const i64 n = -1,
-                                        const bool increasing_order = false);
+    static Array<T> vandermonte(const Array<T> &array, const i64 n = -1,
+                                const bool increasing_order = false);
     /**
      * @brief Create array with entries as vandermonte
      * @tparam T type of array
@@ -101,37 +99,32 @@ struct MdArrayManipulate {
      * @returns array of size {|array|, n}
      */
     template <typename T>
-    static Array<T> vandermonte(const ArraySlice<T> &rows,
-                                        const i64 n = -1,
-                                        const bool increasing_order = false);
+    static Array<T> vandermonte(const ArraySlice<T> &rows, const i64 n = -1,
+                                const bool increasing_order = false);
 
     template <typename T>
-    static Array<T> flip(const Array<T> &__ndarray,
-                                 const usize axis = -1);
+    static Array<T> flip(const Array<T> &__ndarray, const i32 axis = -1);
 
     template <typename T>
-    static Array<T> flip(const ArraySlice<T> &__ndarray,
-                                 const usize axis = -1);
+    static Array<T> flip(const ArraySlice<T> &__ndarray, const i32 axis = -1);
 
     template <typename T3, typename T1, typename T2>
-    static Array<T3> linspace(const Array<T1> &first,
-                                      const Array<T2> &other,
-                                      const usize numbers = 50);
+    static Array<T3> linspace(const Array<T1> &first, const Array<T2> &other,
+                              const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static Array<T3> linspace(const ArraySlice<T1> &first,
-                                      const Array<T2> &other,
-                                      const usize numbers = 50);
+                              const Array<T2> &other, const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static Array<T3> linspace(const ArraySlice<T1> &first,
-                                      const ArraySlice<T2> &other,
-                                      const usize numbers = 50);
+                              const ArraySlice<T2> &other,
+                              const usize numbers = 50);
 
     template <typename T3, typename T1, typename T2>
     static Array<T3> linspace(const Array<T1> &first,
-                                      const ArraySlice<T2> &other,
-                                      const usize numbers = 50);
+                              const ArraySlice<T2> &other,
+                              const usize numbers = 50);
 };
 
 typedef MdArrayManipulate Manip;

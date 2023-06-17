@@ -40,7 +40,7 @@ Array<T> Utils::range(const T start, const T end, const Ts spacing) {
                                            const usize end, const T increment) {
         T value = init;
         for (usize index = start; index < end; ++index, value += increment) {
-            result.__array[index] = value;
+            result.array_[index] = value;
         }
     };
 

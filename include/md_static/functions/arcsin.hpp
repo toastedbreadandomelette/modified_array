@@ -14,7 +14,7 @@ Array<T> Utils::arcsin(const Array<T> &values) {
 template <typename T>
 Array<T> Utils::arcsin(const ArraySlice<T> &values) {
     return Utils::arcsin<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

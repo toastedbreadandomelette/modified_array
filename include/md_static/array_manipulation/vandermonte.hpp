@@ -19,18 +19,18 @@ Array<T> Manip::vandermonte(const Array<T> &rows, const i64 n,
     if (::s_thread_count == 1 || ::s_threshold_size > result.get_size()) {
         if (!increasing_order) {
             for (usize row = 0; row < rows.get_size(); ++row) {
-                const auto c = rows.__array[row];
+                const auto c = rows.array_[row];
                 for (i32 index = loop - 2; index >= 0; --index) {
-                    result.__array[row * loop + index] =
-                        result.__array[row * loop + index + 1] * c;
+                    result.array_[row * loop + index] =
+                        result.array_[row * loop + index + 1] * c;
                 }
             }
         } else {
             for (usize row = 0; row < rows.get_size(); ++row) {
-                const auto c = rows.__array[row];
+                const auto c = rows.array_[row];
                 for (usize index = 1; index < loop; ++index) {
-                    result.__array[row * loop + index] =
-                        result.__array[row * loop + index - 1] * c;
+                    result.array_[row * loop + index] =
+                        result.array_[row * loop + index - 1] * c;
                 }
             }
         }
@@ -40,18 +40,18 @@ Array<T> Manip::vandermonte(const Array<T> &rows, const i64 n,
                                                      const usize end) {
                 if (!increasing_order) {
                     for (usize row = start; row < end; ++row) {
-                        const auto c = rows.__array[row];
+                        const auto c = rows.array_[row];
                         for (i32 index = loop - 2; index >= 0; --index) {
-                            result.__array[row * loop + index] =
-                                result.__array[row * loop + index + 1] * c;
+                            result.array_[row * loop + index] =
+                                result.array_[row * loop + index + 1] * c;
                         }
                     }
                 } else {
                     for (usize row = start; row < end; ++row) {
-                        const auto c = rows.__array[row];
+                        const auto c = rows.array_[row];
                         for (usize index = 1; index < loop; ++index) {
-                            result.__array[row * loop + index] =
-                                result.__array[row * loop + index - 1] * c;
+                            result.array_[row * loop + index] =
+                                result.array_[row * loop + index - 1] * c;
                         }
                     }
                 }
@@ -80,7 +80,7 @@ template <typename T>
 Array<T> Manip::vandermonte(const ArraySlice<T> &rows,
                                     const i64 n, const bool increasing_order) {
     return vandermonte<T>(
-        Array<T>(*rows.__array_reference, rows.offset, rows.shp_offset),
+        Array<T>(*rows.array_reference_, rows.offset, rows.shp_offset),
         n, increasing_order);
 }
 #endif

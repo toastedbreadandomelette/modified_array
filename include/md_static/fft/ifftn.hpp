@@ -37,7 +37,7 @@ Array<T> FFT::ifftn(const Array<c64>& ndarray) {
 
 template <typename T>
 Array<T> FFT::ifftn(const ArraySlice<c64>& ndarray) {
-    return FFT::ifftn<T>(Array<c64>(*ndarray.__array_reference, ndarray.offset,
+    return FFT::ifftn<T>(Array<c64>(*ndarray.array_reference_, ndarray.offset,
                                     ndarray.shp_offset));
 }
 

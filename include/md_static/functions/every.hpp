@@ -9,7 +9,7 @@ bool Utils::every(const Array<T> &ndarray, const fn<bool(const T &)> &function,
                   const usize threads) {
     if (ndarray.get_size() < s_threshold_size || threads == 1) {
         usize index = 0;
-        for (; index < ndarray.get_size() && function(ndarray.__array[index]);
+        for (; index < ndarray.get_size() && function(ndarray.array_[index]);
              ++index) {
         }
         return index == ndarray.get_size();
@@ -22,7 +22,7 @@ bool Utils::every(const Array<T> &ndarray, const fn<bool(const T &)> &function,
                                           const usize thread_number,
                                           const usize start, const usize end) {
                 usize index = start;
-                for (; index < end && function(ndarray.__array[index]);
+                for (; index < end && function(ndarray.array_[index]);
                      ++index) {
                 }
                 thread_results[thread_number] = (index == end);
@@ -57,7 +57,7 @@ template <typename T>
 bool Utils::every(const ArraySlice<T> &__ndarray_reference,
                   const fn<bool(const T &)> &function, const usize threads) {
     return every<T>(
-        Array<T>(*__ndarray_reference.__array_reference,
+        Array<T>(*__ndarray_reference.array_reference_,
                  __ndarray_reference.offset, __ndarray_reference.shp_offset),
         function, threads);
 }

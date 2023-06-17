@@ -20,7 +20,7 @@ Array<T> Utils::map(const Array<T> &values,
 
     if (thread_count == 1 || size <= threshold_size) {
         for (usize index = 0; index < size; ++index) {
-            result.__array[index] = function_exec(values.__array[index]);
+            result.array_[index] = function_exec(values.array_[index]);
         }
     } else {
         std::vector<std::thread> st;
@@ -28,7 +28,7 @@ Array<T> Utils::map(const Array<T> &values,
         auto _add_int = [&result, &values, &function_exec](const usize start,
                                                            const usize end) {
             for (usize index = start; index < end; ++index) {
-                result.__array[index] = function_exec(values.__array[index]);
+                result.array_[index] = function_exec(values.array_[index]);
             }
         };
 
@@ -51,7 +51,7 @@ template <typename T>
 Array<T> Utils::map(const ArraySlice<T> &values,
                     const fn<T(const T &)> &function_exec) {
     return map<T>(
-        Array(*values.__array_reference, values.offset, values.shp_offset),
+        Array(*values.array_reference_, values.offset, values.shp_offset),
         function_exec);
 }
 

@@ -24,7 +24,7 @@ Array<T> Manip::mat_diag(const Array<T>& matrix,
 
     for (usize index = offset, res_index = 0; res_index < result.get_size();
          index += (cols + 1), ++res_index) {
-        result.__array[res_index] = matrix.__array[index];
+        result.array_[res_index] = matrix.array_[index];
     }
 
     return result;
@@ -33,7 +33,7 @@ Array<T> Manip::mat_diag(const Array<T>& matrix,
 template <typename T>
 Array<T> Manip::mat_diag(const ArraySlice<T>& matrix,
                                  const usize offset) {
-    return mat_diag<T>(Array<T>(*matrix.__array_reference,
+    return mat_diag<T>(Array<T>(*matrix.array_reference_,
                                         matrix.offset, matrix.shp_offset),
                        offset);
 }

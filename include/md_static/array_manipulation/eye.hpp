@@ -11,7 +11,7 @@ Array<T> Manip::eye(const usize rows, const usize cols,
     Array<T> result({rows, cols}, 0);
 
     for (usize index = koff; index < result.get_size(); index += incr) {
-        result.__array[index] = 1;
+        result.array_[index] = 1;
     }
 
     return result;

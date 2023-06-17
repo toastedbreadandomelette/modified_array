@@ -9,7 +9,7 @@ bool Utils::some(const Array<T> &ndarray, const fn<bool(const T &)> &function,
                  const usize threads) {
     if (ndarray.get_size() < s_threshold_size) {
         usize index = 0;
-        for (; index < ndarray.get_size() && !function(ndarray.__array[index]);
+        for (; index < ndarray.get_size() && !function(ndarray.array_[index]);
              ++index) {
         }
         return index < ndarray.get_size();
@@ -22,7 +22,7 @@ bool Utils::some(const Array<T> &ndarray, const fn<bool(const T &)> &function,
                                             const usize start,
                                             const usize end) {
             usize index = start;
-            for (; index < end && !function(ndarray.__array[index]); ++index) {
+            for (; index < end && !function(ndarray.array_[index]); ++index) {
             }
             thread_results[thread_number] = (index < end);
         };
@@ -55,7 +55,7 @@ bool Utils::some(const Array<T> &ndarray, const fn<bool(const T &)> &function,
 template <typename T>
 bool Utils::some(const ArraySlice<T> &ndarray,
                  const fn<bool(const T &)> &function, const usize threads) {
-    return some<T>(Array<T>(*ndarray.__array_reference, ndarray.offset,
+    return some<T>(Array<T>(*ndarray.array_reference_, ndarray.offset,
                             ndarray.shp_offset),
                    function, threads);
 }

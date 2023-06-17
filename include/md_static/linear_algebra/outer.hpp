@@ -14,8 +14,8 @@ Array<T3> Linalg::outer(const Array<T1> &first, const Array<T2> &other,
         const usize fsize = first.get_size(), osize = other.get_size();
         for (usize i = 0; i < fsize; ++i) {
             for (usize j = start; j < end; ++j) {
-                result.__array[i * osize + j] =
-                    first.__array[i] * other.__array[j];
+                result.array_[i * osize + j] =
+                    first.array_[i] * other.array_[j];
             }
         }
     };
@@ -43,7 +43,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::outer(const ArraySlice<T1> &first, const Array<T2> &other,
                         const usize threads) {
     return Linalg::outer<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
         other, threads);
 }
 
@@ -52,7 +52,7 @@ Array<T3> Linalg::outer(const Array<T1> &first, const ArraySlice<T2> &other,
                         const usize threads) {
     return Linalg::outer<T3, T1, T2>(
         first,
-        Array<T1>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T1>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -60,8 +60,8 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::outer(const ArraySlice<T1> &first,
                         const ArraySlice<T2> &other, const usize threads) {
     return Linalg::outer<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
-        Array<T1>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
+        Array<T1>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

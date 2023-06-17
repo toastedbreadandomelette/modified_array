@@ -13,7 +13,7 @@ Array<T> Utils::ceil(const Array<T> &ndarray) {
 template <typename T>
 Array<T> Utils::ceil(const ArraySlice<T> &values) {
     return Utils::ceil<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

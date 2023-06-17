@@ -616,8 +616,7 @@ struct MdArrayUtility {
      * ndarray
      */
     template <typename T>
-    static Array<T> cumulative_sum(const Array<T> &ndarray,
-                                   const usize axis = -1,
+    static Array<T> cumulative_sum(const Array<T> &ndarray, const i32 axis = -1,
                                    const usize thread_count = 16);
 
     /**
@@ -629,7 +628,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> cumulative_sum(const ArraySlice<T> &ndarray,
-                                   const usize axis = -1,
+                                   const i32 axis = -1,
                                    const usize thread_count = 16);
 
     /**
@@ -642,7 +641,7 @@ struct MdArrayUtility {
      * ndarray
      */
     template <typename T>
-    static Array<T> diff(const Array<T> &ndarray, const usize axis = -1,
+    static Array<T> diff(const Array<T> &ndarray, const i32 axis = -1,
                          const usize thread_count = 16);
 
     /**
@@ -653,7 +652,7 @@ struct MdArrayUtility {
      * ndarray
      */
     template <typename T>
-    static Array<T> diff(const ArraySlice<T> &ndarray, const usize axis = -1,
+    static Array<T> diff(const ArraySlice<T> &ndarray, const i32 axis = -1,
                          const usize thread_count = 16);
 
     /**
@@ -667,7 +666,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> cumulative_product(const Array<T> &ndarray,
-                                       const usize axis = -1,
+                                       const i32 axis = -1,
                                        const usize thread_count = 16);
 
     /**
@@ -679,7 +678,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> cumulative_product(const ArraySlice<T> &ndarray,
-                                       const usize axis = -1,
+                                       const i32 axis = -1,
                                        const usize thread_count = 16);
 
     /**
@@ -693,7 +692,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> nan_cumulative_sum(const Array<T> &ndarray,
-                                       const usize axis = -1,
+                                       const i32 axis = -1,
                                        const usize thread_count = 16);
 
     /**
@@ -705,7 +704,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> nan_cumulative_sum(const ArraySlice<T> &ndarray,
-                                       const usize axis = -1,
+                                       const i32 axis = -1,
                                        const usize thread_count = 16);
 
     /**
@@ -719,7 +718,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> nan_cumulative_product(const Array<T> &ndarray,
-                                           const usize axis = -1,
+                                           const i32 axis = -1,
                                            const usize thread_count = 16);
 
     /**
@@ -731,7 +730,7 @@ struct MdArrayUtility {
      */
     template <typename T>
     static Array<T> nan_cumulative_product(const ArraySlice<T> &ndarray,
-                                           const usize axis = -1,
+                                           const i32 axis = -1,
                                            const usize thread_count = 16);
 
     /**

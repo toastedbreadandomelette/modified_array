@@ -17,7 +17,7 @@ Array<T> Utils::sum(const Array<T> &values, const T init, const i32 axis) {
 template <typename T>
 Array<T> Utils::sum(const ArraySlice<T> &values, const T init, const i32 axis) {
     return sum(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         init, axis);
 }
 

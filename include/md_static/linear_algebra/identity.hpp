@@ -7,7 +7,7 @@ template <typename T>
 Array<T> Linalg::identity(const usize n) {
     Array<T> result({n, n}, 0);
     for (usize index = 0; index < result.get_size(); index += (n + 1)) {
-        result.__array[index] = 1;
+        result.array_[index] = 1;
     }
 
     return result;
@@ -21,13 +21,13 @@ bool Linalg::is_identity(const Array<T> &other) {
     usize n = other.shape[0];
 
     for (usize index = 0; index < other.get_size(); ++index) {
-        if (other.__array[index] > 1 || other.__array[index] < 0) {
+        if (other.array_[index] > 1 || other.array_[index] < 0) {
             return false;
         }
-        if (other.__array[index] && (index % (n + 1) != 0)) {
+        if (other.array_[index] && (index % (n + 1) != 0)) {
             return false;
         }
-        if (!other.__array[index] && (index % (n + 1) == 0)) {
+        if (!other.array_[index] && (index % (n + 1) == 0)) {
             return false;
         }
     }

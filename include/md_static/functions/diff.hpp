@@ -5,14 +5,14 @@
 #include "./md_static_array_utility.hpp"
 
 template <typename T>
-Array<T> Utils::diff(const Array<T> &ndarray, const usize axis,
+Array<T> Utils::diff(const Array<T> &ndarray, const i32 axis,
                      const usize thread_count) {
     if (axis == -1) {
         Array<T> result(ndarray.get_size() - 1);
 #pragma omp parallel for
         for (usize index = 0; index < ndarray.get_size() - 1; ++index) {
-            result.__array[index] =
-                ndarray.__array[index + 1] - ndarray.__array[index];
+            result.array_[index] =
+                ndarray.array_[index + 1] - ndarray.array_[index];
         }
 
         return result;
@@ -47,9 +47,9 @@ Array<T> Utils::diff(const Array<T> &ndarray, const usize axis,
              index += (total_threads * loop_times)) {
             for (usize d_index = index;
                  d_index < index + loop_times - diff_index; ++d_index) {
-                result.__array[d_index - breaker] =
-                    ndarray.__array[d_index + diff_index] -
-                    ndarray.__array[d_index];
+                result.array_[d_index - breaker] =
+                    ndarray.array_[d_index + diff_index] -
+                    ndarray.array_[d_index];
             }
             breaker += (total_threads * diff_index);
         }
@@ -70,9 +70,9 @@ Array<T> Utils::diff(const Array<T> &ndarray, const usize axis,
 }
 
 template <typename T>
-Array<T> Utils::diff(const ArraySlice<T> &ndarray, const usize axis,
+Array<T> Utils::diff(const ArraySlice<T> &ndarray, const i32 axis,
                      const usize thread_count) {
-    return diff<T>(Array<T>(*ndarray.__array_reference, ndarray.offset,
+    return diff<T>(Array<T>(*ndarray.array_reference_, ndarray.offset,
                             ndarray.shp_offset),
                    axis, thread_count);
 }

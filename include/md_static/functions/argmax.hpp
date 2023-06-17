@@ -13,9 +13,9 @@ Array<usize> Utils::argmax(const Array<T> &values, const i32 axis) {
         const usize threshold_size = ::s_threshold_size;
         if (thread_count == 1 || size <= threshold_size) {
             for (usize index = 0; index < size; ++index) {
-                result.__array[0] =
-                    values.__array[result.__array[0]] > values.__array[index]
-                        ? result.__array[0]
+                result.array_[0] =
+                    values.array_[result.array_[0]] > values.array_[index]
+                        ? result.array_[0]
                         : index;
             }
         } else {
@@ -26,8 +26,8 @@ Array<usize> Utils::argmax(const Array<T> &values, const i32 axis) {
                                                     const usize end) {
                 for (usize index = start; index < end; ++index) {
                     accumulator[thread_number] =
-                        values.__array[accumulator[thread_number]] >
-                                values.__array[index]
+                        values.array_[accumulator[thread_number]] >
+                                values.array_[index]
                             ? accumulator[thread_number]
                             : index;
                 }
@@ -48,10 +48,10 @@ Array<usize> Utils::argmax(const Array<T> &values, const i32 axis) {
             }
 
             for (auto &result_th : accumulator) {
-                result.__array[0] = values.__array[result_th] >
-                                            values.__array[result.__array[0]]
+                result.array_[0] = values.array_[result_th] >
+                                            values.array_[result.array_[0]]
                                         ? result_th
-                                        : result.__array[0];
+                                        : result.array_[0];
             }
         }
         return result;
@@ -89,15 +89,15 @@ Array<usize> Utils::argmax(const Array<T> &values, const i32 axis) {
                      loop_time += skip_index, ++axis_index) {
                     for (usize block_index = 0; block_index < skip_index;
                          ++block_index) {
-                        result.__array[index + block_index] =
-                            values.__array[value_index +
+                        result.array_[index + block_index] =
+                            values.array_[value_index +
                                            (result
-                                                .__array[index + block_index] *
+                                                .array_[index + block_index] *
                                             skip_index) +
                                            block_index] >
-                                    values.__array[value_index + loop_time +
+                                    values.array_[value_index + loop_time +
                                                    block_index]
-                                ? result.__array[index + block_index]
+                                ? result.array_[index + block_index]
                                 : axis_index;
                     }
                 }
@@ -124,7 +124,7 @@ Array<usize> Utils::argmax(const Array<T> &values, const i32 axis) {
 template <typename T>
 Array<usize> Utils::argmax(const ArraySlice<T> &values, const i32 axis) {
     return argmax<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         axis);
 }
 

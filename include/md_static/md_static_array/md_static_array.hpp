@@ -67,7 +67,7 @@ class MdStaticArray {
     MdStaticArray(const MdStaticArray<T> &other, const usize offset,
                   const u16 shp_offset)
         : shape(nullptr), skip_vec(nullptr) {
-        __array = &other.__array[offset];
+        array_ = &other.array_[offset];
         shape = &other.shape[shp_offset];
         skip_vec = &other.skip_vec[shp_offset];
         shp_size = other.shp_size - shp_offset;
@@ -80,7 +80,7 @@ class MdStaticArray {
     }
 
     bool dont_free = false;
-    T *__array;
+    T *array_;
     usize *shape;
     usize *skip_vec;
     usize size_;
@@ -107,9 +107,9 @@ class MdStaticArray {
 
     constexpr void init_array(const usize size) {
         if constexpr (MdTypeInfer::is_mallocable<T>::value) {
-            __array = aligned_allocate<T>(64, size);
+            array_ = aligned_allocate<T>(64, size);
         } else {
-            __array = new T[size];
+            array_ = new T[size];
         }
         size_ = size;
     }
@@ -126,7 +126,7 @@ class MdStaticArray {
         init_shape(size);
 
         for (usize index = 0; index < size; ++index) {
-            __array[index] = value;
+            array_[index] = value;
         }
     }
 
@@ -140,11 +140,11 @@ class MdStaticArray {
         init_shape(_shape.data(), _shape.size());
 
         for (usize index = 0; index < size_; ++index) {
-            __array[index] = value;
+            array_[index] = value;
         }
     }
 
-    MdStaticArray() : shape(nullptr), skip_vec(nullptr) { __array = nullptr; }
+    MdStaticArray() : shape(nullptr), skip_vec(nullptr) { array_ = nullptr; }
 
     explicit MdStaticArray(const std::vector<T> &other)
         : shape(nullptr), skip_vec(nullptr) {
@@ -153,7 +153,7 @@ class MdStaticArray {
         init_shape(size_);
 
         for (usize index = 0; index < size_; ++index) {
-            __array[index] = other[index];
+            array_[index] = other[index];
         }
     }
 
@@ -164,13 +164,13 @@ class MdStaticArray {
         init_shape(shp, other.shp_size);
 
         for (usize index = 0; index < size_; ++index) {
-            __array[index] = other.__array[index];
+            array_[index] = other.array_[index];
         }
     }
 
     MdStaticArray(MdStaticArray<T> &&other) {
-        __array = other.__array;
-        other.__array = nullptr;
+        array_ = other.array_;
+        other.array_ = nullptr;
 
         size_ = other.size_;
         shp_size = other.shp_size;
@@ -185,8 +185,8 @@ class MdStaticArray {
     }
 
     MdStaticArray &operator=(MdStaticArray<T> &&other) {
-        __array = other.__array;
-        other.__array = nullptr;
+        array_ = other.array_;
+        other.array_ = nullptr;
 
         size_ = other.size_;
         shp_size = other.shp_size;
@@ -210,7 +210,7 @@ class MdStaticArray {
     /**
      * @brief Casting operator
      */
-    inline T operator()() const { return __array[0]; }
+    inline T operator()() const { return array_[0]; }
 
     /**
      * @brief Casting operator
@@ -221,7 +221,7 @@ class MdStaticArray {
                 "Value casted should be a single element, found with size: " +
                 std::to_string(size_));
         }
-        return __array[0];
+        return array_[0];
     }
 
     /**
@@ -236,7 +236,7 @@ class MdStaticArray {
         MdStaticArray<T1> __result(shp, 0);
 
         for (usize index = 0; index < size_; ++index) {
-            __result.__array[index] = __array[index];
+            __result.array_[index] = array_[index];
         }
 
         return __result;
@@ -253,7 +253,7 @@ class MdStaticArray {
         init_shape(size_);
 
         for (usize index = 0; index < size_; ++index) {
-            __array[index] = other[index];
+            array_[index] = other[index];
         }
         return *this;
     }
@@ -270,7 +270,7 @@ class MdStaticArray {
         init_shape(shp, other.shp_size);
 
         for (usize index = 0; index < size_; ++index) {
-            __array[index] = other.__array[index];
+            array_[index] = other.array_[index];
         }
         return *this;
     }
@@ -285,13 +285,13 @@ class MdStaticArray {
      */
     ~MdStaticArray() {
         if (!dont_free) {
-            if (__array != nullptr) {
+            if (array_ != nullptr) {
                 if constexpr (std::is_fundamental<T>::value) {
-                    aligned_free(__array);
+                    aligned_free(array_);
                 } else {
-                    delete[] __array;
+                    delete[] array_;
                 }
-                __array = nullptr;
+                array_ = nullptr;
             }
             if (shape != nullptr) {
                 free(shape);
@@ -302,7 +302,7 @@ class MdStaticArray {
                 skip_vec = nullptr;
             }
         } else {
-            __array = nullptr;
+            array_ = nullptr;
             shape = nullptr;
             skip_vec = nullptr;
         }
@@ -344,9 +344,9 @@ class MdStaticArray {
         return true;
     }
 
-    MdStaticAxisReference<T> get_axis_reference(const usize axis);
+    MdStaticAxisReference<T> get_axis_reference(const i32 axis);
 
-    MdStaticAxisReference<T> get_nth_axis_reference(const usize axis,
+    MdStaticAxisReference<T> get_nth_axis_reference(const i32 axis,
                                                     const usize n);
 
     /**
@@ -1139,11 +1139,11 @@ class MdStaticArray {
                                     const MdStaticArray<T> &ot) {
         // op << "here " << ot.size << '\n';
         if (ot.get_size() == 1) {
-            op << ot.__array[0];
+            op << ot.array_[0];
         } else if (ot.get_shape_size() == 1) {
             op << '[';
             for (usize index = 0; index < ot.get_size(); ++index) {
-                op << ot.__array[index];
+                op << ot.array_[index];
                 if (index != ot.get_size() - 1) {
                     op << ", ";
                 }
@@ -1317,11 +1317,11 @@ inline MdStaticArray<T> operator-(const MdStaticArray<T> &first) {
 template <typename T>
 MdStaticArray<T> &MdStaticArray<T>::operator=(const ArraySlice<T> &other) {
     init_array(other.size);
-    init_shape(&other.__array_reference->shape[other.shp_offset],
-               other.__array_reference->shp_size - other.shp_offset);
+    init_shape(&other.array_reference_->shape[other.shp_offset],
+               other.array_reference_->shp_size - other.shp_offset);
 
     for (usize index = 0; index < size_; ++index) {
-        __array[index] = other.__array_reference->__array[other.offset + index];
+        array_[index] = other.array_reference_->array_[other.offset + index];
     }
 
     return *this;
@@ -1332,11 +1332,11 @@ MdStaticArray<T>::MdStaticArray(const ArraySlice<T> &other)
     : shape(nullptr), skip_vec(nullptr) {
     size_ = other.size;
     init_array(size_);
-    init_shape(&other.__array_reference->shape[other.shp_offset],
-               other.__array_reference->shp_size - other.shp_offset);
+    init_shape(&other.array_reference_->shape[other.shp_offset],
+               other.array_reference_->shp_size - other.shp_offset);
 
     for (usize index = 0; index < size_; ++index) {
-        __array[index] = other.__array_reference->__array[other.offset + index];
+        array_[index] = other.array_reference_->array_[other.offset + index];
     }
 }
 
@@ -1348,7 +1348,7 @@ inline auto &operator+=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other += first.__array_reference->__array[first.offset];
+    other += first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1360,7 +1360,7 @@ inline auto &operator-=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other -= first.__array_reference->__array[first.shp_offset];
+    other -= first.array_reference_->array_[first.shp_offset];
     return other;
 }
 
@@ -1372,7 +1372,7 @@ inline auto &operator*=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other *= first.__array_reference->__array[first.offset];
+    other *= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1384,7 +1384,7 @@ inline auto &operator/=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other /= first.__array_reference->__array[first.offset];
+    other /= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1396,7 +1396,7 @@ inline auto &operator%=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other %= first.__array_reference->__array[first.offset];
+    other %= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1408,7 +1408,7 @@ inline auto &operator<<=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other <<= first.__array_reference->__array[first.offset];
+    other <<= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1420,7 +1420,7 @@ inline auto &operator>>=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other >>= first.__array_reference->__array[first.offset];
+    other >>= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1432,7 +1432,7 @@ inline auto &operator&=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other &= first.__array_reference->__array[first.offset];
+    other &= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1444,7 +1444,7 @@ inline auto &operator|=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other |= first.__array_reference->__array[first.offset];
+    other |= first.array_reference_->array_[first.offset];
     return other;
 }
 
@@ -1456,17 +1456,17 @@ inline auto &operator^=(T1 &other, const ArraySlice<T2> &first) {
             "size: " +
             std::to_string(first.get_size()));
     }
-    other |= first.__array_reference->__array[first.offset];
+    other |= first.array_reference_->array_[first.offset];
     return other;
 }
 
 template <typename T>
-Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
+Axis<T> MdStaticArray<T>::get_axis_reference(const i32 axis) {
     return Axis(*this, axis);
 }
 
 template <typename T>
-Axis<T> MdStaticArray<T>::get_nth_axis_reference(const usize axis,
+Axis<T> MdStaticArray<T>::get_nth_axis_reference(const i32 axis,
                                                  const usize n) {
     return Axis(*this, axis, n);
 }

@@ -60,7 +60,7 @@ Array<T> Utils::mod_pow(const u64 n, const ArraySlice<T> &values,
                         const usize mod) {
     return mod_pow<T, T1>(
         n,
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         mod);
 }
 
@@ -68,7 +68,7 @@ template <typename T, typename T1>
 Array<T> Utils::mod_pow(const ArraySlice<T> &values, const usize power,
                         const usize mod) {
     return mod_pow<T, T1>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         power, mod);
 }
 

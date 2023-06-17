@@ -39,7 +39,7 @@ template <typename T, class T1>
 Array<T> Linalg::matrix_mod_power(const ArraySlice<T> &matrix,
                                   const usize power, const usize mod) {
     return Linalg::matrix_mod_power<T>(
-        Array<T>(*matrix.__array_reference, matrix.offset, matrix.shp_offset),
+        Array<T>(*matrix.array_reference_, matrix.offset, matrix.shp_offset),
         power, mod);
 }
 

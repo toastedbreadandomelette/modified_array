@@ -15,7 +15,7 @@ Array<T> Utils::cosec(const Array<T> &values) {
 template <typename T>
 Array<T> Utils::cosec(const ArraySlice<T> &values) {
     return Utils::cosec<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

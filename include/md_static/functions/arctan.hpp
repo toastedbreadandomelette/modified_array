@@ -14,7 +14,7 @@ Array<T> Utils::arctan(const Array<T> &values) {
 template <typename T>
 Array<T> Utils::arctan(const ArraySlice<T> &values) {
     return Utils::arctan<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset));
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset));
 }
 
 #endif

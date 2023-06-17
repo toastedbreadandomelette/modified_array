@@ -40,7 +40,7 @@ Array<T3> Linalg::inner(const Array<T1> &first, const Array<T2> &other,
                                                 const usize start,
                                                 const usize end) {
                 for (usize i = start; i < end; ++i) {
-                    value[thread_number] += first.__array[i] * other.__array[i];
+                    value[thread_number] += first.array_[i] * other.array_[i];
                 }
             };
             const usize blocks = first.get_size() / threads;
@@ -69,7 +69,7 @@ Array<T3> Linalg::inner(const Array<T1> &first, const Array<T2> &other,
             T3 value = 0;
 #pragma omp parallel for
             for (usize i = 0; i < other.get_size(); ++i) {
-                value += first.__array[i] * other.__array[i];
+                value += first.array_[i] * other.array_[i];
             }
 
             return Array<T3>(1, value);
@@ -91,8 +91,8 @@ Array<T3> Linalg::inner(const Array<T1> &first, const Array<T2> &other,
                          j < other.get_size() && index < result.get_size();
                          j += row) {
                         for (usize k = 0; k < row; ++k) {
-                            result.__array[index] +=
-                                first.__array[i + k] * other.__array[j + k];
+                            result.array_[index] +=
+                                first.array_[i + k] * other.array_[j + k];
                         }
                         ++index;
                     }
@@ -118,7 +118,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::inner(const ArraySlice<T1> &first, const Array<T2> &other,
                         const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
         other, threads);
 }
 
@@ -126,8 +126,8 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::inner(const ArraySlice<T1> &first,
                         const ArraySlice<T2> &other, const usize threads) {
     return Linalg::inner<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
-        Array<T1>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
+        Array<T1>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -136,7 +136,7 @@ Array<T3> Linalg::inner(const Array<T1> &first, const ArraySlice<T2> &other,
                         const usize threads) {
     return Linalg::inner<T3, T1, T2>(
         first,
-        Array<T1>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T1>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

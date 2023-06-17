@@ -39,7 +39,7 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
 
     for (usize i = 0; i < oshape1; ++i) {
         for (usize j = 0; j < oshape0; ++j) {
-            other_t.__array[i * oshape0 + j] = other.__array[j * oshape1 + i];
+            other_t.array_[i * oshape0 + j] = other.array_[j * oshape1 + i];
         }
     }
 
@@ -49,22 +49,22 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
         if constexpr (std::is_same<T1, f64>::value &&
                       std::is_same<T2, f64>::value &&
                       std::is_same<T3, f64>::value) {
-            mul_mt(first.__array, other_t.__array, result.__array, fshape0,
+            mul_mt(first.array_, other_t.array_, result.array_, fshape0,
                    fshape1, oshape1);
         } else if constexpr (std::is_same<T1, f32>::value &&
                              std::is_same<T2, f32>::value &&
                              std::is_same<T3, f32>::value) {
-            mul_mt_f32(first.__array, other_t.__array, result.__array, fshape0,
+            mul_mt_f32(first.array_, other_t.array_, result.array_, fshape0,
                        fshape1, oshape1);
         } else if constexpr (std::is_same<T1, c32>::value &&
                              std::is_same<T2, c32>::value &&
                              std::is_same<T3, c32>::value) {
-            mul_mt_c32(first.__array, other_t.__array, result.__array, fshape0,
+            mul_mt_c32(first.array_, other_t.array_, result.array_, fshape0,
                        fshape1, oshape1);
         } else if constexpr (std::is_same<T1, c64>::value &&
                              std::is_same<T2, c64>::value &&
                              std::is_same<T3, c64>::value) {
-            mul_mt_c64(first.__array, other_t.__array, result.__array, fshape0,
+            mul_mt_c64(first.array_, other_t.array_, result.array_, fshape0,
                        fshape1, oshape1);
         } else {
             auto mul_internal_ = [&first, &other_t, block_size, &result,
@@ -84,10 +84,10 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
                             for (usize j = j_block; j < j_bound; ++j) {
                                 T3 answer = 0;
                                 for (usize k = 0; k < fshape1; ++k) {
-                                    answer += first.__array[i * fshape1 + k] *
-                                              other_t.__array[j * oshape1 + k];
+                                    answer += first.array_[i * fshape1 + k] *
+                                              other_t.array_[j * oshape1 + k];
                                 }
-                                result.__array[i * oshape0 + j] = answer;
+                                result.array_[i * oshape0 + j] = answer;
                             }
                         }
                     }
@@ -113,22 +113,22 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
         if constexpr (std::is_same<T1, f64>::value &&
                       std::is_same<T2, f64>::value &&
                       std::is_same<T3, f64>::value) {
-            mul_st(first.__array, other_t.__array, result.__array, fshape0,
+            mul_st(first.array_, other_t.array_, result.array_, fshape0,
                    fshape1, oshape1);
         } else if constexpr (std::is_same<T1, f32>::value &&
                              std::is_same<T2, f32>::value &&
                              std::is_same<T3, f32>::value) {
-            mul_st_f32(first.__array, other_t.__array, result.__array, fshape0,
+            mul_st_f32(first.array_, other_t.array_, result.array_, fshape0,
                        fshape1, oshape1);
         } else if constexpr (std::is_same<T1, c32>::value &&
                              std::is_same<T2, c32>::value &&
                              std::is_same<T3, c32>::value) {
-            mul_st_c32(first.__array, other_t.__array, result.__array, fshape0,
+            mul_st_c32(first.array_, other_t.array_, result.array_, fshape0,
                        fshape1, oshape1);
         } else if constexpr (std::is_same<T1, c64>::value &&
                              std::is_same<T2, c64>::value &&
                              std::is_same<T3, c64>::value) {
-            mul_st_c64(first.__array, other_t.__array, result.__array, fshape0,
+            mul_st_c64(first.array_, other_t.array_, result.array_, fshape0,
                        fshape1, oshape1);
         } else {
             for (usize i_block = 0; i_block < fshape0; i_block += block_size) {
@@ -142,10 +142,10 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first, const Array<T2> &other,
                         for (usize j = j_block; j < j_bound; ++j) {
                             T3 answer = 0;
                             for (usize k = 0; k < fshape1; ++k) {
-                                answer += first.__array[i * fshape1 + k] *
-                                          other_t.__array[j * oshape1 + k];
+                                answer += first.array_[i * fshape1 + k] *
+                                          other_t.array_[j * oshape1 + k];
                             }
-                            result.__array[i * oshape0 + j] = answer;
+                            result.array_[i * oshape0 + j] = answer;
                         }
                     }
                 }
@@ -160,7 +160,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::mat_multiply(const ArraySlice<T1> &first,
                                const Array<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
         other, threads);
 }
 
@@ -169,7 +169,7 @@ Array<T3> Linalg::mat_multiply(const Array<T1> &first,
                                const ArraySlice<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
         first,
-        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -177,8 +177,8 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::mat_multiply(const ArraySlice<T1> &first,
                                const ArraySlice<T2> &other, const i32 threads) {
     return Linalg::mat_multiply<T3, T1, T2>(
-        Array<T1>(*first.__array_reference, first.offset, first.shp_offset),
-        Array<T2>(*other.__array_reference, other.offset, other.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
+        Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

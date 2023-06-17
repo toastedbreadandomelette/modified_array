@@ -16,7 +16,7 @@ template <typename T>
 Array<double> Utils::mean(const ArraySlice<T> &values, const T init,
                           const i32 axis) {
     return mean<T>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         init, axis);
 }
 

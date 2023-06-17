@@ -16,7 +16,7 @@ T Utils::accumulate_and_merge_fn(const Array<T> &values,
     const usize threshold_size = ::s_threshold_size;
     if (thread_count == 1 || size <= threshold_size) {
         for (usize index = 0; index < size; ++index) {
-            result = function_exec(result, values.__array[index]);
+            result = function_exec(result, values.array_[index]);
         }
     } else {
         std::vector<std::thread> st;
@@ -26,7 +26,7 @@ T Utils::accumulate_and_merge_fn(const Array<T> &values,
                               const usize end) {
             for (usize index = start; index < end; ++index) {
                 accumulator[thread_number] = function_exec(
-                    accumulator[thread_number], values.__array[index]);
+                    accumulator[thread_number], values.array_[index]);
             }
         };
 
@@ -57,7 +57,7 @@ T Utils::accumulate_and_merge_fn(const ArraySlice<T> &values,
                                  const merge_function &merge_func,
                                  const T init) {
     return Utils::accumulate_and_merge_fn<T, function, merge_function>(
-        Array<T>(*values.__array_reference, values.offset, values.shp_offset),
+        Array<T>(*values.array_reference_, values.offset, values.shp_offset),
         function_exec, merge_func, init);
 }
 
