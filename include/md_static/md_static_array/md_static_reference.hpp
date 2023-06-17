@@ -68,15 +68,9 @@ class ArraySlice {
                 std::to_string(value.get_size()));
         }
         // assert shape sizes are equal too
-        if (s_threshold_size > size) {
-            for (usize i = 0; i < size; ++i) {
-                __array_reference->__array[offset + i] = value.__array[i];
-            }
-        } else {
-#pragma omp parallel for
-            for (usize i = 0; i < size; ++i) {
-                __array_reference->__array[offset + i] = value.__array[i];
-            }
+
+        for (usize i = 0; i < size; ++i) {
+            __array_reference->__array[offset + i] = value.__array[i];
         }
 
         return *this;
@@ -88,15 +82,9 @@ class ArraySlice {
             __array_reference->__array[offset] = other;
             return *this;
         }
-        if (s_threshold_size > size) {
-            for (usize i = 0; i < size; ++i) {
-                __array_reference->__array[offset + i] = other;
-            }
-        } else {
-#pragma omp parallel for
-            for (usize i = 0; i < size; ++i) {
-                __array_reference->__array[offset + i] = other;
-            }
+
+        for (usize i = 0; i < size; ++i) {
+            __array_reference->__array[offset + i] = other;
         }
         return *this;
     }
