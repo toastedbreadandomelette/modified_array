@@ -311,8 +311,6 @@ void ifft_b2(c64 *array, i32 n) {
 void ifft_b4(c64 *array, i32 n) {
     c64x2 scal1 =
         C64x2::set(c64::from_polar(1, 0), c64::from_polar(1, Math::pi_by_2));
-    c64x2 scal2 = C64x2::set(c64::from_polar(1, Math::pi),
-                             c64::from_polar(1, 3 * Math::pi_by_2));
 
     for (usize i = 0; i < n; i += 16) {
         c64x2 u2 = C64x2::fromptr(array + i);

@@ -106,15 +106,16 @@ Array<c64> FFT::fft_int(const Axis<T>& other) {
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other[indexes.__array[index]];
         }
-
-        if (i > 1) {
-            for (usize index = 0; index < n; index += i) {
-                dft_subarray_inplace(input.__array, index, index + i);
-            }
-        }
     }
 
-    fft_inplace(input.__array, n, i);
+    if (i > 1) {
+        for (usize index = 0; index < n; index += i) {
+            dft_subarray_inplace(input.__array, index, index + i);
+        }
+        fft_inplace(input.__array, n, i);
+    } else {
+        fft_inplace(input.__array, n, i);
+    }
 
     return input;
 }

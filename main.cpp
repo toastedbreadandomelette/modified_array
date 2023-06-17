@@ -13,9 +13,9 @@
 
 int main(i32 argc, const char **argv) {
     // MdStaticArray<double>::set_threshold_size(1000);
-    usize sz = 1048576;
+    usize sz = 262144;
     // MdStaticArray<double>::set_thread_count(1);
-    Array<f64> c({sz}, 0);
+    Array<f64> c({sz}, 0), d({sz}, 0);
     for (usize i = 0; i < sz; ++i) {
         // c[i] = Utils::range<f64>(i * sz, i * sz + sz);
         // d[i] = Utils::range<f64>(i * sz, i * sz + sz);
@@ -25,7 +25,7 @@ int main(i32 argc, const char **argv) {
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = FFT::ifft<f64>(FFT::fft<f64>(c));
+    auto ans = FFT::fft<f64>(c);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<f64> time = end - start;

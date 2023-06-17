@@ -3,6 +3,7 @@
 #define _IFFT_INT_HPP_
 
 #include "../../utility/math.hpp"
+#include "./ifft/c64.hpp"
 #include "./md_fft.hpp"
 
 /**
@@ -106,16 +107,16 @@ Array<c64> FFT::ifft_int(const Axis<c64>& other) {
         for (usize index = 0; index < n; ++index) {
             input.__array[index] = other[indexes.__array[index]];
         }
-
-        if (i > 1) {
-            for (usize index = 0; index < n; index += i) {
-                idft_subarray_inplace_without_div(input.__array, index,
-                                                  index + i);
-            }
-        }
     }
 
-    ifft_inplace_without_div(input.__array, n, i);
+    if (i > 1) {
+        for (usize index = 0; index < n; index += i) {
+            idft_subarray_inplace_without_div(input.__array, index, index + i);
+        }
+        ifft_inplace_without_div(input.__array, n, i);
+    } else {
+        ifft_inplace_without_div(input.__array, n, i);
+    }
 
     return input;
 }
