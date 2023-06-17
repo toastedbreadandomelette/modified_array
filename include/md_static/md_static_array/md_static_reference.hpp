@@ -653,7 +653,7 @@ class ArraySlice {
         return *this;
     }
 
-    inline usize get_size() const { return size; }
+    constexpr inline usize get_size() const { return size; }
 
     ~ArraySlice() { array_reference_ = nullptr; }
 

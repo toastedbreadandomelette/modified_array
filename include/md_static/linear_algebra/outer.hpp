@@ -13,9 +13,9 @@ Array<T3> Linalg::outer(const Array<T1> &first, const Array<T2> &other,
                                                      const usize end) {
         const usize fsize = first.get_size(), osize = other.get_size();
         for (usize i = 0; i < fsize; ++i) {
+            const auto x = first.array_[i];
             for (usize j = start; j < end; ++j) {
-                result.array_[i * osize + j] =
-                    first.array_[i] * other.array_[j];
+                result.array_[i * osize + j] = x * other.array_[j];
             }
         }
     };

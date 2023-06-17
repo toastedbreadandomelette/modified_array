@@ -5,14 +5,14 @@
 #include "./md_static_array.hpp"
 
 template <class T>
-class MdStaticAxisReference {
-    const MdStaticArray<T> *arr_ptr_;
-    i32 axis_;
-    usize stride_;
-    usize total_number_of_axes_;
-    usize current_axes_;
-    usize start_;
-    i32 axis_size_;
+struct MdStaticAxisReference {
+    const MdStaticArray<T> *arr_ptr_{nullptr};
+    i32 axis_{0};
+    usize stride_{0};
+    usize total_number_of_axes_{0};
+    usize current_axes_{0};
+    usize start_{0};
+    i32 axis_size_{0};
 
  public:
     constexpr MdStaticAxisReference() {
@@ -62,7 +62,7 @@ class MdStaticAxisReference {
                  current_axis_init % stride_;
     }
 
-    inline T &operator[](const usize index) const {
+    constexpr __always_inline T &operator[](const usize index) const {
         return arr_ptr_->array_[start_ + stride_ * index];
     }
 

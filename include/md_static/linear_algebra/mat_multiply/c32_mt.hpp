@@ -298,7 +298,7 @@ void mul_mt_c32(c32 *a, c32 *tb, c32 *c, i32 m, i32 n, i32 p) {
 
     std::vector<std::thread> threads;
 
-    i32 clamped_thread_count = std::min((i32)::s_thread_count, m / 64);
+    i32 clamped_thread_count = std::min(i32(::s_thread_count), m / 64);
 
     i32 total_rows_per_thread = m / clamped_thread_count;
 

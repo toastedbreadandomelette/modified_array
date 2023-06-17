@@ -125,8 +125,15 @@ class MdStaticArray {
         init_array(size);
         init_shape(size);
 
-        for (usize index = 0; index < size; ++index) {
-            array_[index] = value;
+        if (size > s_threshold_size && ::s_thread_count > 1) {
+#pragma omp parallel for
+            for (usize index = 0; index < size; ++index) {
+                array_[index] = value;
+            }
+        } else {
+            for (usize index = 0; index < size; ++index) {
+                array_[index] = value;
+            }
         }
     }
 
@@ -139,8 +146,15 @@ class MdStaticArray {
         init_array(overall_size);
         init_shape(_shape.data(), _shape.size());
 
-        for (usize index = 0; index < size_; ++index) {
-            array_[index] = value;
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
+#pragma omp parallel for
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = value;
+            }
+        } else {
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = value;
+            }
         }
     }
 
@@ -152,8 +166,15 @@ class MdStaticArray {
         init_array(size_);
         init_shape(size_);
 
-        for (usize index = 0; index < size_; ++index) {
-            array_[index] = other[index];
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
+#pragma omp parallel for
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other[index];
+            }
+        } else {
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other[index];
+            }
         }
     }
 
@@ -163,8 +184,15 @@ class MdStaticArray {
         const auto shp = other.get_shape();
         init_shape(shp, other.shp_size);
 
-        for (usize index = 0; index < size_; ++index) {
-            array_[index] = other.array_[index];
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
+#pragma omp parallel for
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other.array_[index];
+            }
+        } else {
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other.array_[index];
+            }
         }
     }
 
@@ -235,6 +263,7 @@ class MdStaticArray {
         }
         MdStaticArray<T1> __result(shp, 0);
 
+#pragma omp parallel for
         for (usize index = 0; index < size_; ++index) {
             __result.array_[index] = array_[index];
         }
@@ -252,8 +281,15 @@ class MdStaticArray {
         init_array(size_);
         init_shape(size_);
 
-        for (usize index = 0; index < size_; ++index) {
-            array_[index] = other[index];
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
+#pragma omp parallel for
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other[index];
+            }
+        } else {
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other[index];
+            }
         }
         return *this;
     }
@@ -268,9 +304,15 @@ class MdStaticArray {
         init_array(size_);
         const auto shp = other.get_shape();
         init_shape(shp, other.shp_size);
-
-        for (usize index = 0; index < size_; ++index) {
-            array_[index] = other.array_[index];
+        if (size_ > s_threshold_size && ::s_thread_count > 1) {
+#pragma omp parallel for
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other.array_[index];
+            }
+        } else {
+            for (usize index = 0; index < size_; ++index) {
+                array_[index] = other.array_[index];
+            }
         }
         return *this;
     }
@@ -311,14 +353,14 @@ class MdStaticArray {
     /**
      * @brief Get shape of the object
      */
-    constexpr inline usize *get_shape() const { return shape; }
+    inline usize *get_shape() const { return shape; }
 
     /**
      * @brief Get shape length
      * @param void
      * @returns u16 shape of the array
      */
-    constexpr inline u16 get_shape_size() const { return shp_size; }
+    inline u16 get_shape_size() const { return shp_size; }
 
     /**
      * @brief Check whether arrays have same structure
@@ -344,9 +386,9 @@ class MdStaticArray {
         return true;
     }
 
-    MdStaticAxisReference<T> get_axis_reference(const i32 axis);
+    MdStaticAxisReference<T> get_axis_reference(const usize axis);
 
-    MdStaticAxisReference<T> get_nth_axis_reference(const i32 axis,
+    MdStaticAxisReference<T> get_nth_axis_reference(const usize axis,
                                                     const usize n);
 
     /**
@@ -1133,7 +1175,7 @@ class MdStaticArray {
         return ArraySlice(*this, index * skip_vec[0]);
     }
 
-    constexpr inline usize get_size() const { return size_; }
+    inline usize get_size() const { return size_; }
 
     friend std::ostream &operator<<(std::ostream &op,
                                     const MdStaticArray<T> &ot) {
@@ -1320,8 +1362,17 @@ MdStaticArray<T> &MdStaticArray<T>::operator=(const ArraySlice<T> &other) {
     init_shape(&other.array_reference_->shape[other.shp_offset],
                other.array_reference_->shp_size - other.shp_offset);
 
-    for (usize index = 0; index < size_; ++index) {
-        array_[index] = other.array_reference_->array_[other.offset + index];
+    if (size_ > s_threshold_size) {
+#pragma omp parallel for
+        for (usize index = 0; index < size_; ++index) {
+            array_[index] =
+                other.array_reference_->array_[other.offset + index];
+        }
+    } else {
+        for (usize index = 0; index < size_; ++index) {
+            array_[index] =
+                other.array_reference_->array_[other.offset + index];
+        }
     }
 
     return *this;
@@ -1335,8 +1386,17 @@ MdStaticArray<T>::MdStaticArray(const ArraySlice<T> &other)
     init_shape(&other.array_reference_->shape[other.shp_offset],
                other.array_reference_->shp_size - other.shp_offset);
 
-    for (usize index = 0; index < size_; ++index) {
-        array_[index] = other.array_reference_->array_[other.offset + index];
+    if (size_ > s_threshold_size) {
+#pragma omp parallel for
+        for (usize index = 0; index < size_; ++index) {
+            array_[index] =
+                other.array_reference_->array_[other.offset + index];
+        }
+    } else {
+        for (usize index = 0; index < size_; ++index) {
+            array_[index] =
+                other.array_reference_->array_[other.offset + index];
+        }
     }
 }
 
@@ -1461,12 +1521,12 @@ inline auto &operator^=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T>
-Axis<T> MdStaticArray<T>::get_axis_reference(const i32 axis) {
+Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
     return Axis(*this, axis);
 }
 
 template <typename T>
-Axis<T> MdStaticArray<T>::get_nth_axis_reference(const i32 axis,
+Axis<T> MdStaticArray<T>::get_nth_axis_reference(const usize axis,
                                                  const usize n) {
     return Axis(*this, axis, n);
 }
