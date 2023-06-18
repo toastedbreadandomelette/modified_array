@@ -215,13 +215,27 @@ __always_inline c32x4 sub(c32x4 first, c32x4 second) {
     return _mm256_sub_ps(first, second);
 }
 
+__always_inline void storeptr(c32 *val, c32x4 vec) {
+    _mm256_storeu_ps((f32 *)val, vec);
+}
+
+__always_inline c32x4 set(c32 a, c32 b, c32 c, c32 d) {
+    return _mm256_set_ps(a.real, a.img, b.real, b.img, c.real, c.img, d.real,
+                         d.img);
+}
+
 __always_inline c32x4 mul(c32x4 first, c32x4 second) {
-    c32x4 real = _mm256_mul_ps(first, second);
-    c32x4 img = _mm256_mul_ps(first, _mm256_permute_ps(second, 0b10110001));
-    c32x4 realf = _mm256_hsub_ps(real, real);
-    c32x4 imgf = _mm256_hadd_ps(img, img);
-    return _mm256_blend_ps(_mm256_permute_ps(realf, 0b01010000),
-                           _mm256_permute_ps(imgf, 0b01010000), 0b10101010);
+    c32 ans0[4] = {0, 0, 0, 0}, ans1[4] = {0, 0, 0, 0};
+    storeptr(ans0, first);
+    storeptr(ans1, second);
+    return set(ans0[0] * ans1[0], ans1[1] * ans0[1], ans1[2] * ans0[2],
+               ans1[3] * ans0[3]);
+    // c32x4 real = _mm256_mul_ps(first, second);
+    // c32x4 img = _mm256_mul_ps(first, _mm256_permute_ps(second, 0b10110001));
+    // c32x4 realf = _mm256_hsub_ps(real, real);
+    // c32x4 imgf = _mm256_hadd_ps(img, img);
+    // return _mm256_blend_ps(_mm256_permute_ps(realf, 0b01010000),
+    //                        _mm256_permute_ps(imgf, 0b01010000), 0b10101010);
 }
 
 __always_inline c32x4 div(c32x4 first, c32x4 second) {
@@ -237,23 +251,14 @@ __always_inline c32x4 uni(c32 val) {
                          val.img, val.real, val.img);
 }
 
-__always_inline c32x4 set(c32 a, c32 b, c32 c, c32 d) {
-    return _mm256_set_ps(a.real, a.img, b.real, b.img, c.real, c.img, d.real,
-                         d.img);
-}
-
 __always_inline c32x4 zero() { return _mm256_setzero_ps(); }
 
 __always_inline c32x4 fromptr(c32 *val) { return _mm256_loadu_ps((f32 *)val); }
 
-__always_inline void storeptr(c32 *val, c32x4 vec) {
-    _mm256_storeu_ps((f32 *)val, vec);
-}
-
 __always_inline c32 reduce_sum(c32x4 val) {
     c32 ans[4] = {0, 0, 0, 0};
     storeptr(ans, val);
-    return ans[0] + ans[1];
+    return ans[0] + ans[1] + ans[2] + ans[3];
 }
 }  // namespace C32x4
 
@@ -266,12 +271,24 @@ __always_inline c64x2 sub(f64x4 first, c64x2 second) {
     return _mm256_sub_pd(first, second);
 }
 
+__always_inline void storeptr(c64 *val, c64x2 vec) {
+    _mm256_storeu_pd((f64 *)val, vec);
+}
+
+__always_inline c64x2 set(c64 a, c64 b) {
+    return _mm256_set_pd(b.img, b.real, a.img, a.real);
+}
+
 __always_inline c64x2 mul(c64x2 first, c64x2 second) {
-    c64x2 real = _mm256_mul_pd(first, second);
-    c64x2 img = _mm256_mul_pd(first, _mm256_permute_pd(second, 0b0101));
-    c64x2 realf = _mm256_hsub_pd(real, real);
-    c64x2 imgf = _mm256_hadd_pd(img, img);
-    return _mm256_blend_pd(realf, imgf, 0b1010);
+    c64 ans0[2] = {0, 0}, ans1[2] = {0, 0};
+    storeptr(ans0, first);
+    storeptr(ans1, second);
+    return set(ans0[0] * ans1[0], ans1[1] * ans0[1]);
+    // c64x2 real = _mm256_mul_pd(first, second);
+    // c64x2 img = _mm256_mul_pd(first, _mm256_permute_pd(second, 0b0101));
+    // c64x2 realf = _mm256_hsub_pd(real, real);
+    // c64x2 imgf = _mm256_hadd_pd(img, img);
+    // return _mm256_blend_pd(realf, imgf, 0b1010);
 }
 
 __always_inline c64x2 scal_mul(c64x2 first, f64x4 second) {
@@ -290,20 +307,12 @@ __always_inline c64x2 uni(c64 val) {
     return _mm256_set_pd(val.img, val.real, val.img, val.real);
 }
 
-__always_inline c64x2 set(c64 a, c64 b) {
-    return _mm256_set_pd(b.img, b.real, a.img, a.real);
-}
-
 __always_inline c64x2 zero() { return _mm256_setzero_pd(); }
 
 __always_inline c64x2 fromptr(c64 *val) { return _mm256_loadu_pd((f64 *)val); }
 
 __always_inline c64x2 perm2x128(c64x2 a, c64x2 b, i8 ctrl) {
     return _mm256_permute2f128_pd(a, b, ctrl);
-}
-
-__always_inline void storeptr(c64 *val, c64x2 vec) {
-    _mm256_storeu_pd((f64 *)val, vec);
 }
 
 __always_inline c64 reduce_sum(c64x2 val) {
