@@ -16,6 +16,7 @@ class ArraySlice {
     friend struct MdArrayUtility;
     friend struct MdLinearAlgebra;
     friend struct FFT;
+    friend struct Signal;
 
     void *operator new(usize size);
     const MdStaticArray<T> *array_reference_;
@@ -427,7 +428,8 @@ class ArraySlice {
                                !std::is_same<T1, ArraySlice<T>>::value>::type>
     inline MdStaticArray<bool> operator==(const T1 &other) const {
         if (size == 1) {
-            return MdStaticArray(1, array_reference_->array_[offset] == other);
+            return MdStaticArray<bool>(
+                1, array_reference_->array_[offset] == other);
         }
         return MdStaticArray<T>(*array_reference_, offset, shp_offset)
             .comp_eq_iinternal_(other);

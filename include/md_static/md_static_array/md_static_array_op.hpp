@@ -1765,7 +1765,7 @@ MdStaticArray<T2> MdStaticArray<T>::or_bit_iinternal_(const T1 &other) const {
     result.init_shape(shape, shp_size);
     if (::s_thread_count == 1 || size <= s_threshold_size) {
         for (usize index = 0; index < get_size(); ++index) {
-            result.array_[index] = array_[index] | other;
+            result.array_[index] = array_[index] ^ other;
         }
     } else {
         std::vector<std::thread> st;
@@ -1805,7 +1805,7 @@ MdStaticArray<T2> MdStaticArray<T>::xor_bit_internal_(
     result.init_shape(shape, shp_size);
     if (::s_thread_count == 1 || size <= s_threshold_size) {
         for (usize index = 0; index < get_size(); ++index) {
-            result.array_[index] = array_[index] | other.array_[index];
+            result.array_[index] = array_[index] ^ other.array_[index];
         }
     } else {
         std::vector<std::thread> st;

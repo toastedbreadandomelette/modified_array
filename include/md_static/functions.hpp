@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FUNCTIONS_HPP_
-#define _FUNCTIONS_HPP_
+#ifndef __FUNCTIONS_HPP__
+#define __FUNCTIONS_HPP__
 
 #include "./functions/abs.hpp"
 #include "./functions/accumulate_and_merge.hpp"

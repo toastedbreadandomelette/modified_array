@@ -280,15 +280,18 @@ __always_inline c64x2 set(c64 a, c64 b) {
 }
 
 __always_inline c64x2 mul(c64x2 first, c64x2 second) {
+    c64x2 real = _mm256_mul_pd(first, second);
+    c64x2 img = _mm256_mul_pd(first, _mm256_permute_pd(second, 0b0101));
+    c64x2 realf = _mm256_hsub_pd(real, real);
+    c64x2 imgf = _mm256_hadd_pd(img, img);
+    return _mm256_blend_pd(realf, imgf, 0b1010);
+}
+
+__always_inline c64x2 mul_alt(c64x2 first, c64x2 second) {
     c64 ans0[2] = {0, 0}, ans1[2] = {0, 0};
     storeptr(ans0, first);
     storeptr(ans1, second);
     return set(ans0[0] * ans1[0], ans1[1] * ans0[1]);
-    // c64x2 real = _mm256_mul_pd(first, second);
-    // c64x2 img = _mm256_mul_pd(first, _mm256_permute_pd(second, 0b0101));
-    // c64x2 realf = _mm256_hsub_pd(real, real);
-    // c64x2 imgf = _mm256_hadd_pd(img, img);
-    // return _mm256_blend_pd(realf, imgf, 0b1010);
 }
 
 __always_inline c64x2 scal_mul(c64x2 first, f64x4 second) {
@@ -300,7 +303,7 @@ __always_inline c64x2 div(c64x2 first, c64x2 second) {
 }
 
 __always_inline c64x2 fmadd(c64x2 a, c64x2 b, c64x2 c) {
-    return add(mul(a, b), c);
+    return add(mul_alt(a, b), c);
 }
 
 __always_inline c64x2 uni(c64 val) {

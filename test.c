@@ -214,9 +214,9 @@ void matmul(int m, int n, int k, double *a, int lda, double *b, int ldb,
 }
 
 int main() {
-    int m = 1000;
-    int n = 1000;
-    int k = 1000;
+    int m = 1024;
+    int n = 1024;
+    int k = 1024;
 
     double *A = (double *)calloc(m * k, sizeof(double));
     double *B = (double *)calloc(k * n, sizeof(double));

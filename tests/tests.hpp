@@ -9,16 +9,16 @@
         return 1;                                      \
     }
 
-#define assert_eq(expr, val_test)                                       \
-    {                                                                   \
-        auto val = expr;                                                \
-        if ((val) != (val_test)) {                                      \
-            std::cout << "Equality failed: " << #expr                   \
-                      << " at line: " << __LINE__                       \
-                      << "\nExpected: " << val_test << ", Found" << val \
-                      << '\n';                                          \
-            return 1;                                                   \
-        }                                                               \
+#define assert_eq(expr, val_test)                                           \
+    {                                                                       \
+        auto val = expr;                                                    \
+        auto eq = (val_test);                                               \
+        if (!((val) == (eq))) {                                             \
+            std::cout << "Equality failed: " << #expr                       \
+                      << " at line: " << __LINE__ << "\nExpected: " << (eq) \
+                      << ", Found: " << val << '\n';                        \
+            return 1;                                                       \
+        }                                                                   \
     }
 
 #endif

@@ -14,7 +14,6 @@ using fn = std::function<T>;
  * @brief Type inference namespace to infer implicit return types
  */
 namespace MdTypeInfer {
-
 /**
  * @brief Template to check if type is from a variadic list
  * @tparam T1 value to check
@@ -53,7 +52,17 @@ struct is_complex {
 template <typename T>
 struct is_native {
     static constexpr bool value = is_any_one<T, i32, i64, i16, i8, u8, u16, u32,
-                                             u64, f32, f64, f128>::value;
+                                             u64, f32, f64, f128, usize>::value;
+};
+
+/**
+ * @brief Template to check if type is one of the native types
+ * @tparam T value to check
+ */
+template <typename T>
+struct is_int {
+    static constexpr bool value =
+        is_any_one<T, i32, i64, i16, i8, u8, u16, u32, u64, usize>::value;
 };
 
 /**

@@ -21,9 +21,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> dot(const Array<T1> &first,
-                                 const Array<T2> &other,
-                                 const usize threads = 16);
+    static Array<T3> dot(const Array<T1> &first, const Array<T2> &other,
+                         const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -40,9 +39,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> dot(const Array<T1> &first,
-                                 const ArraySlice<T2> &other,
-                                 const usize threads = 16);
+    static Array<T3> dot(const Array<T1> &first, const ArraySlice<T2> &other,
+                         const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -59,9 +57,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> dot(const ArraySlice<T1> &first,
-                                 const Array<T2> &other,
-                                 const usize threads = 16);
+    static Array<T3> dot(const ArraySlice<T1> &first, const Array<T2> &other,
+                         const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -79,8 +76,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> dot(const ArraySlice<T1> &first,
-                                 const ArraySlice<T2> &other,
-                                 const usize threads = 16);
+                         const ArraySlice<T2> &other, const usize threads = 16);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -97,9 +93,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const Array<T1> &first, const Array<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const Array<T1> &first,
+                                    const Array<T2> &other,
+                                    const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -116,10 +112,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const ArraySlice<T1> &first,
+                                    const ArraySlice<T2> &other,
+                                    const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -136,9 +131,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const Array<T1> &first, const ArraySlice<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const Array<T1> &first,
+                                    const ArraySlice<T2> &other,
+                                    const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -155,9 +150,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const ArraySlice<T1> &first, const Array<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const ArraySlice<T1> &first,
+                                    const Array<T2> &other,
+                                    const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -174,9 +169,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const Array<T1> &first, const Array<T2> &other,
-        const ArraySlice<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const Array<T1> &first,
+                                    const Array<T2> &other,
+                                    const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -193,10 +188,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other,
-        const ArraySlice<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const ArraySlice<T1> &first,
+                                    const ArraySlice<T2> &other,
+                                    const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -213,9 +207,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const Array<T1> &first, const ArraySlice<T2> &other,
-        const ArraySlice<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const Array<T1> &first,
+                                    const ArraySlice<T2> &other,
+                                    const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -232,9 +226,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> multi_dot(
-        const ArraySlice<T1> &first, const Array<T2> &other,
-        const ArraySlice<arg> &...arguments);
+    static Array<_Tfinal> multi_dot(const ArraySlice<T1> &first,
+                                    const Array<T2> &other,
+                                    const ArraySlice<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -252,7 +246,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2>
     static Array<_Tfinal> multi_dot(const Array<T1> &first,
-                                            const Array<T2> &other);
+                                    const Array<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -269,9 +263,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> multi_dot(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other);
+    static Array<_Tfinal> multi_dot(const ArraySlice<T1> &first,
+                                    const ArraySlice<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -288,9 +281,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> multi_dot(
-        const ArraySlice<T1> &first,
-        const Array<T2> &other);
+    static Array<_Tfinal> multi_dot(const ArraySlice<T1> &first,
+                                    const Array<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -307,8 +299,7 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> multi_dot(const Array<T1> &,
-                                            const ArraySlice<T2> &);
+    static Array<_Tfinal> multi_dot(const Array<T1> &, const ArraySlice<T2> &);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -325,9 +316,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &first, const Array<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> matrix_chain_multiply(const Array<T1> &first,
+                                                const Array<T2> &other,
+                                                const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -344,10 +335,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> matrix_chain_multiply(const ArraySlice<T1> &first,
+                                                const ArraySlice<T2> &other,
+                                                const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -364,9 +354,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &first, const ArraySlice<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> matrix_chain_multiply(const Array<T1> &first,
+                                                const ArraySlice<T2> &other,
+                                                const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -383,9 +373,9 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const ArraySlice<T1> &first, const Array<T2> &other,
-        const Array<arg> &...arguments);
+    static Array<_Tfinal> matrix_chain_multiply(const ArraySlice<T1> &first,
+                                                const Array<T2> &other,
+                                                const Array<arg> &...arguments);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -422,8 +412,7 @@ struct MdLinearAlgebra {
      */
     template <typename _Tfinal, typename T1, typename T2, typename... arg>
     static Array<_Tfinal> matrix_chain_multiply(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other,
+        const ArraySlice<T1> &first, const ArraySlice<T2> &other,
         const ArraySlice<arg> &...arguments);
 
     /**
@@ -479,8 +468,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &first, const Array<T2> &other);
+    static Array<_Tfinal> matrix_chain_multiply(const Array<T1> &first,
+                                                const Array<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -497,9 +486,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other);
+    static Array<_Tfinal> matrix_chain_multiply(const ArraySlice<T1> &first,
+                                                const ArraySlice<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -516,9 +504,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const ArraySlice<T1> &first,
-        const Array<T2> &other);
+    static Array<_Tfinal> matrix_chain_multiply(const ArraySlice<T1> &first,
+                                                const Array<T2> &other);
 
     /**
      * @brief Dot product of two N-dimensional array
@@ -535,8 +522,8 @@ struct MdLinearAlgebra {
      * @throws Exceptions when axis 'b(n-1)' is not the same size as axis 'am'
      */
     template <typename _Tfinal, typename T1, typename T2>
-    static Array<_Tfinal> matrix_chain_multiply(
-        const Array<T1> &, const ArraySlice<T2> &);
+    static Array<_Tfinal> matrix_chain_multiply(const Array<T1> &,
+                                                const ArraySlice<T2> &);
 
     /**
      * @brief Multiply two matrices
@@ -555,8 +542,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> mat_multiply(const Array<T1> &first,
-                                          const Array<T2> &other,
-                                          const i32 threads = -1);
+                                  const Array<T2> &other,
+                                  const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -574,9 +561,9 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> mat_multiply(
-        const ArraySlice<T1> &first, const Array<T2> &other,
-        const i32 threads = -1);
+    static Array<T3> mat_multiply(const ArraySlice<T1> &first,
+                                  const Array<T2> &other,
+                                  const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -594,9 +581,9 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> mat_multiply(
-        const Array<T1> &first, const ArraySlice<T2> &other,
-        const i32 threads = -1);
+    static Array<T3> mat_multiply(const Array<T1> &first,
+                                  const ArraySlice<T2> &other,
+                                  const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -614,9 +601,9 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> mat_multiply(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other, const i32 threads = -1);
+    static Array<T3> mat_multiply(const ArraySlice<T1> &first,
+                                  const ArraySlice<T2> &other,
+                                  const i32 threads = -1);
 
     /**
      * @brief Multiply two matrices
@@ -639,9 +626,8 @@ struct MdLinearAlgebra {
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
     static Array<T3> mat_mod_multiply(const Array<T1> &first,
-                                              const Array<T2> &other,
-                                              const usize mod,
-                                              const usize threads = 16);
+                                      const Array<T2> &other, const usize mod,
+                                      const usize threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -662,9 +648,9 @@ struct MdLinearAlgebra {
               class = typename std::enable_if<
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
-    static Array<T3> mat_mod_multiply(
-        const ArraySlice<T1> &first, const Array<T2> &other,
-        const usize mod, const usize threads = 16);
+    static Array<T3> mat_mod_multiply(const ArraySlice<T1> &first,
+                                      const Array<T2> &other, const usize mod,
+                                      const usize threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -685,9 +671,10 @@ struct MdLinearAlgebra {
               class = typename std::enable_if<
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
-    static Array<T3> mat_mod_multiply(
-        const Array<T1> &first, const ArraySlice<T2> &other,
-        const usize mod, const usize threads = 16);
+    static Array<T3> mat_mod_multiply(const Array<T1> &first,
+                                      const ArraySlice<T2> &other,
+                                      const usize mod,
+                                      const usize threads = 16);
 
     /**
      * @brief Multiply two matrices
@@ -708,10 +695,10 @@ struct MdLinearAlgebra {
               class = typename std::enable_if<
                   std::is_integral<T1>::value && std::is_integral<T2>::value &&
                   std::is_integral<T3>::value>::type>
-    static Array<T3> mat_mod_multiply(
-        const ArraySlice<T1> &first,
-        const ArraySlice<T2> &other, const usize mod,
-        const usize threads = 16);
+    static Array<T3> mat_mod_multiply(const ArraySlice<T1> &first,
+                                      const ArraySlice<T2> &other,
+                                      const usize mod,
+                                      const usize threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -729,9 +716,46 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> inner(const Array<T1> &first,
-                                   const Array<T2> &other,
-                                   const usize threads = 16);
+    static Array<T3> inner(const Array<T1> &first, const Array<T2> &other,
+                           const usize threads = 16);
+
+    /**
+     * @brief inner product of two nd arrays
+     * @tparam T1 type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2>
+    static Array<T3> inner(const ArraySlice<T1> &first, const Array<T2> &other,
+                           const usize threads = 16);
+
+    /**
+     * @brief inner product of two nd arrays
+     * @tparam T1 type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2>
+    static Array<T3> inner(const Array<T1> &first, const ArraySlice<T2> &other,
+                           const usize threads = 16);
 
     /**
      * @brief inner product of two nd arrays
@@ -750,48 +774,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> inner(const ArraySlice<T1> &first,
-                                   const Array<T2> &other,
-                                   const usize threads = 16);
-
-    /**
-     * @brief inner product of two nd arrays
-     * @tparam T1 type of first ndarray
-     * @tparam T2 type of second ndarray
-     * @tparam T3 type of third ndarray (upto user)
-     * @param first first ndarray
-     * @param other second ndarray
-     * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type T3
-     * @throws Runtime error when
-     *  1. ndarray dimensions do not match
-     *  2. size of second axis of first is not equal to size of first axis
-     * of
-     * other
-     */
-    template <typename T3, typename T1, typename T2>
-    static Array<T3> inner(const Array<T1> &first,
-                                   const ArraySlice<T2> &other,
-                                   const usize threads = 16);
-
-    /**
-     * @brief inner product of two nd arrays
-     * @tparam T1 type of first ndarray
-     * @tparam T2 type of second ndarray
-     * @tparam T3 type of third ndarray (upto user)
-     * @param first first ndarray
-     * @param other second ndarray
-     * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type T3
-     * @throws Runtime error when
-     *  1. ndarray dimensions do not match
-     *  2. size of second axis of first is not equal to size of first axis
-     * of
-     * other
-     */
-    template <typename T3, typename T1, typename T2>
-    static Array<T3> inner(const ArraySlice<T1> &first,
-                                   const ArraySlice<T2> &other,
-                                   const usize threads = 16);
+                           const ArraySlice<T2> &other,
+                           const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -809,9 +793,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> outer(const Array<T1> &first,
-                                   const Array<T2> &other,
-                                   const usize threads = 16);
+    static Array<T3> outer(const Array<T1> &first, const Array<T2> &other,
+                           const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -829,9 +812,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> outer(const ArraySlice<T1> &first,
-                                   const Array<T2> &other,
-                                   const usize threads = 16);
+    static Array<T3> outer(const ArraySlice<T1> &first, const Array<T2> &other,
+                           const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -849,9 +831,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> outer(const Array<T1> &first,
-                                   const ArraySlice<T2> &other,
-                                   const usize threads = 16);
+    static Array<T3> outer(const Array<T1> &first, const ArraySlice<T2> &other,
+                           const usize threads = 16);
 
     /**
      * @brief Generate cross product of two 1d array
@@ -870,8 +851,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> outer(const ArraySlice<T1> &first,
-                                   const ArraySlice<T2> &other,
-                                   const usize threads = 16);
+                           const ArraySlice<T2> &other,
+                           const usize threads = 16);
 
     /**
      * @brief Create a identity matrix
@@ -911,9 +892,8 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename T1, typename T2, typename T3>
-    static Array<T3> kron(const Array<T1> &first,
-                                  const Array<T2> &other,
-                                  const usize total_threads = 16);
+    static Array<T3> kron(const Array<T1> &first, const Array<T2> &other,
+                          const usize total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -927,8 +907,8 @@ struct MdLinearAlgebra {
      */
     template <typename T1, typename T2, typename T3>
     static Array<T3> kron(const ArraySlice<T1> &first,
-                                  const ArraySlice<T2> &other,
-                                  const usize total_threads = 16);
+                          const ArraySlice<T2> &other,
+                          const usize total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -941,9 +921,8 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename T1, typename T2, typename T3>
-    static Array<T3> kron(const ArraySlice<T1> &first,
-                                  const Array<T2> &other,
-                                  const usize total_threads = 16);
+    static Array<T3> kron(const ArraySlice<T1> &first, const Array<T2> &other,
+                          const usize total_threads = 16);
 
     /**
      * @brief Perform kron operations between 2 n-d array
@@ -956,9 +935,8 @@ struct MdLinearAlgebra {
      * @returns resultant array of size max(n,m) dimension
      */
     template <typename T1, typename T2, typename T3>
-    static Array<T3> kron(const Array<T1> &first,
-                                  const ArraySlice<T2> &other,
-                                  const usize total_threads = 16);
+    static Array<T3> kron(const Array<T1> &first, const ArraySlice<T2> &other,
+                          const usize total_threads = 16);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -969,8 +947,7 @@ struct MdLinearAlgebra {
      */
     template <typename T, class = typename std::enable_if<
                               std::is_floating_point<T>::value>::type>
-    static Array<T> matrix_power(const Array<T> &,
-                                         const usize power);
+    static Array<T> matrix_power(const Array<T> &, const usize power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -981,8 +958,7 @@ struct MdLinearAlgebra {
      */
     template <typename T, class = typename std::enable_if<
                               std::is_floating_point<T>::value>::type>
-    static Array<T> matrix_power(const ArraySlice<T> &,
-                                         const usize power);
+    static Array<T> matrix_power(const ArraySlice<T> &, const usize power);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -993,9 +969,8 @@ struct MdLinearAlgebra {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static Array<T> matrix_mod_power(const Array<T> &,
-                                             const usize power,
-                                             const usize mod);
+    static Array<T> matrix_mod_power(const Array<T> &, const usize power,
+                                     const usize mod);
 
     /**
      * @brief Multiply matrix to the power a positive integer.
@@ -1006,9 +981,8 @@ struct MdLinearAlgebra {
      */
     template <typename T,
               class = typename std::enable_if<std::is_integral<T>::value>::type>
-    static Array<T> matrix_mod_power(const ArraySlice<T> &,
-                                             const usize power,
-                                             const usize mod);
+    static Array<T> matrix_mod_power(const ArraySlice<T> &, const usize power,
+                                     const usize mod);
 
     /**
      * @brief Evaluate determinant of a matrix.
@@ -1035,9 +1009,8 @@ struct MdLinearAlgebra {
      * @returns new matrix
      */
     template <typename Tout, typename T>
-    static std::tuple<Array<Tout>, Array<Tout>,
-                      Array<Tout>, i32>
-    lu_decompose(const Array<T> &);
+    static std::tuple<Array<Tout>, Array<Tout>, Array<Tout>, i32> lu_decompose(
+        const Array<T> &);
 
     /**
      * @brief Evaluate LU factorization of a matrix.
@@ -1046,9 +1019,8 @@ struct MdLinearAlgebra {
      * @returns new matrix
      */
     template <typename Tout, typename T>
-    static std::tuple<Array<Tout>, Array<Tout>,
-                      Array<Tout>, i32>
-    lu_decompose(const ArraySlice<T> &);
+    static std::tuple<Array<Tout>, Array<Tout>, Array<Tout>, i32> lu_decompose(
+        const ArraySlice<T> &);
 
     /**
      * @brief Evaluate complex determinant of a matrix.
@@ -1085,8 +1057,7 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(const Array<Complex<T1>> &first,
-                                  const Array<T2> &other,
-                                  const usize threads = 16);
+                          const Array<T2> &other, const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1104,9 +1075,8 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(
-        const ArraySlice<Complex<T1>> &first,
-        const Array<T2> &other, const usize threads = 16);
+    static Array<T3> vdot(const ArraySlice<Complex<T1>> &first,
+                          const Array<T2> &other, const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1125,8 +1095,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(const Array<Complex<T1>> &first,
-                                  const ArraySlice<T2> &other,
-                                  const usize threads = 16);
+                          const ArraySlice<T2> &other,
+                          const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1144,9 +1114,9 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(
-        const ArraySlice<Complex<T1>> &first,
-        const ArraySlice<T2> &other, const usize threads = 16);
+    static Array<T3> vdot(const ArraySlice<Complex<T1>> &first,
+                          const ArraySlice<T2> &other,
+                          const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1164,9 +1134,46 @@ struct MdLinearAlgebra {
      * other
      */
     template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(const Array<T1> &first,
-                                  const Array<T2> &other,
-                                  const usize threads = 16);
+    static Array<T3> vdot(const Array<T1> &first, const Array<T2> &other,
+                          const usize threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2>
+    static Array<T3> vdot(const ArraySlice<T1> &first, const Array<T2> &other,
+                          const usize threads = 16);
+
+    /**
+     * @brief Generate v_dot of two ndarray
+     * @tparam T1 complex type of first ndarray
+     * @tparam T2 type of second ndarray
+     * @tparam T3 type of third ndarray (upto user)
+     * @param first first ndarray
+     * @param other second ndarray
+     * @param threads (optional) number of threads to operate on
+     * @returns new ndarray of type T3
+     * @throws Runtime error when
+     *  1. ndarray dimensions do not match
+     *  2. size of second axis of first is not equal to size of first axis
+     * of
+     * other
+     */
+    template <typename T3, typename T1, typename T2>
+    static Array<T3> vdot(const Array<T1> &first, const ArraySlice<T2> &other,
+                          const usize threads = 16);
 
     /**
      * @brief Generate v_dot of two ndarray
@@ -1185,48 +1192,8 @@ struct MdLinearAlgebra {
      */
     template <typename T3, typename T1, typename T2>
     static Array<T3> vdot(const ArraySlice<T1> &first,
-                                  const Array<T2> &other,
-                                  const usize threads = 16);
-
-    /**
-     * @brief Generate v_dot of two ndarray
-     * @tparam T1 complex type of first ndarray
-     * @tparam T2 type of second ndarray
-     * @tparam T3 type of third ndarray (upto user)
-     * @param first first ndarray
-     * @param other second ndarray
-     * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type T3
-     * @throws Runtime error when
-     *  1. ndarray dimensions do not match
-     *  2. size of second axis of first is not equal to size of first axis
-     * of
-     * other
-     */
-    template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(const Array<T1> &first,
-                                  const ArraySlice<T2> &other,
-                                  const usize threads = 16);
-
-    /**
-     * @brief Generate v_dot of two ndarray
-     * @tparam T1 complex type of first ndarray
-     * @tparam T2 type of second ndarray
-     * @tparam T3 type of third ndarray (upto user)
-     * @param first first ndarray
-     * @param other second ndarray
-     * @param threads (optional) number of threads to operate on
-     * @returns new ndarray of type T3
-     * @throws Runtime error when
-     *  1. ndarray dimensions do not match
-     *  2. size of second axis of first is not equal to size of first axis
-     * of
-     * other
-     */
-    template <typename T3, typename T1, typename T2>
-    static Array<T3> vdot(const ArraySlice<T1> &first,
-                                  const ArraySlice<T2> &other,
-                                  const usize threads = 16);
+                          const ArraySlice<T2> &other,
+                          const usize threads = 16);
 };
 
 typedef MdLinearAlgebra Linalg;

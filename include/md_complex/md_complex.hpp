@@ -6,6 +6,7 @@
 #include <ostream>
 
 #include "../utility/math.hpp"
+#include "../utility/static_checks.hpp"
 
 template <typename T,
           class = typename std::enable_if<std::is_arithmetic<T>::value>::type>
@@ -168,22 +169,26 @@ struct Complex {
         return *this;
     }
 
-    template <typename T1>
-    inline constexpr bool operator==(const Complex<T1>& other) {
+    template <typename T1,
+              typename = typename std::enable_if<is_native<T1>::value>::type>
+    inline constexpr bool operator==(const Complex<T1> other) {
         return other.real == real && other.img == img;
     }
 
-    template <typename T1>
-    inline constexpr bool operator==(const T1& other) {
+    template <typename T1,
+              typename = typename std::enable_if<is_native<T1>::value>::type>
+    inline constexpr bool operator==(const T1 other) {
         return other == real && img == 0;
     }
 
-    template <typename T1>
+    template <typename T1,
+              typename = typename std::enable_if<is_native<T1>::value>::type>
     inline constexpr bool operator!=(const Complex<T1>& other) {
         return other.real != real || other.img != img;
     }
 
-    template <typename T1>
+    template <typename T1,
+              typename = typename std::enable_if<is_native<T1>::value>::type>
     inline constexpr bool operator!=(const T1& other) {
         return other != real || img != 0;
     }
@@ -197,6 +202,17 @@ struct Complex {
         return op;
     }
 };
+
+template <typename T>
+std::string to_string(const Complex<T>& c) {
+    std::string ans = "";
+    if (c.img < 0) {
+        ans = std::to_string(c.real) + "-" + std::to_string(-c.img) + "j";
+    } else {
+        ans = std::to_string(c.real) + "+" + std::to_string(c.img) + "j";
+    }
+    return ans;
+}
 
 namespace std {
 
@@ -219,27 +235,30 @@ inline constexpr Complex<T> abs(const Complex<T>& other) {
 }  // namespace std
 
 template <typename T, typename T1,
-          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
-inline constexpr auto operator+(const T1& other, const Complex<T>& first) {
+          class = typename std::enable_if<is_native<T1>::value>::type>
+inline constexpr Complex<T> operator+(const T1& other,
+                                      const Complex<T>& first) {
     return Complex<T>(other + first.real, first.img);
 }
 
 template <typename T, typename T1,
-          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
+          class = typename std::enable_if<is_native<T1>::value>::type>
 inline constexpr Complex<T> operator-(const T1& other,
                                       const Complex<T>& first) {
     return Complex<T>(other - first.real, -first.img);
 }
 
 template <typename T, typename T1,
-          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
-inline constexpr auto operator*(const T1& other, const Complex<T>& first) {
+          class = typename std::enable_if<is_native<T1>::value>::type>
+inline constexpr Complex<T> operator*(const T1& other,
+                                      const Complex<T>& first) {
     return Complex<T>(first.real * other, first.img * other);
 }
 
 template <typename T, typename T1,
-          class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
-inline constexpr auto operator/(const T1& other, const Complex<T>& first) {
+          class = typename std::enable_if<is_native<T1>::value>::type>
+inline constexpr Complex<T> operator/(const T1& other,
+                                      const Complex<T>& first) {
     const auto sq_abs = first.real * first.real + first.img * first.img;
     return Complex<T>((other * first.real) / sq_abs,
                       -((other * first.img) / sq_abs));

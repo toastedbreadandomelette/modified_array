@@ -1,7 +1,6 @@
 #pragma once
 #ifndef _DOT_HPP_
 #define _DOT_HPP_
-#include <complex>
 
 #include "./mat_multiply.hpp"
 #include "./md_linear_algebra.hpp"
@@ -118,23 +117,22 @@ Array<T3> Linalg::dot(const Array<T1> &first, const Array<T2> &other,
             }
             Array<T3> result(overall_shape, 0);
 
-            auto __perform_dot_parallel = [&first, &other, &result](
-                                              const usize start,
-                                              const usize end) {
-                usize res_index = start;
-                usize shp = first.get_shape_size() - 1;
-                // For each last axis of first array
-                for (usize index = start * first.shape[shp];
-                     index < end * first.shape[shp];
-                     index += first.shape[shp]) {
-                    // Iterate over the last axis of array other
-                    for (usize row = 0; row < other.shape[0]; ++row) {
-                        result.array_[res_index] +=
-                            (first.array_[index + row] * other.array_[row]);
+            auto __perform_dot_parallel =
+                [&first, &other, &result](const usize start, const usize end) {
+                    usize res_index = start;
+                    usize shp = first.get_shape_size() - 1;
+                    // For each last axis of first array
+                    for (usize index = start * first.shape[shp];
+                         index < end * first.shape[shp];
+                         index += first.shape[shp]) {
+                        // Iterate over the last axis of array other
+                        for (usize row = 0; row < other.shape[0]; ++row) {
+                            result.array_[res_index] +=
+                                (first.array_[index + row] * other.array_[row]);
+                        }
+                        ++res_index;
                     }
-                    ++res_index;
-                }
-            };
+                };
 
             const usize block = result.get_size() / thread_count - 1;
             std::vector<std::thread> thread_pool;

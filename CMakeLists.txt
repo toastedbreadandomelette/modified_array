@@ -8,6 +8,7 @@ file(GLOB SOURCES "main.cpp")
 
 enable_testing()
 add_subdirectory(tests/md_static)
+add_subdirectory(tests/md_complex)
 add_subdirectory(tests/functions)
 
 add_executable(nd_array ${SOURCES})

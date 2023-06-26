@@ -98,6 +98,7 @@ class MdStaticArray {
     friend struct MdLinearAlgebra;
     friend struct MdArrayManipulate;
     friend struct FFT;
+    friend struct Signal;
 
     friend std::ostream &operator<<(std::ostream &op, const ArraySlice<T> &ot);
 
@@ -261,14 +262,19 @@ class MdStaticArray {
         for (usize index = 0; index < shp_size; ++index) {
             shp.emplace_back(shape[index]);
         }
-        MdStaticArray<T1> __result(shp, 0);
-
+        MdStaticArray<T1> result(shp, 0);
+        if (size_ > s_threshold_size) {
 #pragma omp parallel for
-        for (usize index = 0; index < size_; ++index) {
-            __result.array_[index] = array_[index];
+            for (usize index = 0; index < size_; ++index) {
+                result.array_[index] = array_[index];
+            }
+        } else {
+            for (usize index = 0; index < size_; ++index) {
+                result.array_[index] = array_[index];
+            }
         }
 
-        return __result;
+        return result;
     }
 
     /**
@@ -967,32 +973,38 @@ class MdStaticArray {
         return mod_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_int<T1>::value>::type>
     inline auto operator&(const MdStaticArray<T1> &other) const {
         return and_bit_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_int<T1>::value>::type>
     inline auto operator&(const T1 &other) const {
         return and_bit_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_int<T1>::value>::type>
     inline auto operator|(const MdStaticArray<T1> &other) const {
         return or_bit_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_int<T1>::value>::type>
     inline auto operator|(const T1 &other) const {
         return or_bit_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_int<T1>::value>::type>
     inline auto operator^(const MdStaticArray<T1> &other) const {
         return xor_bit_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_int<T1>::value>::type>
     inline auto operator^(const T1 &other) const {
         return xor_bit_iinternal_(other);
     }
@@ -1008,158 +1020,181 @@ class MdStaticArray {
     }
 
     template <typename T1>
-    inline auto operator>>(const MdStaticArray<T1> &other) const {
+    inline MdStaticArray<T> operator>>(const MdStaticArray<T1> &other) const {
         return rshft_bit_internal_(other);
     }
 
     template <typename T1>
-    inline auto operator>>(const T1 &other) const {
+    inline MdStaticArray<T> operator>>(const T1 &other) const {
         return rshft_bit_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator+=(const MdStaticArray<T1> &other) {
         add_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator-=(const MdStaticArray<T1> &other) {
         sub_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator*=(const MdStaticArray<T1> &other) {
         mul_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator/=(const MdStaticArray<T1> &other) {
         div_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator%=(const MdStaticArray<T1> &other) {
         mod_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator+=(const T1 &other) {
         add_self_iinternal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator-=(const T1 &other) {
         sub_self_iointernal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator*=(const T1 &other) {
         mul_self_iinternal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator/=(const T1 &other) {
         div_self_iinternal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator%=(const T1 &other) {
         mod_self_iinternal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator<<=(const MdStaticArray<T1> &other) {
         lshft_bit_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator<<=(const T1 &other) {
         lshft_bit_self_iinternal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator>>=(const MdStaticArray<T1> &other) {
         rshft_bit_self_internal_(other);
         return *this;
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray &operator>>=(const T1 &other) {
         rshft_bit_self_iinternal_(other);
         return *this;
     }
 
-    template <typename T1, typename std::enable_if<
-                               MdTypeInfer::is_native<T1>::value ||
-                               MdTypeInfer::is_complex<T1>::value>::value>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator==(const MdStaticArray<T1> &other) {
         return comp_eq_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator>(const MdStaticArray<T1> &other) {
         return comp_g_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator>=(const MdStaticArray<T1> &other) {
         return comp_geq_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator<(const MdStaticArray<T1> &other) {
         return comp_l_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator<=(const MdStaticArray<T1> &other) {
         return comp_leq_internal_(other);
     }
 
-    template <typename T1,
-              typename std::enable_if<MdTypeInfer::is_arith<T1>::value>::value>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator!=(const MdStaticArray<T1> &other) {
         return comp_neq_internal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator==(const T1 &other) {
         return comp_eq_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator>(const T1 &other) {
         return comp_g_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator>=(const T1 &other) {
         return comp_geq_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator<(const T1 &other) {
         return comp_l_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator<=(const T1 &other) {
         return comp_leq_iinternal_(other);
     }
 
-    template <typename T1>
+    template <typename T1, typename = typename std::enable_if<
+                               MdTypeInfer::is_arith<T1>::value>::type>
     inline MdStaticArray<bool> operator!=(const T1 &other) {
         return comp_neq_iinternal_(other);
     }
@@ -1235,7 +1270,7 @@ class MdStaticArray {
     friend inline auto &operator^=(T1 &other, const ArraySlice<T2> &first);
 
     template <typename T1>
-    friend inline auto operator-(const MdStaticArray<T1> __ndarray);
+    friend inline auto operator-(const MdStaticArray<T1> ndarray);
 
     template <typename T1>
     friend inline MdStaticArray<T1> operator-(const ArraySlice<T1> &first);
