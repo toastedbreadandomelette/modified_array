@@ -215,10 +215,10 @@ void mul_mt_internal_f64(f64 *a, f64 *tb, f64 *c, i32 m, i32 n, i32 p,
                         c[(i + 1) * p + j + 2] += a1 * tb2;
                         c[(i + 1) * p + j + 3] += a1 * tb3;
 
-                        c[(i + 2) * p + j] += a3 * tb0;
-                        c[(i + 2) * p + j + 1] += a3 * tb1;
-                        c[(i + 2) * p + j + 2] += a3 * tb2;
-                        c[(i + 2) * p + j + 3] += a3 * tb3;
+                        c[(i + 2) * p + j] += a2 * tb0;
+                        c[(i + 2) * p + j + 1] += a2 * tb1;
+                        c[(i + 2) * p + j + 2] += a2 * tb2;
+                        c[(i + 2) * p + j + 3] += a2 * tb3;
 
                         c[(i + 3) * p + j] += a3 * tb0;
                         c[(i + 3) * p + j + 1] += a3 * tb1;

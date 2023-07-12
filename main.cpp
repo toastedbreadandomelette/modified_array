@@ -12,23 +12,23 @@
 
 int main(i32 argc, const char **argv) {
     // MdStaticArray<double>::set_threshold_size(1000);
-    constexpr usize sz = 1048576;
+    constexpr usize sz = 1024;
     // MdStaticArray<double>::set_thread_count(1);
-    Array<f64> c({sz}, 0);
-    // Array<f64> d({sz, sz}, 0);
+    Array<f64> c({sz, sz}, 0);
+    Array<f64> d({sz, sz}, 0);
     for (usize i = 0; i < sz; ++i) {
-        // c[i] = Utils::range<i64>(i * sz, i * sz + sz);
-        // d[i] = Utils::range<i64>(i * sz, i * sz + sz);
+        c[i] = Utils::range<i64>(i * sz, i * sz + sz);
+        d[i] = Utils::range<i64>(i * sz, i * sz + sz);
     }
-    c = Utils::range<f64>(sz);
+    // c = Utils::range<f64>(sz);
     // d = Utils::range<f64>(sz / 2);
 
     std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    auto ans = FFT::ifft<f64>(FFT::fft<f64>(c));
+    // auto ans = FFT::ifft<f64>(FFT::fft<f64>(c));
     // auto ans = Signal::convolve1d<f64>(c, d);
-    // auto ans = Linalg::mat_multiply<f64>(c, d);
+    auto ans = Linalg::mat_multiply<f64>(c, d);
     auto end = std::chrono::system_clock::now();
 
     std::chrono::duration<f64> time = end - start;
