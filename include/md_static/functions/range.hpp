@@ -31,9 +31,6 @@ Array<T> Utils::range(const T start, const T end, const Ts spacing) {
         increment = spacing;
     }
 
-    // std::cout << size << " " << start << " " << end << " " << spacing << " "
-    //           << increment << '\n';
-
     Array<T> result(size);
 
     const auto range_internal_ = [&result](const usize start, const T init,

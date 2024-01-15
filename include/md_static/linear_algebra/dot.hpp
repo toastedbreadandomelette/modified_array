@@ -134,7 +134,7 @@ Array<T3> Linalg::dot(const Array<T1> &first, const Array<T2> &other,
                     }
                 };
 
-            const usize block = result.get_size() / thread_count - 1;
+            const usize block = result.get_size() / thread_count;
             std::vector<std::thread> thread_pool;
             for (i32 i = 0; i < thread_count - 1; ++i) {
                 thread_pool.emplace_back(std::thread(
@@ -204,7 +204,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::dot(const Array<T1> &first, const ArraySlice<T2> &other,
                       const usize threads) {
     return Linalg::dot<T3, T1, T2>(
-        first, Array(*other.array_reference_, other.offset, other.shp_offset),
+        first, Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -212,7 +212,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::dot(const ArraySlice<T1> &first, const Array<T2> &other,
                       const usize threads) {
     return Linalg::dot<T3, T1, T2>(
-        Array(*first.array_reference_, first.offset, first.shp_offset), other,
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset), other,
         threads);
 }
 
@@ -220,8 +220,8 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::dot(const ArraySlice<T1> &first, const ArraySlice<T2> &other,
                       const usize threads) {
     return Linalg::dot<T3, T1, T2>(
-        Array(*first.array_reference_, first.offset, first.shp_offset),
-        Array(*other.array_reference_, other.offset, other.shp_offset),
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset),
+        Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

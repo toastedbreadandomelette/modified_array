@@ -80,13 +80,14 @@ class MdStaticArray {
     }
 
     bool dont_free = false;
+
+ public:
     T *array_;
     usize *shape;
     usize *skip_vec;
     usize size_;
     u16 shp_size;
 
- public:
     template <typename T1>
     friend class ArraySlice;
     template <typename T1>
@@ -1436,7 +1437,7 @@ MdStaticArray<T>::MdStaticArray(const ArraySlice<T> &other)
 }
 
 template <typename T1, typename T2>
-inline auto &operator+=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator+=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator += on single element requires size to be 1, found "
@@ -1448,7 +1449,7 @@ inline auto &operator+=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator-=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator-=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator -= on single element requires size to be 1, found "
@@ -1460,7 +1461,7 @@ inline auto &operator-=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator*=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator*=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator *= on single element requires size to be 1, found "
@@ -1472,7 +1473,7 @@ inline auto &operator*=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator/=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator/=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator /= on single element requires size to be 1, found "
@@ -1484,7 +1485,7 @@ inline auto &operator/=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator%=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator%=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator %= on single element requires size to be 1, found "
@@ -1496,7 +1497,7 @@ inline auto &operator%=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator<<=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator<<=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator <<= on single element requires size to be 1, found "
@@ -1508,7 +1509,7 @@ inline auto &operator<<=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator>>=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator>>=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator >>= on single element requires size to be 1, found "
@@ -1520,7 +1521,7 @@ inline auto &operator>>=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator&=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator&=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator &= on single element requires size to be 1, found "
@@ -1532,7 +1533,7 @@ inline auto &operator&=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator|=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator|=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator |= on single element requires size to be 1, found "
@@ -1544,7 +1545,7 @@ inline auto &operator|=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T1, typename T2>
-inline auto &operator^=(T1 &other, const ArraySlice<T2> &first) {
+inline T1 &operator^=(T1 &other, const ArraySlice<T2> &first) {
     if (first.get_size() > 1) {
         throw std::runtime_error(
             "Operator ^= on single element requires size to be 1, found "
@@ -1556,14 +1557,14 @@ inline auto &operator^=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T>
-Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
-    return Axis(*this, axis);
+__always_inline Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
+    return Axis<T>(*this, axis);
 }
 
 template <typename T>
-Axis<T> MdStaticArray<T>::get_nth_axis_reference(const usize axis,
-                                                 const usize n) {
-    return Axis(*this, axis, n);
+__always_inline Axis<T> MdStaticArray<T>::get_nth_axis_reference(
+    const usize axis, const usize n) {
+    return Axis<T>(*this, axis, n);
 }
 
 template <typename T>

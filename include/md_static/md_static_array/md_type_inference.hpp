@@ -1,7 +1,6 @@
 #pragma once
 #ifndef _MD_TYPE_INTER_HPP_
 #define _MD_TYPE_INTER_HPP_
-#include <cassert>
 #include <functional>
 
 #include "../../md_complex/md_complex.hpp"

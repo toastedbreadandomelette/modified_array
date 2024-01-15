@@ -404,7 +404,6 @@ void fft_inplace(c64 *array, i32 n, i32 block_size) {
                 fft_b4(array, n);
                 break;
             default:
-                // std::cout << n << " " << operate_length << '\n';
                 fft_odd(array, n, operate_length);
                 break;
         }

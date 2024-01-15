@@ -21,7 +21,7 @@ struct Shape {
     constexpr Shape()
         : shape(nullptr), skip_vec(nullptr), shape_size(0), overall_size(0) {}
 
-    constexpr Shape(usize size)
+    Shape(usize size)
         : shape(nullptr), skip_vec(nullptr), shape_size(1), overall_size(0) {
         shape = static_cast<usize*>(malloc(sizeof(usize)));
         skip_vec = static_cast<usize*>(malloc(sizeof(usize)));
