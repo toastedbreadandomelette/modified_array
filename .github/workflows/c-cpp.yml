@@ -23,7 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: make
-        run: ./scripts/build.sh
+        run: make
       - name: test
-        run: |
-          ./scripts/test.sh
+        run: ctest
