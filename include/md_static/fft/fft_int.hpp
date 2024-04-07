@@ -123,7 +123,7 @@ Array<c64> FFT::fft_int(const Axis<T>& other) {
 template <typename T>
 Array<c64> FFT::fft_int(const ArraySlice<T>& other) {
     return fft_int(
-        Array(*other.array_reference_, other.offset, other.shp_offset));
+        MdStaticArray(*other.array_reference_, other.offset, other.shp_offset));
 }
 
 #endif

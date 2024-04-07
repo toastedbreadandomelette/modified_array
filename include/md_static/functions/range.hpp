@@ -21,13 +21,13 @@ Array<T> Utils::range(const T start, const T end, const Ts spacing) {
     } else if (spacing == 0 && end > start) {
         const auto value = end - start;
         size = static_cast<usize>(
-            ::ceil(std::max(value, static_cast<decltype(value)>(0))));
+            std::ceil(std::max(value, static_cast<decltype(value)>(0))));
         start_value = start;
         increment = 1;
     } else {
-        const double value = ::abs((end - start) / (spacing * 1.0));
+        const double value = std::abs((end - start) / (spacing * 1.0));
         start_value = start;
-        size = static_cast<usize>(::ceil(std::max(value, static_cast<f64>(0))));
+        size = static_cast<usize>(std::ceil(std::max(value, static_cast<f64>(0))));
         increment = spacing;
     }
 

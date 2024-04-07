@@ -242,7 +242,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::vdot(const ArraySlice<Complex<T1>> &first,
                        const Array<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        Array(*first.array_reference_, first.offset, first.shp_offset), other,
+        Array<T1>(*first.array_reference_, first.offset, first.shp_offset), other,
         threads);
 }
 
@@ -250,8 +250,8 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::vdot(const ArraySlice<Complex<T1>> &first,
                        const ArraySlice<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        Array(*first.array_reference_, first.offset, first.shp_offset),
-        Array(*other.array_reference_, other.offset, other.shp_offset),
+        Array<Complex<T1>>(*first.array_reference_, first.offset, first.shp_offset),
+        Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 
@@ -259,7 +259,7 @@ template <typename T3, typename T1, typename T2>
 Array<T3> Linalg::vdot(const Array<Complex<T1>> &first,
                        const ArraySlice<T2> &other, const usize threads) {
     return Linalg::vdot<T3>(
-        first, Array(*other.array_reference_, other.offset, other.shp_offset),
+        first, Array<T2>(*other.array_reference_, other.offset, other.shp_offset),
         threads);
 }
 

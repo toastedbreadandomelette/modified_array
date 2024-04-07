@@ -358,7 +358,7 @@ inline c64x2 zero() { return _mm256_setzero_pd(); }
 
 inline c64x2 fromptr(c64 *val) { return _mm256_loadu_pd((f64 *)val); }
 
-inline c64x2 perm2x128(c64x2 a, c64x2 b, i8 ctrl) {
+inline c64x2 perm2x128(c64x2 a, c64x2 b, const i8 ctrl) {
     return _mm256_permute2f128_pd(a, b, ctrl);
 }
 

@@ -460,15 +460,15 @@ struct eval_complex_t {
     /// @brief Evaluated Value of the Expression
     static constexpr auto value = []() {
         if constexpr (is_any_one_floating_complex<T1, T2>::value) {
-            return static_cast<complex_floating_t<decltype(max_size)>::type>(0);
+            return static_cast<typename complex_floating_t<decltype(max_size)>::type>(0);
         } else if constexpr (is_any_one_unsigned_complex<T1, T2>::value) {
             if constexpr (is_any_one_floating<T1, T2>::value) {
-                return static_cast<complex_floating_t<decltype(max_size)>::type>(0);
+                return static_cast<typename complex_floating_t<decltype(max_size)>::type>(0);
             } else {
-                return static_cast<cunsigned_t<decltype(max_size)>::type>(0);
+                return static_cast<typename cunsigned_t<decltype(max_size)>::type>(0);
             }
         } else {
-            return static_cast<complex_signed_t<decltype(max_size)>::type>(0);
+            return static_cast<typename complex_signed_t<decltype(max_size)>::type>(0);
         }
     }();
 #undef MX_SZ
@@ -490,11 +490,11 @@ struct eval_resultant_t {
         if constexpr (is_any_one_complex<T1, T2>::value) {
             return eval_complex_t<T1, T2>::value;
         } else if constexpr (is_any_one_floating<T1, T2>::value) {
-            return static_cast<floating_t<decltype(max_size)>::type>(0);
+            return static_cast<typename floating_t<decltype(max_size)>::type>(0);
         } else if constexpr (is_any_one_signed<T1, T2>::value) {
-            return static_cast<signed_t<decltype(max_size)>::type>(0);
+            return static_cast<typename signed_t<decltype(max_size)>::type>(0);
         } else {
-            return static_cast<unsigned_t<decltype(max_size)>::type>(0);
+            return static_cast<typename unsigned_t<decltype(max_size)>::type>(0);
         }
     }();
 

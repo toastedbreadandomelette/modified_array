@@ -51,7 +51,7 @@ template <typename T>
 Array<T> Utils::map(const ArraySlice<T> &values,
                     const fn<T(const T &)> &function_exec) {
     return map<T>(
-        Array(*values.array_reference_, values.offset, values.shp_offset),
+        MdStaticArray(*values.array_reference_, values.offset, values.shp_offset),
         function_exec);
 }
 

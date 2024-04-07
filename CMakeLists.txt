@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(nd_array)
 set(CMAKE_CXX_STANDARD 20)
+find_package(OpenMP REQUIRED)
 set(CMAKE_CXX_FLAGS "-O3 -ffast-math -fopenmp -mavx -mfma -march=native")
 
 file(GLOB SOURCES "main.cpp")
