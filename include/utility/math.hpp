@@ -65,21 +65,21 @@ constexpr u64 max = 18446744073709551615ULL;
 }  // namespace U64
 
 namespace F32 {
-constexpr bool isnan(f32 v) { return isnanf(v); };
+bool isnan(f32 v) { return isnanf(v); };
 constexpr f32 nan = std::numeric_limits<f32>::quiet_NaN();
 constexpr f32 inf = std::numeric_limits<f32>::infinity();
 constexpr f32 ninf = inf * -1;
 }  // namespace F32
 
 namespace F64 {
-constexpr bool isnan(f64 v) { return std::isnan(v); };
+bool isnan(f64 v) { return std::isnan(v); };
 constexpr f64 nan = std::numeric_limits<f64>::quiet_NaN();
 constexpr f64 inf = std::numeric_limits<f64>::infinity();
 constexpr f64 ninf = inf * -1;
 }  // namespace F64
 
 namespace F128 {
-constexpr bool isnan(f128 v) { return std::isnan(v); };
+bool isnan(f128 v) { return std::isnan(v); };
 constexpr f128 nan = std::numeric_limits<f128>::quiet_NaN();
 constexpr f128 inf = std::numeric_limits<f128>::infinity();
 constexpr f128 ninf = inf * -1;
@@ -88,9 +88,9 @@ constexpr f128 ninf = inf * -1;
 namespace Math {
 
 constexpr f64 e = 2.71828182845904523536028747135266249775724709369995;
-constexpr f64 pi = M_PI;
-constexpr f64 pi_by_2 = M_PI_2;
-constexpr f64 pi_2 = M_PI * 2;
+constexpr f64 pi = 3.14159265358979323846;
+constexpr f64 pi_by_2 = pi / 2.0;
+constexpr f64 pi_2 = pi * 2.0;
 
 /**
  * @brief Reverse at max 64-bits of a 64 bit number

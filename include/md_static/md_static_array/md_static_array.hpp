@@ -1557,12 +1557,12 @@ inline T1 &operator^=(T1 &other, const ArraySlice<T2> &first) {
 }
 
 template <typename T>
-__always_inline Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
+inline Axis<T> MdStaticArray<T>::get_axis_reference(const usize axis) {
     return Axis<T>(*this, axis);
 }
 
 template <typename T>
-__always_inline Axis<T> MdStaticArray<T>::get_nth_axis_reference(
+inline Axis<T> MdStaticArray<T>::get_nth_axis_reference(
     const usize axis, const usize n) {
     return Axis<T>(*this, axis, n);
 }

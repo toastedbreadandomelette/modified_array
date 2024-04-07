@@ -62,7 +62,7 @@ struct MdStaticAxisReference {
                  current_axis_init % stride_;
     }
 
-    constexpr __always_inline T &operator[](const usize index) const {
+    inline T &operator[](const usize index) const {
         return arr_ptr_->array_[start_ + stride_ * index];
     }
 
