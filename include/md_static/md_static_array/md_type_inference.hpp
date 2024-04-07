@@ -260,7 +260,7 @@ struct floating_t;
  * @tparam Ttypeval generic type
  */
 template <typename Ttypeval>
-struct floating_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) ==
+struct floating_t<Ttypeval, typename std::enable_if<(sizeof(Ttypeval) <=
                                                      sizeof(f32))>::type> {
     using type = f32;
 };
