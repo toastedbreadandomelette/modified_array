@@ -24,7 +24,7 @@ struct Complex {
     constexpr Complex(const Complex<T1>& other)
         : real(other.real), img(other.img) {}
 
-    template <typename T1>
+    template <typename T1, class = typename std::enable_if<std::is_arithmetic<T1>::value>::type>
     inline constexpr Complex<T>& operator=(const Complex<T1>& other) {
         real = other.real;
         img = other.img;
