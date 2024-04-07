@@ -6,10 +6,10 @@
 
 #include <initializer_list>
 
+#include "../md_complex/md_complex.hpp"
 #include "./math.hpp"
 
 using f32x8 = __m256;
-using f64x4 = __m256d;
 
 using i32x8 = __m256i;
 using i64x4 = __m256i;
@@ -85,48 +85,91 @@ __always_inline f32 reduce_sum(f32x8 val) {
 
 }  // namespace F32x8
 
-namespace F64x4 {
-__always_inline f64x4 add(f64x4 first, f64x4 second) {
-    return _mm256_add_pd(first, second);
-}
+struct f64x4 {
+ private:
+    __m256d internal;
 
-__always_inline f64x4 sub(f64x4 first, f64x4 second) {
-    return _mm256_sub_pd(first, second);
-}
+ public:
+    f64x4() {}
+    f64x4(__m256d set) : internal(set) {}
+    f64x4(f64 *set) : internal(_mm256_loadu_pd(set)) {}
+    f64x4(f64 set) : internal(_mm256_set1_pd(set)) {}
 
-__always_inline f64x4 mul(f64x4 first, f64x4 second) {
-    return _mm256_mul_pd(first, second);
-}
+    f64x4 &operator=(f64 set) {
+        internal = _mm256_set1_pd(set);
+        return *this;
+    }
 
-__always_inline f64x4 div(f64x4 first, f64x4 second) {
-    return _mm256_div_pd(first, second);
-}
+    __always_inline f64x4 operator+(f64x4 other) {
+        return _mm256_add_pd(internal, other.internal);
+    }
 
-__always_inline f64x4 fmadd(f64x4 a, f64x4 b, f64x4 c) {
-    return _mm256_fmadd_pd(a, b, c);
-}
+    __always_inline __m256d get() { return internal; }
 
-__always_inline f64x4 uni(f64 val) { return _mm256_set1_pd(val); }
+    static __always_inline f64x4 def() { return _mm256_set1_pd(0.0); }
 
-__always_inline f64x4 set(f64 a, f64 b, f64 c, f64 d) {
-    return _mm256_set_pd(a, b, c, d);
-}
+    __always_inline void copy_to(f64 *ptr) { _mm256_storeu_pd(ptr, internal); }
 
-__always_inline f64x4 zero() { return _mm256_setzero_pd(); }
+    __always_inline f64x4 operator+(f64 other) {
+        return _mm256_add_pd(internal, _mm256_set1_pd(other));
+    }
 
-__always_inline f64x4 fromptr(f64 *val) { return _mm256_loadu_pd(val); }
+    __always_inline f64x4 &operator+=(f64x4 other) {
+        this->internal = _mm256_add_pd(internal, other.internal);
+        return *this;
+    }
 
-__always_inline void storeptr(f64 *val, f64x4 vec) {
-    _mm256_storeu_pd(val, vec);
-}
+    __always_inline f64x4 &operator+=(f64 other) {
+        this->internal = _mm256_add_pd(internal, _mm256_set1_pd(other));
+        return *this;
+    }
 
-__always_inline f64 reduce_sum(f64x4 val) {
-    val = _mm256_hadd_pd(val, val);
-    f64 ans[4] = {0, 0, 0, 0};
-    storeptr(ans, val);
-    return ans[0] + ans[2];
-}
-}  // namespace F64x4
+    __always_inline f64x4 operator-(f64x4 other) {
+        return _mm256_sub_pd(internal, other.internal);
+    }
+
+    __always_inline f64x4 operator-(f64 other) {
+        return _mm256_sub_pd(internal, _mm256_set1_pd(other));
+    }
+
+    __always_inline f64x4 &operator-=(f64x4 other) {
+        this->internal = _mm256_sub_pd(internal, other.internal);
+        return *this;
+    }
+
+    __always_inline f64x4 &operator-=(f64 other) {
+        this->internal = _mm256_sub_pd(internal, _mm256_set1_pd(other));
+        return *this;
+    }
+
+    __always_inline f64x4 operator*(f64x4 other) {
+        return _mm256_mul_pd(internal, other.internal);
+    }
+
+    __always_inline f64x4 operator*(f64 other) {
+        return _mm256_mul_pd(internal, _mm256_set1_pd(other));
+    }
+
+    __always_inline f64x4 &operator*=(f64x4 other) {
+        this->internal = _mm256_mul_pd(internal, other.internal);
+        return *this;
+    }
+
+    __always_inline f64x4 &operator*=(f64 other) {
+        this->internal = _mm256_mul_pd(internal, _mm256_set1_pd(other));
+        return *this;
+    }
+
+    __always_inline f64x4 fmadd(f64x4 mul_by, f64x4 add_by) {
+        return _mm256_fmadd_pd(internal, mul_by.internal, add_by.internal);
+    }
+
+    __always_inline f64 reduce_sum() {
+        f64 ans[4] = {0, 0, 0, 0};
+        copy_to(ans);
+        return ans[0] + ans[1] + ans[2] + ans[3];
+    }
+};
 
 namespace F32x4 {
 __always_inline f32x4 add(f32x4 first, f32x4 second) {
@@ -225,7 +268,8 @@ __always_inline c32x4 set(c32 a, c32 b, c32 c, c32 d) {
 }
 
 __always_inline c32x4 mul(c32x4 first, c32x4 second) {
-    c32 ans0[4] = {0, 0, 0, 0}, ans1[4] = {0, 0, 0, 0};
+    c32 ans0[4] = {0, 0, 0, 0};
+    c32 ans1[4] = {0, 0, 0, 0};
     storeptr(ans0, first);
     storeptr(ans1, second);
     return set(ans0[0] * ans1[0], ans1[1] * ans0[1], ans1[2] * ans0[2],
@@ -268,7 +312,7 @@ __always_inline c64x2 add(c64x2 first, c64x2 second) {
 }
 
 __always_inline c64x2 sub(f64x4 first, c64x2 second) {
-    return _mm256_sub_pd(first, second);
+    return _mm256_sub_pd(first.get(), second);
 }
 
 __always_inline void storeptr(c64 *val, c64x2 vec) {
@@ -295,7 +339,7 @@ __always_inline c64x2 mul_alt(c64x2 first, c64x2 second) {
 }
 
 __always_inline c64x2 scal_mul(c64x2 first, f64x4 second) {
-    return _mm256_mul_pd(first, second);
+    return _mm256_mul_pd(first, second.get());
 }
 
 __always_inline c64x2 div(c64x2 first, c64x2 second) {

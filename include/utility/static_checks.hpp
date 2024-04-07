@@ -1,7 +1,11 @@
 #pragma once
 
+#include "math.hpp"
+#include <type_traits>
 #ifndef __STATIC_CHECK_HPP__
 #define __STATIC_CHECK_HPP__
+
+class false_type;
 
 /**
  * @brief Template to check if type is from a variadic list

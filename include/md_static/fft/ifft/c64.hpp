@@ -14,7 +14,7 @@ void idft_subarray(c64 *array, i32 start, i32 end, c64 *dest) {
     i32 rem = (end - start) & 7;
 
     for (usize i = start; i < (end - rem); i += 8) {
-        f64x4 acc = C64x2::fromptr(array + i);
+        __m256d acc = C64x2::fromptr(array + i);
         accumulator = C64x2::add(accumulator, acc);
 
         acc = C64x2::fromptr(array + i + 2);
@@ -140,7 +140,7 @@ void idft_subarray_inplace_without_div(c64 *array, i32 start, i32 end) {
     i32 rem = (end - start) & 7;
 
     for (usize i = start; i < (end - rem); i += 8) {
-        f64x4 acc = C64x2::fromptr(array + i);
+        __m256d acc = C64x2::fromptr(array + i);
         accumulator = C64x2::add(accumulator, acc);
 
         acc = C64x2::fromptr(array + i + 2);

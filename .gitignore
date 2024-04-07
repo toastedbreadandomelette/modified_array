@@ -21,5 +21,6 @@ Testing/
 *.s
 
 .obsidian/*
+.cache
 
 nd_array

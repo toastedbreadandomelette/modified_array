@@ -12,23 +12,29 @@
 
 int main(i32 argc, const char **argv) {
     // MdStaticArray<double>::set_threshold_size(1000);
-    constexpr usize sz = 10;
+    constexpr usize sz = 1024;
     // MdStaticArray<double>::set_thread_count(1);
+    // Array<f64> c({sz}, 0);
+    // Array<i64> a({sz, sz}, 0);
+    // Array<i64> b({sz, sz}, 0);
     Array<f64> c({sz, sz}, 0);
     Array<f64> d({sz, sz}, 0);
     for (usize i = 0; i < sz; ++i) {
+        // a[i] = Utils::range<i64>(i * sz, i * sz + sz);
+        // b[i] = Utils::range<i64>(i * sz, i * sz + sz);
         c[i] = Utils::range<i64>(i * sz, i * sz + sz);
-        //     d[i] = Utils::range<i64>(i * sz, i * sz + sz);
+        d[i] = Utils::range<i64>(i * sz, i * sz + sz);
     }
-    // // c = Utils::range<f64>(sz);
-    // // d = Utils::range<f64>(sz / 2);
+    // c = Utils::range<f64>(sz);
+    // d = Utils::range<f64>(sz / 2);
 
     // std::cout << c.get_size() << '\n';
 
     auto start = std::chrono::system_clock::now();
-    // // auto ans = FFT::fft<f64>(c);
+    // auto ans = FFT::fft<f64>(c);
     // // auto ans = Signal::convolve1d<f64>(c, d);
-    // auto ans = Linalg::mat_multiply<f64>(c, d);
+    // auto ans1 = Linalg::mat_multiply<i64>(a, b);
+    auto ans = Linalg::mat_multiply<f64>(c, d, 12);
 
     // for (auto t : iter) {
     //     std::cout << t << ' ';
@@ -40,6 +46,7 @@ int main(i32 argc, const char **argv) {
     // std::cout << (Utils::range(10) == 5.5) << '\n';
     // std::cout << c << "\n\n";
     // std::cout << ans << '\n';
+    // std::cout << ans1 << '\n';
 
     std::cout << "Time: " << time.count() << "s"
               << " " << std::endl;
