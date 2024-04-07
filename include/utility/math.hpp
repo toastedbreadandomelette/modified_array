@@ -65,7 +65,9 @@ constexpr u64 max = 18446744073709551615ULL;
 }  // namespace U64
 
 namespace F32 {
-bool isnan(f32 v) { return isnanf(v); };
+bool isnan(f32 v) { 
+    return std::isnan(v);
+};
 constexpr f32 nan = std::numeric_limits<f32>::quiet_NaN();
 constexpr f32 inf = std::numeric_limits<f32>::infinity();
 constexpr f32 ninf = inf * -1;
